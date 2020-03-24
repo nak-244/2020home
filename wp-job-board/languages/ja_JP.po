@@ -2256,7 +2256,7 @@ msgstr " 時給"
 
 #: includes/class-job_listing.php:477
 msgid "Application ends: <strong>%s</strong>"
-msgstr ""
+msgstr "応募締切日: <strong>%s</strong>"
 
 #: includes/class-job_listing.php:485 includes/class-job_listing.php:490
 #: includes/class-job_listing.php:497 includes/class-job_listing.php:502
