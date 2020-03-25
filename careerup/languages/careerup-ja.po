@@ -1999,7 +1999,7 @@ msgstr ""
 #: inc/vendors/redux-framework/redux-config.php:363
 #: template-jobs/content-single-candidate.php:18
 msgid "Description"
-msgstr "詳細"
+msgstr ""
 
 #: inc/vendors/elementor/widgets/call_to_action.php:47
 msgid "Enter your description here"
