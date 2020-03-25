@@ -4560,7 +4560,7 @@ msgstr ""
 #: templates/misc/my-following-employers.php:35
 #: templates/misc/my-jobs-alerts.php:38 templates/submission/my-jobs.php:39
 msgid "Sort by: "
-msgstr "並び替え:"
+msgstr "並び替え: "
 
 #: templates/misc/candidates-shortlist.php:155
 msgid "Don't have any candidates in shortlist"
