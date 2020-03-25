@@ -330,7 +330,7 @@ msgstr ""
 #: includes/admin/class-settings.php:366
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:55
 msgid "Longitude"
-msgstr "半径"
+msgstr ""
 
 #: includes/admin/class-settings.php:367
 msgid "Enter your longitude"
@@ -1418,7 +1418,7 @@ msgstr ""
 #: templates/misc/candidates-shortlist.php:122
 #: templates/single-employer/detail.php:81
 msgid "Location"
-msgstr ""
+msgstr "周辺検索"
 
 #: includes/class-abstract-form.php:190
 #: includes/post-types/class-post-type-job_listing.php:397
@@ -3782,7 +3782,7 @@ msgstr ""
 #: includes/taxonomies/class-taxonomy-job-location.php:27
 #: includes/taxonomies/class-taxonomy-job-location.php:37
 msgid "Locations"
-msgstr "位置"
+msgstr ""
 
 #: includes/taxonomies/class-taxonomy-candidate-location.php:29
 #: includes/taxonomies/class-taxonomy-employer-location.php:29
@@ -4994,7 +4994,7 @@ msgstr ""
 
 #: templates/widgets/filter-fields/text_location.php:36
 msgid "Radius: <span class=\"text-distance\">%s</span> %s"
-msgstr ""
+msgstr "半径: <span class=“text-distance”>%s</span> %s"
 
 #: wp-job-board.php:164
 msgid "Expired <span class=\"count\">(%s)</span>"
