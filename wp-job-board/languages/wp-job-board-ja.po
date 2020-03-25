@@ -1719,7 +1719,7 @@ msgstr ""
 #: includes/class-candidate-filter.php:41 includes/class-employer-filter.php:41
 #: includes/class-job-filter.php:39
 msgid "All Location"
-msgstr ""
+msgstr "場所を選ぶ"
 
 #: includes/class-candidate-filter.php:47
 msgid "Location List"
