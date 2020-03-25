@@ -2991,7 +2991,7 @@ msgstr ""
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:228
 #: widgets/candidate-simple-search.php:24 widgets/job-simple-search.php:24
 msgid "All Categories"
-msgstr ""
+msgstr "職種選択"
 
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:231
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:234
