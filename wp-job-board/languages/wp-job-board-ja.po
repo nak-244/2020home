@@ -1295,23 +1295,23 @@ msgstr ""
 
 #: includes/class-abstract-filter.php:62
 msgid "Last Hour"
-msgstr ""
+msgstr "1時間以内"
 
 #: includes/class-abstract-filter.php:66
 msgid "Last 24 hours"
-msgstr ""
+msgstr "24時間以内"
 
 #: includes/class-abstract-filter.php:70
 msgid "Last 7 days"
-msgstr ""
+msgstr "7日以内"
 
 #: includes/class-abstract-filter.php:74
 msgid "Last 14 days"
-msgstr ""
+msgstr "2週間以内"
 
 #: includes/class-abstract-filter.php:78
 msgid "Last 30 days"
-msgstr ""
+msgstr "30日以内"
 
 #: includes/class-abstract-filter.php:82
 msgid "All"
@@ -1735,7 +1735,7 @@ msgstr ""
 
 #: includes/class-candidate-filter.php:55 includes/class-job-filter.php:67
 msgid "Date Posted"
-msgstr ""
+msgstr "更新日"
 
 #: includes/class-candidate-filter.php:61
 #: includes/class-candidate-filter.php:407 includes/class-job-filter.php:61
