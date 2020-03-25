@@ -2119,7 +2119,7 @@ msgstr ""
 
 #: includes/class-job-alert.php:32 includes/class-mixes.php:395
 msgid "Weekly"
-msgstr ""
+msgstr "週給"
 
 #: includes/class-job-alert.php:36
 msgid "Fortnightly"
@@ -2127,7 +2127,7 @@ msgstr ""
 
 #: includes/class-job-alert.php:40 includes/class-mixes.php:394
 msgid "Monthly"
-msgstr ""
+msgstr "月給"
 
 #: includes/class-job-alert.php:44
 msgid "Biannually"
@@ -2281,11 +2281,11 @@ msgstr ""
 
 #: includes/class-mixes.php:396
 msgid "Hourly"
-msgstr ""
+msgstr "時給"
 
 #: includes/class-mixes.php:397
 msgid "Yearly"
-msgstr ""
+msgstr "年収"
 
 #: includes/class-mixes.php:427 includes/class-social-facebook.php:323
 #: includes/class-social-facebook.php:338
