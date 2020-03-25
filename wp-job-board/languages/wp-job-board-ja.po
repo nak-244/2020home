@@ -4417,7 +4417,7 @@ msgstr "仕事詳細"
 #: templates/single-employer/header.php:30
 #: templates/single-job_listing/header.php:27
 msgid " posted %s ago"
-msgstr "更新日 %s 前"
+msgstr " 更新日 %s 前"
 
 #: templates/loop/candidate/archive-inner.php:37
 #: templates/loop/candidate/pagination.php:11
@@ -4503,7 +4503,7 @@ msgstr ""
 
 #: templates/loop/job/jobs-alert-form.php:9
 msgid "Get Jobs Alerts"
-msgstr ""
+msgstr "更新通知を受け取る"
 
 #: templates/loop/job/jobs-alert-form.php:43
 msgid "Save Job Alert"
