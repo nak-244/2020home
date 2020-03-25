@@ -2942,7 +2942,7 @@ msgstr ""
 #: inc/widgets/candidate-simple-search.php:66
 #: inc/widgets/job-simple-search.php:74
 msgid "Trending Keywords"
-msgstr ""
+msgstr "急上昇キーワード"
 
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:104
 msgid "Layout 3"
@@ -3018,7 +3018,7 @@ msgstr ""
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:303
 #: widgets/candidate-simple-search.php:90 widgets/job-simple-search.php:106
 msgid "Trending Keywords:"
-msgstr ""
+msgstr "急上昇キーワード："
 
 #: inc/vendors/elementor/wp-job-board-widgets/user_info.php:16
 msgid "Apus Header User Info"
