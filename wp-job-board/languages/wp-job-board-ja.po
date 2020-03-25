@@ -1778,7 +1778,7 @@ msgstr ""
 #: templates/misc/my-following-employers.php:25
 #: templates/misc/my-jobs-alerts.php:28 templates/submission/my-jobs.php:29
 msgid "Default"
-msgstr ""
+msgstr "標準"
 
 #: includes/class-candidate-filter.php:359
 #: includes/class-candidate-filter.php:438 includes/class-job-filter.php:445
@@ -1791,7 +1791,7 @@ msgstr ""
 #: templates/misc/my-following-employers.php:26
 #: templates/misc/my-jobs-alerts.php:29 templates/submission/my-jobs.php:30
 msgid "Newest"
-msgstr ""
+msgstr "新しい順"
 
 #: includes/class-candidate-filter.php:360
 #: includes/class-candidate-filter.php:439 includes/class-job-filter.php:446
@@ -1804,14 +1804,14 @@ msgstr ""
 #: templates/misc/my-following-employers.php:27
 #: templates/misc/my-jobs-alerts.php:30 templates/submission/my-jobs.php:31
 msgid "Oldest"
-msgstr ""
+msgstr "古い順"
 
 #: includes/class-candidate-filter.php:361
 #: includes/class-candidate-filter.php:440 includes/class-job-filter.php:447
 #: includes/class-job-filter.php:604 templates/loop/candidate/orderby.php:10
 #: templates/loop/employer/orderby.php:10 templates/loop/job/orderby.php:10
 msgid "Random"
-msgstr ""
+msgstr "ランダム"
 
 #: includes/class-candidate-filter.php:398 includes/class-job-filter.php:30
 #: includes/class-job-filter.php:538
