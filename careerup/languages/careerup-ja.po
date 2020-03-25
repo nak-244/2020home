@@ -4352,7 +4352,7 @@ msgstr " 更新日 %s 前"
 #: template-jobs/jobs-styles/inner-list-v1.php:61
 #: template-jobs/jobs-styles/inner-list-v2.php:62
 msgid "Browse Job"
-msgstr ""
+msgstr "求人を見る"
 
 #: template-jobs/jobs-styles/inner-list-v1.php:47
 #: template-jobs/jobs-styles/inner-list-v2.php:48
