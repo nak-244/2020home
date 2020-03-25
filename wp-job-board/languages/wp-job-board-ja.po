@@ -1606,7 +1606,7 @@ msgstr ""
 #: includes/class-applicant.php:387 includes/class-applicant.php:626
 #: includes/class-applicant.php:709 templates/misc/job-applicants.php:189
 msgid "Load more"
-msgstr ""
+msgstr "もっと見る"
 
 #: includes/class-applicant.php:398
 msgid "No rejected applicants found."

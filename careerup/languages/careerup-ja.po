@@ -4400,7 +4400,7 @@ msgstr ""
 
 #: template-jobs/loop/job/pagination.php:17
 msgid "All jobs loaded."
-msgstr ""
+msgstr "すべての求人を読み込みました。"
 
 #: template-jobs/misc/candidate-dashboard.php:36
 #: template-jobs/misc/employer-dashboard.php:22
