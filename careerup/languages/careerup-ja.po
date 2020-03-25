@@ -3013,7 +3013,7 @@ msgstr ""
 #: searchform.php:13 widgets/candidate-simple-search.php:81
 #: widgets/job-simple-search.php:97 widgets/search.php:17
 msgid "Search"
-msgstr ""
+msgstr "検索"
 
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:303
 #: widgets/candidate-simple-search.php:90 widgets/job-simple-search.php:106
@@ -4446,7 +4446,7 @@ msgstr ""
 #: template-jobs/misc/my-following-employers.php:14
 #: template-jobs/misc/my-jobs-alerts.php:15
 msgid "Search ..."
-msgstr ""
+msgstr "検索 … "
 
 #: template-jobs/misc/candidates-shortlist.php:29
 #: template-jobs/misc/job-applicants.php:39
