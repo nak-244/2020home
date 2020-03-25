@@ -4346,7 +4346,7 @@ msgstr ""
 #: template-jobs/misc/jobs-applied.php:88
 #: template-jobs/misc/jobs-shortlist.php:125
 msgid " posted %s ago"
-msgstr ""
+msgstr " 更新日 %s 前"
 
 #: template-jobs/jobs-styles/inner-grid.php:62
 #: template-jobs/jobs-styles/inner-list-v1.php:61

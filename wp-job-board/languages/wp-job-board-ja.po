@@ -4417,7 +4417,7 @@ msgstr ""
 #: templates/single-employer/header.php:30
 #: templates/single-job_listing/header.php:27
 msgid " posted %s ago"
-msgstr ""
+msgstr " 更新日 %s 前"
 
 #: templates/loop/candidate/archive-inner.php:37
 #: templates/loop/candidate/pagination.php:11
