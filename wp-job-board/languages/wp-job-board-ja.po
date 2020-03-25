@@ -4410,7 +4410,7 @@ msgstr ""
 #: templates/content-single-employer.php:21
 #: templates/content-single-job_listing.php:21
 msgid "Job Description"
-msgstr ""
+msgstr "仕事詳細"
 
 #: templates/jobs-styles/inner-list.php:35 templates/misc/jobs-applied.php:85
 #: templates/misc/jobs-shortlist.php:119
