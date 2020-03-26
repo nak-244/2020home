@@ -4488,7 +4488,7 @@ msgstr[0] ""
 #: templates/loop/candidate/results-filters.php:9
 #: templates/loop/job/results-filters.php:9
 msgid "Your Selected"
-msgstr ""
+msgstr "現在の検索条件"
 
 #: templates/loop/candidate/results-filters.php:16
 #: templates/loop/job/results-filters.php:16

@@ -3772,7 +3772,7 @@ msgstr ""
 #: template-jobs/single-candidate/header.php:49
 #: template-jobs/submission/my-jobs.php:126
 msgid "Urgent"
-msgstr "急募 "
+msgstr "急募　"
 
 #: inc/vendors/wp-job-board/functions.php:421
 #: inc/vendors/wp-job-board/functions.php:450
@@ -4400,7 +4400,7 @@ msgstr ""
 
 #: template-jobs/loop/job/pagination.php:17
 msgid "All jobs loaded."
-msgstr ""
+msgstr "　"
 
 #: template-jobs/misc/candidate-dashboard.php:36
 #: template-jobs/misc/employer-dashboard.php:22
