@@ -4288,11 +4288,11 @@ msgstr ""
 #: template-jobs/content-single-job_listing-v5.php:52
 #: template-jobs/content-single-job_listing.php:22
 msgid "Job Description"
-msgstr ""
+msgstr "仕事内容"
 
 #: template-jobs/content-single-job_listing-v3.php:29
 msgid "Job Location"
-msgstr ""
+msgstr "勤務地"
 
 #: template-jobs/content-single-job_listing-v3.php:37
 #: widgets/job-statistics.php:25
