@@ -4288,7 +4288,7 @@ msgstr ""
 #: template-jobs/content-single-job_listing-v5.php:52
 #: template-jobs/content-single-job_listing.php:22
 msgid "Job Description"
-msgstr "仕事内容"
+msgstr "仕事詳細"
 
 #: template-jobs/content-single-job_listing-v3.php:29
 msgid "Job Location"
