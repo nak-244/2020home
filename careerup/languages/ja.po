@@ -3772,7 +3772,7 @@ msgstr ""
 #: template-jobs/single-candidate/header.php:49
 #: template-jobs/submission/my-jobs.php:126
 msgid "Urgent"
-msgstr ""
+msgstr "急募求人"
 
 #: inc/vendors/wp-job-board/functions.php:421
 #: inc/vendors/wp-job-board/functions.php:450
