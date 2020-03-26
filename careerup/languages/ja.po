@@ -4297,19 +4297,19 @@ msgstr ""
 #: template-jobs/content-single-job_listing-v3.php:37
 #: widgets/job-statistics.php:25
 msgid "<span class=\"number\">%s</span> ago"
-msgstr ""
+msgstr "<span class=\"number\">%s</span> 前"
 
 #: template-jobs/content-single-job_listing-v3.php:46
 #: widgets/job-statistics.php:36
 msgid "<span class=\"number\">%d</span> View"
 msgid_plural "<span class=\"number\">%d</span> Views"
-msgstr[0] ""
+msgstr[0] "<span class=\"number\">%d</span> 閲覧数"
 
 #: template-jobs/content-single-job_listing-v3.php:68
 #: widgets/job-statistics.php:47
 msgid "<span class=\"number\">%d</span> Applicant"
 msgid_plural "<span class=\"number\">%d</span> Applicants"
-msgstr[0] ""
+msgstr[0] "<span class=\"number\">%d</span> 応募数"
 
 #: template-jobs/content-single-job_listing-v5.php:39
 #: template-jobs/single-job_listing/header-v2.php:59
@@ -4319,7 +4319,7 @@ msgstr ""
 #: template-jobs/content-single-job_listing-v5.php:40
 #: template-jobs/single-job_listing/header-v2.php:60
 msgid "Share"
-msgstr ""
+msgstr "シェア"
 
 #: template-jobs/employers-styles/inner-grid-v1.php:63
 msgid "<span>%d</span> Open Job"
@@ -4921,7 +4921,7 @@ msgstr ""
 
 #: template-jobs/submission/my-jobs.php:167
 msgid "<span class=\"number\">%d</span> Applicant(s)"
-msgstr ""
+msgstr "<span class=\"number\">%d</span> 応募数"
 
 #: template-jobs/submission/my-jobs.php:198
 msgid "Mark not filled"
