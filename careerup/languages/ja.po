@@ -4866,7 +4866,7 @@ msgstr ""
 #: template-jobs/single-job_listing/header-v5.php:45
 #: template-jobs/single-job_listing/header.php:50
 msgid "Posted %s ago"
-msgstr ""
+msgstr "更新日 %s 前"
 
 #: template-jobs/single-job_listing/header-v2.php:32
 #: template-jobs/single-job_listing/header-v3.php:51
