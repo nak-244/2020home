@@ -2923,7 +2923,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:154
 #: includes/post-types/class-post-type-employer.php:424
 msgid "Phone Number"
-msgstr ""
+msgstr "電話番号"
 
 #: includes/post-types/class-post-type-candidate.php:319
 msgid "Urgent Candidate"
@@ -3154,7 +3154,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:674
 #: templates/single-job_listing/apply-email-form.php:28
 msgid "Full Name"
-msgstr ""
+msgstr "お名前"
 
 #: includes/post-types/class-post-type-candidate.php:860
 msgid "Upload file %s"
@@ -4482,6 +4482,8 @@ msgid_plural ""
 "Showing <span class=\"first\">%1$d</span> &ndash; <span class=\"last\">%2$d</"
 "span> of %3$d results"
 msgstr[0] ""
+"<span class=\"first\">%1$d</span> &ndash; <span class=\"last\">%2$d</span> 件"
+"表示 （全 %3$d 件）"
 
 #: templates/loop/candidate/results-filters.php:9
 #: templates/loop/job/results-filters.php:9
@@ -4748,7 +4750,7 @@ msgstr ""
 #: templates/single-employer/contact-form.php:41
 #: templates/single-job_listing/apply-email-form.php:38
 msgid "Phone"
-msgstr ""
+msgstr "電話番号"
 
 #: templates/misc/register.php:62 templates/misc/register.php:86
 msgid "Select Category"
@@ -4803,12 +4805,12 @@ msgstr ""
 #: templates/single-employer/contact-form.php:46
 #: templates/single-job_listing/apply-email-form.php:43
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: templates/single-candidate/contact-form.php:58
 #: templates/single-employer/contact-form.php:54
 msgid "Send Message"
-msgstr ""
+msgstr "メッセージを送る"
 
 #: templates/single-candidate/experience.php:13
 msgid "Work &amp; Experience"
@@ -4918,7 +4920,7 @@ msgstr ""
 
 #: templates/single-job_listing/apply-email-form.php:21
 msgid "Apply for this job"
-msgstr ""
+msgstr "この仕事に応募"
 
 #: templates/single-job_listing/apply-email-form.php:48
 msgid "Curriculum Vitae"

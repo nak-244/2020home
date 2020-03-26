@@ -4374,7 +4374,7 @@ msgstr ""
 #: template-jobs/misc/job-applicants.php:198
 #: wp-private-message/reply-section.php:66
 msgid "Load more"
-msgstr ""
+msgstr "もっと見る"
 
 #: template-jobs/loop/candidate/pagination.php:17
 msgid "All candidates loaded."
