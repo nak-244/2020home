@@ -3577,7 +3577,7 @@ msgstr ""
 #: includes/post-types/class-post-type-job_listing.php:53
 #: includes/post-types/class-post-type-job_listing.php:65
 msgid "Jobs"
-msgstr ""
+msgstr "求人情報"
 
 #: includes/post-types/class-post-type-job_listing.php:54
 msgid "Job"
