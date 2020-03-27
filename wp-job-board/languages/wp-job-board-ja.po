@@ -215,15 +215,15 @@ msgstr "　"
 
 #: includes/admin/class-settings.php:245
 msgid "File Types"
-msgstr ""
+msgstr "ファイルの種類"
 
 #: includes/admin/class-settings.php:253
 msgid "Images File Types"
-msgstr ""
+msgstr "画像ファイルの種類"
 
 #: includes/admin/class-settings.php:260
 msgid "CV File Types"
-msgstr ""
+msgstr "CVファイルの種類"
 
 #: includes/admin/class-settings.php:267
 msgid "Map API Settings"
