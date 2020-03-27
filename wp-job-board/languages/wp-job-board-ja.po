@@ -147,7 +147,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:167 includes/admin/class-settings.php:171
 msgid "General Settings"
-msgstr ""
+msgstr "一般設定"
 
 #: includes/admin/class-settings.php:178
 msgid "Number jobs per page"
