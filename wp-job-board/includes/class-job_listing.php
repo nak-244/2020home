@@ -3,7 +3,7 @@
  * Job Listing
  *
  * @package    wp-job-board
- * @author     Habq 
+ * @author     Habq
  * @license    GNU General Public License, version 3
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class WP_Job_Board_Job_Listing {
-	
+
 	public static function init() {
 		// loop
 		add_action( 'wp_job_board_before_job_archive', array( __CLASS__, 'display_jobs_results_filters' ), 5 );
@@ -27,14 +27,14 @@ class WP_Job_Board_Job_Listing {
 	public static function get_post_meta($post_id, $key, $single = true) {
 		return get_post_meta($post_id, WP_JOB_BOARD_JOB_LISTING_PREFIX.$key, $single);
 	}
-	
+
 	public static function customer_also_viewed( $job_id ) {
-	    $customer_also_viewed = get_option('wp_job_board_customer_also_viewed_'.$job_id);  
-	    if ( !empty($customer_also_viewed) )        
-	    {  
+	    $customer_also_viewed = get_option('wp_job_board_customer_also_viewed_'.$job_id);
+	    if ( !empty($customer_also_viewed) )
+	    {
 	        $customer_also_viewed = explode(',',$customer_also_viewed);
-	        $customer_also_viewed = array_reverse($customer_also_viewed);       
-	        
+	        $customer_also_viewed = array_reverse($customer_also_viewed);
+
 	        //Skip same product on product page from the list
 	        if ( ($key = array_search($job_id, $customer_also_viewed)) !== false ) {
 	            unset($customer_also_viewed[$key] );
@@ -77,7 +77,7 @@ class WP_Job_Board_Job_Listing {
 	    update_post_meta($post->ID, '_views_by_date', $views_by_date);
 	    update_post_meta($post->ID, '_recently_viewed', $today);
 
-	    // 
+	    //
 
 	    if ( empty( $_COOKIE['wp_job_board_recently_viewed'] ) ) {
 	        $viewed_products = array();
@@ -108,19 +108,19 @@ class WP_Job_Board_Job_Listing {
 	        {
 	            $option = 'wp_job_board_customer_also_viewed_'.$viewed;
 	            $option_value = get_option($option);
-	            
+
 	            if ( isset($option_value) && !empty($option_value) ) {
 	                $option_value = explode(',', $option_value);
 	                if ( !in_array($post->ID, $option_value) ) {
 	                    $option_value[] = $post->ID;
 	                }
 	            }
-	            
+
 	            $option_value = (!empty($option_value) && count($option_value) > 1) ? implode(',', $option_value) : $post->ID;
 
 	            update_option($option, $option_value);
 	        }
-	    } 
+	    }
 
 	}
 
@@ -139,12 +139,12 @@ class WP_Job_Board_Job_Listing {
 				// send email here.
 				$job = get_post($job_id);
 				$email_from = get_option( 'admin_email', false );
-				
+
 				$headers = sprintf( "From: %s <%s>\r\n Content-type: text/html", get_bloginfo('name'), $email_from );
 				$email_to = get_option( 'admin_email', false );
 				$subject = WP_Job_Board_Email::render_email_vars(array('job' => $job), 'admin_notice_expiring_listing', 'subject');
 				$content = WP_Job_Board_Email::render_email_vars(array('job' => $job), 'admin_notice_expiring_listing', 'content');
-				
+
 				wp_mail( $email_to, $subject, $content, $headers );
 			}
 		}
@@ -165,14 +165,14 @@ class WP_Job_Board_Job_Listing {
 				// send email here.
 				$job = get_post($job_id);
 				$email_from = get_option( 'admin_email', false );
-				
+
 				$headers = sprintf( "From: %s <%s>\r\n Content-type: text/html", get_bloginfo('name'), $email_from );
 				$email_to = get_the_author_meta( 'user_email', $job->post_author );
 				$subject = WP_Job_Board_Email::render_email_vars(array('job' => $job), 'employer_notice_expiring_listing', 'subject');
 				$content = WP_Job_Board_Email::render_email_vars(array('job' => $job), 'employer_notice_expiring_listing', 'content');
-				
+
 				wp_mail( $email_to, $subject, $content, $headers );
-				
+
 			}
 		}
 	}
@@ -202,7 +202,7 @@ class WP_Job_Board_Job_Listing {
 		global $wpdb;
 
 		$prefix = WP_JOB_BOARD_JOB_LISTING_PREFIX;
-		
+
 		// Change status to expired.
 		$job_ids = $wpdb->get_col(
 			$wpdb->prepare( "
@@ -383,7 +383,7 @@ class WP_Job_Board_Job_Listing {
 
 		return apply_filters( 'wp-job-board-get-max-salary-html', $price, $post_id );
 	}
-	
+
 	public static function is_featured( $post_id = null ) {
 		if ( null == $post_id ) {
 			$post_id = get_the_ID();
@@ -415,7 +415,7 @@ class WP_Job_Board_Job_Listing {
 		if ( null == $post_id ) {
 			$post_id = get_the_ID();
 		}
-		
+
 		$query_args = array(
 			'post_type'         => 'job_applicant',
 			'fields' 			=> 'ids',
@@ -430,7 +430,7 @@ class WP_Job_Board_Job_Listing {
 			)
 		);
 		$applicants = new WP_Query( $query_args );
-		
+
 		return $applicants->found_posts;
 	}
 
@@ -477,7 +477,7 @@ class WP_Job_Board_Job_Listing {
 				<div class="deadline-time"><?php echo sprintf(__('Application ends: <strong>%s</strong>', 'wp-job-board'), date(get_option('date_format'), $deadline_date)); ?></div>
 				<?php
 			}
-			
+
 			if ( $apply_type == 'external' ) {
 				$apply_url = self::get_post_meta( $post_id, 'apply_url', true );
 				if ( !empty($apply_url) ) {
@@ -514,7 +514,7 @@ class WP_Job_Board_Job_Listing {
 					<?php
 				}
 			}
-			
+
 		} else {
 			?>
 			<div class="deadline-closed"><?php esc_html_e('Application deadline closed.', 'wp-job-board'); ?></div>
@@ -526,7 +526,7 @@ class WP_Job_Board_Job_Listing {
 		if ( null == $post_id ) {
 			$post_id = get_the_ID();
 		}
-		
+
 		if ( WP_Job_Board_Candidate::check_added_shortlist($post_id) ) {
 			$classes = 'btn-added-job-shortlist btn btn-block btn-shortlist';
 			$nonce = wp_create_nonce( 'wp-job-board-remove-job-shortlist-nonce' );
