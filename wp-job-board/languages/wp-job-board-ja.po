@@ -159,23 +159,23 @@ msgstr "ページごとに表示する求人の数。"
 
 #: includes/admin/class-settings.php:187
 msgid "Currency Settings"
-msgstr ""
+msgstr "通貨設定"
 
 #: includes/admin/class-settings.php:196
 msgid "Currency Symbol"
-msgstr ""
+msgstr "通貨記号"
 
 #: includes/admin/class-settings.php:197
 msgid "Enter your Currency Symbol. Default $"
-msgstr ""
+msgstr "通貨記号を入力します。デフォルトは$"
 
 #: includes/admin/class-settings.php:203
 msgid "Currency Code"
-msgstr ""
+msgstr "通貨コード"
 
 #: includes/admin/class-settings.php:204
 msgid "Enter your Currency Code. Default USD"
-msgstr ""
+msgstr "通貨コードを入力してください。デフォルトは米ドル"
 
 #: includes/admin/class-settings.php:210
 msgid "Currency Position"
