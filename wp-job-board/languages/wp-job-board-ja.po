@@ -2603,7 +2603,7 @@ msgstr ""
 
 #: includes/class-user.php:1349
 msgid "Filter"
-msgstr ""
+msgstr "絞り込み"
 
 #: includes/class-user.php:1356 includes/class-user.php:1358
 msgid "View all users"
