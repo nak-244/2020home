@@ -227,11 +227,11 @@ msgstr "CVファイルの種類"
 
 #: includes/admin/class-settings.php:267
 msgid "Map API Settings"
-msgstr ""
+msgstr "地図のAPI設定"
 
 #: includes/admin/class-settings.php:275
 msgid "Map Service"
-msgstr ""
+msgstr "地図サービス"
 
 #: includes/admin/class-settings.php:279
 msgid "Mapbox"
@@ -316,33 +316,33 @@ msgstr ""
 
 #: includes/admin/class-settings.php:351
 msgid "Default maps location"
-msgstr ""
+msgstr "地図の初期位置"
 
 #: includes/admin/class-settings.php:359
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:46
 msgid "Latitude"
-msgstr ""
+msgstr "緯度"
 
 #: includes/admin/class-settings.php:360
 msgid "Enter your latitude"
-msgstr ""
+msgstr "緯度を入力"
 
 #: includes/admin/class-settings.php:366
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:55
 msgid "Longitude"
-msgstr ""
+msgstr "軽度"
 
 #: includes/admin/class-settings.php:367
 msgid "Enter your longitude"
-msgstr ""
+msgstr "軽度を入力"
 
 #: includes/admin/class-settings.php:373
 msgid "Distance Settings"
-msgstr ""
+msgstr "距離設定"
 
 #: includes/admin/class-settings.php:381
 msgid "Distance unit"
-msgstr ""
+msgstr "距離の単位"
 
 #: includes/admin/class-settings.php:385
 msgid "Kilometers"
