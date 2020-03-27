@@ -207,11 +207,11 @@ msgstr "通常【,】　または【.】"
 
 #: includes/admin/class-settings.php:239
 msgid "Thousands Separator"
-msgstr ""
+msgstr "千単位の区切り記号"
 
 #: includes/admin/class-settings.php:240
 msgid "If you need space, enter &nbsp;"
-msgstr ""
+msgstr "　"
 
 #: includes/admin/class-settings.php:245
 msgid "File Types"
