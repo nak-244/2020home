@@ -36,6 +36,7 @@ if ( ! empty( $instance['title'] ) ) {
 	<?php if ( ! empty( $instance['button_text'] ) ) : ?>
 		<div class="form-group">
 			<button class="button"><?php echo esc_attr( $instance['button_text'] ); ?> <i class="flaticon-right-arrow"></i></button>
+			<button class="button"><?php echo esc_attr( $instance['button_text'] ); ?> <i class="flaticon-right-arrow"></i></button>
 		</div><!-- /.form-group -->
 	<?php endif; ?>
 </form>
@@ -45,4 +46,3 @@ if ( !empty($args['after_widget']) ) {
 	echo wp_kses_post( $args['after_widget'] );
 }
 ?>
-
