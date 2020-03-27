@@ -3599,7 +3599,7 @@ msgstr ""
 
 #: includes/post-types/class-post-type-job_listing.php:59
 msgid "All Jobs"
-msgstr ""
+msgstr "求人一覧"
 
 #: includes/post-types/class-post-type-job_listing.php:60
 msgid "View Job"
