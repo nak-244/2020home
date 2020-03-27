@@ -1418,7 +1418,7 @@ msgstr ""
 #: templates/misc/candidates-shortlist.php:122
 #: templates/single-employer/detail.php:81
 msgid "Location"
-msgstr "周辺検索"
+msgstr "場所"
 
 #: includes/class-abstract-form.php:190
 #: includes/post-types/class-post-type-job_listing.php:397
