@@ -40,9 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<span class="to-text"><?php echo WP_Job_Board_Price::format_price($max_val); ?></span>
 			</span>
 		</div>
-		<!-- <div class="salary-range-slider" data-max="<?php echo esc_attr($max); ?>" data-min="<?php echo esc_attr($min); ?>"></div> -->
 		<div class="salary-range-slider" data-max="<?php echo esc_attr($max); ?>" data-min="<?php echo esc_attr($min); ?>"></div>
-	  	<input type="hidden" data-slider-step="100000" name="<?php echo esc_attr($name.'-from'); ?>" class="filter-from" value="<?php echo esc_attr($min_val); ?>">
-	  	<input type="hidden" data-slider-step="100000" name="<?php echo esc_attr($name.'-to'); ?>" class="filter-to" value="<?php echo esc_attr($max_val); ?>">
+	  	<input type="hidden" name="<?php echo esc_attr($name.'-from'); ?>" class="filter-from" value="<?php echo esc_attr($min_val); ?>">
+	  	<input type="hidden" name="<?php echo esc_attr($name.'-to'); ?>" class="filter-to" value="<?php echo esc_attr($max_val); ?>">
 	  </div>
 </div><!-- /.form-group -->
