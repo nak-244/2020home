@@ -391,9 +391,9 @@ class WP_Job_Board_Mixes {
 
 	public static function get_default_salary_types() {
 		return apply_filters( 'wp-job-board-get-default-salary-types', array(
-			'monthly' => __( 'Monthly', 'wp-job-board' ),
-			'weekly' => __( 'Weekly', 'wp-job-board' ),
-			'hourly' => __( 'Hourly', 'wp-job-board' ),
+			// 'monthly' => __( 'Monthly', 'wp-job-board' ),
+			// 'weekly' => __( 'Weekly', 'wp-job-board' ),
+			// 'hourly' => __( 'Hourly', 'wp-job-board' ),
 			'yearly' => __( 'Yearly', 'wp-job-board' ),
 		));
 	}
