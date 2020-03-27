@@ -151,7 +151,7 @@ msgstr "一般設定"
 
 #: includes/admin/class-settings.php:178
 msgid "Number jobs per page"
-msgstr ""
+msgstr "1ページあたりの求人表示数"
 
 #: includes/admin/class-settings.php:179
 msgid "Number of jobs to display per page."
