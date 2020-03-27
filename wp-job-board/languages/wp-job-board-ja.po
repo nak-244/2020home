@@ -3586,7 +3586,7 @@ msgstr ""
 #: includes/post-types/class-post-type-job_listing.php:55
 #: includes/post-types/class-post-type-job_listing.php:56
 msgid "Add New Job"
-msgstr ""
+msgstr "新規求人追加"
 
 #: includes/post-types/class-post-type-job_listing.php:57
 #: templates/submission/job-submit-preview.php:27
