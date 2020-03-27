@@ -106,11 +106,11 @@ msgstr ""
 
 #: includes/admin/class-settings.php:64
 msgid "Settings"
-msgstr ""
+msgstr "設定"
 
 #: includes/admin/class-settings.php:84
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #: includes/admin/class-settings.php:85 includes/admin/class-settings.php:397
 #: includes/admin/class-settings.php:401
