@@ -2869,7 +2869,7 @@ msgstr ""
 
 #: includes/post-types/class-post-type-candidate.php:60
 msgid "All Candidates"
-msgstr ""
+msgstr "求職者一覧"
 
 #: includes/post-types/class-post-type-candidate.php:62
 msgid "Search Candidate"
