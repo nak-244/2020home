@@ -191,19 +191,19 @@ msgstr "後 - 10$"
 
 #: includes/admin/class-settings.php:221
 msgid "Decimal places"
-msgstr ""
+msgstr "小数点"
 
 #: includes/admin/class-settings.php:222
 msgid "This sets the number of decimal points shown in displayed prices."
-msgstr ""
+msgstr "数字に表示される小数点の数を設定します。"
 
 #: includes/admin/class-settings.php:232
 msgid "Decimal Separator"
-msgstr ""
+msgstr "小数点区切り記号"
 
 #: includes/admin/class-settings.php:233
 msgid "The symbol (usually , or .) to separate decimal points"
-msgstr ""
+msgstr "通常【,】　または【.】"
 
 #: includes/admin/class-settings.php:239
 msgid "Thousands Separator"
