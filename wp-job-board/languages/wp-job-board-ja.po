@@ -183,7 +183,7 @@ msgstr "通貨記号の位置"
 
 #: includes/admin/class-settings.php:215
 msgid "Before - $10"
-msgstr ""
+msgstr "前 - $10"
 
 #: includes/admin/class-settings.php:216
 msgid "After - 10$"
