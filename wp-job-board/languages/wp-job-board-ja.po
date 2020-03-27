@@ -2587,7 +2587,7 @@ msgstr ""
 #: libraries/class-tgm-plugin-activation.php:2647
 #: templates/submission/my-jobs.php:94
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: includes/class-user.php:1326
 msgid "approved"
