@@ -179,7 +179,7 @@ msgstr "通貨コードを入力してください。デフォルトは米ドル
 
 #: includes/admin/class-settings.php:210
 msgid "Currency Position"
-msgstr ""
+msgstr "通貨記号の位置"
 
 #: includes/admin/class-settings.php:215
 msgid "Before - $10"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: includes/admin/class-settings.php:216
 msgid "After - 10$"
-msgstr ""
+msgstr "後 - 10$"
 
 #: includes/admin/class-settings.php:221
 msgid "Decimal places"
