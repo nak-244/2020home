@@ -102,7 +102,7 @@ msgstr ""
 
 #: includes/admin/class-permalink-settings.php:208
 msgid "candidates"
-msgstr ""
+msgstr "求職者"
 
 #: includes/admin/class-settings.php:64
 msgid "Settings"
@@ -2852,7 +2852,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:54
 #: includes/post-types/class-post-type-candidate.php:66
 msgid "Candidates"
-msgstr ""
+msgstr "求職者"
 
 #: includes/post-types/class-post-type-candidate.php:56
 #: includes/post-types/class-post-type-candidate.php:57
