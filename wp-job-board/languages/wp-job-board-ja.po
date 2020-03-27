@@ -155,7 +155,7 @@ msgstr "1ページあたりの求人表示数"
 
 #: includes/admin/class-settings.php:179
 msgid "Number of jobs to display per page."
-msgstr ""
+msgstr "ページごとに表示する求人の数。"
 
 #: includes/admin/class-settings.php:187
 msgid "Currency Settings"
