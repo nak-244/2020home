@@ -1390,7 +1390,7 @@ msgstr ""
 #: templates/single-candidate/detail.php:45
 #: templates/single-employer/detail.php:93
 msgid "Categories"
-msgstr ""
+msgstr "職種一覧"
 
 #: includes/class-abstract-form.php:176
 msgid "Select Categories"
