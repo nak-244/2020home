@@ -2857,7 +2857,7 @@ msgstr "求職者"
 #: includes/post-types/class-post-type-candidate.php:56
 #: includes/post-types/class-post-type-candidate.php:57
 msgid "Add New Candidate"
-msgstr ""
+msgstr "求職者新規登録"
 
 #: includes/post-types/class-post-type-candidate.php:58
 msgid "Edit Candidate"
