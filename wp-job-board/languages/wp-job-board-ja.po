@@ -3782,7 +3782,7 @@ msgstr ""
 #: includes/taxonomies/class-taxonomy-job-location.php:27
 #: includes/taxonomies/class-taxonomy-job-location.php:37
 msgid "Locations"
-msgstr ""
+msgstr "場所"
 
 #: includes/taxonomies/class-taxonomy-candidate-location.php:29
 #: includes/taxonomies/class-taxonomy-employer-location.php:29
