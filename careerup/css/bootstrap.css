@@ -18,6 +18,9 @@
 /* carousel-controls-v2 */
 /* carousel-controls-v3 */
 /****/
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&display=swap');
+
 .margin-top-1 {
   margin-top: 1px !important;
 }
@@ -3764,7 +3767,6 @@ html {
   font-size: 10px;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
