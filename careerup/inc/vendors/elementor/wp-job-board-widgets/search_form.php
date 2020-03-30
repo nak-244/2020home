@@ -13,7 +13,7 @@ class Careerup_Elementor_Job_Board_Search_Form extends Elementor\Widget_Base {
 	public function get_title() {
         return esc_html__( 'Apus Search Form', 'careerup' );
     }
-    
+
 	public function get_categories() {
         return [ 'careerup-elements' ];
     }
@@ -217,7 +217,7 @@ class Careerup_Elementor_Job_Board_Search_Form extends Elementor\Widget_Base {
                 'label' => esc_html__( 'Search Keywords', 'careerup' ),
                 'show_title' => false,
                 'field_call_back' => array( 'WP_Job_Board_Mixes', 'filter_field_input'),
-                'placeholder' => esc_html__( 'Job Title or Keywords', 'careerup' ),
+                'placeholder' => esc_html__( 'キーワード・勤務地', 'careerup' ),
                 'icon' => 'flaticon-search'
             ),
             'category' => array(

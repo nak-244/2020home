@@ -2980,7 +2980,7 @@ msgstr ""
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:220
 #: widgets/job-simple-search.php:16
 msgid "Job Title or Keywords"
-msgstr ""
+msgstr "求人タイトル・キーワード"
 
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:224
 #: template-jobs/misc/register.php:58 template-jobs/misc/register.php:84
