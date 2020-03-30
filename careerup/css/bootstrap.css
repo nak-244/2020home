@@ -2624,7 +2624,7 @@
 }
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
-  font-family: sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -3764,8 +3764,10 @@ html {
   font-size: 10px;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
+
 body {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.8;
@@ -3867,7 +3869,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Nunito", Arial, sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   font-weight: 600;
   line-height: 1.5;
   color: #262626;
@@ -5969,7 +5971,7 @@ select[multiple].input-lg,
   display: inline-block;
   margin-bottom: 0;
   font-weight: 400;
-  font-family: "Nunito";
+  font-family: 'Noto Sans JP', sans-serif;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
