@@ -13,7 +13,7 @@ class Careerup_Elementor_Job_Board_Category_Banner extends Elementor\Widget_Base
 	public function get_title() {
         return esc_html__( 'Apus Category Banner', 'careerup' );
     }
-    
+
 	public function get_categories() {
         return [ 'careerup-elements' ];
     }
@@ -112,7 +112,7 @@ class Careerup_Elementor_Job_Board_Category_Banner extends Elementor\Widget_Base
         }
         ?>
         <div class="widget-job-category-banner <?php echo esc_attr($el_class); ?>">
-            
+
             <?php
             $term = get_term_by( 'slug', $slug, 'job_listing_category' );
             if ($term) {
@@ -147,7 +147,7 @@ class Careerup_Elementor_Job_Board_Category_Banner extends Elementor\Widget_Base
                                         $number_jobs = $count = $query->found_posts;
                                         $number_jobs = $number_jobs ? WP_Job_Board_Mixes::format_number($number_jobs) : 0;
                                 ?>
-                                    <div class="number"><?php echo sprintf(_n('<strong>%d</strong> Open Position', '<strong>%d</strong> Open Positions', $count, 'careerup'), $number_jobs); ?></div>
+                                    <div class="number"><?php echo sprintf(_n('<strong>%d</strong> 件', '<strong>%d</strong> 件', $count, 'careerup'), $number_jobs); ?></div>
                                 <?php } ?>
                             </div>
                         </div>
