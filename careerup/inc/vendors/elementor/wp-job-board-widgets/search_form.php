@@ -291,7 +291,7 @@ class Careerup_Elementor_Job_Board_Search_Form extends Elementor\Widget_Base {
                         }
                     ?>
                     <div class="form-group form-group-search">
-                        <button class="btn-submit btn btn-block btn-theme" type="submit"><?php echo esc_html__('Search','careerup') ?></button>
+                        <button class="btn-submit btn btn-block btn-theme" type="submit"><?php echo esc_html__('検索','careerup') ?></button>
                     </div>
                 </div>
                 <?php
