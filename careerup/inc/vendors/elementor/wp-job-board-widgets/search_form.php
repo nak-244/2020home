@@ -225,7 +225,7 @@ class Careerup_Elementor_Job_Board_Search_Form extends Elementor\Widget_Base {
                 'show_title' => false,
                 'field_call_back' => array( 'WP_Job_Board_Mixes', 'filter_field_taxonomy_select'),
                 'taxonomy' => 'job_listing_category',
-                'placeholder' => esc_html__( 'All Categories', 'careerup' ),
+                'placeholder' => esc_html__( '職種選択', 'careerup' ),
             ),
             'center-location' => array(
                 'label' => esc_html__( 'Location', 'careerup' ),
