@@ -2176,7 +2176,7 @@ msgstr "雇用形態"
 #: includes/class-job-filter.php:56
 #: includes/taxonomies/class-taxonomy-job-type.php:38
 msgid "All Types"
-msgstr ""
+msgstr "一覧"
 
 #: includes/class-job-filter.php:73
 msgid "Job Tag"
@@ -2188,7 +2188,7 @@ msgstr ""
 #: includes/taxonomies/class-taxonomy-job-type.php:36
 #: libraries/class-tgm-plugin-activation.php:2642
 msgid "Type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/class-job-filter.php:547
 #: includes/taxonomies/class-taxonomy-candidate-tag.php:29
