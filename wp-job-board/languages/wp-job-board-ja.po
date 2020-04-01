@@ -3705,7 +3705,7 @@ msgstr "急募求人"
 #: includes/post-types/class-post-type-job_listing.php:448
 msgid ""
 "Urgent jobs will be sticky during searches, and can be styled differently."
-msgstr ""
+msgstr "急募求人は検索結果の上部に固定・急募表示されます。"
 
 #: includes/post-types/class-post-type-job_listing.php:454
 msgid "Filled listings will no longer accept applications."
