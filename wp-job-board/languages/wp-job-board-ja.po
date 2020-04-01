@@ -1428,7 +1428,7 @@ msgstr "応募締切日"
 #: includes/class-abstract-form.php:204
 #: includes/post-types/class-post-type-job_listing.php:403
 msgid "Job Apply Type"
-msgstr ""
+msgstr "応募方法"
 
 #: includes/class-abstract-form.php:208
 #: includes/post-types/class-post-type-job_listing.php:407
@@ -1448,7 +1448,7 @@ msgstr ""
 #: includes/class-abstract-form.php:215
 #: includes/post-types/class-post-type-job_listing.php:413
 msgid "External URL for Apply Job"
-msgstr ""
+msgstr "応募外部URL"
 
 #: includes/class-abstract-form.php:221
 msgid "e.g. apustheme.com"
