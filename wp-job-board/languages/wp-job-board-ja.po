@@ -1519,7 +1519,7 @@ msgstr ""
 #: includes/post-types/class-post-type-job-custom-field.php:133
 #: includes/post-types/class-post-type-job_listing.php:383
 msgid "General Options"
-msgstr ""
+msgstr "一般的なオプション"
 
 #: includes/class-abstract-form.php:314 includes/class-shortcodes.php:231
 #: includes/class-shortcodes.php:237 includes/class-shortcodes.php:266
