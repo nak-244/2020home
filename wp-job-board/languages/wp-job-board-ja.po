@@ -2896,7 +2896,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:289
 #: includes/post-types/class-post-type-job_listing.php:391
 msgid "Expiry Date"
-msgstr ""
+msgstr "期限日"
 
 #: includes/post-types/class-post-type-candidate.php:295
 #: includes/post-types/class-post-type-candidate.php:647
@@ -3174,7 +3174,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:1054
 #: includes/post-types/class-post-type-job_listing.php:522
 msgid "Expires"
-msgstr ""
+msgstr "期限切れ"
 
 #: includes/post-types/class-post-type-candidate.php:1085
 #: includes/post-types/class-post-type-job_listing.php:580
