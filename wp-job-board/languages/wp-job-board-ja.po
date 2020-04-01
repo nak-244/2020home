@@ -4357,7 +4357,7 @@ msgstr ""
 
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:30
 msgid "Enter search e.g. Lincoln Park"
-msgstr ""
+msgstr "周辺の大きな施設名を入力してください。"
 
 #: libraries/cmb2/cmb2_field_profile_url/cmb2-field-type-profile_url.php:50
 msgid "Save"
