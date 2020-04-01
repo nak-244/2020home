@@ -1457,7 +1457,7 @@ msgstr ""
 #: includes/class-abstract-form.php:225
 #: includes/post-types/class-post-type-job_listing.php:418
 msgid "Job Apply Email"
-msgstr ""
+msgstr "応募受付メールアドレス"
 
 #: includes/class-abstract-form.php:235
 msgid "Min. Salary (%s)"
