@@ -3665,7 +3665,7 @@ msgstr ""
 #: includes/post-types/class-post-type-job_listing.php:451
 #: includes/post-types/class-post-type-job_listing.php:526
 msgid "Filled"
-msgstr ""
+msgstr "充足"
 
 #: includes/post-types/class-post-type-job_listing.php:328
 msgid "Please login to mark not filled this job"
@@ -3700,7 +3700,7 @@ msgstr "注目求人は検索結果の上部に固定されます。"
 #: includes/post-types/class-post-type-job_listing.php:445
 #: includes/post-types/class-post-type-job_listing.php:524
 msgid "Urgent Job"
-msgstr ""
+msgstr "急募求人"
 
 #: includes/post-types/class-post-type-job_listing.php:448
 msgid ""
@@ -3709,7 +3709,7 @@ msgstr ""
 
 #: includes/post-types/class-post-type-job_listing.php:454
 msgid "Filled listings will no longer accept applications."
-msgstr ""
+msgstr "案件が充足の場合はチェックしてください。"
 
 #: includes/post-types/class-post-type-job_listing.php:514
 msgid "Logo"
