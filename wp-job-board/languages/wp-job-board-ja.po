@@ -3169,7 +3169,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:1053
 #: includes/post-types/class-post-type-job_listing.php:521
 msgid "Posted"
-msgstr ""
+msgstr "登録日"
 
 #: includes/post-types/class-post-type-candidate.php:1054
 #: includes/post-types/class-post-type-job_listing.php:522
