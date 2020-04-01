@@ -1731,7 +1731,7 @@ msgstr ""
 #: includes/taxonomies/class-taxonomy-employer-location.php:30
 #: includes/taxonomies/class-taxonomy-job-location.php:30
 msgid "All Locations"
-msgstr ""
+msgstr "一覧"
 
 #: includes/class-candidate-filter.php:55 includes/class-job-filter.php:67
 msgid "Date Posted"
