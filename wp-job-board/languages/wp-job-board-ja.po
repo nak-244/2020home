@@ -1756,7 +1756,7 @@ msgstr "給料"
 #: includes/post-types/class-post-type-job_listing.php:525
 #: templates/submission/my-jobs.php:119
 msgid "Featured"
-msgstr ""
+msgstr "注目"
 
 #: includes/class-candidate-filter.php:72
 #: includes/class-candidate-filter.php:376
@@ -3695,7 +3695,7 @@ msgstr "最高給与"
 #: includes/post-types/class-post-type-job_listing.php:442
 msgid ""
 "Featured jobs will be sticky during searches, and can be styled differently."
-msgstr ""
+msgstr "注目求人は検索結果の上部に固定されます。"
 
 #: includes/post-types/class-post-type-job_listing.php:445
 #: includes/post-types/class-post-type-job_listing.php:524
