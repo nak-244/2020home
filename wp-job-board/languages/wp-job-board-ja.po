@@ -1461,7 +1461,7 @@ msgstr "応募受付メールアドレス"
 
 #: includes/class-abstract-form.php:235
 msgid "Min. Salary (%s)"
-msgstr ""
+msgstr "最低給与 (%s)"
 
 #: includes/class-abstract-form.php:241
 msgid "e.g. 1000"
@@ -1469,7 +1469,7 @@ msgstr ""
 
 #: includes/class-abstract-form.php:245
 msgid "Max. Salary (%s)"
-msgstr ""
+msgstr "最高給与 (%s)"
 
 #: includes/class-abstract-form.php:251
 msgid "e.g. 2000"
@@ -3686,11 +3686,11 @@ msgstr ""
 
 #: includes/post-types/class-post-type-job_listing.php:423
 msgid "Min. Salary"
-msgstr ""
+msgstr "最低給与"
 
 #: includes/post-types/class-post-type-job_listing.php:428
 msgid "Max. Salary"
-msgstr ""
+msgstr "最高給与"
 
 #: includes/post-types/class-post-type-job_listing.php:442
 msgid ""
