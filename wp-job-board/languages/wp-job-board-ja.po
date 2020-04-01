@@ -1845,7 +1845,7 @@ msgstr ""
 
 #: includes/class-candidate.php:232
 msgid "per year"
-msgstr "年収"
+msgstr "/ 年収"
 
 #: includes/class-candidate.php:235
 msgid "per month"
