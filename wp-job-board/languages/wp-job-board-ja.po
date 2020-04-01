@@ -1423,7 +1423,7 @@ msgstr "場所"
 #: includes/class-abstract-form.php:190
 #: includes/post-types/class-post-type-job_listing.php:397
 msgid "Application Deadline Date"
-msgstr ""
+msgstr "応募締切日"
 
 #: includes/class-abstract-form.php:204
 #: includes/post-types/class-post-type-job_listing.php:403
@@ -1735,7 +1735,7 @@ msgstr ""
 
 #: includes/class-candidate-filter.php:55 includes/class-job-filter.php:67
 msgid "Date Posted"
-msgstr "更新日"
+msgstr "登録日"
 
 #: includes/class-candidate-filter.php:61
 #: includes/class-candidate-filter.php:407 includes/class-job-filter.php:61
@@ -2896,7 +2896,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:289
 #: includes/post-types/class-post-type-job_listing.php:391
 msgid "Expiry Date"
-msgstr "有効期限"
+msgstr ""
 
 #: includes/post-types/class-post-type-candidate.php:295
 #: includes/post-types/class-post-type-candidate.php:647
@@ -4417,7 +4417,7 @@ msgstr "仕事詳細"
 #: templates/single-employer/header.php:30
 #: templates/single-job_listing/header.php:27
 msgid " posted %s ago"
-msgstr " 更新日 %s 前"
+msgstr " 登録日 %s 前"
 
 #: templates/loop/candidate/archive-inner.php:37
 #: templates/loop/candidate/pagination.php:11

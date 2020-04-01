@@ -4297,7 +4297,7 @@ msgstr "勤務地"
 #: template-jobs/content-single-job_listing-v3.php:37
 #: widgets/job-statistics.php:25
 msgid "<span class=\"number\">%s</span> ago"
-msgstr "更新日 <span class=\"number\">%s</span> 前"
+msgstr "登録日 <span class=\"number\">%s</span> 前"
 
 #: template-jobs/content-single-job_listing-v3.php:46
 #: widgets/job-statistics.php:36
@@ -4346,7 +4346,7 @@ msgstr ""
 #: template-jobs/misc/jobs-applied.php:88
 #: template-jobs/misc/jobs-shortlist.php:125
 msgid " posted %s ago"
-msgstr " 更新日 %s 前"
+msgstr " 登録日 %s 前"
 
 #: template-jobs/jobs-styles/inner-grid.php:62
 #: template-jobs/jobs-styles/inner-list-v1.php:61
@@ -4866,7 +4866,7 @@ msgstr ""
 #: template-jobs/single-job_listing/header-v5.php:45
 #: template-jobs/single-job_listing/header.php:50
 msgid "Posted %s ago"
-msgstr "更新日 %s 前"
+msgstr "登録日 %s 前"
 
 #: template-jobs/single-job_listing/header-v2.php:32
 #: template-jobs/single-job_listing/header-v3.php:51
