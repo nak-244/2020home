@@ -16,8 +16,8 @@ global $post;
 		<div class="col-xs-12 col-md-<?php echo esc_attr( is_active_sidebar( 'job-single-sidebar' ) ? 8 : 12); ?>">
 
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
-			
-			<!-- job description -->
+
+			<!-- job descriptionnn -->
 			<div class="job-detail-description">
 				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
 				<div class="inner">
@@ -39,7 +39,7 @@ global $post;
 
 			<?php do_action( 'wp_job_board_after_job_content', $post->ID ); ?>
 		</div>
-		
+
 		<?php if ( is_active_sidebar( 'job-single-sidebar' ) ): ?>
 			<div class="col-xs-12 col-md-4">
 		   		<?php dynamic_sidebar( 'job-single-sidebar' ); ?>
