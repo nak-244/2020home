@@ -16,7 +16,7 @@ global $post;
 		<div class="col-sm-9">
 
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
-			<!-- job description -->
+			<!-- job descriptionnn -->
 			<div class="job-detail-description">
 				<h3><?php esc_html_e('Job Description', 'wp-job-board'); ?></h3>
 				<div class="inner">
