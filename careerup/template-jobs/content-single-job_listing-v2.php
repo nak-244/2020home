@@ -21,6 +21,8 @@ global $post;
 
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
 
+			<!-- カスタムフィールド出力 -->
+
 			<!-- job description -->
 			<div class="job-detail-description">
 				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
