@@ -2269,7 +2269,7 @@ msgstr ""
 
 #: includes/class-job_listing.php:517
 msgid "Application deadline closed."
-msgstr ""
+msgstr "応募は締め切りました。"
 
 #: includes/class-mixes.php:326 includes/class-mixes.php:380
 #: templates/widgets/filter-fields/check_list.php:27
