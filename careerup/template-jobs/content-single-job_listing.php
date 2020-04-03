@@ -22,6 +22,7 @@ global $post;
 				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
 				<div class="inner">
 					<?php the_content(); ?>
+					<?php the_content(); ?>
 				</div>
 			</div>
 
