@@ -20,7 +20,7 @@ class Careerup_Widget_Job_Maps extends Apus_Widget {
 
     public function form( $instance ) {
         $defaults = array(
-            'title' => 'Job Locationn',
+            'title' => 'Job Location',
         );
         $instance = wp_parse_args((array) $instance, $defaults);
         // Widget admin form
