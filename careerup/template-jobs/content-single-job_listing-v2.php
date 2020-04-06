@@ -23,32 +23,18 @@ global $post;
 
 			<!-- カスタムフィールド出力 -->
 			<table class="tbl-r02">
-			            <tbody>
-			              <tr>
-			                <th>会社名</th>
-			                <td>株式会社オープンループパートナーズ　Open Loop Partners, Inc.</td>
-			              </tr>
-			              <tr>
-			                <th>設立</th>
-			                <td>2005年5月</td>
-			              </tr>
-			              <tr>
-			                <th>事業内容</th>
-			                <td>
-			                  <ul class="">
-			                    <li>ヒューマンリソーシズ事業</li>
-			                    <li>BPO事業</li>
-			                    <li>ITセキュリティ事業</li>
-			                  </ul>
-			                </td>
-			              </tr>
-			              <tr>
-			                <th>本社住所</th>
-			                <td>〒160-0022 東京都新宿区新宿四丁目3番17号 FORECAST新宿SOUTH7階<br>
-			                代表TEL：03-5368-3088　FAX：03-5368-3188</td>
-			              </tr>
-			            </tbody>
-			          </table>
+				<tbody>
+					<tr>
+						<th>企業について<br>（社風など）</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>勤務時間</th>
+						<td></td>
+					</tr>
+
+				</tbody>
+			</table>
 
 			<!-- job description -->
 			<div class="job-detail-description">
