@@ -37,6 +37,14 @@ global $post;
 						<td></td>
 					</tr>
 					<tr>
+						<th>日本語能力</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>英語能力</th>
+						<td></td>
+					</tr>
+					<tr>
 						<th>給与</th>
 						<td></td>
 					</tr>
