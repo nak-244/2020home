@@ -32,6 +32,22 @@ global $post;
 						<th>勤務時間</th>
 						<td></td>
 					</tr>
+					<tr>
+						<th>応募要件</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>給与</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>休日</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>契約期間</th>
+						<td></td>
+					</tr>
 
 				</tbody>
 			</table>
