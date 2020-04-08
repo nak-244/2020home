@@ -21,6 +21,15 @@ global $post;
 
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
 
+
+			<!-- j仕事詳細 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
+				<div class="inner">
+					<?php the_content(); ?>
+				</div>
+			</div>
+
 			<!-- カスタムフィールド出力 -->
 
 			<!-- 企業について（社風など） -->
@@ -68,14 +77,6 @@ global $post;
 				<h3 class="title-detail-job">契約期間</h3>
 				<div class="inner">
 					<?php the_field('cf_006'); ?>
-				</div>
-			</div>
-
-			<!-- job description -->
-			<div class="job-detail-description">
-				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
-				<div class="inner">
-					<?php the_content(); ?>
 				</div>
 			</div>
 
