@@ -48,7 +48,6 @@ global $post;
 						<th>契約期間</th>
 						<td><?php the_field('cf_006'); ?></td>
 					</tr>
-
 				</tbody>
 			</table>
 
