@@ -51,6 +51,30 @@ global $post;
 				</tbody>
 			</table>
 
+			<!-- 企業について（社風など） -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">企業について（社風など）</h3>
+				<div class="inner">
+					<?php the_field('cf_001'); ?>
+				</div>
+			</div>
+
+			<!-- 勤務時間 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">勤務時間</h3>
+				<div class="inner">
+					<?php the_field('cf_002'); ?>
+				</div>
+			</div>
+
+			<!-- 応募要件 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">応募要件</h3>
+				<div class="inner">
+					<?php the_field('cf_003'); ?>
+				</div>
+			</div>
+
 			<!-- job description -->
 			<div class="job-detail-description">
 				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
