@@ -22,34 +22,6 @@ global $post;
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
 
 			<!-- カスタムフィールド出力 -->
-			<table class="tbl-r02">
-				<tbody>
-					<tr>
-						<th>企業について<br>（社風など）</th>
-						<td><?php the_field('cf_001'); ?></td>
-					</tr>
-					<tr>
-						<th>勤務時間</th>
-						<td><?php the_field('cf_002'); ?></td>
-					</tr>
-					<tr>
-						<th>応募要件</th>
-						<td><?php the_field('cf_003'); ?></td>
-					</tr>
-					<tr>
-						<th>給与</th>
-						<td><?php the_field('cf_004'); ?></td>
-					</tr>
-					<tr>
-						<th>休日</th>
-						<td><?php the_field('cf_005'); ?></td>
-					</tr>
-					<tr>
-						<th>契約期間</th>
-						<td><?php the_field('cf_006'); ?></td>
-					</tr>
-				</tbody>
-			</table>
 
 			<!-- 企業について（社風など） -->
 			<div class="job-detail-description">
@@ -72,6 +44,30 @@ global $post;
 				<h3 class="title-detail-job">応募要件</h3>
 				<div class="inner">
 					<?php the_field('cf_003'); ?>
+				</div>
+			</div>
+
+			<!-- 給与 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">給与</h3>
+				<div class="inner">
+					<?php the_field('cf_004'); ?>
+				</div>
+			</div>
+
+			<!-- 休日 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">休日</h3>
+				<div class="inner">
+					<?php the_field('cf_005'); ?>
+				</div>
+			</div>
+
+			<!-- 契約期間 -->
+			<div class="job-detail-description">
+				<h3 class="title-detail-job">契約期間</h3>
+				<div class="inner">
+					<?php the_field('cf_006'); ?>
 				</div>
 			</div>
 
