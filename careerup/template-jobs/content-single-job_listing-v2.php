@@ -26,7 +26,7 @@ global $post;
 				<tbody>
 					<tr>
 						<th>企業について<br>（社風など）</th>
-						<td></td>
+						<td><?php the_field('cf_001'); ?></td>
 					</tr>
 					<tr>
 						<th>勤務時間</th>
