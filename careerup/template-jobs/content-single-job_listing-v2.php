@@ -22,7 +22,7 @@ global $post;
 			<?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
 
 
-			<!-- j仕事詳細 -->
+			<!-- 仕事詳細 -->
 			<div class="job-detail-description">
 				<h3 class="title-detail-job"><?php esc_html_e('Job Description', 'careerup'); ?></h3>
 				<div class="inner">
