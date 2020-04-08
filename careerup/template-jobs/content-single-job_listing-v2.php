@@ -30,31 +30,23 @@ global $post;
 					</tr>
 					<tr>
 						<th>勤務時間</th>
-						<td></td>
+						<td><?php the_field('cf_002'); ?></td>
 					</tr>
 					<tr>
 						<th>応募要件</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>日本語能力</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>英語能力</th>
-						<td></td>
+						<td><?php the_field('cf_003'); ?></td>
 					</tr>
 					<tr>
 						<th>給与</th>
-						<td></td>
+						<td><?php the_field('cf_004'); ?></td>
 					</tr>
 					<tr>
 						<th>休日</th>
-						<td></td>
+						<td><?php the_field('cf_005'); ?></td>
 					</tr>
 					<tr>
 						<th>契約期間</th>
-						<td></td>
+						<td><?php the_field('cf_006'); ?></td>
 					</tr>
 
 				</tbody>
