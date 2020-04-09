@@ -1864,7 +1864,7 @@ msgstr "時給"
 #: includes/class-job_listing.php:530 templates/misc/candidate-dashboard.php:36
 #: templates/misc/employer-dashboard.php:28
 msgid "Shortlisted"
-msgstr ""
+msgstr "お気に入り"
 
 #: includes/class-candidate.php:319 includes/class-candidate.php:338
 #: includes/class-candidate.php:763 includes/class-employer.php:133
@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: includes/class-candidate.php:700 includes/class-employer.php:87
 msgid "Add shortlist successfully."
-msgstr ""
+msgstr "お気に入りに追加しました。"
 
 #: includes/class-candidate.php:704 includes/class-employer.php:91
 msgid "Add shortlist error."
@@ -1950,7 +1950,7 @@ msgstr ""
 
 #: includes/class-candidate.php:763
 msgid "Remove job from shortlist successfully."
-msgstr ""
+msgstr "お気に入りから外しました。"
 
 #: includes/class-candidate.php:767
 msgid "Remove job from shortlist error."
