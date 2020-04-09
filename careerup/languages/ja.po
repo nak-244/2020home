@@ -329,7 +329,7 @@ msgstr ""
 #: template-jobs/misc/my-jobs-alerts.php:28
 #: template-jobs/submission/my-jobs.php:32
 msgid "Default"
-msgstr ""
+msgstr "標準"
 
 #: inc/customizer.php:129 inc/vendors/elementor/widgets/brands.php:94
 msgid "Dark"
@@ -4446,7 +4446,7 @@ msgstr ""
 #: template-jobs/misc/my-following-employers.php:14
 #: template-jobs/misc/my-jobs-alerts.php:15
 msgid "Search ..."
-msgstr ""
+msgstr "検索 ..."
 
 #: template-jobs/misc/candidates-shortlist.php:29
 #: template-jobs/misc/job-applicants.php:39
@@ -4456,7 +4456,7 @@ msgstr ""
 #: template-jobs/misc/my-jobs-alerts.php:29
 #: template-jobs/submission/my-jobs.php:33
 msgid "Newest"
-msgstr ""
+msgstr "新しい順"
 
 #: template-jobs/misc/candidates-shortlist.php:30
 #: template-jobs/misc/job-applicants.php:40
@@ -4466,7 +4466,7 @@ msgstr ""
 #: template-jobs/misc/my-jobs-alerts.php:30
 #: template-jobs/submission/my-jobs.php:34
 msgid "Oldest"
-msgstr ""
+msgstr "古い順"
 
 #: template-jobs/misc/candidates-shortlist.php:38
 #: template-jobs/misc/job-applicants.php:48
@@ -4476,7 +4476,7 @@ msgstr ""
 #: template-jobs/misc/my-jobs-alerts.php:38
 #: template-jobs/submission/my-jobs.php:42
 msgid "Sort by: "
-msgstr ""
+msgstr "並び替え: "
 
 #: template-jobs/misc/candidates-shortlist.php:165
 #: template-jobs/misc/jobs-applied.php:120
