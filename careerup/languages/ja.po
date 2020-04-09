@@ -3067,7 +3067,7 @@ msgstr ""
 
 #: inc/vendors/elementor/wp-job-board-widgets/user_info.php:254
 msgid "Login/Register"
-msgstr ""
+msgstr "ログイン/登録"
 
 #: inc/vendors/elementor/wp-private-message-widgets/header-notification.php:16
 msgid "Apus Message Notification"
