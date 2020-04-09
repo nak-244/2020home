@@ -4410,7 +4410,7 @@ msgstr ""
 #: template-jobs/misc/candidate-dashboard.php:45
 #: template-jobs/misc/jobs-applied.php:9
 msgid "Applied Jobs"
-msgstr "Applied JobsApplied Jobs"
+msgstr ""
 
 #: template-jobs/misc/candidate-dashboard.php:67
 #: template-jobs/misc/employer-dashboard.php:53
