@@ -4634,11 +4634,11 @@ msgstr ""
 
 #: template-jobs/misc/my-following-employers.php:9
 msgid "Following Employers"
-msgstr ""
+msgstr "フォロー企業"
 
 #: template-jobs/misc/my-following-employers.php:70
 msgid "No following employer found."
-msgstr ""
+msgstr "フォロー企業はありません。"
 
 #: template-jobs/misc/my-jobs-alerts.php:9
 msgid "Job Alerts"
