@@ -4594,7 +4594,7 @@ msgstr "ユーザー名 or メールアドレス"
 
 #: template-jobs/misc/login.php:39
 msgid "Keep me signed in"
-msgstr ""
+msgstr "ログイン状態を保持する"
 
 #: template-jobs/misc/login.php:43
 msgid "Forgot Password"
