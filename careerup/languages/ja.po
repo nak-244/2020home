@@ -5066,7 +5066,7 @@ msgstr ""
 
 #: widgets/user-short-profile.php:87
 msgid "Skills Percentage:"
-msgstr ""
+msgstr "スキルシート完成度:"
 
 #: widgets/user-short-profile.php:95
 msgid ""
@@ -5078,7 +5078,7 @@ msgstr ""
 msgid ""
 "Put value for resume, profile fields to increase your skill up to <strong "
 "class=\"text-info\">\"%s\"</strong>"
-msgstr ""
+msgstr "プロフィールページを完成させましょう。"
 
 #: woocommerce/cart/cart.php:30
 msgid "Product Name"
