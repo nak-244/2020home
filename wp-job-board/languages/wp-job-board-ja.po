@@ -4470,7 +4470,7 @@ msgstr "並び替え:"
 #: templates/loop/job/results-count.php:11
 msgid "Showing the single result"
 msgid_plural "Showing all %d results"
-msgstr[0] ""
+msgstr[0] "検索結果を表示"
 
 #. translators: 1: first result 2: last result 3: total results
 #: templates/loop/candidate/results-count.php:16
