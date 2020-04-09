@@ -4525,7 +4525,7 @@ msgstr ""
 #: template-jobs/misc/login.php:34 woocommerce/myaccount/form-login.php:41
 #: woocommerce/myaccount/form-login.php:87
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: template-jobs/misc/employer-dashboard.php:31
 msgid "Posted Jobs"
