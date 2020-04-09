@@ -4585,7 +4585,7 @@ msgstr "簡単ログイン"
 
 #: template-jobs/misc/login.php:11
 msgid "Login Your Account"
-msgstr ""
+msgstr "アカウントにログイン"
 
 #: template-jobs/misc/login.php:31
 #: woocommerce/myaccount/form-lost-password.php:28
