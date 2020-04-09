@@ -5078,7 +5078,9 @@ msgstr ""
 msgid ""
 "Put value for resume, profile fields to increase your skill up to <strong "
 "class=\"text-info\">\"%s\"</strong>"
-msgstr "プロフィールページを完成させましょう。"
+msgstr ""
+"プロフィールを入力してください。完成まであと <strong class=\"text-info\">\"%s"
+"\"</strong>"
 
 #: woocommerce/cart/cart.php:30
 msgid "Product Name"
