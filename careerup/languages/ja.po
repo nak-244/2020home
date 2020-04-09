@@ -4590,7 +4590,7 @@ msgstr "アカウントにログイン"
 #: template-jobs/misc/login.php:31
 #: woocommerce/myaccount/form-lost-password.php:28
 msgid "Username or email"
-msgstr ""
+msgstr "ユーザー名 or メールアドレス"
 
 #: template-jobs/misc/login.php:39
 msgid "Keep me signed in"
