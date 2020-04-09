@@ -49,13 +49,13 @@ $salary = WP_Job_Board_Job_Listing::get_salary_html($post->ID);
         </div>
         <div class="flex-middle-sm">
 
-            <!-- <div class="wrapper-shortlist">
+            <div class="wrapper-shortlist">
                 <?php WP_Job_Board_Job_Listing::display_shortlist_btn($post->ID); ?>
-            </div> -->
+            </div>
 
             <!-- share job -->
 
-            <!-- <?php
+            <?php
             if ( careerup_get_config('show_job_social_share', false) ) { ?>
                 <div class="sharing-popup">
                     <a href="#" class="share-popup action-button btn btn-block" title="<?php esc_attr_e('Social Share', 'careerup'); ?>">
@@ -65,7 +65,7 @@ $salary = WP_Job_Board_Job_Listing::get_salary_html($post->ID);
                         <?php get_template_part( 'template-parts/sharebox' ); ?>
                     </div>
                 </div>
-            <?php } ?> -->
+            <?php } ?>
 
         </div>
     </div>
