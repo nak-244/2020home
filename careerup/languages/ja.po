@@ -4581,7 +4581,7 @@ msgstr ""
 
 #: template-jobs/misc/login.php:10
 msgid "Quick Login"
-msgstr ""
+msgstr "簡単ログイン"
 
 #: template-jobs/misc/login.php:11
 msgid "Login Your Account"
