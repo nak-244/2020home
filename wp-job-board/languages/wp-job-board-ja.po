@@ -2901,7 +2901,7 @@ msgstr "期限日"
 #: includes/post-types/class-post-type-candidate.php:295
 #: includes/post-types/class-post-type-candidate.php:647
 msgid "Show my profile"
-msgstr ""
+msgstr "プロフィールを公開する"
 
 #: includes/post-types/class-post-type-candidate.php:299
 #: includes/post-types/class-post-type-candidate.php:651
