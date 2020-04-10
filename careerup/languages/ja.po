@@ -4739,7 +4739,7 @@ msgstr ""
 
 #: template-jobs/misc/register.php:115
 msgid "Register now"
-msgstr ""
+msgstr "今すぐ登録する"
 
 #: template-jobs/single-candidate/portfolios.php:13
 msgid "Portfolio"
@@ -5330,7 +5330,7 @@ msgstr ""
 #: woocommerce/myaccount/form-login.php:67
 #: woocommerce/myaccount/form-login.php:97
 msgid "Register"
-msgstr ""
+msgstr "登録"
 
 #: woocommerce/myaccount/form-login.php:75
 msgid "Username"
