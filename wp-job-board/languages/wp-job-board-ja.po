@@ -1376,7 +1376,7 @@ msgstr ""
 #: includes/class-abstract-form.php:161
 #: includes/post-types/class-post-type-candidate.php:663
 msgid "Featured Image"
-msgstr ""
+msgstr "写真"
 
 #: includes/class-abstract-form.php:170
 #: includes/post-types/class-post-type-candidate.php:737
