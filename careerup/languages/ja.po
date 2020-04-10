@@ -4410,7 +4410,7 @@ msgstr "利用状況"
 #: template-jobs/misc/candidate-dashboard.php:45
 #: template-jobs/misc/jobs-applied.php:9
 msgid "Applied Jobs"
-msgstr "応募数"
+msgstr "応募"
 
 #: template-jobs/misc/candidate-dashboard.php:67
 #: template-jobs/misc/employer-dashboard.php:53
@@ -4569,7 +4569,7 @@ msgstr ""
 
 #: template-jobs/misc/jobs-applied.php:127
 msgid "No apply found."
-msgstr ""
+msgstr "応募はありません。"
 
 #: template-jobs/misc/jobs-shortlist.php:9
 msgid "Jobs Shortlist"
