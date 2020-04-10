@@ -2906,12 +2906,12 @@ msgstr "プロフィールを公開する"
 #: includes/post-types/class-post-type-candidate.php:299
 #: includes/post-types/class-post-type-candidate.php:651
 msgid "Show"
-msgstr ""
+msgstr "公開"
 
 #: includes/post-types/class-post-type-candidate.php:300
 #: includes/post-types/class-post-type-candidate.php:652
 msgid "Hide"
-msgstr ""
+msgstr "非公開"
 
 #: includes/post-types/class-post-type-candidate.php:304
 #: includes/post-types/class-post-type-candidate.php:699
