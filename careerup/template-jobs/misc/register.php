@@ -10,7 +10,8 @@ wp_enqueue_style('select2');
 <div class="box-employer">
 	<div class="top-info-user text-center">
 		<h3 class="title"><?php echo esc_html__('Create New Account','careerup') ?></h3>
-		<div class="des"><?php echo esc_html__('Choose your Account Type','careerup') ?></div>
+		<div class="des">&nbsp;</div>
+		<!-- <div class="des"><?php echo esc_html__('Choose your Account Type','careerup') ?></div> -->
 	</div>
   	<div class="register-form-wrapper">
 	  	<div class="container-form">
@@ -98,7 +99,7 @@ wp_enqueue_style('select2');
 				<?php if ( WP_Job_Board_Recaptcha::is_recaptcha_enabled() ) { ?>
 		            <div id="recaptcha-contact-form" class="ga-recaptcha" data-sitekey="<?php echo esc_attr(wp_job_board_get_option( 'recaptcha_site_key' )); ?>"></div>
 		      	<?php } ?>
-		      	
+
 				<div class="form-group">
 					<label for="register-terms-and-conditions">
 						<input type="checkbox" name="terms_and_conditions" value="on" id="register-terms-and-conditions" required>
