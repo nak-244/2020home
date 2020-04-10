@@ -3578,7 +3578,7 @@ msgstr ""
 #: template-jobs/misc/candidate-dashboard.php:56
 #: template-jobs/misc/employer-dashboard.php:42
 msgid "Shortlisted"
-msgstr ""
+msgstr "お気に入り"
 
 #: inc/vendors/wp-job-board/functions-candidate.php:197
 #: template-jobs/content-single-job_listing-v5.php:32
@@ -4405,12 +4405,12 @@ msgstr "　"
 #: template-jobs/misc/candidate-dashboard.php:36
 #: template-jobs/misc/employer-dashboard.php:22
 msgid "Applications statistics"
-msgstr ""
+msgstr "利用状況"
 
 #: template-jobs/misc/candidate-dashboard.php:45
 #: template-jobs/misc/jobs-applied.php:9
 msgid "Applied Jobs"
-msgstr ""
+msgstr "応募数"
 
 #: template-jobs/misc/candidate-dashboard.php:67
 #: template-jobs/misc/employer-dashboard.php:53
@@ -4424,16 +4424,16 @@ msgstr ""
 #: template-jobs/single-employer/detail.php:57 widgets/candidate-info.php:69
 #: widgets/employer-info.php:68
 msgid "Views"
-msgstr ""
+msgstr "閲覧数"
 
 #: template-jobs/misc/candidate-dashboard.php:85
 msgid "Jobs Applied Recently"
-msgstr ""
+msgstr "直近の応募"
 
 #: template-jobs/misc/candidate-dashboard.php:111
 #: template-jobs/misc/candidate-dashboard.php:116
 msgid "No Applicants found."
-msgstr ""
+msgstr "応募はありません。"
 
 #: template-jobs/misc/candidates-shortlist.php:9
 msgid "Candidate Shorlist"
@@ -4540,7 +4540,7 @@ msgstr ""
 #: template-jobs/misc/job-applicants.php:208
 #: template-jobs/misc/job-applicants.php:219
 msgid "No applicants found."
-msgstr ""
+msgstr "応募はありません。"
 
 #: template-jobs/misc/job-applicants.php:9
 msgid "Applicant"
