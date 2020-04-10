@@ -2530,7 +2530,7 @@ msgstr ""
 
 #: includes/class-user.php:805
 msgid "Profile has been successfully updated."
-msgstr ""
+msgstr "プロフィールが更新されました。"
 
 #: includes/class-user.php:808
 msgid "Can not update profile"
@@ -4353,7 +4353,7 @@ msgstr ""
 
 #: libraries/cmb2/cmb2_field_file/cmb2-field-type-file.php:63
 msgid "Add File"
-msgstr ""
+msgstr "ファイルを追加"
 
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:30
 msgid "Enter search e.g. Lincoln Park"
