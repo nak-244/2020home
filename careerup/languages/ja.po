@@ -4688,7 +4688,7 @@ msgstr ""
 
 #: template-jobs/misc/register.php:12
 msgid "Create New Account"
-msgstr ""
+msgstr "アカウント新規作成"
 
 #: template-jobs/misc/register.php:13
 msgid "Choose your Account Type"
