@@ -4718,7 +4718,7 @@ msgstr ""
 
 #: templates/misc/profile-form.php:7
 msgid "Edit Profile"
-msgstr ""
+msgstr "プロフィール編集"
 
 #: templates/misc/profile-form.php:32
 msgid "Save Profile"
