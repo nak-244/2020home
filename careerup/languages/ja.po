@@ -4417,7 +4417,7 @@ msgstr "応募数"
 #: template-jobs/single-candidate/reviews.php:56
 #: template-jobs/single-employer/reviews.php:55
 msgid "Review"
-msgstr ""
+msgstr "お知らせ"
 
 #: template-jobs/misc/candidate-dashboard.php:78
 #: template-jobs/misc/employer-dashboard.php:64
