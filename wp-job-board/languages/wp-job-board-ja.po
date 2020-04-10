@@ -3149,7 +3149,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:657
 #: includes/post-types/class-post-type-employer.php:358
 msgid "Profile url"
-msgstr ""
+msgstr "プロフィールURL"
 
 #: includes/post-types/class-post-type-candidate.php:674
 #: templates/single-job_listing/apply-email-form.php:28
