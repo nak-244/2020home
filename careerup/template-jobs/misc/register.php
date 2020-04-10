@@ -18,7 +18,9 @@ wp_enqueue_style('select2');
           	<form name="registerForm" method="post" class="register-form">
           		<div class="form-group space-25">
 					<ul class="role-tabs">
-						<li class="active"><input id="cadidate" type="radio" name="role" value="wp_job_board_candidate" checked="checked"><label for="cadidate"><?php esc_html_e('Candidate', 'careerup'); ?></label></li>
+						<li class="active"><input id="cadidate" type="radio" name="role" value="wp_job_board_candidate" checked="checked">
+							<label for="cadidate"><?php esc_html_e('Candidate', 'careerup'); ?></label>
+						</li>
 						<!-- <li><input type="radio" id="employer" name="role" value="wp_job_board_employer"><label for="employer"><?php esc_html_e('Employer', 'careerup'); ?></label></li> -->
 					</ul>
 				</div>
