@@ -4696,7 +4696,7 @@ msgstr ""
 
 #: template-jobs/misc/register.php:20
 msgid "Candidate"
-msgstr ""
+msgstr "求職者"
 
 #: template-jobs/misc/register.php:21
 msgid "Employer"
