@@ -3750,7 +3750,7 @@ msgstr ""
 #: templates/submission/my-jobs.php:196 templates/submission/my-jobs.php:197
 #: templates/submission/my-jobs.php:217 templates/submission/my-jobs.php:218
 msgid "Edit"
-msgstr ""
+msgstr "編集"
 
 #: includes/taxonomies/class-taxonomy-candidate-category.php:35
 #: includes/taxonomies/class-taxonomy-candidate-location.php:35
