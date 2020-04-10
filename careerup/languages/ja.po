@@ -4602,7 +4602,7 @@ msgstr ""
 
 #: template-jobs/misc/login.php:43
 msgid "Lost Your Password?"
-msgstr ""
+msgstr "パスワードをお忘れですか？"
 
 #: template-jobs/misc/login.php:47 woocommerce/myaccount/form-login.php:32
 msgid "Login"
