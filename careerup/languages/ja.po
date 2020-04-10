@@ -4606,7 +4606,7 @@ msgstr "パスワードをお忘れですか？"
 
 #: template-jobs/misc/login.php:47 woocommerce/myaccount/form-login.php:32
 msgid "Login"
-msgstr ""
+msgstr "ログイン"
 
 #: template-jobs/misc/login.php:58
 msgid "Reset Password"
