@@ -2986,7 +2986,7 @@ msgstr "求人タイトル・キーワード"
 #: template-jobs/misc/register.php:58 template-jobs/misc/register.php:84
 #: widgets/candidate-simple-search.php:20 widgets/job-simple-search.php:20
 msgid "Category"
-msgstr ""
+msgstr "職種"
 
 #: inc/vendors/elementor/wp-job-board-widgets/search_form.php:228
 #: widgets/candidate-simple-search.php:24 widgets/job-simple-search.php:24
@@ -4712,11 +4712,11 @@ msgstr "メールアドレス *"
 
 #: template-jobs/misc/register.php:31
 msgid "Password *"
-msgstr ""
+msgstr "パスワード *"
 
 #: template-jobs/misc/register.php:34
 msgid "Confirm Password *"
-msgstr ""
+msgstr "パスワード（確認） *"
 
 #: template-jobs/misc/register.php:38
 msgid "Company Name"
@@ -4725,16 +4725,17 @@ msgstr ""
 #: template-jobs/misc/register.php:42 widgets/candidate-contact-form.php:56
 #: widgets/employer-contact-form.php:60
 msgid "Phone"
-msgstr ""
+msgstr "電話番号"
 
 #: template-jobs/misc/register.php:60 template-jobs/misc/register.php:86
 msgid "Select Category"
-msgstr ""
+msgstr "希望職種"
 
 #: template-jobs/misc/register.php:108
 msgid ""
 "You accept our <a href=\"%s\">Terms and Conditions and Privacy Policy</a>"
 msgstr ""
+"このサイトの <a href=\"%s\">利用規約とプライバシーポリシーに同意します</a>"
 
 #: template-jobs/misc/register.php:115
 msgid "Register now"
@@ -5320,7 +5321,7 @@ msgstr ""
 
 #: woocommerce/myaccount/form-login.php:53
 msgid "Lost your password?"
-msgstr ""
+msgstr "パスワードをお忘れですか？"
 
 #: woocommerce/myaccount/form-login.php:56
 msgid "sign in"
@@ -5340,6 +5341,8 @@ msgid ""
 "Lost your password? Please enter your username or email address. You will "
 "receive a link to create a new password via email."
 msgstr ""
+"パスワードをお忘れですか？ユーザー名またはメールアドレスを入力してください。"
+"メールで新しいパスワードを作成するためのリンクが届きます。"
 
 #: woocommerce/myaccount/form-lost-password.php:38
 msgid "Reset password"
