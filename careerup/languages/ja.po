@@ -70,7 +70,7 @@ msgstr ""
 #: template-jobs/single-employer/reviews.php:45
 #: woocommerce/single-product-reviews.php:72
 msgid "Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: comments.php:63
 msgid "Website"
@@ -4704,11 +4704,11 @@ msgstr ""
 
 #: template-jobs/misc/register.php:25
 msgid "Username *"
-msgstr ""
+msgstr "ユーザー名 *"
 
 #: template-jobs/misc/register.php:28
 msgid "Email *"
-msgstr ""
+msgstr "メールアドレス *"
 
 #: template-jobs/misc/register.php:31
 msgid "Password *"
@@ -5017,7 +5017,7 @@ msgstr ""
 
 #: widgets/candidate-contact-form.php:51 widgets/employer-contact-form.php:55
 msgid "E-mail"
-msgstr ""
+msgstr "メールアドレス"
 
 #: widgets/candidate-contact-form.php:61 widgets/employer-contact-form.php:65
 #: woocommerce/single-product-reviews.php:95
@@ -5236,7 +5236,7 @@ msgstr ""
 
 #: woocommerce/checkout/thankyou.php:50
 msgid "Email:"
-msgstr ""
+msgstr "メールアドレス:"
 
 #: woocommerce/checkout/thankyou.php:55
 msgid "Total:"
@@ -5288,7 +5288,7 @@ msgstr ""
 #: woocommerce/myaccount/form-edit-account.php:34
 #: woocommerce/myaccount/form-login.php:81
 msgid "Email address"
-msgstr ""
+msgstr "メールアドレス"
 
 #: woocommerce/myaccount/form-edit-account.php:38
 msgid "Password Change"
@@ -5333,7 +5333,7 @@ msgstr ""
 
 #: woocommerce/myaccount/form-login.php:75
 msgid "Username"
-msgstr ""
+msgstr "ユーザー名"
 
 #: woocommerce/myaccount/form-lost-password.php:25
 msgid ""
