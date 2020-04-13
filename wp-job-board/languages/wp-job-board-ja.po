@@ -4722,7 +4722,7 @@ msgstr "プロフィール編集"
 
 #: templates/misc/profile-form.php:32
 msgid "Save Profile"
-msgstr ""
+msgstr "プロフィールを保存"
 
 #: templates/misc/register.php:18
 msgid "Username"
