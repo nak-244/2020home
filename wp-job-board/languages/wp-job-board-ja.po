@@ -3072,7 +3072,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:493
 #: includes/post-types/class-post-type-candidate.php:914
 msgid "Experience {#}"
-msgstr "経験年数 {#}"
+msgstr ""
 
 #: includes/post-types/class-post-type-candidate.php:494
 #: includes/post-types/class-post-type-candidate.php:915
@@ -4908,7 +4908,7 @@ msgstr ""
 
 #: templates/single-employer/members.php:49
 msgid "Experience: "
-msgstr "経験年数: "
+msgstr ""
 
 #: templates/single-employer/open-jobs.php:21
 msgid "Open Position"
