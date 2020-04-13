@@ -2916,7 +2916,7 @@ msgstr "非公開"
 #: includes/post-types/class-post-type-candidate.php:304
 #: includes/post-types/class-post-type-candidate.php:699
 msgid "Date of Birth"
-msgstr ""
+msgstr "生年月日"
 
 #: includes/post-types/class-post-type-candidate.php:314
 #: includes/post-types/class-post-type-candidate.php:710
@@ -3025,7 +3025,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:234
 #: includes/post-types/class-post-type-employer.php:401
 msgid "Address"
-msgstr ""
+msgstr "住所"
 
 #: includes/post-types/class-post-type-candidate.php:435
 #: includes/post-types/class-post-type-candidate.php:443
