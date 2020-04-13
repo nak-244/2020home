@@ -1352,7 +1352,7 @@ msgstr ""
 #: includes/post-types/class-post-type-job-applicant.php:69
 #: templates/submission/my-jobs.php:92
 msgid "Job Title"
-msgstr ""
+msgstr "職種名"
 
 #: includes/class-abstract-form.php:124
 #: includes/taxonomies/class-taxonomy-job-type.php:35
@@ -2948,7 +2948,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:336
 #: includes/post-types/class-post-type-candidate.php:722
 msgid "Salary (%s)"
-msgstr ""
+msgstr "給与 (%s)"
 
 #: includes/post-types/class-post-type-candidate.php:347
 #: includes/post-types/class-post-type-candidate.php:864
