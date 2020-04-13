@@ -2422,7 +2422,7 @@ msgstr ""
 
 #: includes/class-user.php:281
 msgid "Signin successful, redirecting..."
-msgstr ""
+msgstr "ログインに成功しました。プロフィールページへ移動します。"
 
 #: includes/class-user.php:298
 msgid "Enter an username or e-mail address."
@@ -4698,7 +4698,7 @@ msgstr ""
 
 #: templates/misc/not-allowed.php:8
 msgid "You are not allowed to access this page."
-msgstr ""
+msgstr "このページへのアクセス権限がありません。"
 
 #: templates/misc/password-form.php:9
 msgid "Old password"
