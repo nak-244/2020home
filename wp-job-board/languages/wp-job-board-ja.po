@@ -3067,7 +3067,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:279
 #: includes/post-types/class-post-type-employer.php:536
 msgid "Experience"
-msgstr ""
+msgstr "経験年数"
 
 #: includes/post-types/class-post-type-candidate.php:493
 #: includes/post-types/class-post-type-candidate.php:914
