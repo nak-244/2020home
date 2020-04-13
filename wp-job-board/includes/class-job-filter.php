@@ -23,7 +23,7 @@ class WP_Job_Board_Job_Filter extends WP_Job_Board_Abstract_Filter {
 			'title'	=> array(
 				'label' => __( 'Search Keywords', 'wp-job-board' ),
 				'field_call_back' => array( 'WP_Job_Board_Mixes', 'filter_field_input'),
-				'placeholder' => __( 'アプリ開発', 'wp-job-board' ),
+				'placeholder' => __( 'e.g. web design', 'wp-job-board' ),
 				'for_post_type' => 'job_listing',
 			),
 			'category' => array(
