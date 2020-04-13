@@ -1703,7 +1703,7 @@ msgstr "検索キーワード"
 #: includes/class-candidate-filter.php:26 includes/class-employer-filter.php:26
 #: includes/class-job-filter.php:26
 msgid "e.g. web design"
-msgstr ""
+msgstr " "
 
 #: includes/class-candidate-filter.php:31
 msgid "Candidate Category"
