@@ -4908,7 +4908,7 @@ msgstr ""
 
 #: templates/single-employer/members.php:49
 msgid "Experience: "
-msgstr ""
+msgstr "経験年数: "
 
 #: templates/single-employer/open-jobs.php:21
 msgid "Open Position"
