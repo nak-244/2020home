@@ -1371,7 +1371,7 @@ msgstr "雇用形態一覧"
 #: includes/post-types/class-post-type-employer.php:437
 #: includes/post-types/class-post-type-job-custom-field.php:141
 msgid "Description"
-msgstr ""
+msgstr "自己紹介文"
 
 #: includes/class-abstract-form.php:161
 #: includes/post-types/class-post-type-candidate.php:663
@@ -2974,7 +2974,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:180
 #: includes/post-types/class-post-type-employer.php:480
 msgid "Introduction Video URL (Youtube/Vimeo)"
-msgstr ""
+msgstr "自己紹介動画URL (Youtube/Vimeo)"
 
 #: includes/post-types/class-post-type-candidate.php:374
 #: includes/post-types/class-post-type-candidate.php:382
