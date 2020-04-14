@@ -2983,7 +2983,7 @@ msgstr "自己紹介動画URL (Youtube/Vimeo)"
 #: includes/post-types/class-post-type-employer.php:197
 #: includes/post-types/class-post-type-employer.php:487
 msgid "Socials"
-msgstr ""
+msgstr "SNS"
 
 #: includes/post-types/class-post-type-candidate.php:386
 #: includes/post-types/class-post-type-candidate.php:791
