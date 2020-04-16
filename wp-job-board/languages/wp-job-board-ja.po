@@ -1371,7 +1371,7 @@ msgstr "雇用形態一覧"
 #: includes/post-types/class-post-type-employer.php:437
 #: includes/post-types/class-post-type-job-custom-field.php:141
 msgid "Description"
-msgstr "自己紹介文"
+msgstr "説明文"
 
 #: includes/class-abstract-form.php:161
 #: includes/post-types/class-post-type-candidate.php:663
@@ -1490,12 +1490,12 @@ msgstr "給与種類"
 #: includes/taxonomies/class-taxonomy-job-tag.php:28
 #: includes/taxonomies/class-taxonomy-job-tag.php:38
 msgid "Tags"
-msgstr ""
+msgstr "タグ"
 
 #: includes/class-abstract-form.php:270
 #: includes/post-types/class-post-type-candidate.php:821
 msgid "e.g. PHP, Developer, CSS"
-msgstr ""
+msgstr "例：PHP, 開発, CSS"
 
 #: includes/class-abstract-form.php:274
 #: includes/post-types/class-post-type-job_listing.php:481
@@ -2194,7 +2194,7 @@ msgstr "雇用形態"
 #: includes/taxonomies/class-taxonomy-candidate-tag.php:29
 #: includes/taxonomies/class-taxonomy-job-tag.php:29
 msgid "Tag"
-msgstr ""
+msgstr "タグ"
 
 #: includes/class-job-filter.php:597
 #: includes/post-types/class-post-type-employer.php:617
@@ -2997,7 +2997,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:202
 #: includes/post-types/class-post-type-employer.php:492
 msgid "Add Another Network"
-msgstr ""
+msgstr "他のSNSを追加"
 
 #: includes/post-types/class-post-type-candidate.php:388
 #: includes/post-types/class-post-type-candidate.php:793
