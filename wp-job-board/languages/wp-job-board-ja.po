@@ -4767,7 +4767,7 @@ msgstr ""
 
 #: templates/misc/resume-form.php:7
 msgid "Edit Resume"
-msgstr "履歴書編集"
+msgstr "レジュメ編集"
 
 #: templates/misc/resume-form.php:13
 msgid "Your resume has to be confirmed by an administrator before publish."
