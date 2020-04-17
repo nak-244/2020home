@@ -2953,7 +2953,7 @@ msgstr "給与 (%s)"
 #: includes/post-types/class-post-type-candidate.php:347
 #: includes/post-types/class-post-type-candidate.php:864
 msgid "Portfolio Photos"
-msgstr ""
+msgstr "写真"
 
 #: includes/post-types/class-post-type-candidate.php:352
 #: includes/post-types/class-post-type-employer.php:176
@@ -4767,7 +4767,7 @@ msgstr ""
 
 #: templates/misc/resume-form.php:7
 msgid "Edit Resume"
-msgstr ""
+msgstr "履歴書編集"
 
 #: templates/misc/resume-form.php:13
 msgid "Your resume has to be confirmed by an administrator before publish."
@@ -4818,7 +4818,7 @@ msgstr ""
 
 #: templates/single-candidate/portfolios.php:13
 msgid "Portfolio"
-msgstr ""
+msgstr "ポートフォリオ"
 
 #: templates/single-candidate/review.php:19
 #: templates/single-employer/review.php:19
