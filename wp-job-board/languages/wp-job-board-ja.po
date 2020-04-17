@@ -3104,7 +3104,7 @@ msgstr "会社"
 #: includes/post-types/class-post-type-candidate.php:550
 #: includes/post-types/class-post-type-candidate.php:961
 msgid "Award"
-msgstr ""
+msgstr "賞罰"
 
 #: includes/post-types/class-post-type-candidate.php:554
 #: includes/post-types/class-post-type-candidate.php:965
@@ -3119,7 +3119,7 @@ msgstr "追加"
 #: includes/post-types/class-post-type-candidate.php:556
 #: includes/post-types/class-post-type-candidate.php:967
 msgid "Remove Award"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-candidate.php:583
 #: includes/post-types/class-post-type-candidate.php:591
