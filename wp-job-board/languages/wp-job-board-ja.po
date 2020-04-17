@@ -2998,7 +2998,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:202
 #: includes/post-types/class-post-type-employer.php:492
 msgid "Add Another Network"
-msgstr "他のSNSを追加"
+msgstr "追加"
 
 #: includes/post-types/class-post-type-candidate.php:388
 #: includes/post-types/class-post-type-candidate.php:793
@@ -3043,24 +3043,24 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:448
 #: includes/post-types/class-post-type-candidate.php:879
 msgid "Add Another Education"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-candidate.php:449
 #: includes/post-types/class-post-type-candidate.php:880
 msgid "Remove Education"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-candidate.php:460
 #: includes/post-types/class-post-type-candidate.php:891
 msgid "Academy"
-msgstr ""
+msgstr "学校"
 
 #: includes/post-types/class-post-type-candidate.php:465
 #: includes/post-types/class-post-type-candidate.php:567
 #: includes/post-types/class-post-type-candidate.php:896
 #: includes/post-types/class-post-type-candidate.php:978
 msgid "Year"
-msgstr ""
+msgstr "年"
 
 #: includes/post-types/class-post-type-candidate.php:481
 #: includes/post-types/class-post-type-candidate.php:489
@@ -3078,7 +3078,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:494
 #: includes/post-types/class-post-type-candidate.php:915
 msgid "Add Another Experience"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-candidate.php:495
 #: includes/post-types/class-post-type-candidate.php:916
@@ -3114,7 +3114,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:555
 #: includes/post-types/class-post-type-candidate.php:966
 msgid "Add Another Award"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-candidate.php:556
 #: includes/post-types/class-post-type-candidate.php:967
@@ -3135,7 +3135,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:596
 #: includes/post-types/class-post-type-candidate.php:997
 msgid "Add Another Skill"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-candidate.php:597
 #: includes/post-types/class-post-type-candidate.php:998
@@ -3274,7 +3274,7 @@ msgstr ""
 #: includes/post-types/class-post-type-employer.php:263
 #: includes/post-types/class-post-type-employer.php:519
 msgid "Add Another Member"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-employer.php:264
 #: includes/post-types/class-post-type-employer.php:520
@@ -3541,7 +3541,7 @@ msgstr ""
 
 #: includes/post-types/class-post-type-job-custom-field.php:177
 msgid "Add Another Option"
-msgstr ""
+msgstr "追加"
 
 #: includes/post-types/class-post-type-job-custom-field.php:178
 msgid "Remove Option"
@@ -4354,7 +4354,7 @@ msgstr "ファイル追加"
 
 #: libraries/cmb2/cmb2_field_file/cmb2-field-type-file.php:63
 msgid "Add File"
-msgstr "ファイルを追加"
+msgstr "ファイル追加"
 
 #: libraries/cmb2/cmb2_field_map/cmb-field-map.php:30
 msgid "Enter search e.g. Lincoln Park"
