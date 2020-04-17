@@ -223,7 +223,7 @@ msgstr "画像ファイルの種類"
 
 #: includes/admin/class-settings.php:260
 msgid "CV File Types"
-msgstr "CVファイルの種類"
+msgstr "履歴書ファイルの種類"
 
 #: includes/admin/class-settings.php:267
 msgid "Map API Settings"
@@ -2963,7 +2963,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:356
 #: includes/post-types/class-post-type-candidate.php:854
 msgid "CV Attachment"
-msgstr ""
+msgstr "履歴書データ"
 
 #: includes/post-types/class-post-type-candidate.php:362
 msgid "Upload file .pdf, .doc, .docx"
@@ -3032,7 +3032,7 @@ msgstr "住所"
 #: includes/post-types/class-post-type-candidate.php:874
 #: templates/single-candidate/education.php:13
 msgid "Education"
-msgstr ""
+msgstr "学歴"
 
 #: includes/post-types/class-post-type-candidate.php:447
 #: includes/post-types/class-post-type-candidate.php:878
