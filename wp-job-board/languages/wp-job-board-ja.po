@@ -3088,17 +3088,17 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:506
 #: includes/post-types/class-post-type-candidate.php:927
 msgid "Start Date"
-msgstr ""
+msgstr "開始日"
 
 #: includes/post-types/class-post-type-candidate.php:516
 #: includes/post-types/class-post-type-candidate.php:937
 msgid "End Date"
-msgstr ""
+msgstr "終了日"
 
 #: includes/post-types/class-post-type-candidate.php:526
 #: includes/post-types/class-post-type-candidate.php:947
 msgid "Company"
-msgstr ""
+msgstr "会社"
 
 #: includes/post-types/class-post-type-candidate.php:542
 #: includes/post-types/class-post-type-candidate.php:550
