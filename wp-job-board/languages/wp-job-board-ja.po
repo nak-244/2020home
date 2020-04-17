@@ -1344,7 +1344,7 @@ msgstr ""
 #: templates/widgets/candidate-alert-form.php:22
 #: templates/widgets/job-alert-form.php:22
 msgid "Title"
-msgstr ""
+msgstr "タイトル"
 
 #: includes/class-abstract-form.php:119
 #: includes/post-types/class-post-type-candidate.php:331
@@ -2108,6 +2108,7 @@ msgstr ""
 #: includes/class-image.php:149 includes/class-image.php:198
 msgid "Uploaded files need to be one of the following file types: %s"
 msgstr ""
+"アップロードするファイルは、次のファイルのいずれかである必要があります: %s"
 
 #: includes/class-image.php:253
 msgid "Attachment Image"
@@ -2967,7 +2968,7 @@ msgstr "履歴書データ"
 
 #: includes/post-types/class-post-type-candidate.php:362
 msgid "Upload file .pdf, .doc, .docx"
-msgstr ""
+msgstr "アップロードファイル .pdf, .doc, .docx"
 
 #: includes/post-types/class-post-type-candidate.php:365
 #: includes/post-types/class-post-type-candidate.php:744
@@ -3158,7 +3159,7 @@ msgstr "お名前"
 
 #: includes/post-types/class-post-type-candidate.php:860
 msgid "Upload file %s"
-msgstr ""
+msgstr "アップロードファイル %s"
 
 #: includes/post-types/class-post-type-candidate.php:1052
 #: includes/post-types/class-post-type-employer.php:613
