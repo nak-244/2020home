@@ -3005,7 +3005,7 @@ msgstr "追加"
 #: includes/post-types/class-post-type-employer.php:203
 #: includes/post-types/class-post-type-employer.php:493
 msgid "Remove Network"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-candidate.php:394
 #: includes/post-types/class-post-type-candidate.php:799
@@ -3083,7 +3083,7 @@ msgstr "追加"
 #: includes/post-types/class-post-type-candidate.php:495
 #: includes/post-types/class-post-type-candidate.php:916
 msgid "Remove Experience"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-candidate.php:506
 #: includes/post-types/class-post-type-candidate.php:927
@@ -3140,7 +3140,7 @@ msgstr "追加"
 #: includes/post-types/class-post-type-candidate.php:597
 #: includes/post-types/class-post-type-candidate.php:998
 msgid "Remove Skill"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-candidate.php:608
 #: includes/post-types/class-post-type-candidate.php:1009
@@ -3279,7 +3279,7 @@ msgstr "追加"
 #: includes/post-types/class-post-type-employer.php:264
 #: includes/post-types/class-post-type-employer.php:520
 msgid "Remove Member"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-employer.php:269
 #: includes/post-types/class-post-type-employer.php:526
@@ -3545,7 +3545,7 @@ msgstr "追加"
 
 #: includes/post-types/class-post-type-job-custom-field.php:178
 msgid "Remove Option"
-msgstr ""
+msgstr "削除"
 
 #: includes/post-types/class-post-type-job-custom-field.php:184
 msgid "Value"
