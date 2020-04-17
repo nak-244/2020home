@@ -3125,12 +3125,12 @@ msgstr "削除"
 #: includes/post-types/class-post-type-candidate.php:591
 #: includes/post-types/class-post-type-candidate.php:992
 msgid "Skill"
-msgstr ""
+msgstr "スキル"
 
 #: includes/post-types/class-post-type-candidate.php:595
 #: includes/post-types/class-post-type-candidate.php:996
 msgid "Skill {#}"
-msgstr ""
+msgstr "スキル {#}"
 
 #: includes/post-types/class-post-type-candidate.php:596
 #: includes/post-types/class-post-type-candidate.php:997
@@ -3145,7 +3145,7 @@ msgstr "削除"
 #: includes/post-types/class-post-type-candidate.php:608
 #: includes/post-types/class-post-type-candidate.php:1009
 msgid "Percentage"
-msgstr ""
+msgstr "パーセンテージ"
 
 #: includes/post-types/class-post-type-candidate.php:657
 #: includes/post-types/class-post-type-employer.php:358
@@ -4879,7 +4879,7 @@ msgstr ""
 
 #: templates/single-candidate/skill.php:13
 msgid "Skills"
-msgstr ""
+msgstr "スキル"
 
 #: templates/single-candidate/socials.php:15
 #: templates/single-employer/socials.php:26
