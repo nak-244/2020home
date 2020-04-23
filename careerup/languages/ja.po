@@ -4659,7 +4659,7 @@ msgstr "頻度"
 #: template-jobs/misc/my-jobs-alerts.php:63
 #: template-jobs/submission/my-jobs.php:99
 msgid "Actions"
-msgstr ""
+msgstr "アクション"
 
 #: template-jobs/misc/my-jobs-alerts.php:128
 msgid "Jobs found %d"
