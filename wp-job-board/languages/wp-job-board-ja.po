@@ -2959,7 +2959,7 @@ msgstr "写真"
 #: includes/post-types/class-post-type-candidate.php:352
 #: includes/post-types/class-post-type-employer.php:176
 msgid "Add or Upload Images"
-msgstr ""
+msgstr "アップロード"
 
 #: includes/post-types/class-post-type-candidate.php:356
 #: includes/post-types/class-post-type-candidate.php:854
