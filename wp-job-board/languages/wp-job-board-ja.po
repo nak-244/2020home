@@ -2136,7 +2136,7 @@ msgstr "隔年"
 
 #: includes/class-job-alert.php:48
 msgid "Annually"
-msgstr ""
+msgstr "毎年"
 
 #: includes/class-job-alert.php:162
 msgid "Please login with \"Candidate\" to add job alert."
