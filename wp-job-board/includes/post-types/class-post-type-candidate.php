@@ -285,12 +285,12 @@ class WP_Job_Board_Post_Type_Candidate {
 					'id'                => self::$prefix . 'attached_user',
 					'type'              => 'wp_job_board_attached_user',
 				),
-				array(
-					'name'              => __( 'Expiry Date', 'wp-job-board' ),
-					'id'                => self::$prefix. 'expiry_date',
-					'type'              => 'text_date',
-					'date_format' 		=> 'Y-m-d',
-				),
+				// array(
+				// 	'name'              => __( 'Expiry Date', 'wp-job-board' ),
+				// 	'id'                => self::$prefix. 'expiry_date',
+				// 	'type'              => 'text_date',
+				// 	'date_format' 		=> 'Y-m-d',
+				// ),
 				array(
 					'name'              => __( 'Show my profile', 'wp-job-board' ),
 					'id'                => self::$prefix . 'show_profile',
