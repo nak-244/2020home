@@ -430,194 +430,194 @@ class WP_Job_Board_Post_Type_Candidate {
 			),
 		);
 
-		$metaboxes[ self::$prefix . 'education' ] = array(
-			'id'                        => self::$prefix . 'education',
-			'title'                     => __( 'Education', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Education', 'wp-job-board' ),
-					'id'                => self::$prefix . 'education',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Education {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Title', 'wp-job-board' ),
-							'id'        => 'title',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Academy', 'wp-job-board' ),
-							'id'        => 'academy',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Year', 'wp-job-board' ),
-							'id'        => 'year',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Description', 'wp-job-board' ),
-							'id'        => 'description',
-							'type'      => 'textarea',
-						),
-					)
-				),
-			),
-		);
-
-		$metaboxes[ self::$prefix . 'experience' ] = array(
-			'id'                        => self::$prefix . 'experience',
-			'title'                     => __( 'Experience', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Experience', 'wp-job-board' ),
-					'id'                => self::$prefix . 'experience',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Experience {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Experience', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Experience', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Title', 'wp-job-board' ),
-							'id'        => 'title',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Start Date', 'wp-job-board' ),
-							'id'        => 'start_date',
-							'type'      => 'text_date',
-							'attributes'		=> array(
-								'data-datepicker' => json_encode(array(
-									'yearRange' => '-100:+5',
-								))
-							),
-						),
-						array(
-							'name'      => __( 'End Date', 'wp-job-board' ),
-							'id'        => 'end_date',
-							'type'      => 'text_date',
-							'attributes'		=> array(
-								'data-datepicker' => json_encode(array(
-									'yearRange' => '-100:+5',
-								))
-							),
-						),
-						array(
-							'name'      => __( 'Company', 'wp-job-board' ),
-							'id'        => 'company',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Description', 'wp-job-board' ),
-							'id'        => 'description',
-							'type'      => 'textarea',
-						),
-					)
-				),
-			),
-		);
-
-		$metaboxes[ self::$prefix . 'award' ] = array(
-			'id'                        => self::$prefix . 'award',
-			'title'                     => __( 'Award', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Award', 'wp-job-board' ),
-					'id'                => self::$prefix . 'award',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Award {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Award', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Award', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Title', 'wp-job-board' ),
-							'id'        => 'title',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Year', 'wp-job-board' ),
-							'id'        => 'year',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Description', 'wp-job-board' ),
-							'id'        => 'description',
-							'type'      => 'textarea',
-						),
-					)
-				),
-			),
-		);
-
-		$metaboxes[ self::$prefix . 'skill' ] = array(
-			'id'                        => self::$prefix . 'skill',
-			'title'                     => __( 'Skill', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Skill', 'wp-job-board' ),
-					'id'                => self::$prefix . 'skill',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Skill {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Skill', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Skill', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Title', 'wp-job-board' ),
-							'id'        => 'title',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Percentage', 'wp-job-board' ),
-							'id'        => 'percentage',
-							'type'      => 'text',
-							'attributes' 	    => array(
-								'type' 				=> 'number',
-								'min'				=> 0,
-								'pattern' 			=> '\d*',
-							)
-						),
-					)
-				),
-			),
-		);
+		// $metaboxes[ self::$prefix . 'education' ] = array(
+		// 	'id'                        => self::$prefix . 'education',
+		// 	'title'                     => __( 'Education', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Education', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'education',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Education {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Title', 'wp-job-board' ),
+		// 					'id'        => 'title',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Academy', 'wp-job-board' ),
+		// 					'id'        => 'academy',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Year', 'wp-job-board' ),
+		// 					'id'        => 'year',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Description', 'wp-job-board' ),
+		// 					'id'        => 'description',
+		// 					'type'      => 'textarea',
+		// 				),
+		// 			)
+		// 		),
+		// 	),
+		// );
+    //
+		// $metaboxes[ self::$prefix . 'experience' ] = array(
+		// 	'id'                        => self::$prefix . 'experience',
+		// 	'title'                     => __( 'Experience', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Experience', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'experience',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Experience {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Experience', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Experience', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Title', 'wp-job-board' ),
+		// 					'id'        => 'title',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Start Date', 'wp-job-board' ),
+		// 					'id'        => 'start_date',
+		// 					'type'      => 'text_date',
+		// 					'attributes'		=> array(
+		// 						'data-datepicker' => json_encode(array(
+		// 							'yearRange' => '-100:+5',
+		// 						))
+		// 					),
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'End Date', 'wp-job-board' ),
+		// 					'id'        => 'end_date',
+		// 					'type'      => 'text_date',
+		// 					'attributes'		=> array(
+		// 						'data-datepicker' => json_encode(array(
+		// 							'yearRange' => '-100:+5',
+		// 						))
+		// 					),
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Company', 'wp-job-board' ),
+		// 					'id'        => 'company',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Description', 'wp-job-board' ),
+		// 					'id'        => 'description',
+		// 					'type'      => 'textarea',
+		// 				),
+		// 			)
+		// 		),
+		// 	),
+		// );
+    //
+		// $metaboxes[ self::$prefix . 'award' ] = array(
+		// 	'id'                        => self::$prefix . 'award',
+		// 	'title'                     => __( 'Award', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Award', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'award',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Award {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Award', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Award', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Title', 'wp-job-board' ),
+		// 					'id'        => 'title',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Year', 'wp-job-board' ),
+		// 					'id'        => 'year',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Description', 'wp-job-board' ),
+		// 					'id'        => 'description',
+		// 					'type'      => 'textarea',
+		// 				),
+		// 			)
+		// 		),
+		// 	),
+		// );
+    //
+		// $metaboxes[ self::$prefix . 'skill' ] = array(
+		// 	'id'                        => self::$prefix . 'skill',
+		// 	'title'                     => __( 'Skill', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Skill', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'skill',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Skill {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Skill', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Skill', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Title', 'wp-job-board' ),
+		// 					'id'        => 'title',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Percentage', 'wp-job-board' ),
+		// 					'id'        => 'percentage',
+		// 					'type'      => 'text',
+		// 					'attributes' 	    => array(
+		// 						'type' 				=> 'number',
+		// 						'min'				=> 0,
+		// 						'pattern' 			=> '\d*',
+		// 					)
+		// 				),
+		// 			)
+		// 		),
+		// 	),
+		// );
 
 		return $metaboxes;
 	}
@@ -870,154 +870,154 @@ class WP_Job_Board_Post_Type_Candidate {
 						'priority'           => 13,
 					),
 					// education
-					array(
-						'name'              => __( 'Education', 'wp-job-board' ),
-						'id'                => self::$prefix . 'education',
-						'type'              => 'group',
-						'options'     		=> array(
-							'group_title'       => __( 'Education {#}', 'wp-job-board' ),
-							'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
-							'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
-							'sortable'          => false,
-							'closed'         => true,
-						),
-						'fields'			=> array(
-							array(
-								'name'      => __( 'Title', 'wp-job-board' ),
-								'id'        => 'title',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Academy', 'wp-job-board' ),
-								'id'        => 'academy',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Year', 'wp-job-board' ),
-								'id'        => 'year',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Description', 'wp-job-board' ),
-								'id'        => 'description',
-								'type'      => 'textarea',
-							),
-						),
-						'priority'           => 24,
-					),
+					// array(
+					// 	'name'              => __( 'Education', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'education',
+					// 	'type'              => 'group',
+					// 	'options'     		=> array(
+					// 		'group_title'       => __( 'Education {#}', 'wp-job-board' ),
+					// 		'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
+					// 		'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
+					// 		'sortable'          => false,
+					// 		'closed'         => true,
+					// 	),
+					// 	'fields'			=> array(
+					// 		array(
+					// 			'name'      => __( 'Title', 'wp-job-board' ),
+					// 			'id'        => 'title',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Academy', 'wp-job-board' ),
+					// 			'id'        => 'academy',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Year', 'wp-job-board' ),
+					// 			'id'        => 'year',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Description', 'wp-job-board' ),
+					// 			'id'        => 'description',
+					// 			'type'      => 'textarea',
+					// 		),
+					// 	),
+					// 	'priority'           => 24,
+					// ),
 					// Experience
-					array(
-						'name'              => __( 'Experience', 'wp-job-board' ),
-						'id'                => self::$prefix . 'experience',
-						'type'              => 'group',
-						'options'     		=> array(
-							'group_title'       => __( 'Experience {#}', 'wp-job-board' ),
-							'add_button'        => __( 'Add Another Experience', 'wp-job-board' ),
-							'remove_button'     => __( 'Remove Experience', 'wp-job-board' ),
-							'sortable'          => false,
-							'closed'         => true,
-						),
-						'fields'			=> array(
-							array(
-								'name'      => __( 'Title', 'wp-job-board' ),
-								'id'        => 'title',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Start Date', 'wp-job-board' ),
-								'id'        => 'start_date',
-								'type'      => 'text_date',
-								'attributes'		=> array(
-									'data-datepicker' => json_encode(array(
-										'yearRange' => '-100:+5',
-									))
-								),
-							),
-							array(
-								'name'      => __( 'End Date', 'wp-job-board' ),
-								'id'        => 'end_date',
-								'type'      => 'text_date',
-								'attributes'		=> array(
-									'data-datepicker' => json_encode(array(
-										'yearRange' => '-100:+5',
-									))
-								),
-							),
-							array(
-								'name'      => __( 'Company', 'wp-job-board' ),
-								'id'        => 'company',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Description', 'wp-job-board' ),
-								'id'        => 'description',
-								'type'      => 'textarea',
-							),
-						),
-						'priority'           => 25,
-					),
+					// array(
+					// 	'name'              => __( 'Experience', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'experience',
+					// 	'type'              => 'group',
+					// 	'options'     		=> array(
+					// 		'group_title'       => __( 'Experience {#}', 'wp-job-board' ),
+					// 		'add_button'        => __( 'Add Another Experience', 'wp-job-board' ),
+					// 		'remove_button'     => __( 'Remove Experience', 'wp-job-board' ),
+					// 		'sortable'          => false,
+					// 		'closed'         => true,
+					// 	),
+					// 	'fields'			=> array(
+					// 		array(
+					// 			'name'      => __( 'Title', 'wp-job-board' ),
+					// 			'id'        => 'title',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Start Date', 'wp-job-board' ),
+					// 			'id'        => 'start_date',
+					// 			'type'      => 'text_date',
+					// 			'attributes'		=> array(
+					// 				'data-datepicker' => json_encode(array(
+					// 					'yearRange' => '-100:+5',
+					// 				))
+					// 			),
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'End Date', 'wp-job-board' ),
+					// 			'id'        => 'end_date',
+					// 			'type'      => 'text_date',
+					// 			'attributes'		=> array(
+					// 				'data-datepicker' => json_encode(array(
+					// 					'yearRange' => '-100:+5',
+					// 				))
+					// 			),
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Company', 'wp-job-board' ),
+					// 			'id'        => 'company',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Description', 'wp-job-board' ),
+					// 			'id'        => 'description',
+					// 			'type'      => 'textarea',
+					// 		),
+					// 	),
+					// 	'priority'           => 25,
+					// ),
 					// Award
-					array(
-						'name'              => __( 'Award', 'wp-job-board' ),
-						'id'                => self::$prefix . 'award',
-						'type'              => 'group',
-						'options'     		=> array(
-							'group_title'       => __( 'Award {#}', 'wp-job-board' ),
-							'add_button'        => __( 'Add Another Award', 'wp-job-board' ),
-							'remove_button'     => __( 'Remove Award', 'wp-job-board' ),
-							'sortable'          => false,
-							'closed'         => true,
-						),
-						'fields'			=> array(
-							array(
-								'name'      => __( 'Title', 'wp-job-board' ),
-								'id'        => 'title',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Year', 'wp-job-board' ),
-								'id'        => 'year',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Description', 'wp-job-board' ),
-								'id'        => 'description',
-								'type'      => 'textarea',
-							),
-						),
-						'priority'           => 26,
-					),
+					// array(
+					// 	'name'              => __( 'Award', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'award',
+					// 	'type'              => 'group',
+					// 	'options'     		=> array(
+					// 		'group_title'       => __( 'Award {#}', 'wp-job-board' ),
+					// 		'add_button'        => __( 'Add Another Award', 'wp-job-board' ),
+					// 		'remove_button'     => __( 'Remove Award', 'wp-job-board' ),
+					// 		'sortable'          => false,
+					// 		'closed'         => true,
+					// 	),
+					// 	'fields'			=> array(
+					// 		array(
+					// 			'name'      => __( 'Title', 'wp-job-board' ),
+					// 			'id'        => 'title',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Year', 'wp-job-board' ),
+					// 			'id'        => 'year',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Description', 'wp-job-board' ),
+					// 			'id'        => 'description',
+					// 			'type'      => 'textarea',
+					// 		),
+					// 	),
+					// 	'priority'           => 26,
+					// ),
 					// Skill
-					array(
-						'name'              => __( 'Skill', 'wp-job-board' ),
-						'id'                => self::$prefix . 'skill',
-						'type'              => 'group',
-						'options'     		=> array(
-							'group_title'       => __( 'Skill {#}', 'wp-job-board' ),
-							'add_button'        => __( 'Add Another Skill', 'wp-job-board' ),
-							'remove_button'     => __( 'Remove Skill', 'wp-job-board' ),
-							'sortable'          => false,
-							'closed'         => true,
-						),
-						'fields'			=> array(
-							array(
-								'name'      => __( 'Title', 'wp-job-board' ),
-								'id'        => 'title',
-								'type'      => 'text',
-							),
-							array(
-								'name'      => __( 'Percentage', 'wp-job-board' ),
-								'id'        => 'percentage',
-								'type'      => 'text',
-								'attributes' 	    => array(
-									'type' 				=> 'number',
-									'min'				=> 0,
-									'pattern' 			=> '\d*',
-								)
-							),
-						),
-						'priority'           => 27,
-					),
+					// array(
+					// 	'name'              => __( 'Skill', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'skill',
+					// 	'type'              => 'group',
+					// 	'options'     		=> array(
+					// 		'group_title'       => __( 'Skill {#}', 'wp-job-board' ),
+					// 		'add_button'        => __( 'Add Another Skill', 'wp-job-board' ),
+					// 		'remove_button'     => __( 'Remove Skill', 'wp-job-board' ),
+					// 		'sortable'          => false,
+					// 		'closed'         => true,
+					// 	),
+					// 	'fields'			=> array(
+					// 		array(
+					// 			'name'      => __( 'Title', 'wp-job-board' ),
+					// 			'id'        => 'title',
+					// 			'type'      => 'text',
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Percentage', 'wp-job-board' ),
+					// 			'id'        => 'percentage',
+					// 			'type'      => 'text',
+					// 			'attributes' 	    => array(
+					// 				'type' 				=> 'number',
+					// 				'min'				=> 0,
+					// 				'pattern' 			=> '\d*',
+					// 			)
+					// 		),
+					// 	),
+					// 	'priority'           => 27,
+					// ),
 				)
 			);
 
