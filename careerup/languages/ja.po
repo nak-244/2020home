@@ -4642,7 +4642,7 @@ msgstr "フォロー企業はありません。"
 
 #: template-jobs/misc/my-jobs-alerts.php:9
 msgid "Job Alerts"
-msgstr "求職者アラート"
+msgstr "ジョブアラート"
 
 #: template-jobs/misc/my-jobs-alerts.php:60
 msgid "Alert Query"
