@@ -4667,7 +4667,7 @@ msgstr ""
 
 #: template-jobs/misc/my-jobs-alerts.php:156
 msgid "No job alert found."
-msgstr ""
+msgstr "アラートは見つかりませんでした。"
 
 #: template-jobs/misc/password-form.php:7
 #: template-jobs/misc/password-form.php:24
