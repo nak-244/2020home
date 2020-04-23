@@ -315,18 +315,18 @@ class WP_Job_Board_Post_Type_Candidate {
 					'id'                => self::$prefix . 'phone',
 					'type'              => 'text',
 				),
-				array(
-					'name'              => __( 'Urgent Candidate', 'wp-job-board' ),
-					'id'                => self::$prefix . 'urgent',
-					'type'              => 'checkbox',
-					'description'		=> __( 'Urgent candidate will be sticky during searches, and can be styled differently.', 'wp-job-board' )
-				),
-				array(
-					'name'              => __( 'Featured Candidate', 'wp-job-board' ),
-					'id'                => self::$prefix . 'featured',
-					'type'              => 'checkbox',
-					'description'		=> __( 'Featured candidate will be sticky during searches, and can be styled differently.', 'wp-job-board' )
-				),
+				// array(
+				// 	'name'              => __( 'Urgent Candidate', 'wp-job-board' ),
+				// 	'id'                => self::$prefix . 'urgent',
+				// 	'type'              => 'checkbox',
+				// 	'description'		=> __( 'Urgent candidate will be sticky during searches, and can be styled differently.', 'wp-job-board' )
+				// ),
+				// array(
+				// 	'name'              => __( 'Featured Candidate', 'wp-job-board' ),
+				// 	'id'                => self::$prefix . 'featured',
+				// 	'type'              => 'checkbox',
+				// 	'description'		=> __( 'Featured candidate will be sticky during searches, and can be styled differently.', 'wp-job-board' )
+				// ),
 				array(
 					'name'              => __( 'Job Title', 'wp-job-board' ),
 					'id'                => self::$prefix . 'job_title',
