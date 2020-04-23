@@ -2539,7 +2539,7 @@ msgstr ""
 
 #: includes/class-user.php:852
 msgid "Resume has been successfully updated."
-msgstr ""
+msgstr "レジュメの上書きが完了しました。"
 
 #: includes/class-user.php:855
 msgid "Can not update resume"
