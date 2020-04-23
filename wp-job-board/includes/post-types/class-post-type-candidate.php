@@ -360,6 +360,9 @@ class WP_Job_Board_Post_Type_Candidate {
 					'query_args' => array(
 						'type' => $cv_file_types
 					),
+          'text' => array(
+						'add_upload_files_text' => __( 'Add or Upload Images', 'wp-job-board' ),
+					),
 					'description' => __('Upload file .pdf, .doc, .docx', 'wp-job-board')
 				),
 				// array(
