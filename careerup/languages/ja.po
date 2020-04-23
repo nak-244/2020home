@@ -4646,7 +4646,7 @@ msgstr "ジョブアラート"
 
 #: template-jobs/misc/my-jobs-alerts.php:60
 msgid "Alert Query"
-msgstr ""
+msgstr "検索条件"
 
 #: template-jobs/misc/my-jobs-alerts.php:61
 msgid "Number Jobs"
