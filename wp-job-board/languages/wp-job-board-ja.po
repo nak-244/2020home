@@ -4506,7 +4506,7 @@ msgstr ""
 
 #: templates/loop/job/jobs-alert-form.php:9
 msgid "Get Jobs Alerts"
-msgstr "更新通知を受け取る"
+msgstr "ジョブアラート登録"
 
 #: templates/loop/job/jobs-alert-form.php:43
 msgid "Save Job Alert"
