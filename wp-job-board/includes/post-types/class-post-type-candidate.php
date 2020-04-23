@@ -733,13 +733,13 @@ class WP_Job_Board_Post_Type_Candidate {
 					),
 
 
-					array(
-						'name'      		=> __( 'Categories', 'wp-job-board' ),
-						'id'        		=> self::$prefix . 'category',
-						'type'      		=> 'taxonomy_multicheck',
-						'taxonomy'  		=> 'candidate_category',
-						'priority'           => 30,
-					),
+					// array(
+					// 	'name'      		=> __( 'Categories', 'wp-job-board' ),
+					// 	'id'        		=> self::$prefix . 'category',
+					// 	'type'      		=> 'taxonomy_multicheck',
+					// 	'taxonomy'  		=> 'candidate_category',
+					// 	'priority'           => 30,
+					// ),
 					// array(
 					// 	'name'              => __( 'Introduction Video URL (Youtube/Vimeo)', 'wp-job-board' ),
 					// 	'id'                => self::$prefix . 'video_url',
