@@ -4573,7 +4573,7 @@ msgstr "応募はありません。"
 
 #: template-jobs/misc/jobs-shortlist.php:9
 msgid "Jobs Shortlist"
-msgstr ""
+msgstr "お気に入り"
 
 #: template-jobs/misc/jobs-shortlist.php:163
 msgid "No jobs found."
