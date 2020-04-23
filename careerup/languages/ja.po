@@ -4672,19 +4672,19 @@ msgstr "アラートは見つかりませんでした。"
 #: template-jobs/misc/password-form.php:7
 #: template-jobs/misc/password-form.php:24
 msgid "Change Password"
-msgstr ""
+msgstr "パスワード変更"
 
 #: template-jobs/misc/password-form.php:10
 msgid "Old password"
-msgstr ""
+msgstr "古いパスワード"
 
 #: template-jobs/misc/password-form.php:15
 msgid "New password"
-msgstr ""
+msgstr "新しいパスワード"
 
 #: template-jobs/misc/password-form.php:20
 msgid "Retype password"
-msgstr ""
+msgstr "新しいパスワード再入力"
 
 #: template-jobs/misc/register.php:12
 msgid "Create New Account"
