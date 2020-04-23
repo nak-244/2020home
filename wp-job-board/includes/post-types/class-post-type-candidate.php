@@ -361,11 +361,11 @@ class WP_Job_Board_Post_Type_Candidate {
 					),
 					'description' => __('Upload file .pdf, .doc, .docx', 'wp-job-board')
 				),
-				array(
-					'name'              => __( 'Introduction Video URL (Youtube/Vimeo)', 'wp-job-board' ),
-					'id'                => self::$prefix . 'video_url',
-					'type'              => 'text',
-				),
+				// array(
+				// 	'name'              => __( 'Introduction Video URL (Youtube/Vimeo)', 'wp-job-board' ),
+				// 	'id'                => self::$prefix . 'video_url',
+				// 	'type'              => 'text',
+				// ),
 			),
 		);
 
@@ -740,12 +740,12 @@ class WP_Job_Board_Post_Type_Candidate {
 						'taxonomy'  		=> 'candidate_category',
 						'priority'           => 30,
 					),
-					array(
-						'name'              => __( 'Introduction Video URL (Youtube/Vimeo)', 'wp-job-board' ),
-						'id'                => self::$prefix . 'video_url',
-						'type'              => 'text',
-						'priority'           => 30.1,
-					),
+					// array(
+					// 	'name'              => __( 'Introduction Video URL (Youtube/Vimeo)', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'video_url',
+					// 	'type'              => 'text',
+					// 	'priority'           => 30.1,
+					// ),
 
 					array(
 						'name'              => __( 'Description', 'wp-job-board' ),
