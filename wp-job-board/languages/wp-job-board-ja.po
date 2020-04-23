@@ -2116,23 +2116,23 @@ msgstr ""
 
 #: includes/class-job-alert.php:28
 msgid "Daily"
-msgstr ""
+msgstr "毎日"
 
 #: includes/class-job-alert.php:32 includes/class-mixes.php:395
 msgid "Weekly"
-msgstr "週給"
+msgstr "毎週"
 
 #: includes/class-job-alert.php:36
 msgid "Fortnightly"
-msgstr ""
+msgstr "隔週"
 
 #: includes/class-job-alert.php:40 includes/class-mixes.php:394
 msgid "Monthly"
-msgstr "月給"
+msgstr "毎月"
 
 #: includes/class-job-alert.php:44
 msgid "Biannually"
-msgstr ""
+msgstr "隔年"
 
 #: includes/class-job-alert.php:48
 msgid "Annually"
