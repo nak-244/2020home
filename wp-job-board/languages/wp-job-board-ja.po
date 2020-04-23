@@ -4780,7 +4780,7 @@ msgstr ""
 
 #: templates/misc/resume-form.php:48
 msgid "Save Resume"
-msgstr ""
+msgstr "保存"
 
 #: templates/misc/uploaded-file-html.php:20
 #: templates/misc/uploaded-file-html.php:22
