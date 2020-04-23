@@ -304,7 +304,7 @@ class WP_Job_Board_Post_Type_Candidate {
 					'name'              => __( 'Date of Birth', 'wp-job-board' ),
 					'id'                => self::$prefix . 'founded_date',
 					'type'              => 'text_date',
-          'date_format' 		=> 'Y-m-d',
+          'date_format' 		=> 'Y/m/d',
 					'attributes'		=> array(
 						'data-datepicker' => json_encode(array(
 							'yearRange' => '-100:+5',
