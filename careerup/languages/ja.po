@@ -5074,6 +5074,8 @@ msgid ""
 "Put value for %s field to increase your skill up to <strong class=\"text-info"
 "\">\"%s\"</strong>"
 msgstr ""
+"%s を入力すると、完成度が <strong class=“text-info”>”%s”</strong> 増加しま"
+"す。"
 
 #: widgets/user-short-profile.php:97
 msgid ""
