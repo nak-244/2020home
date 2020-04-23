@@ -3,7 +3,7 @@
  * Post Type: Candidate
  *
  * @package    wp-job-board
- * @author     Habq 
+ * @author     Habq
  * @license    GNU General Public License, version 3
  */
 
@@ -146,7 +146,7 @@ class WP_Job_Board_Post_Type_Candidate {
 	public static function save_post($post_id, $post) {
 		if ( $post->post_type === 'candidate' ) {
 			$post_args = array( 'ID' => $post_id );
-			
+
 			if ( !empty($_POST[self::$prefix . 'urgent']) ) {
 				$post_args['menu_order'] = -2;
 			} elseif ( !empty($_POST[self::$prefix . 'featured']) ) {
@@ -188,7 +188,7 @@ class WP_Job_Board_Post_Type_Candidate {
 			add_action('save_post', array( __CLASS__, 'save_post' ), 10, 2 );
 
 			delete_transient( 'wp_job_board_filter_counts' );
-			
+
 			clean_post_cache( $post_id );
 		}
 	}
@@ -230,7 +230,7 @@ class WP_Job_Board_Post_Type_Candidate {
 			add_action( 'denied_to_publish', array( __CLASS__, 'process_denied_to_publish' ) );
 		}
 	}
-	
+
 	public static function process_pending_to_publish($post) {
 		if ( $post->post_type === 'candidate' ) {
 			$user_id = WP_Job_Board_User::get_user_by_candidate_id($post->ID);
@@ -248,12 +248,12 @@ class WP_Job_Board_Post_Type_Candidate {
 	 * @return array
 	 */
 	public static function fields( array $metaboxes ) {
-		
+
 		$cv_file_types = array();
 		if ( is_admin() ) {
 			$cv_file_type_keys = wp_job_board_get_option('cv_file_types', array('doc', 'docx', 'pdf'));
 			$all_cv_file_types = WP_Job_Board_Mixes::get_cv_mime_types();
-			
+
 			foreach ($cv_file_type_keys as $mime) {
 				if ( !empty($all_cv_file_types[$mime]) ) {
 					$cv_file_types[] = $all_cv_file_types[$mime];
@@ -430,51 +430,51 @@ class WP_Job_Board_Post_Type_Candidate {
 			),
 		);
 
-		$metaboxes[ self::$prefix . 'education' ] = array(
-			'id'                        => self::$prefix . 'education',
-			'title'                     => __( 'Education', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Education', 'wp-job-board' ),
-					'id'                => self::$prefix . 'education',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Education {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Title', 'wp-job-board' ),
-							'id'        => 'title',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Academy', 'wp-job-board' ),
-							'id'        => 'academy',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Year', 'wp-job-board' ),
-							'id'        => 'year',
-							'type'      => 'text',
-						),
-						array(
-							'name'      => __( 'Description', 'wp-job-board' ),
-							'id'        => 'description',
-							'type'      => 'textarea',
-						),
-					)
-				),
-			),
-		);
+		// $metaboxes[ self::$prefix . 'education' ] = array(
+		// 	'id'                        => self::$prefix . 'education',
+		// 	'title'                     => __( 'Education', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Education', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'education',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Education {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Title', 'wp-job-board' ),
+		// 					'id'        => 'title',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Academy', 'wp-job-board' ),
+		// 					'id'        => 'academy',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Year', 'wp-job-board' ),
+		// 					'id'        => 'year',
+		// 					'type'      => 'text',
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Description', 'wp-job-board' ),
+		// 					'id'        => 'description',
+		// 					'type'      => 'textarea',
+		// 				),
+		// 			)
+		// 		),
+		// 	),
+		// );
 
 		$metaboxes[ self::$prefix . 'experience' ] = array(
 			'id'                        => self::$prefix . 'experience',
@@ -635,7 +635,7 @@ class WP_Job_Board_Post_Type_Candidate {
 			}
 			$cv_file_type_keys = wp_job_board_get_option('cv_file_types', array('doc', 'docx', 'pdf'));
 			$currency_symbol = wp_job_board_get_option('currency_symbol', '$');
-			
+
 			$fields = apply_filters( 'wp-job-board-candidate-fields-front', array(
 					array(
 						'id'                => self::$prefix . 'post_type',
@@ -1163,6 +1163,6 @@ class WP_Job_Board_Post_Type_Candidate {
 			}
 		}
 	}
-	
+
 }
 WP_Job_Board_Post_Type_Candidate::init();
