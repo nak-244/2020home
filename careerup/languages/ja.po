@@ -4650,7 +4650,7 @@ msgstr "検索条件"
 
 #: template-jobs/misc/my-jobs-alerts.php:61
 msgid "Number Jobs"
-msgstr ""
+msgstr "求人数"
 
 #: template-jobs/misc/my-jobs-alerts.php:62
 msgid "Times"
