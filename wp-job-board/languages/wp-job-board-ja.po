@@ -2892,7 +2892,7 @@ msgstr ""
 #: includes/post-types/class-post-type-candidate.php:284
 #: includes/post-types/class-post-type-employer.php:134
 msgid "Attached User"
-msgstr ""
+msgstr "接続ユーザー"
 
 #: includes/post-types/class-post-type-candidate.php:289
 #: includes/post-types/class-post-type-job_listing.php:391
