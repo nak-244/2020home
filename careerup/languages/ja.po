@@ -4254,7 +4254,7 @@ msgstr ""
 
 #: template-jobs/content-single-candidate.php:26
 msgid "Education"
-msgstr ""
+msgstr "教育"
 
 #: template-jobs/content-single-candidate.php:27
 msgid "Experience"
