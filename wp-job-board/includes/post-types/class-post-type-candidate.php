@@ -430,51 +430,51 @@ class WP_Job_Board_Post_Type_Candidate {
 			),
 		);
 
-		// $metaboxes[ self::$prefix . 'education' ] = array(
-		// 	'id'                        => self::$prefix . 'education',
-		// 	'title'                     => __( 'Education', 'wp-job-board' ),
-		// 	'object_types'              => array( 'candidate' ),
-		// 	'context'                   => 'normal',
-		// 	'priority'                  => 'high',
-		// 	'show_names'                => true,
-		// 	'show_in_rest'				=> true,
-		// 	'fields'                    => array(
-		// 		array(
-		// 			'name'              => __( 'Education', 'wp-job-board' ),
-		// 			'id'                => self::$prefix . 'education',
-		// 			'type'              => 'group',
-		// 			'options'     		=> array(
-		// 				'group_title'       => __( 'Education {#}', 'wp-job-board' ),
-		// 				'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
-		// 				'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
-		// 				'sortable'          => false,
-		// 				'closed'         => true,
-		// 			),
-		// 			'fields'			=> array(
-		// 				array(
-		// 					'name'      => __( 'Title', 'wp-job-board' ),
-		// 					'id'        => 'title',
-		// 					'type'      => 'text',
-		// 				),
-		// 				array(
-		// 					'name'      => __( 'Academy', 'wp-job-board' ),
-		// 					'id'        => 'academy',
-		// 					'type'      => 'text',
-		// 				),
-		// 				array(
-		// 					'name'      => __( 'Year', 'wp-job-board' ),
-		// 					'id'        => 'year',
-		// 					'type'      => 'text',
-		// 				),
-		// 				array(
-		// 					'name'      => __( 'Description', 'wp-job-board' ),
-		// 					'id'        => 'description',
-		// 					'type'      => 'textarea',
-		// 				),
-		// 			)
-		// 		),
-		// 	),
-		// );
+		$metaboxes[ self::$prefix . 'education' ] = array(
+			'id'                        => self::$prefix . 'education',
+			'title'                     => __( 'Education', 'wp-job-board' ),
+			'object_types'              => array( 'candidate' ),
+			'context'                   => 'normal',
+			'priority'                  => 'high',
+			'show_names'                => true,
+			'show_in_rest'				=> true,
+			'fields'                    => array(
+				array(
+					'name'              => __( 'Education', 'wp-job-board' ),
+					'id'                => self::$prefix . 'education',
+					'type'              => 'group',
+					'options'     		=> array(
+						'group_title'       => __( 'Education {#}', 'wp-job-board' ),
+						'add_button'        => __( 'Add Another Education', 'wp-job-board' ),
+						'remove_button'     => __( 'Remove Education', 'wp-job-board' ),
+						'sortable'          => false,
+						'closed'         => true,
+					),
+					'fields'			=> array(
+						array(
+							'name'      => __( 'Title', 'wp-job-board' ),
+							'id'        => 'title',
+							'type'      => 'text',
+						),
+						array(
+							'name'      => __( 'Academy', 'wp-job-board' ),
+							'id'        => 'academy',
+							'type'      => 'text',
+						),
+						array(
+							'name'      => __( 'Year', 'wp-job-board' ),
+							'id'        => 'year',
+							'type'      => 'text',
+						),
+						array(
+							'name'      => __( 'Description', 'wp-job-board' ),
+							'id'        => 'description',
+							'type'      => 'textarea',
+						),
+					)
+				),
+			),
+		);
 
 		$metaboxes[ self::$prefix . 'experience' ] = array(
 			'id'                        => self::$prefix . 'experience',
