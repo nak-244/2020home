@@ -2844,7 +2844,7 @@ msgstr ""
 #: templates/widgets/candidate-alert-form.php:28
 #: templates/widgets/job-alert-form.php:28
 msgid "Email Frequency"
-msgstr ""
+msgstr "メールの頻度"
 
 #: includes/post-types/class-post-type-candidate-alert.php:123
 msgid "Auhtor"
