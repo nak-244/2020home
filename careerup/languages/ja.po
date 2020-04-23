@@ -4654,7 +4654,7 @@ msgstr "求人数"
 
 #: template-jobs/misc/my-jobs-alerts.php:62
 msgid "Times"
-msgstr ""
+msgstr "頻度"
 
 #: template-jobs/misc/my-jobs-alerts.php:63
 #: template-jobs/submission/my-jobs.php:99
