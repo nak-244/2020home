@@ -1399,7 +1399,7 @@ msgstr ""
 #: inc/widgets/candidate-list.php:36 inc/widgets/employer-list.php:36
 #: inc/widgets/job-list.php:36 template-jobs/misc/my-jobs-alerts.php:59
 msgid "Title"
-msgstr ""
+msgstr "タイトル"
 
 #: inc/vendors/elementor/header-widgets/primary_menu.php:80
 msgid "Effect Dropdown Menu"
