@@ -369,42 +369,42 @@ class WP_Job_Board_Post_Type_Candidate {
 			),
 		);
 
-		$metaboxes[ self::$prefix . 'socials' ] = array(
-			'id'                        => self::$prefix . 'socials',
-			'title'                     => __( 'Socials', 'wp-job-board' ),
-			'object_types'              => array( 'candidate' ),
-			'context'                   => 'normal',
-			'priority'                  => 'high',
-			'show_names'                => true,
-			'show_in_rest'				=> true,
-			'fields'                    => array(
-				array(
-					'name'              => __( 'Socials', 'wp-job-board' ),
-					'id'                => self::$prefix . 'socials',
-					'type'              => 'group',
-					'options'     		=> array(
-						'group_title'       => __( 'Network {#}', 'wp-job-board' ),
-						'add_button'        => __( 'Add Another Network', 'wp-job-board' ),
-						'remove_button'     => __( 'Remove Network', 'wp-job-board' ),
-						'sortable'          => false,
-						'closed'         => true,
-					),
-					'fields'			=> array(
-						array(
-							'name'      => __( 'Network', 'wp-job-board' ),
-							'id'        => 'network',
-							'type'      => 'select',
-							'options'   => WP_Job_Board_Mixes::get_socials_network()
-						),
-						array(
-							'name'      => __( 'Url', 'wp-job-board' ),
-							'id'        => 'url',
-							'type'      => 'text',
-						),
-					),
-				),
-			),
-		);
+		// $metaboxes[ self::$prefix . 'socials' ] = array(
+		// 	'id'                        => self::$prefix . 'socials',
+		// 	'title'                     => __( 'Socials', 'wp-job-board' ),
+		// 	'object_types'              => array( 'candidate' ),
+		// 	'context'                   => 'normal',
+		// 	'priority'                  => 'high',
+		// 	'show_names'                => true,
+		// 	'show_in_rest'				=> true,
+		// 	'fields'                    => array(
+		// 		array(
+		// 			'name'              => __( 'Socials', 'wp-job-board' ),
+		// 			'id'                => self::$prefix . 'socials',
+		// 			'type'              => 'group',
+		// 			'options'     		=> array(
+		// 				'group_title'       => __( 'Network {#}', 'wp-job-board' ),
+		// 				'add_button'        => __( 'Add Another Network', 'wp-job-board' ),
+		// 				'remove_button'     => __( 'Remove Network', 'wp-job-board' ),
+		// 				'sortable'          => false,
+		// 				'closed'         => true,
+		// 			),
+		// 			'fields'			=> array(
+		// 				array(
+		// 					'name'      => __( 'Network', 'wp-job-board' ),
+		// 					'id'        => 'network',
+		// 					'type'      => 'select',
+		// 					'options'   => WP_Job_Board_Mixes::get_socials_network()
+		// 				),
+		// 				array(
+		// 					'name'      => __( 'Url', 'wp-job-board' ),
+		// 					'id'        => 'url',
+		// 					'type'      => 'text',
+		// 				),
+		// 			),
+		// 		),
+		// 	),
+		// );
 
 		$metaboxes[ self::$prefix . 'map_location' ] = array(
 			'id'                        => self::$prefix . 'map_location',
@@ -747,31 +747,31 @@ class WP_Job_Board_Post_Type_Candidate {
 					// 	'priority'           => 30.1,
 					// ),
 
-					array(
-						'name'              => __( 'Description', 'wp-job-board' ),
-						'id'                => self::$prefix . 'description',
-						'type'              => 'wysiwyg',
-						'default'           => ! empty( $post ) ? $post->post_content : '',
-						'priority'           => 31,
-						'options' => array(
-						    'media_buttons' => false,
-						    'textarea_rows' => 8,
-						    'tinymce'       => array(
-								'plugins'                       => 'lists,paste,tabfocus,wplink,wordpress',
-								'paste_as_text'                 => true,
-								'paste_auto_cleanup_on_paste'   => true,
-								'paste_remove_spans'            => true,
-								'paste_remove_styles'           => true,
-								'paste_remove_styles_if_webkit' => true,
-								'paste_strip_class_attributes'  => true,
-								'toolbar1'                      => 'bold,italic,|,bullist,numlist,|,link,unlink,|,undo,redo',
-								'toolbar2'                      => '',
-								'toolbar3'                      => '',
-								'toolbar4'                      => ''
-							),
-						    'quicktags' => false
-						),
-					),
+					// array(
+					// 	'name'              => __( 'Description', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'description',
+					// 	'type'              => 'wysiwyg',
+					// 	'default'           => ! empty( $post ) ? $post->post_content : '',
+					// 	'priority'           => 31,
+					// 	'options' => array(
+					// 	    'media_buttons' => false,
+					// 	    'textarea_rows' => 8,
+					// 	    'tinymce'       => array(
+					// 			'plugins'                       => 'lists,paste,tabfocus,wplink,wordpress',
+					// 			'paste_as_text'                 => true,
+					// 			'paste_auto_cleanup_on_paste'   => true,
+					// 			'paste_remove_spans'            => true,
+					// 			'paste_remove_styles'           => true,
+					// 			'paste_remove_styles_if_webkit' => true,
+					// 			'paste_strip_class_attributes'  => true,
+					// 			'toolbar1'                      => 'bold,italic,|,bullist,numlist,|,link,unlink,|,undo,redo',
+					// 			'toolbar2'                      => '',
+					// 			'toolbar3'                      => '',
+					// 			'toolbar4'                      => ''
+					// 		),
+					// 	    'quicktags' => false
+					// 	),
+					// ),
 
 					array(
 						'id'                => self::$prefix . 'map_location',
@@ -783,44 +783,44 @@ class WP_Job_Board_Post_Type_Candidate {
 					),
 
 					// socials
-					array(
-						'name'              => __( 'Socials', 'wp-job-board' ),
-						'id'                => self::$prefix . 'socials',
-						'type'              => 'group',
-						'options'     		=> array(
-							'group_title'       => __( 'Network {#}', 'wp-job-board' ),
-							'add_button'        => __( 'Add Another Network', 'wp-job-board' ),
-							'remove_button'     => __( 'Remove Network', 'wp-job-board' ),
-							'sortable'          => false,
-							'closed'         => true,
-						),
-						'fields'			=> array(
-							array(
-								'name'      => __( 'Network', 'wp-job-board' ),
-								'id'        => 'network',
-								'type'      => 'select',
-								'options'   => WP_Job_Board_Mixes::get_socials_network()
-							),
-							array(
-								'name'      => __( 'Url', 'wp-job-board' ),
-								'id'        => 'url',
-								'type'      => 'text',
-							),
-						),
-						'priority'           => 33,
-					),
-					array(
-						'name'      		=> __( 'Tags', 'wp-job-board' ),
-						'id'        		=> self::$prefix . 'tags',
-						'type'      		=> 'wp_job_board_tags',
-						'taxonomy'  		=> 'candidate_tag',
-						'default'			=> !empty($tags_default) ? $tags_default : '',
-						'priority'           => 34,
-						'attributes'		=> array(
-							'autocomplete'		=> 'off',
-							'placeholder' 		=> __( 'e.g. PHP, Developer, CSS', 'wp-job-board' ),
-						),
-					),
+					// array(
+					// 	'name'              => __( 'Socials', 'wp-job-board' ),
+					// 	'id'                => self::$prefix . 'socials',
+					// 	'type'              => 'group',
+					// 	'options'     		=> array(
+					// 		'group_title'       => __( 'Network {#}', 'wp-job-board' ),
+					// 		'add_button'        => __( 'Add Another Network', 'wp-job-board' ),
+					// 		'remove_button'     => __( 'Remove Network', 'wp-job-board' ),
+					// 		'sortable'          => false,
+					// 		'closed'         => true,
+					// 	),
+					// 	'fields'			=> array(
+					// 		array(
+					// 			'name'      => __( 'Network', 'wp-job-board' ),
+					// 			'id'        => 'network',
+					// 			'type'      => 'select',
+					// 			'options'   => WP_Job_Board_Mixes::get_socials_network()
+					// 		),
+					// 		array(
+					// 			'name'      => __( 'Url', 'wp-job-board' ),
+					// 			'id'        => 'url',
+					// 			'type'      => 'text',
+					// 		),
+					// 	),
+					// 	'priority'           => 33,
+					// ),
+					// array(
+					// 	'name'      		=> __( 'Tags', 'wp-job-board' ),
+					// 	'id'        		=> self::$prefix . 'tags',
+					// 	'type'      		=> 'wp_job_board_tags',
+					// 	'taxonomy'  		=> 'candidate_tag',
+					// 	'default'			=> !empty($tags_default) ? $tags_default : '',
+					// 	'priority'           => 34,
+					// 	'attributes'		=> array(
+					// 		'autocomplete'		=> 'off',
+					// 		'placeholder' 		=> __( 'e.g. PHP, Developer, CSS', 'wp-job-board' ),
+					// 	),
+					// ),
 				)
 			);
 
