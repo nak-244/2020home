@@ -632,15 +632,15 @@ msgstr "メッセージ検索"
 
 #: templates/dashboard.php:42
 msgid "All"
-msgstr ""
+msgstr "すべて"
 
 #: templates/dashboard.php:43
 msgid "Read"
-msgstr ""
+msgstr "既読"
 
 #: templates/dashboard.php:44
 msgid "Unread"
-msgstr ""
+msgstr "未読"
 
 #: templates/not-allowed.php:8
 msgid "You are not allowed to access this page."
