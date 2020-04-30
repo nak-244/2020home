@@ -35,7 +35,6 @@ if ( $selected_post ) {
           <div class="message-title"><?php echo esc_html($selected_post->post_title); ?></div>
         </div>
     </div>
-		<!-- ああ -->
     <a href="javascript:void(0);" class="delete-message-btn pull-right" data-id="<?php echo esc_attr($selected_post->ID); ?>" data-nonce="<?php echo esc_attr(wp_create_nonce( 'wp-private-message-delete-message-nonce' )); ?>"><i class="flaticon-dustbin"></i><?php esc_html_e('Delete Conversation', 'wp-private-message'); ?></a>
 
   </div>
