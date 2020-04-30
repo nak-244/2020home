@@ -648,11 +648,11 @@ msgstr ""
 
 #: templates/reply-item.php:23
 msgid "Today"
-msgstr ""
+msgstr "今日"
 
 #: templates/reply-item.php:25
 msgid "Yesterday"
-msgstr ""
+msgstr "1日前"
 
 #: templates/reply-message-form.php:16
 msgid "Send"
