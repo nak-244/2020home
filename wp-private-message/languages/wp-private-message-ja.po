@@ -176,7 +176,7 @@ msgstr "メッセージ"
 #: templates/reply-message-form.php:13
 #: templates/widgets/send-message-form.php:28
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: includes/post-types/class-post-type-private-message.php:26
 #: includes/post-types/class-post-type-private-message.php:27
@@ -656,7 +656,7 @@ msgstr ""
 
 #: templates/reply-message-form.php:16
 msgid "Send"
-msgstr ""
+msgstr "送信"
 
 #: templates/reply-section.php:38
 msgid "Delete Conversation"
