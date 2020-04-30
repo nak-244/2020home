@@ -660,7 +660,7 @@ msgstr ""
 
 #: templates/reply-section.php:38
 msgid "Delete Conversation"
-msgstr "会話を削除"
+msgstr "削除"
 
 #: templates/widgets/send-message-form.php:34
 msgid "Send Message"
