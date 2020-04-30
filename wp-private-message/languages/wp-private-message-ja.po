@@ -628,7 +628,7 @@ msgstr ""
 
 #: templates/dashboard.php:31
 msgid "Search"
-msgstr ""
+msgstr "メッセージ検索"
 
 #: templates/dashboard.php:42
 msgid "All"
