@@ -2420,6 +2420,8 @@ msgstr ""
 #: includes/class-user.php:274
 msgid "Wrong username or password. Please try again!!!"
 msgstr ""
+"ユーザー名・メールアドレス・パスワードが間違っています。正しく入力してくださ"
+"い。"
 
 #: includes/class-user.php:281
 msgid "Signin successful, redirecting..."
@@ -2451,7 +2453,7 @@ msgstr ""
 
 #: includes/class-user.php:375
 msgid "System is unable to send you mail containg your new password."
-msgstr ""
+msgstr "新しいパスワードを含むメールを送信できません。"
 
 #: includes/class-user.php:378
 msgid "Oops! Something went wrong while updating your account."

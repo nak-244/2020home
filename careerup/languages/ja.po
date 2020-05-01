@@ -4622,15 +4622,15 @@ msgstr "ユーザー名 or メールアドレス"
 
 #: template-jobs/misc/login.php:72
 msgid "Get New Password"
-msgstr ""
+msgstr "パスワード再設定"
 
 #: template-jobs/misc/login.php:73 woocommerce/myaccount/my-orders.php:77
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: template-jobs/misc/login.php:77
 msgid "Back To Login"
-msgstr ""
+msgstr "ログイン画面に戻る"
 
 #: template-jobs/misc/my-following-employers.php:9
 msgid "Following Employers"
