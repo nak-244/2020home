@@ -147,7 +147,7 @@ msgstr ""
 
 #: includes/class-private-message.php:271 templates/dashboard.php:91
 msgid "No message found"
-msgstr ""
+msgstr "メッセージはありません"
 
 #: includes/class-private-message.php:279 templates/dashboard.php:78
 #: templates/reply-section.php:46
