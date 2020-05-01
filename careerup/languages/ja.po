@@ -3791,21 +3791,21 @@ msgstr ""
 
 #: inc/vendors/wp-private-message/functions.php:13
 msgid "Send message to \"%s\""
-msgstr ""
+msgstr "\"%s\" さんにメッセージを送る"
 
 #: inc/vendors/wp-private-message/functions.php:19
 #: widgets/candidate-contact-form.php:46 widgets/employer-contact-form.php:50
 msgid "Subject"
-msgstr ""
+msgstr "件名"
 
 #: inc/vendors/wp-private-message/functions.php:22
 msgid "Enter text here..."
-msgstr ""
+msgstr "本文を入力…"
 
 #: inc/vendors/wp-private-message/functions.php:28
 #: widgets/employer-contact-form.php:73
 msgid "Send Message"
-msgstr ""
+msgstr "メッセージ送信"
 
 #: inc/vendors/wp-private-message/functions.php:38
 msgid "Please login to send a private message"
@@ -5494,15 +5494,15 @@ msgstr ""
 
 #: wp-private-message/reply-item.php:23
 msgid "Today"
-msgstr ""
+msgstr "今日"
 
 #: wp-private-message/reply-item.php:25
 msgid "Yesterday"
-msgstr ""
+msgstr "1日前"
 
 #: wp-private-message/reply-section.php:58
 msgid "Delete Conversation"
-msgstr ""
+msgstr "会話を削除"
 
 #. Theme Name of the plugin/theme
 msgid "Careerup"
