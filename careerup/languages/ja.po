@@ -3787,7 +3787,7 @@ msgstr ""
 
 #: inc/vendors/wp-private-message/functions.php:9
 msgid "Send Private Message"
-msgstr ""
+msgstr "プライベートメッセージ送信"
 
 #: inc/vendors/wp-private-message/functions.php:13
 msgid "Send message to \"%s\""
@@ -5023,11 +5023,11 @@ msgstr "メールアドレス"
 #: widgets/candidate-contact-form.php:61 widgets/employer-contact-form.php:65
 #: woocommerce/single-product-reviews.php:95
 msgid "Message"
-msgstr ""
+msgstr "本文"
 
 #: widgets/candidate-contact-form.php:69
 msgid "Send Now"
-msgstr ""
+msgstr "送る"
 
 #: widgets/candidate-contact-form.php:83
 msgid ""
