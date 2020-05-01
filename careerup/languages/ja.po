@@ -4610,15 +4610,15 @@ msgstr "ログイン"
 
 #: template-jobs/misc/login.php:58
 msgid "Reset Password"
-msgstr ""
+msgstr "パスワードをリセット"
 
 #: template-jobs/misc/login.php:59
 msgid "Please Enter Username or Email"
-msgstr ""
+msgstr "ユーザー名かメールアドレスを入力"
 
 #: template-jobs/misc/login.php:64
 msgid "Username or E-mail"
-msgstr ""
+msgstr "ユーザー名 or メールアドレス"
 
 #: template-jobs/misc/login.php:72
 msgid "Get New Password"
