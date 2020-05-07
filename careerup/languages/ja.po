@@ -4186,28 +4186,28 @@ msgstr ""
 #: template-jobs/content-approved-applicant.php:58
 #: template-jobs/content-rejected-applicant.php:56
 msgid "Approved"
-msgstr ""
+msgstr "承認"
 
 #: template-jobs/content-applicant.php:60
 #: template-jobs/content-approved-applicant.php:60
 #: template-jobs/content-rejected-applicant.php:58
 msgid "Rejected"
-msgstr ""
+msgstr "拒否"
 
 #: template-jobs/content-applicant.php:62
 #: template-jobs/content-approved-applicant.php:62
 #: template-jobs/content-rejected-applicant.php:60
 msgid "Pending"
-msgstr ""
+msgstr "保留"
 
 #: template-jobs/content-applicant.php:107
 #: template-jobs/content-applicant.php:148
 msgid "Approve Application"
-msgstr ""
+msgstr "承認"
 
 #: template-jobs/content-applicant.php:109
 msgid "Reject Application"
-msgstr ""
+msgstr "拒否"
 
 #: template-jobs/content-applicant.php:117
 #: template-jobs/content-applicant.php:157
@@ -4224,16 +4224,16 @@ msgstr ""
 #: template-jobs/content-rejected-applicant.php:132
 #: template-jobs/submission/my-jobs.php:253 woocommerce/cart/cart.php:34
 msgid "Remove"
-msgstr ""
+msgstr "削除"
 
 #: template-jobs/content-applicant.php:150
 msgid "Reject"
-msgstr ""
+msgstr "拒否"
 
 #: template-jobs/content-approved-applicant.php:102
 #: template-jobs/content-approved-applicant.php:141
 msgid "Undo Approved"
-msgstr ""
+msgstr "承認を取り消す"
 
 #: template-jobs/content-rejected-applicant.php:99
 #: template-jobs/content-rejected-applicant.php:130
@@ -4556,11 +4556,11 @@ msgstr ""
 
 #: template-jobs/misc/job-applicants.php:169
 msgid "Approved: %s"
-msgstr ""
+msgstr "承認 : %s"
 
 #: template-jobs/misc/job-applicants.php:172
 msgid "Rejected: %s"
-msgstr ""
+msgstr "拒否 : %s"
 
 #: template-jobs/misc/jobs-applied.php:91
 #: template-jobs/misc/jobs-shortlist.php:128

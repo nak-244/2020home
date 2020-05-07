@@ -1589,7 +1589,7 @@ msgstr ""
 
 #: includes/class-applicant.php:243
 msgid "Reject this applicant successful."
-msgstr ""
+msgstr "拒否しました。"
 
 #: includes/class-applicant.php:272
 msgid "You can not to undo this applicant."
@@ -1597,7 +1597,7 @@ msgstr ""
 
 #: includes/class-applicant.php:323
 msgid "Undo Reject this applicant successful."
-msgstr ""
+msgstr "拒否を取り消しました。"
 
 #: includes/class-applicant.php:344
 msgid "Can not to show rejected applicants."
@@ -1623,7 +1623,7 @@ msgstr ""
 
 #: includes/class-applicant.php:482
 msgid "Approve this applicant successful."
-msgstr ""
+msgstr "承認しました。"
 
 #: includes/class-applicant.php:511
 msgid "You can not to undo approve this applicant."
@@ -1631,7 +1631,7 @@ msgstr ""
 
 #: includes/class-applicant.php:562
 msgid "Undo Approve this applicant successful."
-msgstr ""
+msgstr "承認を取り消しました。"
 
 #: includes/class-applicant.php:583
 msgid "Can not to show approved applicants."
