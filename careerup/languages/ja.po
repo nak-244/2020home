@@ -4529,11 +4529,11 @@ msgstr "パスワード"
 
 #: template-jobs/misc/employer-dashboard.php:31
 msgid "Posted Jobs"
-msgstr ""
+msgstr "求人数"
 
 #: template-jobs/misc/employer-dashboard.php:71
 msgid "Recent Applicants"
-msgstr ""
+msgstr "最近の応募"
 
 #: template-jobs/misc/employer-dashboard.php:123
 #: template-jobs/misc/employer-dashboard.php:128
@@ -5051,7 +5051,7 @@ msgstr ""
 
 #: widgets/employer-info.php:80
 msgid "Posted jobs"
-msgstr ""
+msgstr "求人数"
 
 #: widgets/job-also-viewed.php:51
 msgid "<a class=\"text-theme\" href=\"%s\">%s</a>"
