@@ -4544,7 +4544,7 @@ msgstr "応募はありません。"
 
 #: template-jobs/misc/job-applicants.php:9
 msgid "Applicant"
-msgstr ""
+msgstr "応募者"
 
 #: template-jobs/misc/job-applicants.php:18
 msgid "Filter by job"
@@ -4906,7 +4906,7 @@ msgstr ""
 
 #: template-jobs/submission/my-jobs.php:97
 msgid "Applicants"
-msgstr ""
+msgstr "応募者"
 
 #: template-jobs/submission/my-jobs.php:120
 msgid "Filled"
