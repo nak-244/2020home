@@ -21,7 +21,7 @@ wp_enqueue_style('select2');
 						<li class="active"><input id="cadidate" type="radio" name="role" value="wp_job_board_candidate" checked="checked">
 							<label for="cadidate">求職者登録フォーム</label>
 						</li>
-						<!-- <li><input type="radio" id="employer" name="role" value="wp_job_board_employer"><label for="employer"><?php esc_html_e('Employer', 'careerup'); ?></label></li> -->
+						<li><input type="radio" id="employer" name="role" value="wp_job_board_employer"><label for="employer"><?php esc_html_e('Employer', 'careerup'); ?></label></li>
 					</ul>
 				</div>
 				<div class="form-group">
