@@ -121,7 +121,7 @@ msgstr ""
 
 #: includes/class-private-message.php:81
 msgid "Sent message successful."
-msgstr ""
+msgstr "メッセージ送信完了"
 
 #: includes/class-private-message.php:85
 msgid "Send message error."
@@ -133,7 +133,7 @@ msgstr ""
 
 #: includes/class-private-message.php:131
 msgid "Message did not exists."
-msgstr ""
+msgstr "存在しません。"
 
 #: includes/class-private-message.php:187
 msgid "Reply message error."
@@ -143,7 +143,7 @@ msgstr ""
 #: includes/class-private-message.php:324
 #: includes/class-private-message.php:370
 msgid "Message is not exactly"
-msgstr ""
+msgstr "正しくありません。"
 
 #: includes/class-private-message.php:271 templates/dashboard.php:91
 msgid "No message found"
@@ -156,11 +156,11 @@ msgstr ""
 
 #: includes/class-private-message.php:387
 msgid "Message is successful"
-msgstr ""
+msgstr "成功しました。"
 
 #: includes/class-private-message.php:391
 msgid "Message is error."
-msgstr ""
+msgstr "エラー"
 
 #: includes/class-recaptcha.php:31
 msgid "reCAPTCHA is a required field"

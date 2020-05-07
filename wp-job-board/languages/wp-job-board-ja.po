@@ -1891,7 +1891,7 @@ msgstr ""
 
 #: includes/class-candidate.php:446 includes/class-candidate.php:519
 msgid "Apply job successfully."
-msgstr ""
+msgstr "応募完了"
 
 #: includes/class-candidate.php:450 includes/class-candidate.php:523
 msgid "Apply job error."
@@ -1930,7 +1930,7 @@ msgstr ""
 
 #: includes/class-candidate.php:650
 msgid "Remove applied successfully."
-msgstr ""
+msgstr "応募をキャンセルしました。"
 
 #: includes/class-candidate.php:656
 msgid "Remove applied error."
@@ -2266,7 +2266,7 @@ msgstr "応募"
 
 #: includes/class-job_listing.php:507
 msgid "Applied"
-msgstr ""
+msgstr "応募済"
 
 #: includes/class-job_listing.php:517
 msgid "Application deadline closed."
