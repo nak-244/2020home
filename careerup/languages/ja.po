@@ -384,7 +384,7 @@ msgstr "コラム"
 #: inc/vendors/redux-framework/redux-config.php:154
 #: inc/vendors/redux-framework/redux-config.php:259
 msgid "Blog"
-msgstr ""
+msgstr "コラム"
 
 #: inc/functions-frontend.php:180
 msgid "Search results for \""
