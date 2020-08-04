@@ -378,7 +378,7 @@ msgstr ""
 #: inc/functions-frontend.php:153 inc/functions-frontend.php:155
 #: inc/functions-frontend.php:289
 msgid "The Blogs"
-msgstr ""
+msgstr "コラム"
 
 #: inc/functions-frontend.php:166
 #: inc/vendors/redux-framework/redux-config.php:154
