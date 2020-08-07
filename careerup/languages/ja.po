@@ -4507,19 +4507,19 @@ msgstr ""
 #: template-jobs/misc/delete-profile-form.php:11
 #: template-jobs/misc/delete-profile-form.php:27
 msgid "Delete Profile"
-msgstr ""
+msgstr "プロフィール削除"
 
 #: template-jobs/misc/delete-profile-form.php:12
 msgid "Are you sure! You want to delete your profile."
-msgstr ""
+msgstr "アカウントを削除します。"
 
 #: template-jobs/misc/delete-profile-form.php:13
 msgid "This can't be undone!"
-msgstr ""
+msgstr "この操作は取り消せません。"
 
 #: template-jobs/misc/delete-profile-form.php:18
 msgid "Please enter your login Password to confirm:"
-msgstr ""
+msgstr "確認のため、ログイン時のパスワードを入力してください："
 
 #: template-jobs/misc/delete-profile-form.php:19
 #: template-jobs/misc/login.php:34 woocommerce/myaccount/form-login.php:41
