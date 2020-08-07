@@ -4437,7 +4437,7 @@ msgstr "応募はありません。"
 
 #: template-jobs/misc/candidates-shortlist.php:9
 msgid "Candidate Shorlist"
-msgstr ""
+msgstr "重要な応募者"
 
 #: template-jobs/misc/candidates-shortlist.php:15
 #: template-jobs/misc/job-applicants.php:15
