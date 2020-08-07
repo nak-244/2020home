@@ -3610,7 +3610,7 @@ msgstr ""
 
 #: includes/post-types/class-post-type-job_listing.php:61
 msgid "Search Job"
-msgstr ""
+msgstr "求人検索"
 
 #: includes/post-types/class-post-type-job_listing.php:62
 msgid "No Jobs found"
