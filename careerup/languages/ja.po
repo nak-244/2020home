@@ -4894,7 +4894,7 @@ msgstr ""
 
 #: template-jobs/submission/my-jobs.php:14
 msgid "Manage Jobs"
-msgstr ""
+msgstr "求人管理"
 
 #: template-jobs/submission/my-jobs.php:20
 msgid "Serach Job"
