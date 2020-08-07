@@ -11,7 +11,7 @@ global $post;
 	<!-- heading -->
 	<?php echo WP_Job_Board_Template_Loader::get_template_part( 'single-candidate/header' ); ?>
 
-	<div class="panel-affix-wrapper">
+	<!-- <div class="panel-affix-wrapper">
 		<div class="header-tabs-wrapper panel-affix">
 			<div class="header-tabs-nav">
 				<ul class="nav">
@@ -31,7 +31,8 @@ global $post;
 				</ul>
 			</div>
 		</div>
-	</div>
+	</div> -->
+
 	<!-- Main content -->
 	<div class="row content-single-candidate">
 		<div class="col-xs-12 list-content-candidate col-md-<?php echo esc_attr( is_active_sidebar( 'candidate-single-sidebar' ) ? 8 : 12); ?>">

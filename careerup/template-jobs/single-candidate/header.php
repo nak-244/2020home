@@ -26,9 +26,9 @@ $urgent = WP_Job_Board_Candidate::get_post_meta( $post->ID, 'urgent', true );
 ?>
 <div class="candidate-detail-header">
     <div class="flex-sm row">
-        <div class="col-md-8 col-sm-9 col-xs-12"> 
+        <div class="col-md-8 col-sm-9 col-xs-12">
             <div class="flex">
-                
+
                 <div class="candidate-thumbnail flex-middle">
                     <div class="inner-image">
                         <?php if ( has_post_thumbnail() ) { ?>
@@ -70,17 +70,19 @@ $urgent = WP_Job_Board_Candidate::get_post_meta( $post->ID, 'urgent', true );
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
         <div class="col-xs-12 col-sm-3 col-md-4">
             <div class="candidate-detail-buttons">
                 <div class="wrapper-shortlist">
                     <?php WP_Job_Board_Candidate::display_shortlist_btn($post->ID); ?>
                 </div>
+                <!-- 
                 <?php
-                    
+
                     WP_Job_Board_Candidate::display_download_cv_btn($post->ID);
-                    
+
                 ?>
+                 -->
             </div>
         </div>
     </div>
