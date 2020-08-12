@@ -32,7 +32,7 @@ $salary = WP_Job_Board_Job_Listing::get_salary_html($post->ID);
 		<?php the_title( sprintf( '<h2 class="entry-title job-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
 
         <div class="job-date-author">
-            <?php echo sprintf( __(' posted %s ago', 'wp-job-board'), human_time_diff(get_the_time('U'), current_time('timestamp')) ); ?> 
+            <?php echo sprintf( __(' posted %s ago', 'wp-job-board'), human_time_diff(get_the_time('U'), current_time('timestamp')) ); ?>
             <?php
             if ( $employer_id ) {
                 echo sprintf( __('by %s', 'wp-job-board'), get_the_title($employer_id) );
