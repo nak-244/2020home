@@ -16,7 +16,7 @@ $address = WP_Job_Board_Candidate::get_post_meta( $post->ID, 'address', true );
         </div>
     <?php } ?>
     <div class="candidate-information">
-        
+
         <?php the_title( '<h1 class="entry-title candidate-title">', '</h1>' ); ?>
         <?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) { ?>
             <?php foreach ($categories as $term) { ?>
@@ -27,7 +27,7 @@ $address = WP_Job_Board_Candidate::get_post_meta( $post->ID, 'address', true );
         <?php if ( $address ) { ?>
             <div class="candidate-address"><?php echo $address; ?></div>
         <?php } ?>
-        
+
     </div>
 
     <div class="candidate-detail-buttons">

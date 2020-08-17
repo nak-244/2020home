@@ -16111,32 +16111,32 @@ a.btn-app .title-app {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   width: 80px;
-  padding: 10px 5px;
+  padding: 5px 5px;
 }
 .job-list-v1 .employer-logo > a {
   width: 80px;
 }
 @media (min-width: 1200px) {
   .job-list-v1 .employer-logo {
-    width: 120px;
+    width: 158px;
   }
   .job-list-v1 .employer-logo > a {
-    width: 120px;
+    width: 158px;
   }
 }
-.job-list-v1 .job-information {
+/* .job-list-v1 .job-information {
   width: calc(100% - 80px);
   padding-left: 15px;
-}
+} */
 .rtl .job-list-v1 .job-information {
   padding-right: 15px;
   padding-left: inherit;
 }
 @media (min-width: 1200px) {
-  .job-list-v1 .job-information {
+  /* .job-list-v1 .job-information {
     width: calc(100% - 120px);
     padding-left: 30px;
-  }
+  } */
   .rtl .job-list-v1 .job-information {
     padding-right: 30px;
     padding-left: inherit;

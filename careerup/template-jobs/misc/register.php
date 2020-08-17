@@ -37,14 +37,14 @@ wp_enqueue_style('select2');
 					<input type="password" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="<?php esc_attr_e('Confirm Password *','careerup'); ?>">
 				</div>
 
-				<div class="form-group wp_job_board_employer_show">
+				<!-- <div class="form-group wp_job_board_employer_show">
 					<input type="text" class="form-control" name="company_name" id="register-company-name" placeholder="<?php esc_attr_e('Company Name','careerup'); ?>">
-				</div>
+				</div> -->
 
 				<div class="form-group">
 					<input type="text" class="form-control" name="phone" id="register-phone" placeholder="<?php esc_attr_e('Phone','careerup'); ?>">
 				</div>
-				<?php
+				<!-- <?php
 					$candidate_args = array(
 			            'taxonomy' => 'candidate_category',
 			            'orderby' => 'name',
@@ -95,7 +95,7 @@ wp_enqueue_style('select2');
 						</div>
 				    	<?php
 				    }
-				?>
+				?> -->
 				<?php wp_nonce_field('ajax-register-nonce', 'security_register'); ?>
 
 				<?php if ( WP_Job_Board_Recaptcha::is_recaptcha_enabled() ) { ?>

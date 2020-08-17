@@ -378,13 +378,13 @@ msgstr ""
 #: inc/functions-frontend.php:153 inc/functions-frontend.php:155
 #: inc/functions-frontend.php:289
 msgid "The Blogs"
-msgstr ""
+msgstr "コラム"
 
 #: inc/functions-frontend.php:166
 #: inc/vendors/redux-framework/redux-config.php:154
 #: inc/vendors/redux-framework/redux-config.php:259
 msgid "Blog"
-msgstr ""
+msgstr "コラム"
 
 #: inc/functions-frontend.php:180
 msgid "Search results for \""
@@ -4437,7 +4437,7 @@ msgstr "応募はありません。"
 
 #: template-jobs/misc/candidates-shortlist.php:9
 msgid "Candidate Shorlist"
-msgstr ""
+msgstr "重要な応募者"
 
 #: template-jobs/misc/candidates-shortlist.php:15
 #: template-jobs/misc/job-applicants.php:15
@@ -4507,19 +4507,19 @@ msgstr ""
 #: template-jobs/misc/delete-profile-form.php:11
 #: template-jobs/misc/delete-profile-form.php:27
 msgid "Delete Profile"
-msgstr ""
+msgstr "プロフィール削除"
 
 #: template-jobs/misc/delete-profile-form.php:12
 msgid "Are you sure! You want to delete your profile."
-msgstr ""
+msgstr "アカウントを削除します。"
 
 #: template-jobs/misc/delete-profile-form.php:13
 msgid "This can't be undone!"
-msgstr ""
+msgstr "この操作は取り消せません。"
 
 #: template-jobs/misc/delete-profile-form.php:18
 msgid "Please enter your login Password to confirm:"
-msgstr ""
+msgstr "確認のため、ログイン時のパスワードを入力してください："
 
 #: template-jobs/misc/delete-profile-form.php:19
 #: template-jobs/misc/login.php:34 woocommerce/myaccount/form-login.php:41
@@ -4894,7 +4894,7 @@ msgstr ""
 
 #: template-jobs/submission/my-jobs.php:14
 msgid "Manage Jobs"
-msgstr ""
+msgstr "求人管理"
 
 #: template-jobs/submission/my-jobs.php:20
 msgid "Serach Job"

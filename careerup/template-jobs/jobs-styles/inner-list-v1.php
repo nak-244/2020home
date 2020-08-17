@@ -18,16 +18,7 @@ $longitude = WP_Job_Board_Job_Listing::get_post_meta( $post->ID, 'map_location_l
 <?php do_action( 'wp_job_board_before_job_content', $post->ID ); ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class('job-list-v1'); ?> data-latitude="<?php echo esc_attr($latitude); ?>" data-longitude="<?php echo esc_attr($longitude); ?>">
     <div class="flex-sm">
-        <div class="employer-logo flex-middle hidden-xs">
-            <a href="<?php echo esc_url( get_permalink() ); ?>">
-                <?php if ( has_post_thumbnail($employer_id) ) { ?>
-                    <?php echo get_the_post_thumbnail( $employer_id, 'thumbnail' ); ?>
-                <?php } else { ?>
-                    <img src="<?php echo esc_url(careerup_placeholder_img_src()); ?>" alt="<?php echo esc_attr(get_the_title($employer_id)); ?>">
-                <?php } ?>
-            </a>
-        </div>
-        <div class="job-information flex-middle">
+        <div class="job-information flex-middle" width="100%">
             <div class="inner">
             	<?php if ( $types ) { ?>
                     <?php foreach ($types as $term) { ?>
@@ -41,7 +32,7 @@ $longitude = WP_Job_Board_Job_Listing::get_post_meta( $post->ID, 'map_location_l
                 </div>
 
                 <div class="job-date-author">
-                    <?php echo sprintf(esc_html__(' posted %s ago', 'careerup'), human_time_diff(get_the_time('U'), current_time('timestamp')) ); ?> 
+                    <?php echo sprintf(esc_html__(' posted %s ago', 'careerup'), human_time_diff(get_the_time('U'), current_time('timestamp')) ); ?>
                     <?php
                     if ( $employer_id ) {
                         echo sprintf(wp_kses(__('by <a href="%s" class="employer text-theme">%s</a>', 'careerup'), array( 'a' => array('class' => array(), 'href' => array()) ) ), get_permalink($employer_id), get_the_title($employer_id) );
@@ -58,11 +49,16 @@ $longitude = WP_Job_Board_Job_Listing::get_post_meta( $post->ID, 'map_location_l
                 </div>
             </div>
             <div class="ali-right hidden-xs">
+							<div class="employer-logo flex-middle hidden-xs">
+									<a href="<?php echo esc_url( get_permalink() ); ?>">
+											 <?php the_post_thumbnail('full'); ?>
+									</a>
+							</div>
                 <a class="btn btn-theme btn-outline" href="<?php echo esc_url( get_permalink() ) ?>"><?php echo esc_html__('Browse Job','careerup') ?></a>
             </div>
         </div>
     </div>
-    
+
     <?php careerup_job_display_urgent_icon($post); ?>
 
 </article><!-- #post-## -->
