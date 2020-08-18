@@ -234,7 +234,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
                                 'position' => 'b4_desc',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            
+
                             if ($employer_content != '') {
                                 ?>
                                 <div class="careerfy-content-title"><h2><?php esc_html_e('Company Description', 'careerfy') ?></h2></div>
@@ -244,7 +244,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
                                 <?php
                             }
                             echo apply_filters('jobsearch_emp_detail_after_company_desc', '', $employer_id);
-                            
+
                             $ad_args = array(
                                 'post_type' => 'employer',
                                 'view' => 'view3',
@@ -285,9 +285,9 @@ wp_enqueue_style('careerfy-emp-detail-three');
                                         $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? $team_googlefield_list[$exfield_counter] : '';
                                         $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? $team_twitterfield_list[$exfield_counter] : '';
                                         $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? $team_linkedinfield_list[$exfield_counter] : '';
-                                        
+
                                         $team_imagefield_imgid = jobsearch_get_attachment_id_from_url($team_imagefield_val);
-                                        ?>   
+                                        ?>
                                         <li class="careerfy-column-6">
                                             <script>
                                                 jQuery(document).ready(function () {
@@ -317,7 +317,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
                                                     if ($team_experiencefield_val != '') {
                                                         echo '<span>' . sprintf(esc_html__('Experience: %s', 'careerfy'), $team_experiencefield_val) . '</span>';
                                                     }
-                                                    
+
                                                     //
                                                     if ($team_facebookfield_val != '' || $team_googlefield_val != '' || $team_twitterfield_val != '' || $team_linkedinfield_val != '') {
                                                         ?>
@@ -389,7 +389,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
                         </div>
                         <?php
                     }
-                    
+
                     $ad_args = array(
                         'post_type' => 'employer',
                         'view' => 'view3',
@@ -485,7 +485,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
                                                 <div class="jobsearch-joblisting-text">
                                                     <div class="jobsearch-list-option">
                                                         <h2>
-                                                            <a href="<?php echo get_permalink($job_id) ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), $jobsearch_title_limit)) ?></a> 
+                                                            <a href="<?php echo get_permalink($job_id) ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), $jobsearch_title_limit)) ?></a>
                                                             <?php
                                                             if ($jobsearch_job_featured == 'on') {
                                                                 ?>
@@ -677,14 +677,14 @@ wp_enqueue_style('careerfy-emp-detail-three');
                         </div>
                         <?php
                     }
-                    
+
                     $ad_args = array(
                         'post_type' => 'employer',
                         'view' => 'view3',
                         'position' => 'b4_cntct',
                     );
                     jobsearch_detail_common_ad_code($ad_args);
-                    
+
                     $emp_det_contact_form = isset($jobsearch_plugin_options['emp_det_contact_form']) ? $jobsearch_plugin_options['emp_det_contact_form'] : '';
                     if ($emp_det_contact_form == 'on') {
                         ob_start();
@@ -832,7 +832,7 @@ wp_enqueue_style('careerfy-emp-detail-three');
 
 
                                                 ?>
-                                                <li> 
+                                                <li>
                                                     <a href="<?php echo ($gal_video_url != '' ? $gal_video_url : $gal_full_image_src) ?>" title="<?php echo ($gal_img_title) ?>" data-caption="<?php echo ($gal_img_desc) ?>" class="<?php echo ($gal_video_url != '' ? 'fancybox-video' : 'fancybox-galimg') ?>" <?php echo ($gal_video_url != '' ? 'data-fancybox-type="iframe"' : '') ?> data-fancybox-group="group">
                                                         <img src="<?php echo ($gal_thumb_image_src); ?>" alt="" height="109" width="109"/>
                                                     </a>
@@ -849,11 +849,11 @@ wp_enqueue_style('careerfy-emp-detail-three');
                             }
                         }
                     }
-                    
+
                     //
                     echo jobsearch_employer_profile_awards($employer_id);
                     echo jobsearch_employer_profile_affiliations($employer_id);
-                    
+
                     $ad_args = array(
                         'post_type' => 'employer',
                         'view' => 'view3',
