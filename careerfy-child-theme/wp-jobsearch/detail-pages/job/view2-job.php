@@ -76,7 +76,7 @@ if (!empty($sectors)) {
 }
 $html .= ob_get_clean();
 $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li>');
-?>  
+?>
 <!-- SubHeader -->
 <div class="careerfy-subheader-style7">
 
@@ -97,7 +97,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
         <div class="container">
             <ul>
                 <li><a href="<?php echo home_url($job_id); ?>">Home</a></li>
-                <li><a href="<?php echo esc_url($result_page); ?>"><?php echo get_the_title($page_id); ?></a></li>               
+                <li><a href="<?php echo esc_url($result_page); ?>"><?php echo get_the_title($page_id); ?></a></li>
                 <?php echo ($sector_str); ?>
                 <li><?php echo get_the_title(); ?></li>
             </ul>
@@ -129,7 +129,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                     $application_deadline = get_post_meta($post_id, 'jobsearch_field_job_application_deadline_date', true);
                     $jobsearch_job_posted = get_post_meta($post_id, 'jobsearch_field_job_publish_date', true);
                     $jobsearch_job_posted_ago = jobsearch_time_elapsed_string($jobsearch_job_posted, ' ' . esc_html__('posted', 'careerfy') . ' ');
-                 
+
                     $postby_emp_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
 
                     $jobsearch_job_posted_formated = '';
@@ -161,7 +161,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                         $job_applicants_list = array();
                     }
                     $job_applicants_count = !empty($job_applicants_list) ? count($job_applicants_list) : 0;
-                    ?> 
+                    ?>
                     <!-- Job Detail Content -->
                     <div class="careerfy-column-8">
                         <div class="careerfy-typo-wrap">
@@ -200,7 +200,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                         }
                                         $emp_details = ob_get_clean();
                                         echo apply_filters('jobsearch_jobs_detail_top_emp_title_html', $emp_details, $job_id, 'view2');
-                                        
+
                                         //
                                         if ($jobsearch_job_posted_ago != '' && $job_views_publish_date == 'on') {
                                             ?>
@@ -211,7 +211,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     </li>
                                     <?php
                                     if ($jobsearch_job_posted_formated != '' && $job_views_publish_date == 'on') {
-                                        ?> 
+                                        ?>
                                         <li>
                                             <i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Posted', 'careerfy') ?>: <?php
                                             echo esc_html($jobsearch_job_posted_formated);
@@ -241,7 +241,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                             <?php
                                             // All custom fields with value
                                             echo force_balance_tags($cus_fields['content']);
-                                            ?> 
+                                            ?>
                                         </ul>
                                     </div>
                                     <?php
@@ -277,7 +277,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     'position' => 'aftr_desc',
                                 );
                                 jobsearch_detail_common_ad_code($ad_args);
-                                
+
                                 $job_attachments_switch = isset($jobsearch_plugin_options['job_attachments']) ? $jobsearch_plugin_options['job_attachments'] : '';
 
                                 if ($job_attachments_switch == 'on') {
@@ -325,6 +325,43 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 <div class="careerfy-jobdetail-tags">
                                     <?php echo force_balance_tags($skills_list); ?>
                                 </div>
+								
+								                                <!-- 企業について -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>企業について</h2></div>
+                                <p><?php the_field('cf01'); ?></p>
+                                <!-- 企業について ここまで -->
+
+                                <!-- 勤務時間 -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>勤務時間</h2></div>
+                                <p><?php the_field('cf02'); ?></p>
+                                <!-- 勤務時間 ここまで -->
+
+                                <!-- 応募要件 -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>応募要件</h2></div>
+                                <p><?php the_field('cf03'); ?></p>
+                                <!-- 応募要件 ここまで -->
+
+                                <!-- 給与 -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>給与</h2></div>
+                                <p><?php the_field('cf04'); ?></p>
+                                <!-- 給与 ここまで -->
+
+                                <!-- 休日 -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>休日</h2></div>
+                                <p><?php the_field('cf05'); ?></p>
+                                <!-- 休日 ここまで -->
+
+                                <!-- 契約期間 -->
+                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                                <div class="careerfy-content-title"><h2>契約期間</h2></div>
+                                <p><?php the_field('cf06'); ?></p>
+                                <!-- 契約期間 ここまで -->
+								
                             </div>
                         </div>
                     </div>
@@ -349,7 +386,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
                                 jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid');
                             }
-                            
+
                             ob_start();
                             if ($post_thumbnail_src != '') {
                                 ?>
@@ -392,14 +429,14 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 );
                                 do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                             }
-                            
+
                             $current_date = strtotime(current_time('d-m-Y H:i:s'));
-                            
+
                             ob_start();
                             echo jobsearch_job_det_applybtn_acthtml('', $job_id, 'page', 'view2');
                             $apply_bbox = ob_get_clean();
                             echo apply_filters('jobsearch_job_defdet_applybtn_boxhtml', $apply_bbox, $job_id);
-                            
+
                             $job_apply_deadline_sw = isset($jobsearch_plugin_options['job_appliction_deadline']) ? $jobsearch_plugin_options['job_appliction_deadline'] : '';
 
                             if ($job_apply_deadline_sw == 'on' && $application_deadline != '' && $application_deadline > $current_date) {
@@ -446,7 +483,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             </div>
                             <?php
                         }
-                        
+
                         $ad_args = array(
                             'post_type' => 'job',
                             'view' => 'view2',
@@ -462,7 +499,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                     <?php
                     $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 5, 5, '', 'view2');
                     echo $related_job_html;
-                    ?> 
+                    ?>
                 </div>
                 <!-- Job's Listing's -->
             </div>
