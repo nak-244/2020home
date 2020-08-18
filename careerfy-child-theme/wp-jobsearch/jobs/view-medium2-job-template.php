@@ -64,7 +64,7 @@ if ($job_ads_switch == 'yes') {
         }
         $array_i++;
     }
-    // new count 
+    // new count
     $job_ads_after_list_array_count = sizeof($job_ads_after_list_array);
 }
 

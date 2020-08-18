@@ -65,7 +65,7 @@ if ($job_ads_switch == 'yes') {
         }
         $array_i ++;
     }
-    // new count 
+    // new count
     $job_ads_after_list_array_count = sizeof($job_ads_after_list_array);
 }
 
@@ -164,7 +164,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                         <span><?php echo esc_html__('Featured', 'careerfy'); ?></span>
                                         <?php
                                     }
-                                    ?> 
+                                    ?>
                                 </h2>
                                 <?php
                                 $book_mark_args = array(
@@ -290,7 +290,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                         <span><?php echo esc_html__('Featured', 'careerfy'); ?></span>
                                         <?php
                                     }
-                                    ?> 
+                                    ?>
                                 </h2>
                                 <?php
                                 $book_mark_args = array(
@@ -373,6 +373,6 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 </div>
             </li>';
         }
-        ?> 
+        ?>
     </ul>
 </div>
