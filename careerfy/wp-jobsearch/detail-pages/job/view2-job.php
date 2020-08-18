@@ -326,42 +326,6 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     <?php echo force_balance_tags($skills_list); ?>
                                 </div>
 
-                                <!-- 企業について -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>企業について</h2></div>
-                                <p><?php the_field('cf01'); ?></p>
-                                <!-- 企業について ここまで -->
-
-                                <!-- 勤務時間 -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>勤務時間</h2></div>
-                                <p><?php the_field('cf02'); ?></p>
-                                <!-- 勤務時間 ここまで -->
-
-                                <!-- 応募要件 -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>応募要件</h2></div>
-                                <p><?php the_field('cf03'); ?></p>
-                                <!-- 応募要件 ここまで -->
-
-                                <!-- 給与 -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>給与</h2></div>
-                                <p><?php the_field('cf04'); ?></p>
-                                <!-- 給与 ここまで -->
-
-                                <!-- 休日 -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>休日</h2></div>
-                                <p><?php the_field('cf05'); ?></p>
-                                <!-- 休日 ここまで -->
-
-                                <!-- 契約期間 -->
-                                <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                                <div class="careerfy-content-title"><h2>契約期間</h2></div>
-                                <p><?php the_field('cf06'); ?></p>
-                                <!-- 契約期間 ここまで -->
-
                             </div>
                         </div>
                     </div>
