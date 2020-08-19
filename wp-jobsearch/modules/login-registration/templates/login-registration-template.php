@@ -377,14 +377,16 @@ class Jobsearch_Login_Registration_Template
                                         <small><?php _e('I want to discover awesome companies.', 'wp-jobsearch') ?></small>
                                     </a>
                                 </li>
-                                <li>
+
+                                <!-- <li>
                                     <a href="javascript:void(0);" class="user-type-chose-btn"
                                        data-type="jobsearch_employer">
                                         <i class="jobsearch-icon jobsearch-building"></i>
                                         <span><?php _e('Employer', 'wp-jobsearch') ?></span>
                                         <small><?php _e('I want to attract the best talent.', 'wp-jobsearch') ?></small>
                                     </a>
-                                </li>
+                                </li> -->
+
                             </ul>
                         </div>
                         <?php
@@ -1003,7 +1005,7 @@ class Jobsearch_Login_Registration_Template
         $op_emp_register_allow = isset($jobsearch_plugin_options['login_employer_register']) ? $jobsearch_plugin_options['login_employer_register'] : '';
         $cand_register_allow = isset($arg['login_candidate_register']) ? $arg['login_candidate_register'] : '';
         $emp_register_allow = isset($arg['login_employer_register']) ? $arg['login_employer_register'] : '';
-        
+
         $signup_cv_upload = isset($jobsearch_plugin_options['signup_cv_upload']) ? $jobsearch_plugin_options['signup_cv_upload'] : '';
 
         $cand_register_view = true;
@@ -1041,7 +1043,7 @@ class Jobsearch_Login_Registration_Template
             <!-- Register form -->
             <div class="pt-register">
                 <?php
-                //if (get_option('users_can_register')) { 
+                //if (get_option('users_can_register')) {
                 ob_start();
                 ?>
                 <h2><?php _e('Sign up now', 'wp-jobsearch'); ?></h2>
@@ -1077,13 +1079,15 @@ class Jobsearch_Login_Registration_Template
                                                     class="jobsearch-icon jobsearch-user"></i> <?php echo apply_filters('jobsearch_logintemp_page_regbox_candtab_text', esc_html__('Candidate', 'wp-jobsearch')) ?>
                                         </label>
                                     </div>
-                                    <div class="jobsearch-radio-checkbox">
+
+                                    <!-- <div class="jobsearch-radio-checkbox">
                                         <input id="employer-role-<?php echo($rand_numb) ?>" type="radio"
                                                name="pt_user_role" value="jobsearch_employer"> <label
                                                 for="employer-role-<?php echo($rand_numb) ?>"><i
                                                     class="jobsearch-icon jobsearch-building"></i> <?php esc_html_e('Employer', 'wp-jobsearch') ?>
                                         </label>
-                                    </div>
+                                    </div> -->
+
                                 </div>
                                 <?php
                                 $chose_usert_html = ob_get_clean();
@@ -1224,7 +1228,7 @@ class Jobsearch_Login_Registration_Template
                             </li>
                             <?php
                         }
-                        
+
                         if (($signup_cv_upload == 'on' || $signup_cv_upload == 'on_req') && $cand_register_view != false) {
                             $file_sizes_arr = array(
                                 '300' => __('300KB', 'wp-jobsearch'),
@@ -1486,5 +1490,5 @@ class Jobsearch_Login_Registration_Template
 
 }
 
-// class Jobsearch_Login_Registration_Template 
+// class Jobsearch_Login_Registration_Template
 $Jobsearch_Login_Registration_Template_obj = new Jobsearch_Login_Registration_Template();
