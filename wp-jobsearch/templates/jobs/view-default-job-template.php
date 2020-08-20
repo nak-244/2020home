@@ -131,7 +131,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                             </h2>
                                             <?php do_action('jobsearch_jobs_listing_after_title', $job_id, 'jobs_list_default'); ?>
                                             <ul>
-                                                <?php
+
+                                                <!-- <?php
                                                 if ($company_name != '') {
                                                     ob_start();
                                                     ?>
@@ -140,7 +141,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                     $comp_name_html = ob_get_clean();
                                                     echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view1');
                                                 }
-                                                if ($job_city_title != '') { ?>
+                                                if ($job_city_title != '') { ?> -->
+
                                                     <li>
                                                         <i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo esc_html($job_city_title); ?>
                                                     </li>
@@ -287,7 +289,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                             </h2>
                                             <?php do_action('jobsearch_jobs_listing_after_title', $job_id, 'jobs_list_default'); ?>
                                             <ul>
-                                                <?php
+
+                                                <!-- <?php
                                                 if ($company_name != '') {
                                                     ob_start();
                                                     ?>
@@ -298,7 +301,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                 }
 
                                                 if ($job_city_title != '' && $all_location_allow == 'on') {
-                                                    ?>
+                                                    ?> -->
+
                                                     <li>
                                                         <i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo esc_html($job_city_title); ?>
                                                     </li>

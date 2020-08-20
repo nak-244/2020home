@@ -20,7 +20,7 @@ class Jobsearch_Reviews_Frontend {
         add_action('jobsearch_post_reviews_list', array($this, 'post_reviews_list'), 10, 1);
         add_action('wp_ajax_jobsearch_user_review_post', array($this, 'user_review_submit'));
         add_action('wp_ajax_nopriv_jobsearch_user_review_post', array($this, 'user_review_submit'));
-        
+
         //
         add_action('wp_ajax_jobsearch_user_review_updatin', array($this, 'user_review_update'));
     }
@@ -28,11 +28,11 @@ class Jobsearch_Reviews_Frontend {
     public function add_review_btn($args = array()) {
 
         global $jobsearch_review_popup_args, $jobsearch_plugin_options;
-        
+
         $public_reviews = isset($jobsearch_plugin_options['public_reviews_switch']) ? $jobsearch_plugin_options['public_reviews_switch'] : '';
 
         $jobsearch_review_popup_args = $args;
-        
+
         $do_rev_form = true;
         if ($public_reviews != 'on' && !is_user_logged_in()) {
             $do_rev_form = false;
@@ -86,7 +86,8 @@ class Jobsearch_Reviews_Frontend {
             wp_enqueue_script('jobsearch-barrating');
             wp_enqueue_script('jobsearch-add-review');
             ?>
-            <div id="add_review_form_sec" class="<?php echo ($main_class) ?> jobsearch-margin-bottom">
+
+            <!-- <div id="add_review_form_sec" class="<?php echo ($main_class) ?> jobsearch-margin-bottom">
                 <div class="jobsearch-content-title jobsearch-addmore-space"><h2><?php esc_html_e('Leave Your Review', 'wp-jobsearch'); ?></h2></div>
                 <div class="jobsearch-add-review-con">
 
@@ -160,9 +161,10 @@ class Jobsearch_Reviews_Frontend {
                                 <span class="jobsearch-review-msg"></span>
                             </li>
                         </ul>
-                    </form>                                
-                </div>                               
-            </div>
+                    </form>
+                </div>
+            </div> -->
+            
             <?php
         }
     }
@@ -175,7 +177,7 @@ class Jobsearch_Reviews_Frontend {
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
-        
+
         $current_user_id = 0;
         if (is_user_logged_in()) {
             $current_user_id = get_current_user_id();
@@ -186,7 +188,7 @@ class Jobsearch_Reviews_Frontend {
         $prefix = isset($args['prefix']) && $args['prefix'] != '' ? $args['prefix'] : 'jobsearch';
 
         $rev_post_type = get_post_type($post_id);
-        
+
         $post_user_id = get_post_meta($post_id, 'jobsearch_user_id', true);
 
         $rev_list_label = isset($args['list_label']) ? $args['list_label'] : '';
@@ -200,7 +202,7 @@ class Jobsearch_Reviews_Frontend {
         wp_enqueue_script('jobsearch-barrating');
         wp_enqueue_script('jobsearch-add-review');
         if (!empty($all_comments)) {
-            
+
             //
             $revuser_def__url = get_avatar_url($post_user_id, array('size' => 60));
             $revuser_user_avatid = get_post_thumbnail_id($post_id);
@@ -560,7 +562,7 @@ class Jobsearch_Reviews_Frontend {
 
         $review_text_length = isset($jobsearch_plugin_options['review_text_length']) ? $jobsearch_plugin_options['review_text_length'] : '';
         $review_text_length = absint($review_text_length) > 0 ? absint($review_text_length) : 5000;
-        
+
         $public_reviews = isset($jobsearch_plugin_options['public_reviews_switch']) ? $jobsearch_plugin_options['public_reviews_switch'] : '';
 
         $user_can_review = true;
@@ -574,7 +576,7 @@ class Jobsearch_Reviews_Frontend {
         $user_comment = isset($_POST['user_comment']) ? $_POST['user_comment'] : '';
 
         $rev_post_type = get_post_type($review_post_id);
-        
+
         if ($user_can_review) {
             $user_id = 0;
             if (is_user_logged_in()) {
@@ -624,7 +626,7 @@ class Jobsearch_Reviews_Frontend {
                     echo json_encode(array('msg' => $msg, 'error' => '1'));
                     die;
                 }
-                
+
                 if ($rev_post_type == 'candidate') {
                     $review_titles = isset($jobsearch_plugin_options['cand_reviews_titles']) ? $jobsearch_plugin_options['cand_reviews_titles '] : '';
                 } else {
@@ -774,7 +776,7 @@ class Jobsearch_Reviews_Frontend {
             die;
         }
     }
-    
+
     public function user_review_update() {
         global $jobsearch_plugin_options;
 
@@ -788,9 +790,9 @@ class Jobsearch_Reviews_Frontend {
         if (is_user_logged_in()) {
             $user_id = get_current_user_id();
             $user_obj = get_user_by('ID', $user_id);
-            
+
             $revpost_user_id = get_post_meta($review_post_id, 'jobsearch_user_id', true);
-            
+
             $rep_com_args = array(
                 'comment__in' => array($review_com_id),
                 'post_id' => $review_post_id,
@@ -860,7 +862,7 @@ class Jobsearch_Reviews_Frontend {
 
                 update_comment_meta($review_com_id, 'review_avg_rating', $avg_rating);
                 update_comment_meta($review_com_id, 'review_overall_rating', $review_user_rate);
-                
+
                 // delete reply
                 $del_com_args = array(
                     'post_id' => $review_post_id,
@@ -942,6 +944,6 @@ class Jobsearch_Reviews_Frontend {
 
 }
 
-// class Jobsearch_Reviews 
+// class Jobsearch_Reviews
 $Jobsearch_Reviews_Frontend_obj = new Jobsearch_Reviews_Frontend();
 global $Jobsearch_Reviews_Frontend_obj;

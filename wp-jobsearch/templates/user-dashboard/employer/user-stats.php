@@ -23,7 +23,7 @@ $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $
 $user_stats_switch = isset($jobsearch_plugin_options['user_stats_switch']) ? $jobsearch_plugin_options['user_stats_switch'] : '';
 
 if ($employer_id > 0) {
-    
+
     $emp_pkgbase_profile = isset($jobsearch_plugin_options['emp_pkg_base_profile']) ? $jobsearch_plugin_options['emp_pkg_base_profile'] : '';
 
     $rand_id = rand(1000000, 9999999);
@@ -115,7 +115,7 @@ if ($employer_id > 0) {
                     if (get_post_type($usercurnt_attpordr_id) == 'shop_order' && $usercurnt_attpordr_exp > 0) {
                         $user_has_profpkg = true;
                         $profpkg_is_subscribe = jobsearch_emp_profile_pckg_is_subscribed($usercurnt_attpordr_pkgid, $user_id);
-                        
+
                         $usercurnt_attpordr_obj = get_post($usercurnt_attpordr_id);
                         $usercurnt_attpordr_date = $usercurnt_attpordr_obj->post_date;
                         $usercurnt_attpordr_date = date_i18n(get_option('date_format'), strtotime($usercurnt_attpordr_date));
@@ -198,7 +198,7 @@ if ($employer_id > 0) {
                                             $ppkg_pbase_accmembs = get_post_meta($p_pkgid, 'jobsearch_field_emp_pbase_accmembs', true);
                                             $ppkg_pbase_team = get_post_meta($p_pkgid, 'jobsearch_field_emp_pbase_team', true);
                                             $ppkg_pbase_gphotos = get_post_meta($p_pkgid, 'jobsearch_field_emp_pbase_gphotos', true);
-                                            
+
                                             $emp_pkgbase_dashsecs_arr = apply_filters('jobsearch_emp_dash_menu_in_opts', array(
                                                 'company_profile' => __('Company Profile', 'wp-jobsearch'),
                                                 'post_new_job' => __('Post a New Job', 'wp-jobsearch'),
@@ -314,7 +314,7 @@ if ($employer_id > 0) {
                                                             <h2><?php printf(esc_html__('%s Package Detail', 'wp-jobsearch'), $pkghdin_name) ?></h2>
                                                             <span class="modal-close"><i class="fa fa-times"></i></span>
                                                         </div>
-                                                        
+
                                                         <div class="profpckg-detail-pcon">
                                                             <div class="profpkg-det-item">
                                                                 <div class="detitem-label"><?php esc_html_e('Dashboard Sections:', 'wp-jobsearch') ?></div> <div class="detitem-val"><?php echo ($show_dash_tabs) ?></div>
@@ -397,7 +397,7 @@ if ($employer_id > 0) {
                                             ), $popup_args));
 
                             $p_order_detail = get_post_meta($p_order_id, 'jobsearch_emp_ppkg_fields_list', true);
-                            
+
                             $emp_pkgbase_dashsecs_arr = apply_filters('jobsearch_emp_dash_menu_in_opts', array(
                                 'company_profile' => __('Company Profile', 'wp-jobsearch'),
                                 'post_new_job' => __('Post a New Job', 'wp-jobsearch'),
@@ -613,7 +613,7 @@ if ($employer_id > 0) {
                                 jQuery(document).on('click', '.modelprofpkg-btn-<?php echo ($profpkg_rand) ?>', function () {
                                     jobsearch_modal_popup_open('JobSearchModalProfPckg<?php echo ($profpkg_rand) ?>');
                                 });
-                                
+
                                 jQuery(document).on('click', '.change-profpkg-planbtn', function () {
                                     jQuery('#jobsearch-profilpkgs-hcon').slideToggle();
                                 });
@@ -648,7 +648,7 @@ if ($employer_id > 0) {
                 <?php
                 $main_title = ob_get_clean();
                 echo apply_filters('jobsearch_empdash_stats_main_title_html', $main_title);
-                
+
                 //
                 if ($user_pkg_limits::emp_field_is_locked('stats_defields')) {
                     echo ($user_pkg_limits::emp_gen_locked_html());
@@ -695,7 +695,8 @@ if ($employer_id > 0) {
                             echo apply_filters('jobsearch_emp_dash_stats_shortlist_cands', $stats_html, $employer_resumes_count, $_job_posts);
                             ob_start();
                             ?>
-                            <li>
+
+                            <!-- <li>
                                 <div class="jobsearch-stats-list-wrap dark-blue">
                                     <h6><?php esc_html_e('Interviews', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($job_short_int_count) ?></span>
@@ -705,7 +706,8 @@ if ($employer_id > 0) {
                             <?php
                             $stats_html = ob_get_clean();
                             echo apply_filters('jobsearch_emp_dash_stats_interviews_cands', $stats_html, $job_short_int_count, $_job_posts);
-                            ?>
+                            ?> -->
+
                         </ul>
                     </div>
                     <?php
@@ -786,7 +788,7 @@ if ($employer_id > 0) {
                         $job_expiry_date = get_post_meta($_job_id, 'jobsearch_field_job_expiry_date', true);
                         $job_expiry_date = $job_expiry_date == '' ? strtotime(current_time('Y-m-d H:i:s')) : $job_expiry_date;
                         $job_salary = jobsearch_job_offered_salary($_job_id);
-                        
+
                         ob_start();
                         ?>
                         <div class="jobsearch-job-title">
@@ -805,7 +807,7 @@ if ($employer_id > 0) {
                                 <?php
                                 $list_tapps_html = ob_get_clean();
                                 echo apply_filters('jobsearch_empdash_stats_jobslist_tapps', $list_tapps_html, $job_applicants_count, $_job_id);
-                                
+
                                 ob_start();
                                 if ($job_salary != '') {
                                     ?>
@@ -814,7 +816,7 @@ if ($employer_id > 0) {
                                 }
                                 $list_jslary_html = ob_get_clean();
                                 echo apply_filters('jobsearch_empdash_stats_jobslist_jslary', $list_jslary_html, $job_salary, $_job_id);
-                                
+
                                 ob_start();
                                 ?>
                                 <li><span><?php echo absint($job_views_count) ?></span> <small><?php esc_html_e('Total visits', 'wp-jobsearch') ?></small></li>
@@ -836,7 +838,7 @@ if ($employer_id > 0) {
                                         continue;
                                     }
                                     $user_def_avatar_url = get_avatar_url($candidate_user_id, array('size' => 69));
-                                    
+
                                     $post_thumbnail_src = jobsearch_candidate_img_url_comn($candidate_id);
                                     $jobsearch_candidate_approved = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
                                     $get_candidate_location = get_post_meta($candidate_id, 'jobsearch_field_location_address', true);
@@ -934,7 +936,7 @@ if ($employer_id > 0) {
                                                         }
                                                         $loc_html = ob_get_clean();
                                                         echo apply_filters('jobsearch_emp_dash_stats_apps_list_lochtml', $loc_html, $candidate_id, $_job_id);
-                                                        
+
                                                         ob_start();
                                                         if ($candidate_user_email != '') {
                                                             ?>
@@ -1002,4 +1004,4 @@ if ($employer_id > 0) {
         ?>
     </div>
     <?php
-}    
+}

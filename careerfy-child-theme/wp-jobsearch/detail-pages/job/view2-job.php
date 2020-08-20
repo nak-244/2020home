@@ -186,7 +186,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                         <?php
                                     }
                                     ?>
-                                    <li>
+
+                                    <!-- <li>
                                         <?php
                                         ob_start();
                                         ?>
@@ -208,7 +209,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                         <?php }
                                         ?>
 
-                                    </li>
+                                    </li> -->
+
                                     <?php
                                     if ($jobsearch_job_posted_formated != '' && $job_views_publish_date == 'on') {
                                         ?>
@@ -325,7 +327,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 <div class="careerfy-jobdetail-tags">
                                     <?php echo force_balance_tags($skills_list); ?>
                                 </div>
-								
+
 								                                <!-- 企業について -->
                                 <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                                 <div class="careerfy-content-title"><h2>企業について</h2></div>
@@ -361,7 +363,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 <div class="careerfy-content-title"><h2>契約期間</h2></div>
                                 <p><?php the_field('cf06'); ?></p>
                                 <!-- 契約期間 ここまで -->
-								
+
                             </div>
                         </div>
                     </div>
@@ -382,7 +384,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                         jobsearch_detail_common_ad_code($ad_args);
                         ?>
                         <div class="jobsearch_side_box jobsearch_box_application_apply">
-                            <?php
+
+                            <!-- <?php
                             if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
                                 jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid');
                             }
@@ -412,7 +415,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     <li><a href="javascript:void(0);" data-original-title="facebook" class="fa fa-facebook-f addthis_button_facebook"></a></li>
                                     <li><a href="javascript:void(0);" data-original-title="linkedin" class="fa fa-linkedin addthis_button_linkedin"></a></li>
                                     <li><a href="javascript:void(0);" data-original-title="share_more" class="jobsearch-icon jobsearch-plus addthis_button_compact"></a></li>
-                                </ul>
+                                </ul> -->
+
                                 <?php
                             }
                             if ($job_shortlistbtn_switch == 'on') {

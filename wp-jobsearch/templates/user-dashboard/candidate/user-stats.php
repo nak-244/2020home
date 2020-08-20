@@ -43,7 +43,7 @@ if ($candidate_id > 0) {
     }
 
     $user_applied_jobs_count = empty($user_applied_jobs_list) ? 0 : count($user_applied_jobs_list);
-    
+
     $email_apps_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts AS posts"
     . " LEFT JOIN $wpdb->postmeta AS postmeta ON(posts.ID = postmeta.post_id) "
     . " WHERE post_type=%s AND (postmeta.meta_key = 'jobsearch_app_user_email' AND postmeta.meta_value = '{$user_email_adr}')", 'email_apps'));
@@ -783,13 +783,15 @@ if ($candidate_id > 0) {
                                     <small><?php esc_html_e('to get the latest updates', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
-                            <li>
+
+                            <!-- <li>
                                 <div class="jobsearch-stats-list-wrap dark-blue">
                                     <h6><?php esc_html_e('Packages', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($total_pkgs) ?></span>
                                     <small><?php esc_html_e('to apply jobs', 'wp-jobsearch') ?></small>
                                 </div>
-                            </li>
+                            </li> -->
+                            
                         </ul>
                         <?php
                         $tapp_html = ob_get_clean();
@@ -867,7 +869,7 @@ if ($candidate_id > 0) {
             if (!empty($all_apps)) {
                 foreach ($all_apps as $app_id) {
                     $_job_id = get_post_meta($app_id, 'jobsearch_app_job_id', true);
-                    
+
                     $job_applicants_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts AS posts"
                     . " LEFT JOIN $wpdb->postmeta AS postmeta ON(posts.ID = postmeta.post_id) "
                     . " WHERE post_type=%s AND (postmeta.meta_key = 'jobsearch_app_job_id' AND postmeta.meta_value={$_job_id})", 'email_apps'));
@@ -1177,4 +1179,4 @@ if ($candidate_id > 0) {
         ?>
     </div>
     <?php
-}    
+}
