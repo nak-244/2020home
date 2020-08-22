@@ -169,7 +169,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             ob_start();
                             ?>
 
-                            <!-- <div class="careerfy-company-name"><?php echo ($company_name) ?></div> -->
+                            <div class="careerfy-company-name"><?php echo ($company_name) ?></div>
 
                             <?php
                             $comp_name_html = ob_get_clean();
@@ -300,7 +300,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             ob_start();
                             ?>
 
-                            <!-- <div class="careerfy-company-name"><?php echo ($company_name) ?></div> -->
+                            <div class="careerfy-company-name"><?php echo ($company_name) ?></div>
 
                             <?php
                             $comp_name_html = ob_get_clean();
