@@ -66,7 +66,7 @@ if ($job_ads_switch == 'yes') {
         }
         $array_i ++;
     }
-    // new count 
+    // new count
     $job_ads_after_list_array_count = sizeof($job_ads_after_list_array);
 }
 
@@ -168,7 +168,9 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <?php
                             ob_start();
                             ?>
+
                             <div class="careerfy-company-name"><?php echo ($company_name) ?></div>
+
                             <?php
                             $comp_name_html = ob_get_clean();
                             echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view-medium3');
@@ -221,7 +223,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 </li>
                 <?php
             }
-            ?> 
+            ?>
         </ul>
     </div>
     <?php
@@ -297,7 +299,9 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <?php
                             ob_start();
                             ?>
+
                             <div class="careerfy-company-name"><?php echo ($company_name) ?></div>
+
                             <?php
                             $comp_name_html = ob_get_clean();
                             echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view-medium3');
@@ -377,6 +381,6 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 </div>
             </li>';
         }
-        ?> 
+        ?>
     </ul>
 </div>
