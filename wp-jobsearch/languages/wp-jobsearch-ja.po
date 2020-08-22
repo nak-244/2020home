@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-20 16:39+0900\n"
+"PO-Revision-Date: 2020-08-21 09:12+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -3059,7 +3059,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:186
 #: includes/shortcode-builder/shortcodes/job-listings.php:245
 msgid "Job Title, Keywords, or Phrase"
-msgstr "キーワード"
+msgstr ""
 
 #: includes/common-functions/email-applicants.php:30
 msgctxt "post type general name"

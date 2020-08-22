@@ -54,11 +54,11 @@ if ($employer_id > 0) {
             ),
         ),
     );
-    
+
     if (isset($_GET['keyword']) && $_GET['keyword'] != '') {
         $args['s'] = sanitize_text_field($_GET['keyword']);
     }
-    
+
     $args = apply_filters('jobsearch_empdash_mnage_jobs_list_qargs', $args);
 
     $jobs_query = new WP_Query($args);
@@ -69,7 +69,7 @@ if ($employer_id > 0) {
         <div class="jobsearch-employer-box-section">
             <?php
             if (isset($_GET['view']) && $_GET['view'] == 'applicants' && isset($_GET['job_id']) && $_GET['job_id'] > 0) {
-                                                        
+
                 $_job_id = $_GET['job_id'];
 
                 ob_start();
@@ -225,10 +225,10 @@ if ($employer_id > 0) {
                                                                             </div>
                                                                             <?php jobsearch_terms_and_con_link_txt(); ?>
                                                                         </li>
-                                                                    </ul> 
+                                                                    </ul>
                                                                     <div class="message-box message-box-<?php echo esc_html($p_job_id); ?>" style="display:none;"></div>
                                                                 </div>
-                                                            </form>    
+                                                            </form>
                                                         </div>
 
                                                     </div>
@@ -319,7 +319,7 @@ if ($employer_id > 0) {
                                     $candidate_phone = get_post_meta($_candidate_id, 'jobsearch_field_user_phone', true);
 
                                     $job_cver_ltrs = get_post_meta($_job_id, 'jobsearch_job_apply_cvrs', true);
-                                    
+
                                     $send_message_form_rand = rand(1000000, 9999999);
 
                                     if ($_selected_view == 'grid') {
@@ -413,7 +413,7 @@ if ($employer_id > 0) {
                                                         <?php
                                                     }
                                                     echo apply_filters('employer_dash_apps_acts_list_after_download_link', '', $_candidate_id, $_job_id);
-                                                    
+
                                                     if (isset($job_cver_ltrs[$_candidate_id]) && $job_cver_ltrs[$_candidate_id] != '') {
                                                         ?>
                                                         <li class="down-view-cvrltr"><a href="javascript:void(0);" class="jobsearch-apppli-tooltip jobsearch-modelcvrltr-btn-<?php echo ($send_message_form_rand) ?>" title="<?php esc_html_e('View Cover Letter', 'wp-jobsearch') ?>"><i class="fa fa-eye"></i></a></li>
@@ -465,10 +465,10 @@ if ($employer_id > 0) {
                                                                                             </div>
                                                                                             <?php jobsearch_terms_and_con_link_txt(); ?>
                                                                                         </li>
-                                                                                    </ul> 
+                                                                                    </ul>
                                                                                     <div class="message-box message-box-<?php echo esc_html($p_masg_rand); ?>" style="display:none;"></div>
                                                                                 </div>
-                                                                            </form>    
+                                                                            </form>
                                                                         </div>
 
                                                                     </div>
@@ -539,12 +539,12 @@ if ($employer_id > 0) {
                                                             <small class="profile-view unviewed"><?php esc_html_e('(Unviewed)', 'wp-jobsearch') ?></small>
                                                             <?php
                                                         }
-                                                        
+
                                                         $user_email_adr = isset($candidate_user_obj->user_email) ? $candidate_user_obj->user_email : '';
                                                         ?>
                                                         <a href="javascript:void(0);" class="jobsearch-modelemail-btn-<?php echo ($send_message_form_rand) ?> jobsearch-user-email"><small> <?php printf(esc_html__('Email: %s', 'wp-jobsearch'), $user_email_adr) ?></small></a>
                                                         <?php
-                                                        
+
                                                         echo apply_filters('jobsearch_applicants_list_before_title', '', $_candidate_id, $_job_id);
                                                         ?>
                                                         <h2>
@@ -624,7 +624,7 @@ if ($employer_id > 0) {
                                                                             <?php
                                                                         }
                                                                         echo apply_filters('employer_dash_apps_acts_list_after_download_link', '', $_candidate_id, $_job_id);
-                                                                        
+
                                                                         if (isset($job_cver_ltrs[$_candidate_id]) && $job_cver_ltrs[$_candidate_id] != '') {
                                                                             ?>
                                                                             <li><a href="javascript:void(0);" class="jobsearch-modelcvrltr-btn-<?php echo ($send_message_form_rand) ?>"><?php esc_html_e('View Cover Letter', 'wp-jobsearch') ?></a></li>
@@ -676,10 +676,10 @@ if ($employer_id > 0) {
                                                                                                                 </div>
                                                                                                                 <?php jobsearch_terms_and_con_link_txt(); ?>
                                                                                                             </li>
-                                                                                                        </ul> 
+                                                                                                        </ul>
                                                                                                         <div class="message-box message-box-<?php echo esc_html($p_masg_rand); ?>" style="display:none;"></div>
                                                                                                     </div>
-                                                                                                </form>    
+                                                                                                </form>
                                                                                             </div>
 
                                                                                         </div>
@@ -758,7 +758,7 @@ if ($employer_id > 0) {
                                             'rand_num' => '',
                                             'candidate_id' => '',
                                                         ), $popup_args));
-                                        
+
                                         $job_cver_ltrs = get_post_meta($job_id, 'jobsearch_job_apply_cvrs', true);
                                         if (isset($job_cver_ltrs[$candidate_id]) && $job_cver_ltrs[$candidate_id] != '') {
                                             ?>
@@ -821,7 +821,7 @@ if ($employer_id > 0) {
                 <?php
                 $all_in_existpkg = jobsearch_allin_first_pkg_subscribed($user_id);
                 $feat_frst_existpkg = jobsearch_fjobs_first_pkg_subscribed($user_id);
-                                                    
+
                 $duplicate_jobs_allow = isset($jobsearch_plugin_options['duplicate_the_job']) ? $jobsearch_plugin_options['duplicate_the_job'] : '';
                 $free_jobs_allow = isset($jobsearch_plugin_options['free-jobs-allow']) ? $jobsearch_plugin_options['free-jobs-allow'] : '';
                 if ($jobs_query->have_posts()) {
@@ -965,8 +965,8 @@ if ($employer_id > 0) {
                                                     $job_feature_link = 'href="javascript:void(0);"';
                                                 } else {
                                                     $job_feature_link = 'href="' . add_query_arg(array('tab' => 'user-job', 'job_id' => $job_id, 'action' => 'update', 'step' => 'package'), $page_url) . '"';
-                                                    $fpkgs_posts = $fpkgs_query->posts;                                                 
-                                                    
+                                                    $fpkgs_posts = $fpkgs_query->posts;
+
                                                     if (!empty($fpkgs_posts)) {
                                                         $job_feature_link = 'href="javascript:void(0);" class="jobsearch-jobfeture-btn-' . ($job_id) . '"';
                                                         ?>
@@ -1034,7 +1034,7 @@ if ($employer_id > 0) {
                                                                                         <div class="fpkg-detail">
                                                                                             <?php
                                                                                             $total_jobs = get_post_meta($all_in_existpkg, 'allin_num_fjobs', true);
-                                
+
                                                                                             $unlimited_numfjobs = get_post_meta($all_in_existpkg, 'unlimited_numfjobs', true);
                                                                                             if ($unlimited_numfjobs == 'yes') {
                                                                                                 $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');
@@ -1082,7 +1082,7 @@ if ($employer_id > 0) {
                                                                                         <div class="fpkg-detail">
                                                                                             <?php
                                                                                             $total_jobs = get_post_meta($feat_frst_existpkg, 'num_of_fjobs', true);
-                                
+
                                                                                             $unlimited_numfjobs = get_post_meta($feat_frst_existpkg, 'unlimited_numfjobs', true);
                                                                                             if ($unlimited_numfjobs == 'yes') {
                                                                                                 $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');

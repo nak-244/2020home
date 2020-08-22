@@ -127,7 +127,7 @@ class Jobsearch_JobFilterHTML
                     <ul class="jobsearch-checkbox">
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $lastdate = date($default_date_time_formate, strtotime('-1 hours', $current_timestamp));
                             $last_hour_count_arr = array(
                                 array(
@@ -150,7 +150,7 @@ class Jobsearch_JobFilterHTML
                         </li>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $lastdate = date($default_date_time_formate, strtotime('-24 hours', $current_timestamp));
                             $last24_count_arr = array(
                                 array(
@@ -173,7 +173,7 @@ class Jobsearch_JobFilterHTML
                         </li>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $lastdate = date($default_date_time_formate, strtotime('-7 days', $current_timestamp));
                             $days7_count_arr = array(
                                 array(
@@ -196,7 +196,7 @@ class Jobsearch_JobFilterHTML
                         </li>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $lastdate = date($default_date_time_formate, strtotime('-14 days', $current_timestamp));
                             $days14_count_arr = array(
                                 array(
@@ -219,7 +219,7 @@ class Jobsearch_JobFilterHTML
                         </li>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $lastdate = date($default_date_time_formate, strtotime('-30 days', $current_timestamp));
                             $days30_count_arr = array(
                                 array(
@@ -242,7 +242,7 @@ class Jobsearch_JobFilterHTML
                         </li>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count 
+                            // main query array $args_count
                             $all_days_count_arr = array();
                             $all_days_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $all_days_count_arr, $global_rand_id, 'posted');
                             ?>
@@ -1102,6 +1102,6 @@ class Jobsearch_JobFilterHTML
 
 }
 
-// class Jobsearch_JobFilterHTML 
+// class Jobsearch_JobFilterHTML
 $Jobsearch_JobFilterHTML_obj = new Jobsearch_JobFilterHTML();
 global $Jobsearch_JobFilterHTML_obj;

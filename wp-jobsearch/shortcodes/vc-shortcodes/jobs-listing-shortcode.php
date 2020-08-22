@@ -364,7 +364,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
             $post_ids = $all_post_ids = array();
 
             $orig_post_ids = $post_ids = $this->job_general_query_filter($post_ids, $atts);
-            
+
             if (!empty($left_filter_arr)) {
                 // apply all filters and get ids
                 $post_ids = $this->get_job_id_by_filter($left_filter_arr, 'job', $post_ids);
@@ -390,7 +390,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                     $post_ids = $radius_locpost_ids;
                 }
             }
-            
+
             if (empty($orig_post_ids)) {
                 $post_ids = array();
             }
@@ -614,7 +614,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
             global $wpdb, $post, $jobsearch_form_fields, $jobsearch_search_fields, $jobsearch_plugin_options, $sitepress, $jobseacrh_jobsh_attslist;
 
             $page_id = isset($post->ID) ? $post->ID : '';
-            
+
             if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
                 $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
             }
@@ -728,7 +728,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                 $sitepress->switch_lang($sitepress_curr_lang, true);
             }
             //var_dump($job_loop_obj->request);
-            
+
             $page_container_view = get_post_meta($page_id, 'careerfy_field_page_view', true);
             ?>
             <form id="jobsearch_job_frm_<?php echo absint($job_short_counter); ?>">
@@ -881,7 +881,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                     <?php
                     $map_html = ob_get_clean();
                     echo apply_filters('jobsearch_jobs_listin_topmap_html', $map_html, $listn_map_obj, $job_short_counter, $listing_top_map_height, $atts);
-                    
+
                     if ($page_container_view == 'wide') {
                         echo '<div class="container">';
                     }
@@ -1443,7 +1443,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
 
             if (isset($left_filter_arr) && !empty($left_filter_arr)) {
                 $meta_post_ids_arr = jobsearch_get_query_whereclase_by_array($left_filter_arr);
-                // if no result found in filtration 
+                // if no result found in filtration
                 if (empty($meta_post_ids_arr)) {
                     $meta_post_ids_arr = array(0);
                 }
@@ -1803,7 +1803,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
 
             return $job_ids;
         }
-        
+
         public function location_radius_filter_ids()
         {
 
@@ -1814,7 +1814,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                 $default_selctd_contry = isset($jobsearch_plugin_options['restrict_contries_locsugg']) && $jobsearch_plugin_options['restrict_contries_locsugg'] != '' ? $jobsearch_plugin_options['restrict_contries_locsugg'] : '';
 
                 $def_radius_unit = isset($jobsearch_plugin_options['top_search_radius_unit']) ? $jobsearch_plugin_options['top_search_radius_unit'] : '';
-                
+
                 $current_time = current_time('timestamp');
 
                 $jobsearch_loc_address = $_REQUEST['location'] . (isset($default_selctd_contry[0]) && $default_selctd_contry[0] != '' ? ' ' . $default_selctd_contry[0] : '');
@@ -2133,7 +2133,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                 return $all_post_ids;
             }
             $location_rslt = apply_filters('jobsearch_jobs_locs_queryargs_postids', $location_rslt, $all_post_ids, $atts);
-            
+
             return $location_rslt;
         }
 
@@ -2432,7 +2432,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                     $jobsearch_job_type = get_post_meta($job_id, 'jobsearch_job_type', true);
                     $jobsearch_user_reviews = get_post_meta($job_type_id, 'jobsearch_user_reviews', true);
 
-                    // end checking review on in job type 
+                    // end checking review on in job type
 
                     if (has_post_thumbnail()) {
                         $img_atr = array('class' => 'img-map-info');
@@ -2706,4 +2706,4 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
 
     global $jobsearch_shortcode_jobs_frontend;
     $jobsearch_shortcode_jobs_frontend = new Jobsearch_Shortcode_Jobs_Frontend();
-} 
+}

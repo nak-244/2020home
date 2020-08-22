@@ -48,9 +48,9 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     'title' => array(),
                 )
             );
-            
+
             $notific_msg = '';
-            
+
             if ($user_is_candidate) {
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
                 $notifics_list = $this->get_cand_notifics($candidate_id);
@@ -98,7 +98,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 } else {
                     update_post_meta($candidate_id, 'jobsearch_cand_notifics_list', $notifics_list);
                 }
-                
+
                 $notifics_list_arr = self::get_total_notifics_arr($user_id, true);
 
                 $notifics_count = !empty($notifics_list_arr) && is_array($notifics_list_arr) ? count($notifics_list_arr) : 0;
@@ -125,10 +125,10 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             </div>
             <?php
         }
-        
+
         public function cand_dash_notifications($html, $candidate_id) {
             global $jobsearch_plugin_options;
-            
+
             ob_start();
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
             $add_notifics_for_cands = isset($jobsearch_plugin_options['add_notifics_for_cands']) ? $jobsearch_plugin_options['add_notifics_for_cands'] : '';
@@ -147,11 +147,11 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     $notifics_candto_newjob = isset($jobsearch_plugin_options['notifics_candto_newjob']) ? $jobsearch_plugin_options['notifics_candto_newjob'] : '';
                     $notifics_cand_shrtforinter = isset($jobsearch_plugin_options['notifics_cand_shrtforinter']) ? $jobsearch_plugin_options['notifics_cand_shrtforinter'] : '';
                     $notifics_cand_rejctforinter = isset($jobsearch_plugin_options['notifics_cand_rejctforinter']) ? $jobsearch_plugin_options['notifics_cand_rejctforinter'] : '';
-                    
+
                     $notifics_me_newjob = get_post_meta($candidate_id, 'jobsearch_field_notific_newjobpost', true);
                     $notifics_me_shrtforinter = get_post_meta($candidate_id, 'jobsearch_field_notific_shortforinter', true);
                     $notifics_me_rejctforinter = get_post_meta($candidate_id, 'jobsearch_field_notific_rejctforinter', true);
-                    
+
                     //
                     if ($notifics_candto_newjob == 'on' || $notifics_cand_shrtforinter == 'on' || $notifics_cand_rejctforinter == 'on') {
                         ?>
@@ -232,13 +232,13 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 <?php
             }
             $html = ob_get_clean();
-            
+
             return $html;
         }
 
         public function emp_dash_notifications($html, $employer_id) {
             global $jobsearch_plugin_options;
-            
+
             ob_start();
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
             $add_notifics_for_emps = isset($jobsearch_plugin_options['add_notifics_for_emps']) ? $jobsearch_plugin_options['add_notifics_for_emps'] : '';
@@ -255,9 +255,9 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     </div>
                     <?php
                     $notifics_empto_applyjob = isset($jobsearch_plugin_options['notifics_empto_applyjob']) ? $jobsearch_plugin_options['notifics_empto_applyjob'] : '';
-                    
+
                     $notifics_me_onaplyjob = get_post_meta($employer_id, 'jobsearch_field_notific_onaplyjob', true);
-                    
+
                     //
                     if ($notifics_empto_applyjob == 'on') {
                         ?>
@@ -323,23 +323,23 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 <?php
             }
             $html = ob_get_clean();
-            
+
             return $html;
         }
-        
+
         public function load_more_userdash_notifics() {
             global $jobsearch_plugin_options;
-            
+
             $page_num = absint($_POST['page_num']);
-            
+
             ob_start();
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
             if ($dash_notifics_switch == 'on') {
                 $user_id = get_current_user_id();
-                
+
                 $per_page = 5;
                 $notifics_list_arr = self::get_total_notifics_arr($user_id);
-                    
+
                 if (!empty($notifics_list_arr)) {
                     $total_notifics = count($notifics_list_arr);
                     krsort($notifics_list_arr);
@@ -351,7 +351,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     self::user_notifics_list_html($notifics_list_arr);
                 }
             }
-            
+
             $html = ob_get_clean();
             echo json_encode(array('html' => $html));
             die;
@@ -430,11 +430,11 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             $notifics_candto_newjob = isset($jobsearch_plugin_options['notifics_candto_newjob']) ? $jobsearch_plugin_options['notifics_candto_newjob'] : '';
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
             $add_notifics_for_cands = isset($jobsearch_plugin_options['add_notifics_for_cands']) ? $jobsearch_plugin_options['add_notifics_for_cands'] : '';
-            
+
             $employer_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             $emp_user_id = jobsearch_get_employer_user_id($employer_id);
             $employer_follows_list = get_user_meta($emp_user_id, 'jobsearch-user-followins-list', true);
-            
+
             if (!empty($employer_follows_list) && $dash_notifics_switch == 'on' && $add_notifics_for_cands == 'on' && $notifics_candto_newjob == 'on') {
                 foreach ($employer_follows_list as $folow_item) {
                     $cand_id = isset($folow_item['post_id']) ? $folow_item['post_id'] : '';
@@ -459,13 +459,13 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 }
             }
         }
-        
+
         public function on_candidate_shortlisted_for_interview($emp_user_obj, $job_id, $candidate_id) {
             global $jobsearch_plugin_options;
             $notifics_cand_shrtforinter = isset($jobsearch_plugin_options['notifics_cand_shrtforinter']) ? $jobsearch_plugin_options['notifics_cand_shrtforinter'] : '';
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
             $add_notifics_for_cands = isset($jobsearch_plugin_options['add_notifics_for_cands']) ? $jobsearch_plugin_options['add_notifics_for_cands'] : '';
-            
+
             $employer_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             $emp_user_id = isset($emp_user_obj->ID) ? $emp_user_obj->ID : '';
             $employer_follows_list = get_user_meta($emp_user_id, 'jobsearch-user-followins-list', true);
@@ -500,15 +500,15 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             }
             //
         }
-        
+
         public function on_candidate_rejected_for_interview($emp_user_obj, $job_id, $candidate_id) {
             global $jobsearch_plugin_options;
 
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
-            
+
             $add_notifics_for_cands = isset($jobsearch_plugin_options['add_notifics_for_cands']) ? $jobsearch_plugin_options['add_notifics_for_cands'] : '';
             $notifics_cand_rejctforinter = isset($jobsearch_plugin_options['notifics_cand_rejctforinter']) ? $jobsearch_plugin_options['notifics_cand_rejctforinter'] : '';
-            
+
             $employer_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             $emp_user_id = isset($emp_user_obj->ID) ? $emp_user_obj->ID : '';
             $employer_follows_list = get_user_meta($emp_user_id, 'jobsearch-user-followins-list', true);
@@ -543,18 +543,18 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             }
             //
         }
-        
+
         public function on_candidate_apply_for_job($candidate_id, $job_id) {
             global $jobsearch_plugin_options;
 
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
-            
+
             $add_notifics_for_emps = isset($jobsearch_plugin_options['add_notifics_for_emps']) ? $jobsearch_plugin_options['add_notifics_for_emps'] : '';
             $notifics_empto_applyjob = isset($jobsearch_plugin_options['notifics_empto_applyjob']) ? $jobsearch_plugin_options['notifics_empto_applyjob'] : '';
-            
+
             $employer_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             if ($dash_notifics_switch == 'on' && $add_notifics_for_emps == 'on' && $notifics_empto_applyjob == 'on') {
-                
+
                 $notifics_me_onaplyjob = get_post_meta($employer_id, 'jobsearch_field_notific_onaplyjob', true);
                 if ($notifics_me_onaplyjob == 'yes') {
                     $notifics_list = $this->get_emp_notifics($employer_id);
@@ -575,11 +575,11 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             }
             //
         }
-        
+
         //
         public function dashmenu_notifics_btn($html, $args = array()) {
             global $jobsearch_plugin_options;
-            
+
             ob_start();
             $dash_notifics_switch = isset($jobsearch_plugin_options['dash_notifics_switch']) ? $jobsearch_plugin_options['dash_notifics_switch'] : '';
 
@@ -607,11 +607,11 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     $page_id = $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
 
                     $dash_page_url = jobsearch_wpml_lang_page_permalink($page_id, 'page');
-                    
+
                     $user_id = get_current_user_id();
                     $user_is_candidate = jobsearch_user_is_candidate($user_id);
                     $user_is_employer = jobsearch_user_is_employer($user_id);
-                    
+
                     $show_notifics_btn = false;
                     if ($header_notifics_btn == 'public') {
                         if ($user_is_candidate || $user_is_employer) {
@@ -626,7 +626,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                     } else if ($header_notifics_btn == 'for_both' && ($user_is_candidate || $user_is_employer)) {
                         $show_notifics_btn = true;
                     }
-                    
+
                     if ($show_notifics_btn) {
 
                         $notifics_items_html = '';
@@ -639,19 +639,19 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                         // for read notifications
                         if (empty($notifics_list_arr) || (!empty($notifics_list_arr) && count($notifics_list_arr) < 5)) {
                             $notifics_unreadlist_arr = self::get_total_notifics_arr($user_id, 'viewed_only');
-                            
+
                             if (!empty($notifics_unreadlist_arr)) {
                                 krsort($notifics_unreadlist_arr);
 
                                 $unreadlist_offset = !empty($notifics_list_arr) ? (5 - (count($notifics_list_arr))) : 5;
 
                                 $notifics_unreadlist_arr = array_slice($notifics_unreadlist_arr, 0, $unreadlist_offset);
-                                
+
                                 $notifics_list_arr = array_merge($notifics_list_arr, $notifics_unreadlist_arr);
                             }
                         }
                         //
-                        
+
                         if (!empty($notifics_list_arr)) {
                             $total_notifics = !empty($unviewd_notifics_arr) ? count($unviewd_notifics_arr) : 0;
                             //
@@ -742,11 +742,11 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 //
             }
             $html = ob_get_clean();
-            
+
             return $html;
         }
         //
-        
+
         public static function get_total_notifics_arr($user_id, $viewed_only = false) {
             global $jobsearch_plugin_options;
             $user_is_candidate = jobsearch_user_is_candidate($user_id);
@@ -774,7 +774,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 if ($notifics_cand_rejctforinter == 'on' && $notifics_me_rejctforinter == 'yes') {
                     $rem_rejctforjob_notifics = true;
                 }
-                
+
                 $this_clas_obj = new Jobsearch_Dashboard_Notifications();
                 $notifics_list = $this_clas_obj->get_cand_notifics($candidate_id);
                 if (!empty($notifics_list)) {
@@ -811,7 +811,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 if ($notifics_empto_applyjob == 'on' && $notifics_me_applyjob == 'yes') {
                     $rem_aplyjob_notifics = true;
                 }
-                
+
                 $this_clas_obj = new Jobsearch_Dashboard_Notifications();
                 $notifics_list = $this_clas_obj->get_emp_notifics($employer_id);
                 if (!empty($notifics_list)) {
@@ -841,7 +841,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             $user_id = get_current_user_id();
             $user_is_candidate = jobsearch_user_is_candidate($user_id);
             $user_is_employer = jobsearch_user_is_employer($user_id);
-            
+
             if ($user_is_candidate) {
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
                 $notifics_list = $this->get_cand_notifics($candidate_id);
@@ -881,7 +881,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
             $notific_type = isset($_POST['notific_type']) ? $_POST['notific_type'] : '';
             $user_id = get_current_user_id();
             $user_is_employer = jobsearch_user_is_employer($user_id);
-            
+
             if ($user_is_employer) {
                 $member_id = jobsearch_get_user_employer_id($user_id);
             } else {
@@ -891,7 +891,7 @@ if (!class_exists('Jobsearch_Dashboard_Notifications')) {
                 $meta_key = 'jobsearch_field_' . $notific_type;
                 update_post_meta($member_id, $meta_key, $notific_val);
             }
-            
+
             echo json_encode(array('update' => 1));
             die;
         }
