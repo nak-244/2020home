@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-24 10:05+0900\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2020-08-24 16:55+0900\n"
+"Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.4.1\n"
-"X-Loco-Version: 2.3.0; wp-5.2.2\n"
+"X-Loco-Version: 2.4.2; wp-5.5\n"
 "Last-Translator: \n"
 "Language: ja\n"
 
@@ -514,7 +514,7 @@ msgstr ""
 #: modules/custom-fields/include/custom-fields-load.php:4462
 #: modules/custom-fields/include/custom-fields-load.php:4815
 msgid "+ see more"
-msgstr ""
+msgstr "+ もっと見る"
 
 #: includes/class-jobsearch-plugin.php:724
 #: includes/class-user-dashboard.php:1531
@@ -1880,7 +1880,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:233
 #: templates/user-dashboard/employer/user-stats.php:432
 msgid "Sector"
-msgstr ""
+msgstr "業種"
 
 #: includes/classes/class-employer-all-applicants.php:74
 msgid "Applied with Email"
@@ -2949,7 +2949,7 @@ msgstr ""
 #: includes/classes/class-job-filters.php:591
 #: modules/locations/locations.php:1804
 msgid "Locations"
-msgstr ""
+msgstr "エリア"
 
 #: includes/classes/class-employer-filters.php:821
 #: includes/classes/class-job-filters.php:602
@@ -3041,7 +3041,7 @@ msgstr ""
 #: modules/indeed-jobs-import/indeed-jobs.php:39
 #: modules/custom-fields/include/custom-fields-load.php:4161
 msgid "Submit"
-msgstr ""
+msgstr "設定"
 
 #: includes/classes/class-employer-filters.php:1092
 #: includes/classes/class-job-filters.php:877
@@ -3291,7 +3291,7 @@ msgstr ""
 #: includes/common-functions/common-functions.php:2484
 #, php-format
 msgid "%1$s %2$s ago"
-msgstr ""
+msgstr "%1$s %2$s 前"
 
 #: includes/common-functions/common-functions.php:3372
 msgid "Only image files are allowed to upload."
@@ -3352,7 +3352,7 @@ msgstr ""
 #: modules/reviews/include/dashboard.php:204
 #: templates/user-dashboard/employer/user-manage-jobs.php:162
 msgid "Recent"
-msgstr ""
+msgstr "新しい順"
 
 #: includes/common-functions/common-functions.php:4714
 #: includes/common-functions/job-functions.php:432
@@ -3383,7 +3383,7 @@ msgstr "オススメ"
 #: includes/common-functions/common-functions.php:4715
 #: modules/locations/include/location-settings.php:347
 msgid "Alphabetical"
-msgstr ""
+msgstr "アルファベット順"
 
 #: includes/common-functions/common-functions.php:4716
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1541
@@ -3730,7 +3730,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:1952
 #: includes/common-functions/job-functions.php:2019
 msgid "Successfully Applied"
-msgstr ""
+msgstr "正常に処理しました。"
 
 #: includes/common-functions/job-functions.php:1837
 #: includes/common-functions/job-functions.php:1892
@@ -3871,12 +3871,12 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2756
 #, php-format
 msgid "%s Vacancy"
-msgstr ""
+msgstr "%s 件"
 
 #: includes/common-functions/job-functions.php:2758
 #, php-format
 msgid "%s Vacancies"
-msgstr ""
+msgstr "%s 件"
 
 #: includes/common-functions/candidate-restrictions.php:164
 #: includes/common-functions/candidate-functions.php:2903
@@ -5915,7 +5915,7 @@ msgstr ""
 
 #: includes/post-types/job.php:98
 msgid "Search Jobs"
-msgstr ""
+msgstr "求人検索"
 
 #: includes/post-types/job.php:99
 msgid "Parent Jobs:"
@@ -6623,7 +6623,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:576
 #: modules/job-alerts/include/job-alerts-hooks.php:692
 msgid "Create Alert"
-msgstr ""
+msgstr "ジョブアラート登録"
 
 #: modules/job-alerts/job-alerts.php:55
 #: modules/job-alerts/include/job-alerts-hooks.php:838
@@ -6653,7 +6653,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:643
 #: modules/job-alerts/include/job-alerts-hooks.php:795
 msgid "Monthly"
-msgstr ""
+msgstr "毎月"
 
 #: modules/job-alerts/job-alerts.php:128
 #: modules/job-alerts/include/job-alerts-hooks.php:141
@@ -6661,7 +6661,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:642
 #: modules/job-alerts/include/job-alerts-hooks.php:794
 msgid "Fortnightly"
-msgstr ""
+msgstr "隔週"
 
 #: modules/job-alerts/job-alerts.php:131
 #: admin/ReduxFramework/jobsearch-options/options-config.php:396
@@ -6670,7 +6670,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:641
 #: modules/job-alerts/include/job-alerts-hooks.php:793
 msgid "Weekly"
-msgstr ""
+msgstr "毎週"
 
 #: modules/job-alerts/job-alerts.php:134
 #: modules/job-alerts/include/job-alerts-hooks.php:165
@@ -6678,7 +6678,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:640
 #: modules/job-alerts/include/job-alerts-hooks.php:792
 msgid "Daily"
-msgstr ""
+msgstr "毎日"
 
 #: modules/job-application/job-application.php:97
 msgid "There is some error."
@@ -8124,7 +8124,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-email-template.php:284
 #, php-format
 msgid "Published %s"
-msgstr ""
+msgstr "公開日 %s"
 
 #: templates/user-dashboard/user-change-password.php:50
 #: templates/user-dashboard/candidate/user-my-resume.php:68
@@ -10387,7 +10387,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:97
 #: includes/classes/email-templates/class-job-submitted-admin.php:79
 msgid "sector"
-msgstr ""
+msgstr "業種"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:81
 #: includes/classes/email-templates/class-job-expire-to-employer.php:81
@@ -13363,7 +13363,7 @@ msgstr "この検索条件の新着求人をメールで受け取る"
 #: modules/job-alerts/include/job-alerts-hooks.php:570
 #: modules/job-alerts/include/job-alerts-hooks.php:678
 msgid "Job alert name..."
-msgstr ""
+msgstr "ジョブアラート名を入力."
 
 #: modules/job-alerts/include/job-alerts-hooks.php:573
 #: modules/job-alerts/include/job-alerts-hooks.php:679

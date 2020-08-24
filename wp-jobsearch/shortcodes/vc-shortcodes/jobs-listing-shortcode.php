@@ -1555,7 +1555,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                                 <?php
                                 $sortby_option = array(
                                     'recent' => esc_html__('Most Recent', 'wp-jobsearch'),
-                                    'featured' => esc_html__('Featured', 'wp-jobsearch'),
+                                    // 'featured' => esc_html__('Featured', 'wp-jobsearch'),
                                     'alphabetical' => esc_html__('Alphabet Order', 'wp-jobsearch'),
                                     'most_viewed' => esc_html__('Most Viewed', 'wp-jobsearch')
                                 );
