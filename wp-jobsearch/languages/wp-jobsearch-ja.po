@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-22 11:50+0900\n"
+"PO-Revision-Date: 2020-08-24 10:05+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -3738,7 +3738,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2020
 #: modules/job-application/include/job-application-load.php:1570
 msgid "Applied"
-msgstr ""
+msgstr "応募済"
 
 #: includes/common-functions/job-functions.php:1885
 #: includes/common-functions/job-functions.php:1946
@@ -3756,7 +3756,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:1951
 msgid "Apply for this job"
-msgstr ""
+msgstr "応募する"
 
 #: includes/common-functions/job-functions.php:1966
 msgid "OR Apply with"
@@ -3776,7 +3776,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:2018
 msgid "Apply for the job"
-msgstr ""
+msgstr "応募する"
 
 #: includes/common-functions/job-functions.php:2040
 msgid "y"
@@ -9754,7 +9754,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2866
 #: modules/job-application/include/job-application-load.php:1154
 msgid "Apply Job"
-msgstr ""
+msgstr "応募する"
 
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2868
 msgid "Allow employers to post a new job with different apply job methods."
@@ -13630,7 +13630,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:1006
 msgid "Apply for this Job"
-msgstr ""
+msgstr "応募する"
 
 #: modules/job-application/include/job-application-load.php:1187
 #: modules/job-application/include/job-application-load.php:1486

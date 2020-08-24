@@ -217,7 +217,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                         <li>
                                             <i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Posted', 'careerfy') ?>: <?php
                                             echo esc_html($jobsearch_job_posted_formated);
-                                            echo esc_html__(' -Accepting applications', 'careerfy');
+                                            // echo esc_html__(' -Accepting applications', 'careerfy');
                                             ?>
                                         </li>
                                         <?php
