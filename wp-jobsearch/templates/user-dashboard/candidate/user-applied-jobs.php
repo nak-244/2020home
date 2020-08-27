@@ -75,7 +75,10 @@ if ($candidate_id > 0) {
                             ?>
                             <li class="jobsearch-column-12">
                                 <div class="jobsearch-applied-jobs-wrap">
-                                    <a class="jobsearch-applied-jobs-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
+                                    <a class="jobsearch-applied-jobs-thumb">
+                                      <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
+                                      <img src="<?php the_field('cfimg',$job_id); ?>" alt="">
+                                    </a>
                                     <div class="jobsearch-applied-jobs-text">
                                         <div class="jobsearch-applied-jobs-left">
                                             <span>@ <?php echo get_the_title($job_post_employer) ?></span>

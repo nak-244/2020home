@@ -69,7 +69,7 @@ if ($candidate_ads_switch == 'yes') {
         }
         $array_i++;
     }
-    // new count 
+    // new count
     $candidate_ads_after_list_array_count = sizeof($candidate_ads_after_list_array);
 }
 
@@ -119,9 +119,9 @@ $http_request = jobsearch_server_protocol();
                 global $post, $jobsearch_member_profile;
 
                 $candidate_id = $post;
-                
+
                 $post_thumbnail_src = jobsearch_candidate_img_url_comn($candidate_id);
-                
+
                 $jobsearch_candidate_approved = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
                 $get_candidate_location = get_post_meta($candidate_id, 'jobsearch_field_location_address', true);
                 if (function_exists('jobsearch_post_city_contry_txtstr')) {
@@ -230,10 +230,6 @@ $http_request = jobsearch_server_protocol();
             echo '
             <li class="' . esc_html($columns_class) . '">
                 <div class="no-candidate-match-error">
-                    <strong>' . esc_html__('No Record', 'wp-jobsearch') . '</strong>
-                    <span>' . esc_html__('Sorry!', 'wp-jobsearch') . '&nbsp; ' . esc_html__('Does not match record with your keyword', 'wp-jobsearch') . ' </span>
-                    <span>' . esc_html__('Change your filter keywords to re-submit', 'wp-jobsearch') . '</span>
-                    <em>' . esc_html__('OR', 'wp-jobsearch') . '</em>
                     <a href="' . esc_url($page_url) . '">' . esc_html__('Reset Filters', 'wp-jobsearch') . '</a>
                 </div>
             </li>';

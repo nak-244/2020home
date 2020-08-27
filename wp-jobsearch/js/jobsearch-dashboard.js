@@ -229,12 +229,12 @@ jQuery(document).on('click', '.readmore-notific-btn', function () {
     var this_id = _this.attr('data-id');
     var readmore_txt = _this.attr('data-readm');
     //var readless_txt = _this.attr('data-readl');
-    
+
     var readmode_type = 'readin_more';
     if (_this.hasClass('btn-readless-mode')) {
         readmode_type = 'readin_less';
     }
-    
+
     var this_txt = _this.html();
 
     _this.html('<i class="fa fa-refresh fa-spin"></i>');
@@ -283,7 +283,7 @@ jQuery(document).on('click', '.close-notific-item', function () {
             this_loder = _this.find('i'),
             this_loder_clas = 'fa fa-close',
             this_id = _this.attr('data-id');
-    
+
     if (!_this.hasClass('ajax-loadin')) {
         _this.addClass('ajax-loadin');
         this_loder.attr('class', 'fa fa-refresh fa-spin');
@@ -1733,12 +1733,12 @@ jQuery(document).on('click', '#upload-more-gal-imgs', function () {
 
 jQuery(document).on('click', '.gal-item .el-remove', function () {
     var _this = jQuery(this);
-    
+
     var img_id = _this.attr('data-id');
-    
+
     var orig_icon = 'el-remove jobsearch-icon jobsearch-rubbish';
     var loder_icon = 'fa fa-refresh fa-spin';
-    
+
     _this.removeClass(orig_icon).addClass(loder_icon);
     var request = jQuery.ajax({
         url: jobsearch_dashboard_vars.ajax_url,
@@ -2283,15 +2283,15 @@ function jobsearch_is_valid_phone_number(that) {
 }
 
 jQuery(document).on('click', '.jobsearch-feat-job-form input[type=checkbox]', function () {
-    
+
     var _this = jQuery(this);
     var this_con = _this.parents('.jobsearch-feat-job-form');
     this_con.find('input[type=checkbox]:checked').prop('checked', false);
     _this.prop('checked', true);
-    
+
     var checkout_btn = this_con.find('.jobsearch-feature-pkg-buybtn');
     var feat_job_btn = this_con.find('.jobsearch-feature-pkg-alpurbtn');
-    
+
     if (_this.attr('name') == 'alpur_feature_pkg') {
         checkout_btn.hide();
         feat_job_btn.removeAttr('style');
@@ -2330,7 +2330,7 @@ jQuery(document).on('click', '.jobsearch-feature-pkg-alpurbtn', function () {
 
         var msg_before = '';
         var msg_after = '';
-        
+
         if (typeof response.msg !== 'undefined' && typeof response.error !== 'undefined' && response.error == '1') {
             msg_before = '<div class="alert alert-danger"><i class="fa fa-times"></i> ';
             msg_after = '</div>';

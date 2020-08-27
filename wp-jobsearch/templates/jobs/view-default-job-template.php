@@ -391,10 +391,6 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
             echo
                 '<li class="' . esc_html($columns_class) . '">
                 <div class="no-job-match-error">
-                    <strong>' . esc_html__('No Record', 'wp-jobsearch') . '</strong>
-                    <span>' . esc_html__('Sorry!', 'wp-jobsearch') . '&nbsp; ' . esc_html__('Does not match record with your keyword', 'wp-jobsearch') . ' </span>
-                    <span>' . esc_html__('Change your filter keywords to re-submit', 'wp-jobsearch') . '</span>
-                    <em>' . esc_html__('OR', 'wp-jobsearch') . '</em>
                     <a href="' . esc_url($page_url) . '">' . esc_html__('Reset Filters', 'wp-jobsearch') . '</a>
                 </div>
             </li>';

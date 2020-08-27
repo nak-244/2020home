@@ -663,7 +663,7 @@ if ($employer_id > 0) {
                                 <div class="jobsearch-stats-list-wrap">
                                     <h6><?php esc_html_e('Posted jobs', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($total_jobs) ?></span>
-                                    <small><?php esc_html_e('to find talent', 'wp-jobsearch') ?></small>
+                                    <!-- <small><?php esc_html_e('to find talent', 'wp-jobsearch') ?></small> -->
                                 </div>
                             </li>
                             <?php
@@ -671,13 +671,15 @@ if ($employer_id > 0) {
                             echo apply_filters('jobsearch_emp_dash_stats_post_jobs', $stats_html, $total_jobs, $_job_posts);
                             ob_start();
                             ?>
-                            <li>
+
+                            <!-- <li>
                                 <div class="jobsearch-stats-list-wrap green">
                                     <h6><?php esc_html_e('Reviewed', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($overall_viewed_cands) ?></span>
                                     <small><?php esc_html_e('CVs against opportunities', 'wp-jobsearch') ?></small>
                                 </div>
-                            </li>
+                            </li> -->
+
                             <?php
                             $stats_html = ob_get_clean();
                             echo apply_filters('jobsearch_emp_dash_stats_reviewed_cands', $stats_html, $overall_viewed_cands, $_job_posts);
@@ -685,9 +687,10 @@ if ($employer_id > 0) {
                             ?>
                             <li>
                                 <div class="jobsearch-stats-list-wrap light-blue">
-                                    <h6><?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></h6>
+                                    <!-- <h6><?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></h6> -->
+                                    <h6>候補者保存数</h6>
                                     <span><?php echo absint($employer_resumes_count) ?></span>
-                                    <small><?php esc_html_e('candidates against jobs', 'wp-jobsearch') ?></small>
+                                    <!-- <small><?php esc_html_e('candidates against jobs', 'wp-jobsearch') ?></small> -->
                                 </div>
                             </li>
                             <?php
@@ -811,7 +814,9 @@ if ($employer_id > 0) {
                                 ob_start();
                                 if ($job_salary != '') {
                                     ?>
-                                    <li><small><?php echo ($job_salary) ?> <?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small></li>
+
+                                    <!-- <li><small><?php echo ($job_salary) ?> <?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small></li> -->
+
                                     <?php
                                 }
                                 $list_jslary_html = ob_get_clean();
@@ -909,7 +914,7 @@ if ($employer_id > 0) {
                                                 <div class="jobsearch-candidate-default-left">
                                                     <h2 class="jobsearch-pst-title">
                                                         <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>">
-                                                            <?php echo esc_html(wp_trim_words(get_the_title($candidate_id), 5)); ?>
+                                                            <?php echo esc_html(wp_trim_words(get_the_title($candidate_id), 50)); ?>
                                                         </a>
                                                         <?php
                                                         if ($jobsearch_candidate_approved == 'on') {
@@ -957,11 +962,13 @@ if ($employer_id > 0) {
                                                 ob_start();
                                                 if (in_array($candidate_id, $job_short_int_list)) {
                                                     ?>
-                                                    <a href="javascript:void(0);" class="jobsearch-candidate-default-btn"><i class="jobsearch-icon jobsearch-add-list"></i> <?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></a>
+                                                    <!-- <a href="javascript:void(0);" class="jobsearch-candidate-default-btn"><i class="jobsearch-icon jobsearch-add-list"></i> <?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></a> -->
+                                                    <a href="javascript:void(0);" class="jobsearch-candidate-default-btn"><i class="jobsearch-icon jobsearch-add-list"></i> 面接登録済み</a>
                                                     <?php
                                                 } else {
                                                     ?>
-                                                    <a href="javascript:void(0);" class="jobsearch-candidate-default-btn shortlist-cand-to-intrview ajax-enable" data-jid="<?php echo ($_job_id) ?>" data-cid="<?php echo ($candidate_id) ?>"><i class="jobsearch-icon jobsearch-add-list"></i> <?php esc_html_e('Shortlist', 'wp-jobsearch') ?> <span class="app-loader"></span></a>
+                                                    <!-- <a href="javascript:void(0);" class="jobsearch-candidate-default-btn shortlist-cand-to-intrview ajax-enable" data-jid="<?php echo ($_job_id) ?>" data-cid="<?php echo ($candidate_id) ?>"><i class="jobsearch-icon jobsearch-add-list"></i> <?php esc_html_e('Shortlist', 'wp-jobsearch') ?> <span class="app-loader"></span></a> -->
+                                                    <a href="javascript:void(0);" class="jobsearch-candidate-default-btn shortlist-cand-to-intrview ajax-enable" data-jid="<?php echo ($_job_id) ?>" data-cid="<?php echo ($candidate_id) ?>"><i class="jobsearch-icon jobsearch-add-list"></i> 面接する <span class="app-loader"></span></a>
                                                         <?php
                                                     }
                                                     $shlist_html = ob_get_clean();

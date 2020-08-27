@@ -47,16 +47,19 @@ if ($candidate_id > 0) {
                 $offset = $reults_per_page;
 
                 $candidate_fav_jobs_list = array_slice($candidate_fav_jobs_list, $start, $offset);
-                
+
                 ob_start();
                 ?>
                 <div class="jobsearch-candidate-savedjobs">
                     <table>
                         <thead>
                             <tr>
-                                <th><?php esc_html_e('Job Title', 'wp-jobsearch') ?></th>
+                                <!-- <th><?php esc_html_e('Job Title', 'wp-jobsearch') ?></th>
                                 <th><?php esc_html_e('Company', 'wp-jobsearch') ?></th>
-                                <th><?php esc_html_e('Date Saved', 'wp-jobsearch') ?></th>
+                                <th><?php esc_html_e('Date Saved', 'wp-jobsearch') ?></th> -->
+                                <th>求人名</th>
+                                <th>会社名</th>
+                                <th>求人投稿日</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -83,10 +86,15 @@ if ($candidate_id > 0) {
                                 ?>
                                 <tr>
                                     <td>
-                                        <a class="jobsearch-savedjobs-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
+                                        <a class="jobsearch-savedjobs-thumb">
+                                          <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
+                                          <img src="<?php the_field('cfimg',$job_id); ?>" alt="">
+                                        </a>
                                         <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
                                     </td>
+
                                     <td><span>@ <?php echo get_the_title($job_post_employer) ?></span></td>
+
                                     <?php
                                     if ($job_post_date != '') {
                                         ?>
@@ -109,7 +117,7 @@ if ($candidate_id > 0) {
                 <?php
                 $favjobs_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_favjobs_list_html', $favjobs_html, $candidate_fav_jobs_list, $candidate_id);
-                
+
                 $total_pages = 1;
                 if ($total_jobs > 0 && $reults_per_page > 0 && $total_jobs > $reults_per_page) {
                     $total_pages = ceil($total_jobs / $reults_per_page);
@@ -126,4 +134,4 @@ if ($candidate_id > 0) {
         ?>
     </div>
     <?php
-}    
+}

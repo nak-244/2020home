@@ -791,7 +791,7 @@ if ($candidate_id > 0) {
                                     <small><?php esc_html_e('to apply jobs', 'wp-jobsearch') ?></small>
                                 </div>
                             </li> -->
-                            
+
                         </ul>
                         <?php
                         $tapp_html = ob_get_clean();
@@ -898,9 +898,9 @@ if ($candidate_id > 0) {
                             echo apply_filters('jobsearch_cand_dash_stats_appjobs_tapps', $tapp_html, $app_id);
                             if ($job_salary != '') {
                                 ?>
-                                <li>
+                                <!-- <li>
                                     <small><?php echo($job_salary) ?><?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small>
-                                </li>
+                                </li> -->
                                 <?php
                             }
                             ?>
@@ -1048,9 +1048,9 @@ if ($candidate_id > 0) {
                                 echo apply_filters('jobsearch_cand_dash_stats_appjobs_tapps', $tapp_html, $_job_apply);
                                 if ($job_salary != '') {
                                     ?>
-                                    <li>
+                                    <!-- <li>
                                         <small><?php echo($job_salary) ?><?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small>
-                                    </li>
+                                    </li> -->
                                     <?php
                                 }
                                 ?>
@@ -1112,7 +1112,8 @@ if ($candidate_id > 0) {
                                         <?php if ($user_def_avatar_url != '') { ?>
                                             <figure>
                                                 <a href="<?php the_permalink($_job_id); ?>">
-                                                    <img src="<?php echo esc_url($user_def_avatar_url) ?>" alt="">
+                                                    <!-- <img src="<?php echo esc_url($user_def_avatar_url) ?>" alt=""> -->
+                                                    <img src="<?php the_field('cfimg',$_job_id); ?>" alt="">
                                                 </a>
                                             </figure>
                                         <?php } ?>
@@ -1120,7 +1121,7 @@ if ($candidate_id > 0) {
                                             <div class="jobsearch-candidate-default-left">
                                                 <h2 class="jobsearch-pst-title">
                                                     <a href="<?php echo esc_url(get_permalink($_job_id)); ?>">
-                                                        <?php echo esc_html(wp_trim_words(get_the_title($_job_id), 5)); ?>
+                                                        <?php echo esc_html(wp_trim_words(get_the_title($_job_id), 50)); ?>
                                                     </a>
                                                 </h2>
                                                 <ul>

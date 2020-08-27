@@ -423,7 +423,7 @@ if ($view_candidate) {
                     </div>
                     <?php
                 } else {
-                    
+
                     $inopt_cover_letr = isset($jobsearch_plugin_options['cand_resm_cover_letr']) ? $jobsearch_plugin_options['cand_resm_cover_letr'] : '';
                     $inopt_resm_education = isset($jobsearch_plugin_options['cand_resm_education']) ? $jobsearch_plugin_options['cand_resm_education'] : '';
                     $inopt_resm_experience = isset($jobsearch_plugin_options['cand_resm_experience']) ? $jobsearch_plugin_options['cand_resm_experience'] : '';
@@ -600,7 +600,7 @@ if ($view_candidate) {
                                     jobsearch_detail_common_ad_code($ad_args);
                                     //
                                     do_action('jobseach_candidate_detail_after_desctxt', $candidate_id);
-                                    
+
                                     if (!$cand_profile_restrict::cand_field_is_locked('skills_defields', 'detail_page')) {
                                         $skills_list = jobsearch_job_get_all_skills($candidate_id, '', '', '', '', '', '', 'candidate');
                                         if ($skills_list != '') {
@@ -694,7 +694,7 @@ if ($view_candidate) {
                                                                     <?php
                                                                 } else {
                                                                     ?>
-                                                                    <span><?php echo ($experience_end_companyfield_val) ?><small><?php echo ($experience_start_datefield_val != '' ? date('Y', strtotime($experience_start_datefield_val)) : '') . ($experience_end_datefield_val != '' ? ' - ' . date('Y', strtotime($experience_end_datefield_val)) : '') ?></small></span> 
+                                                                    <span><?php echo ($experience_end_companyfield_val) ?><small><?php echo ($experience_start_datefield_val != '' ? date('Y', strtotime($experience_start_datefield_val)) : '') . ($experience_end_datefield_val != '' ? ' - ' . date('Y', strtotime($experience_end_datefield_val)) : '') ?></small></span>
                                                                     <?php
                                                                 }
                                                                 ?>
@@ -720,7 +720,7 @@ if ($view_candidate) {
                                     'position' => 'aftr_exp',
                                 );
                                 jobsearch_detail_common_ad_code($ad_args);
-                                
+
                                 if (!$cand_profile_restrict::cand_field_is_locked('expertise_defields', 'detail_page')) {
                                     if ($inopt_resm_skills != 'off') {
                                         // skills
@@ -820,7 +820,7 @@ if ($view_candidate) {
                                                         <li class="<?php echo ($exfield_counter == 0 ? 'careerfy-column-6' : 'careerfy-column-3') ?>">
                                                             <a href="<?php echo ($portfolio_vurl != '' ? $portfolio_vurl : $portfolio_img) ?>" class="<?php echo ($portfolio_vurl != '' ? 'fancybox-video' : 'fancybox-galimg') ?>" title="<?php echo ($exfield) ?>" <?php echo ($portfolio_vurl != '' ? 'data-fancybox-type="iframe"' : '') ?> data-fancybox-group="group">
                                                                 <img src="<?php echo ($portfolio_img) ?>" alt="">
-                                                            </a> 
+                                                            </a>
                                                         </li>
                                                         <?php
                                                         $exfield_counter ++;
@@ -860,7 +860,7 @@ if ($view_candidate) {
                                                         ?>
                                                         <li class="careerfy-column-12">
                                                             <div class="careerfy-candidate-timeline-two-text">
-                                                                <span><small><?php echo ($award_yearfield_val) ?></small></span> 
+                                                                <span><small><?php echo ($award_yearfield_val) ?></small></span>
                                                                 <h2><a href="javascript:void(0)"><?php echo ($exfield) ?></a></h2>
                                                                 <p><?php echo ($exfield_val) ?></p>
                                                             </div>
@@ -881,7 +881,7 @@ if ($view_candidate) {
                                     'position' => 'aftr_awards',
                                 );
                                 jobsearch_detail_common_ad_code($ad_args);
-                                
+
                                 if ($candidates_reviews == 'on') {
                                     $post_reviews_args = array(
                                         'post_id' => $candidate_id,
@@ -899,7 +899,7 @@ if ($view_candidate) {
 
                             </div>
                         </div><!-- careerfy-content-wrapper -->
-                    </div>  
+                    </div>
                     <?php
                 }
                 ?>
@@ -911,6 +911,3 @@ if ($view_candidate) {
 
 </div>
 <!-- Main Content -->
-
-
-

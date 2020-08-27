@@ -161,7 +161,7 @@ if ($employer_id > 0) {
                                     <option value=""><?php esc_html_e('Sort by', 'wp-jobsearch') ?></option>
                                     <option value="recent"<?php echo ($_sort_selected == 'recent' ? ' selected="selected"' : '') ?>><?php esc_html_e('Recent', 'wp-jobsearch') ?></option>
                                     <option value="alphabetic"<?php echo ($_sort_selected == 'alphabetic' ? ' selected="selected"' : '') ?>><?php esc_html_e('Alphabet Order', 'wp-jobsearch') ?></option>
-                                    <option value="salary"<?php echo ($_sort_selected == 'salary' ? ' selected="selected"' : '') ?>><?php esc_html_e('Expected Salary', 'wp-jobsearch') ?></option>
+                                    <!-- <option value="salary"<?php echo ($_sort_selected == 'salary' ? ' selected="selected"' : '') ?>><?php esc_html_e('Expected Salary', 'wp-jobsearch') ?></option> -->
                                     <option value="viewed"<?php echo ($_sort_selected == 'viewed' ? ' selected="selected"' : '') ?>><?php esc_html_e('Viewed', 'wp-jobsearch') ?></option>
                                     <option value="unviewed"<?php echo ($_sort_selected == 'unviewed' ? ' selected="selected"' : '') ?>><?php esc_html_e('Unviewed', 'wp-jobsearch') ?></option>
                                 </select>
@@ -220,7 +220,7 @@ if ($employer_id > 0) {
                                                                         </li>
                                                                         <li>
                                                                             <div class="input-field-submit">
-                                                                                <input type="submit" class="multi-applicantsto-email-submit" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" name="send_message_content" value="Send"/>
+                                                                                <input type="submit" class="multi-applicantsto-email-submit" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" name="send_message_content" value="送信"/>
                                                                                 <span class="loader-box loader-box-<?php echo esc_html($p_job_id); ?>"></span>
                                                                             </div>
                                                                             <?php jobsearch_terms_and_con_link_txt(); ?>
@@ -250,10 +250,10 @@ if ($employer_id > 0) {
                         <?php
                         ob_start();
                         ?>
-                        <div class="sort-list-view">
+                        <!-- <div class="sort-list-view">
                             <a href="javascript:void(0);" class="apps-view-btn<?php echo ($_selected_view == 'list' ? ' active' : '') ?>" data-view="list"><i class="fa fa-list"></i></a>
                             <a href="javascript:void(0);" class="apps-view-btn<?php echo ($_selected_view == 'grid' ? ' active' : '') ?>" data-view="grid"><i class="fa fa-bars"></i></a>
-                        </div>
+                        </div> -->
                         <?php
                         $app_viewbtns_html = ob_get_clean();
                         echo apply_filters('jobseacrh_dash_manag_apps_viewbtns_html', $app_viewbtns_html, $_selected_view);
@@ -376,7 +376,7 @@ if ($employer_id > 0) {
 
                                                             if (in_array($_candidate_id, $job_short_int_list)) {
                                                                 ?>
-                                                                <li><a href="javascript:void(0);" class="shortlist-cand-to-intrview ap-shortlist-btn"><i class="careerfy-icon careerfy-heart"></i> <?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></a></li>
+                                                                <li><a href="javascript:void(0);" class="shortlist-cand-to-intrview ap-shortlist-btn"><i class="careerfy-icon careerfy-heart"></i> <?php esc_html_e('shortlisted', 'wp-jobsearch') ?></a></li>
                                                                 <?php
                                                             } else {
                                                                 ?>
@@ -702,7 +702,7 @@ if ($employer_id > 0) {
                                                                                 <?php
                                                                                 if (in_array($_candidate_id, $job_short_int_list)) {
                                                                                     ?>
-                                                                                    <a href="javascript:void(0);" class="shortlist-cand-to-intrview"><?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></a>
+                                                                                    <a href="javascript:void(0);" class="shortlist-cand-to-intrview">面接リスト登録済</a>
                                                                                     <?php
                                                                                 } else {
                                                                                     ?>
@@ -810,7 +810,7 @@ if ($employer_id > 0) {
                         ?>
                         <form method="get" class="jobsearch-employer-search" action="<?php echo ($page_url) ?>">
                             <input type="hidden" name="tab" value="manage-jobs">
-                            <input placeholder="<?php esc_html_e('Search job', 'wp-jobsearch') ?>" name="keyword" type="text" value="<?php echo (isset($_GET['keyword']) ? $_GET['keyword'] : '') ?>">
+                            <input name="keyword" type="text" value="<?php echo (isset($_GET['keyword']) ? $_GET['keyword'] : '') ?>">
                             <input type="submit" value="">
                             <i class="jobsearch-icon jobsearch-search"></i>
                         </form>
@@ -839,10 +839,12 @@ if ($employer_id > 0) {
                             <!-- Manage Jobs Header -->
                             <div class="jobsearch-table-layer jobsearch-managejobs-thead">
                                 <div class="jobsearch-table-row">
-                                    <div class="jobsearch-table-cell"><?php esc_html_e('Job Title', 'wp-jobsearch') ?></div>
-                                    <div class="jobsearch-table-cell jobapps-tabh-cell"><?php esc_html_e('Applications', 'wp-jobsearch') ?></div>
+                                    <div class="jobsearch-table-cell">求人タイトル</div>
+                                    <div class="jobsearch-table-cell jobapps-tabh-cell">応募件数</div>
+                                    <!--
                                     <div class="jobsearch-table-cell"><?php esc_html_e('Featured', 'wp-jobsearch') ?></div>
                                     <div class="jobsearch-table-cell stuts-tabh-cell"><?php esc_html_e('Status', 'wp-jobsearch') ?></div>
+                                     -->
                                     <div class="jobsearch-table-cell"></div>
                                 </div>
                             </div>
@@ -956,7 +958,8 @@ if ($employer_id > 0) {
                                         </div>
 
                                         <div class="jobsearch-table-cell jobapps-tabl-cell"><a <?php echo ('href="' . add_query_arg(array('tab' => 'manage-jobs', 'view' => 'applicants', 'job_id' => $job_id), $page_url) . '"') ?> class="jobsearch-managejobs-appli"><?php printf(__('%s Application(s)', 'wp-jobsearch'), $job_applicants_count) ?></a></div>
-                                        <div class="jobsearch-table-cell">
+
+                                        <!-- <div class="jobsearch-table-cell">
                                             <?php
                                             if ($job_is_feature == 'on') {
                                                 $job_feature_link = 'href="javascript:void(0);"';
@@ -1124,13 +1127,16 @@ if ($employer_id > 0) {
                                             ?>
                                             <a <?php echo ($job_feature_link) ?> <?php echo ($job_is_feature == 'on' ? ' class="job-is-fetured"' : '') ?>><i class="<?php echo ($job_is_feature == 'on' ? 'fa fa-star' : 'fa fa-star-o') ?>"></i></a>
                                         </div>
-                                        <div class="jobsearch-table-cell stuts-tabl-cell"><span class="jobsearch-managejobs-option <?php echo ($job_status == 'approved' ? 'active' : '') ?><?php echo ($job_status == 'expired' || $job_status == 'canceled' ? 'expired' : '') ?>"><?php echo ($status_txt) ?></span></div>
+                                        <div class="jobsearch-table-cell stuts-tabl-cell"><span class="jobsearch-managejobs-option <?php echo ($job_status == 'approved' ? 'active' : '') ?><?php echo ($job_status == 'expired' || $job_status == 'canceled' ? 'expired' : '') ?>"><?php echo ($status_txt) ?></span></div> -->
+
                                         <?php
                                         ob_start();
                                         ?>
                                         <div class="jobsearch-table-cell">
                                             <div class="jobsearch-managejobs-links">
-                                                <a href="<?php echo get_permalink($job_id) ?>" class="jobsearch-icon jobsearch-view jobsearch-mangjob-act" title="<?php esc_html_e('View Job', 'wp-jobsearch') ?>"></a>
+
+                                                <a href="<?php echo get_permalink($job_id) ?>" class="jobsearch-icon jobsearch-view jobsearch-mangjob-act" title="求人を見る"></a>
+                                                <!--
                                                 <?php
                                                 if ($duplicate_jobs_allow == 'on') {
                                                     ?>
@@ -1139,8 +1145,9 @@ if ($employer_id > 0) {
                                                     <?php
                                                 }
                                                 ?>
-                                                <a href="<?php echo add_query_arg(array('tab' => 'user-job', 'job_id' => $job_id, 'action' => 'update'), $page_url) ?>" title="<?php esc_html_e('Edit Job', 'wp-jobsearch') ?>" class="jobsearch-icon jobsearch-edit jobsearch-mangjob-act"></a>
-                                                <a href="javascript:void(0);" data-id="<?php echo ($job_id) ?>" class="jobsearch-icon jobsearch-rubbish jobsearch-trash-job jobsearch-mangjob-act" title="<?php esc_html_e('Delete Job', 'wp-jobsearch') ?>"></a>
+                                                <a href="<?php echo add_query_arg(array('tab' => 'user-job', 'job_id' => $job_id, 'action' => 'update'), $page_url) ?>" title="<?php esc_html_e('Edit Job', 'wp-jobsearch') ?>" class="jobsearch-icon jobsearch-edit jobsearch-mangjob-act"></a> -->
+
+                                                <a href="javascript:void(0);" data-id="<?php echo ($job_id) ?>" class="jobsearch-icon jobsearch-rubbish jobsearch-trash-job jobsearch-mangjob-act" title="求人を削除"></a>
 
                                             </div>
                                         </div>

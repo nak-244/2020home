@@ -123,10 +123,11 @@ if ($user_avatar_id > 0) {
             } else {
                 ob_start();
                 ?>
-                <div class="jobsearch-employer-cvr-img">
+
+                <!-- <div class="jobsearch-employer-cvr-img">
                     <figure>
                         <div class="img-cont-sec" style="display: <?php echo ($user_cover_img_url == '' ? 'none' : 'block') ?>;">
-                            <a href="javascript:void(0);" class="candidate-remove-coverimg"><i class="fa fa-times"></i> <?php esc_html_e('Delete Cover', 'wp-jobsearch') ?></a>    
+                            <a href="javascript:void(0);" class="candidate-remove-coverimg"><i class="fa fa-times"></i> <?php esc_html_e('Delete Cover', 'wp-jobsearch') ?></a>
                             <a id="com-cvrimg-holder" class="employer-dashboard-cvr">
                                 <span<?php echo ($candidate_cover_image_src_style_str) ?>></span>
                             </a>
@@ -139,7 +140,8 @@ if ($user_avatar_id > 0) {
                             </div>
                         </figcaption>
                     </figure>
-                </div>
+                </div> -->
+
                 <?php
                 $cphot_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_profile_coverimg_html', $cphot_html, $user_cover_img_url, $candidate_id);
@@ -150,7 +152,7 @@ if ($user_avatar_id > 0) {
                 <?php
                 ob_start();
                 $flnames_fields_allow = isset($jobsearch_plugin_options['signup_user_flname']) ? $jobsearch_plugin_options['signup_user_flname'] : '';
-                
+
                 if ($flnames_fields_allow == 'on') {
                     ?>
                     <li class="jobsearch-column-6">
@@ -178,7 +180,7 @@ if ($user_avatar_id > 0) {
                 <?php
                 $simp_field_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_simpfields_html', $simp_field_html, $candidate_id);
-                
+
                 //
                 $profile_url_switch = isset($jobsearch_plugin_options['cand_profile_url_switch']) ? $jobsearch_plugin_options['cand_profile_url_switch'] : '';
                 if ($profile_url_switch == 'on') {
@@ -237,7 +239,7 @@ if ($user_avatar_id > 0) {
                     echo apply_filters('jobsearch_cand_dash_publicview_html', $publicview_html, $candidate_id);
                 }
                 $cand_dob_switch = isset($jobsearch_plugin_options['cand_dob_switch']) ? $jobsearch_plugin_options['cand_dob_switch'] : 'on';
-                
+
                 if ($cand_dob_switch == 'on') {
                     if ($user_pkg_limits::cand_field_is_locked('profile_fields|date_of_birth')) {
                         ob_start();
@@ -306,7 +308,7 @@ if ($user_avatar_id > 0) {
                 if ($sectors_enable_switch == 'on') {
                     ?>
                     <li class="jobsearch-column-6">
-                        <label><?php esc_html_e('Sector', 'wp-jobsearch') ?></label>
+                        <label>希望<?php esc_html_e('Sector', 'wp-jobsearch') ?></label>
                         <?php
                         if ($user_pkg_limits::cand_field_is_locked('profile_fields|sector')) {
                             echo ($user_pkg_limits::cand_gen_locked_html());
@@ -353,11 +355,12 @@ if ($user_avatar_id > 0) {
                     <?php
                     ob_start();
                     ?>
-                    <label><?php esc_html_e('Job Title', 'wp-jobsearch') ?></label>
+                    <!-- <label><?php esc_html_e('Job Title', 'wp-jobsearch') ?></label> -->
+                    <label>希望職種</label>
                     <?php
                     $title_html = ob_get_clean();
                     echo apply_filters('jobsearch_candash_profile_jobtitle_label', $title_html);
-                    
+
                     if ($user_pkg_limits::cand_field_is_locked('profile_fields|job_title')) {
                         echo ($user_pkg_limits::cand_gen_locked_html());
                     } else {
@@ -382,7 +385,8 @@ if ($user_avatar_id > 0) {
                             <?php
                             ob_start();
                             ?>
-                            <label><?php esc_html_e('Salary', 'wp-jobsearch') ?></label>
+                            <!-- <label><?php esc_html_e('Salary', 'wp-jobsearch') ?></label> -->
+                            <label>現在の給料</label>
                             <?php
                             $title_html = ob_get_clean();
                             echo apply_filters('jobsearch_candash_profile_salary_label', $title_html);
@@ -399,11 +403,12 @@ if ($user_avatar_id > 0) {
                             <?php
                             ob_start();
                             ?>
-                            <label><?php esc_html_e('Salary', 'wp-jobsearch') ?></label>
+                            <!-- <label><?php esc_html_e('Salary', 'wp-jobsearch') ?></label> -->
+                            <label>現在の給料</label>
                             <?php
                             $title_html = ob_get_clean();
                             echo apply_filters('jobsearch_candash_profile_salary_label', $title_html);
-                            
+
                             //
                             if (!empty($_salary_types)) {
                                 ?>
@@ -431,7 +436,7 @@ if ($user_avatar_id > 0) {
                             $_job_currency_sym = isset($jobsearch_currencies_list[$_candidate_salary_currency]['symbol']) ? $jobsearch_currencies_list[$_candidate_salary_currency]['symbol'] : jobsearch_get_currency_symbol();
                             ?>
                             <span><?php echo ($_job_currency_sym) ?></span>
-                            <input type="text" placeholder="<?php esc_html_e('Salary', 'wp-jobsearch') ?>" name="candidate_salary" <?php echo ('value="' . ($_candidate_salary) . '"') ?>>
+                            <input type="text" name="candidate_salary" <?php echo ('value="' . ($_candidate_salary) . '"') ?>>
                             <?php
                             echo '</div>';
                             ?>
@@ -479,7 +484,7 @@ if ($user_avatar_id > 0) {
                                 </div>
                                 <div class="jobsearch-column-3">
                                     <label><?php esc_html_e('Number of decimals', 'wp-jobsearch') ?></label>
-                                    <input type="text" name="candidate_salary_deci" value="<?php echo ($_candidate_salary_deci != '' && $_candidate_salary_deci > 0 ? $_candidate_salary_deci : '2') ?>">
+                                    <input type="text" name="candidate_salary_deci" value="<?php echo ($_candidate_salary_deci != '' && $_candidate_salary_deci > 0 ? $_candidate_salary_deci : '0') ?>">
                                 </div>
                                 <?php
                                 $salary_ing_html = ob_get_clean();
@@ -500,7 +505,8 @@ if ($user_avatar_id > 0) {
                     <?php
                     ob_start();
                     ?>
-                    <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>
+                    <!-- <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label> -->
+                    <label>自己紹介</label>
                     <?php
                     $title_html = ob_get_clean();
                     echo apply_filters('jobsearch_candash_profile_description_label', $title_html);
@@ -675,10 +681,12 @@ if ($user_avatar_id > 0) {
         if ($user_pkg_limits::cand_field_is_locked('location_defields')) {
             ob_start();
             ?>
+
             <div class="jobsearch-employer-box-section">
                 <div class="jobsearch-profile-title"><h2><?php esc_html_e('Address / Location', 'wp-jobsearch') ?></h2></div>
                 <?php echo ($user_pkg_limits::cand_gen_locked_html()) ?>
             </div>
+
             <?php
             $lock_field_cushtml = ob_get_clean();
             $lock_field_html = $user_pkg_limits->cand_field_locked_html($lock_field_cushtml);

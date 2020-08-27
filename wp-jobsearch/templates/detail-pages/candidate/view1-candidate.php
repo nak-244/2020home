@@ -624,7 +624,8 @@ wp_enqueue_script('isotope-min');
                                         ob_start();
                                         ?>
                                         <div class="jobsearch-content-title">
-                                            <h2><?php esc_html_e('Description', 'wp-jobsearch') ?></h2></div>
+                                            <!-- <h2><?php esc_html_e('Description', 'wp-jobsearch') ?></h2> -->
+                                          <h2>自己紹介</h2></div>
                                         <div class="jobsearch-description">
                                             <?php echo($candidate_content) ?>
                                         </div>
@@ -990,6 +991,3 @@ wp_enqueue_script('isotope-min');
     <!-- Main Section -->
 
 </div>
-
-
-

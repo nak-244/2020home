@@ -72,7 +72,7 @@ class Jobsearch_Location
         $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
 
         if ($all_location_allow == 'on') {
-            
+
             $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
 
             $autocomplete_countries_json = '';
@@ -876,7 +876,7 @@ class Jobsearch_Location
         global $jobsearch_form_fields, $jobsearch_plugin_options, $sitepress, $jobsearch_gdapi_allocation;
         $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
         if ($all_location_allow == 'on') {
-            
+
             $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
 
             $autocomplete_countries_json = '';
@@ -1292,6 +1292,9 @@ class Jobsearch_Location
 
                         <?php
                         if ($location_map_type == 'mapbox' && $mapbox_access_token != '') { ?>
+
+                          <small>住所は■丁目▲番●号と入力後、候補リストからお選びください。</small>
+
                             <div id="jobsearch_location_address_<?php echo($rand_num) ?>" class="mapbox-geocoder-searchtxt"></div>
                             <input id="jobsearch_lochiden_addr_<?php echo($rand_num) ?>" type="hidden" class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
                                    name="jobsearch_field_location_address" value="<?php echo($loc_address) ?>">
@@ -1319,7 +1322,7 @@ class Jobsearch_Location
                     echo apply_filters('jobsearch_dash_loc_address_simpfields', $loc_fields_html, $id, $allow_full_address, $rand_num);
                     ?>
 
-                    <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
+                     <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Latitude', 'wp-jobsearch') ?></label>
                         <?php
                         $field_params = array(
@@ -1352,6 +1355,7 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
+
                     <?php
                     $map_con_style = '';
                     if ($allow_location_map != 'yes') {
@@ -1369,6 +1373,7 @@ class Jobsearch_Location
                     </li>
                 </ul>
             </div>
+
             <?php
             if ($allow_location_map == 'yes') {
                 $autocomplete_adres_type = isset($jobsearch_plugin_options['autocomplete_adres_type']) ? $jobsearch_plugin_options['autocomplete_adres_type'] : '';
@@ -2210,13 +2215,12 @@ class Jobsearch_Location
                 ),
             ),
         );
-        // echo '<pre>'; print_r($sections);echo '</pre>'; 
+        // echo '<pre>'; print_r($sections);echo '</pre>';
         return $sections;
     }
 
 }
 
-// class Jobsearch_Location 
+// class Jobsearch_Location
 global $Jobsearch_Location_obj;
 $Jobsearch_Location_obj = new Jobsearch_Location();
-

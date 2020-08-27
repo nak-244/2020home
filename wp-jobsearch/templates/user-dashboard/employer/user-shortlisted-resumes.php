@@ -19,7 +19,7 @@ $page_num = isset($_GET['page_num']) ? $_GET['page_num'] : 1;
 
 if ($employer_id > 0) {
     $employer_resumes_list = get_post_meta($employer_id, 'jobsearch_candidates_list', true);
-    
+
     $employer_resumes_list = apply_filters('jobsearch_emp_dash_savedcands_list_var', $employer_resumes_list);
 
     $cats_list = get_post_meta($employer_id, 'emp_resumesh_types', true);
@@ -69,18 +69,18 @@ if ($employer_id > 0) {
             </form>
             <div class="jobsearch-profile-title">
                 <h2><?php echo apply_filters('jobsearch_empdash_savedcands_maintitle', esc_html__('Saved Candidates', 'wp-jobsearch')) ?></h2>
-                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-list-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;"><?php esc_html_e('Candidates List', 'wp-jobsearch') ?></a>
-                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;"><?php esc_html_e('Settings', 'wp-jobsearch') ?></a>
+                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-list-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;">候補者一覧</a>
+                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">設定</a>
                 <?php
                 echo apply_filters('jobsearch_empdash_resmsaved_aftrmacts_html', '');
-                
+
                 ob_start();
                 if (!empty($cats_list)) {
                     ?>
                     <div class="cands-savetype-filter">
-                        <span class="filtr-label"><?php esc_html_e('Sort by', 'wp-jobsearch') ?></span>
+                        <span class="filtr-label">表示切り替え</span>
                         <div class="jobsearch-profile-select">
-                            <select id="shrtlist_selctsvtyp_filtr" class="selectize-select" placeholder="<?php esc_html_e('Select Type', 'wp-jobsearch') ?>">
+                            <select id="shrtlist_selctsvtyp_filtr" class="selectize-select" placeholder="カテゴリを選択">
                                 <option value=""><?php esc_html_e('Select Type', 'wp-jobsearch') ?></option>
                                 <?php
                                 $typsh_count = 1;
@@ -102,7 +102,7 @@ if ($employer_id > 0) {
             </div>
 
             <div class="jobsearch-profile-ressetin" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;">
-                <h2><?php esc_html_e('Resume Types', 'wp-jobsearch') ?></h2>
+                <h2>カテゴリ</h2>
 
                 <form id="emp-shresumetype-form" method="post" action="<?php echo add_query_arg(array('tab' => 'user-resumes', 'sh_type' => 'settings'), $page_url) ?>">
                     <div class="res-profile-reslist">
@@ -153,7 +153,7 @@ if ($employer_id > 0) {
             <div class="jobsearch-profile-actreslis" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">
                 <?php
                 echo apply_filters('jobsearch_empdash_resmsaved_list_bfrhtml', '');
-                
+
                 ob_start();
                 if ($employer_resumes_list != '') {
                     $employer_resumes_list = explode(',', $employer_resumes_list);
@@ -193,7 +193,7 @@ if ($employer_id > 0) {
                                     $send_message_form_rand = rand(1000000, 99999999);
                                     $cand_savetypes = isset($_resume_typsh_list[$candidate_id]) ? $_resume_typsh_list[$candidate_id] : '';
                                     $candidate_user_id = jobsearch_get_candidate_user_id($candidate_id);
-                                    
+
                                     $user_def_avatar_url = jobsearch_candidate_img_url_comn($candidate_id);
 
                                     $candidate_jobtitle = get_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', true);
@@ -215,7 +215,7 @@ if ($employer_id > 0) {
                                                 <a href="<?php echo get_permalink($candidate_id) ?>" class="jobsearch-resumes-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
                                                 <figcaption>
                                                     <h2 class="jobsearch-pst-title">
-                                                        <a href="<?php echo get_permalink($candidate_id) ?>"><?php echo get_the_title($candidate_id) ?></a> 
+                                                        <a href="<?php echo get_permalink($candidate_id) ?>"><?php echo get_the_title($candidate_id) ?></a>
                                                         <?php
                                                         echo apply_filters('jobsearch_dash_stats_apps_list_slist_btn', '', $candidate_id, 10);
                                                         $candidate_cv_file = get_post_meta($candidate_id, 'candidate_cv_file', true);
@@ -335,10 +335,10 @@ if ($employer_id > 0) {
                                                                                         <span class="loader-box loader-box-<?php echo esc_html($p_masg_rand); ?>"></span>
                                                                                     </div>
                                                                                 </li>
-                                                                            </ul> 
+                                                                            </ul>
                                                                             <div class="message-box message-box-<?php echo esc_html($p_masg_rand); ?>" style="display:none;"></div>
                                                                         </div>
-                                                                    </form>    
+                                                                    </form>
                                                                 </div>
 
                                                             </div>

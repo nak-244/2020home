@@ -104,17 +104,17 @@ if ($candidate_id > 0) {
 
                 //
                 echo apply_filters('jobsearch_candidate_dash_resume_after_cover', '', $candidate_id);
-                
+
                 $cand_skills_switch = isset($jobsearch_plugin_options['cand_skills_switch']) ? $jobsearch_plugin_options['cand_skills_switch'] : '';
                 $cand_max_skills_allow = isset($jobsearch_plugin_options['cand_max_skills']) && $jobsearch_plugin_options['cand_max_skills'] > 0 ? $jobsearch_plugin_options['cand_max_skills'] : 5;
                 $cand_sugg_skills_allow = isset($jobsearch_plugin_options['cand_sugg_skills']) && $jobsearch_plugin_options['cand_sugg_skills'] > 0 ? $jobsearch_plugin_options['cand_sugg_skills'] : 0;
 
                 if ($cand_skills_switch == 'on') { ?>
                     <div class="jobsearch-candidate-resume-wrap jobsearch-employer-profile-form">
-                        <div class="jobsearch-candidate-title"> 
+                        <div class="jobsearch-candidate-title">
                             <h2>
-                                <i class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Skills', 'wp-jobsearch') ?> 
-                            </h2> 
+                                <i class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Skills', 'wp-jobsearch') ?>
+                            </h2>
                         </div>
                         <?php
                         wp_enqueue_script('jobsearch-tag-it');
@@ -224,7 +224,7 @@ if ($candidate_id > 0) {
                     </div>
                     <?php
                 }
-                
+
                 echo apply_filters('jobsearch_candidate_dash_resume_after_skills', '', $candidate_id);
 
                 $resm_edu_oall_html = $resm_exp_oall_html = $resm_port_oall_html = $resm_skill_oall_html = $resm_award_oall_html = '';
@@ -237,7 +237,7 @@ if ($candidate_id > 0) {
                         if ($user_pkg_limits::cand_field_is_locked('resmedu_defields')) {
                             ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <i class="jobsearch-icon jobsearch-mortarboard"></i> <?php esc_html_e('Education', 'wp-jobsearch') ?>
                                 </h2>
@@ -248,9 +248,9 @@ if ($candidate_id > 0) {
                             $lock_field_html = $user_pkg_limits->cand_field_locked_html($lock_field_cushtml);
                             echo ($lock_field_html);
                         } else {
-                            ob_start();                            
+                            ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <i class="jobsearch-icon jobsearch-mortarboard"></i> <?php esc_html_e('Education', 'wp-jobsearch') ?>
                                     <a href="javascript:void(0)" class="jobsearch-resume-addbtn"><span class="fa fa-plus"></span> <?php esc_html_e('Add education', 'wp-jobsearch') ?></a>
@@ -263,7 +263,8 @@ if ($candidate_id > 0) {
                                         <?php
                                         ob_start();
                                         ?>
-                                        <label><?php esc_html_e('Title *', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Title *', 'wp-jobsearch') ?></label> -->
+                                        <label>学校名 *</label>
                                         <?php
                                         $title_html = ob_get_clean();
                                         echo apply_filters('jobsearch_candash_resume_edutitle_label', $title_html);
@@ -274,22 +275,25 @@ if ($candidate_id > 0) {
                                         <?php
                                         ob_start();
                                         ?>
-                                        <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label> -->
+                                        <label>入学年度 - 卒業年度 *</label>
                                         <?php
                                         $title_html = ob_get_clean();
                                         echo apply_filters('jobsearch_candash_resume_eduyear_label', $title_html);
                                         ?>
-                                        <input id="add-edu-year" class="jobsearch-req-field" type="text">
+                                        <input id="add-edu-year" class="jobsearch-req-field" type="text" placeholder="1998-2002">
                                     </li>
                                     <li class="jobsearch-column-6">
-                                        <label><?php esc_html_e('Institute *', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Institute *', 'wp-jobsearch') ?></label> -->
+                                        <label>専攻・学部・学科等 *</label>
                                         <input id="add-edu-institute" class="jobsearch-req-field" type="text">
                                     </li>
                                     <?php
                                     echo apply_filters('jobsearch_cand_dash_resume_edu_add_bfor_desc', '');
                                     ?>
                                     <li class="jobsearch-column-12">
-                                        <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label> -->
+                                        <label>特記事項</label>
                                         <textarea id="add-edu-desc" <?php echo apply_filters('jobsearch_candash_resume_edudesc_atts', ''); ?>></textarea>
                                     </li>
                                     <li class="jobsearch-column-12">
@@ -399,7 +403,7 @@ if ($candidate_id > 0) {
                         if ($user_pkg_limits::cand_field_is_locked('resmexp_defields')) {
                             ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <?php
                                     ob_start();
@@ -419,7 +423,7 @@ if ($candidate_id > 0) {
                         } else {
                             ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <?php
                                     ob_start();
@@ -430,7 +434,7 @@ if ($candidate_id > 0) {
                                     echo apply_filters('jobsearch_candash_resume_expmain_label', $title_html);
                                     ?>
                                     <a href="javascript:void(0)" class="jobsearch-resume-addbtn"><span class="fa fa-plus"></span> <?php esc_html_e('Add experience', 'wp-jobsearch') ?></a>
-                                </h2> 
+                                </h2>
                             </div>
 
                             <div class="jobsearch-add-popup jobsearch-add-resume-item-popup">
@@ -489,19 +493,23 @@ if ($candidate_id > 0) {
                                 </script>
                                 <ul class="jobsearch-row jobsearch-employer-profile-form">
                                     <li class="jobsearch-column-12">
-                                        <label><?php esc_html_e('Title *', 'wp-jobsearch') ?></label>
-                                        <input id="add-expr-title" class="jobsearch-req-field" type="text">
+                                        <!-- <label><?php esc_html_e('Title *', 'wp-jobsearch') ?></label> -->
+                                        <label>職種 *</label>
+                                        <input id="add-expr-title" class="jobsearch-req-field" type="text" placeholder="営業職">
                                     </li>
                                     <li class="jobsearch-column-4">
-                                        <label><?php esc_html_e('From Date *', 'wp-jobsearch') ?></label>
-                                        <input id="add-expr-date-start" class="jobsearch-req-field" type="text">
+                                        <!-- <label><?php esc_html_e('From Date *', 'wp-jobsearch') ?></label> -->
+                                        <label>勤務開始日 *</label>
+                                        <input id="add-expr-date-start" class="jobsearch-req-field" type="text" placeholder="1998">
                                     </li>
                                     <li class="jobsearch-column-4 cand-expr-todatefield-0">
-                                        <label><?php esc_html_e('To Date', 'wp-jobsearch') ?></label>
-                                        <input id="add-expr-date-end" type="text">
+                                        <!-- <label><?php esc_html_e('To Date', 'wp-jobsearch') ?></label> -->
+                                        <label>勤務終了日</label>
+                                        <input id="add-expr-date-end" type="text" placeholder="2002">
                                     </li>
                                     <li class="jobsearch-column-4 cand-expr-prsntfield">
-                                        <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label> -->
+                                        <label>現職の場合はチェックを入れてください</label>
                                         <input class="cand-expr-prsntchkbtn" data-id="0" type="checkbox">
                                         <input id="add-expr-date-prsent" type="hidden">
                                     </li>
@@ -509,7 +517,8 @@ if ($candidate_id > 0) {
                                         <?php
                                         ob_start();
                                         ?>
-                                        <label><?php esc_html_e('Company *', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Company *', 'wp-jobsearch') ?></label> -->
+                                        <label>会社名 *</label>
                                         <?php
                                         $title_html = ob_get_clean();
                                         echo apply_filters('jobsearch_candash_resume_expcompny_label', $title_html);
@@ -523,7 +532,8 @@ if ($candidate_id > 0) {
                                         <?php
                                         ob_start();
                                         ?>
-                                        <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>
+                                        <!-- <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label> -->
+                                        <label>業務内容</label>
                                         <?php
                                         $title_html = ob_get_clean();
                                         echo apply_filters('jobsearch_candash_resume_expdesc_label', $title_html);
@@ -646,7 +656,7 @@ if ($candidate_id > 0) {
                     if ($user_pkg_limits::cand_field_is_locked('resmport_defields')) {
                         ob_start();
                         ?>
-                        <div class="jobsearch-candidate-title"> 
+                        <div class="jobsearch-candidate-title">
                             <h2>
                                 <i class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Portfolio', 'wp-jobsearch') ?>
                             </h2>
@@ -663,11 +673,11 @@ if ($candidate_id > 0) {
                             <?php
                             ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <i class="jobsearch-icon jobsearch-briefcase"></i> <?php esc_html_e('Portfolio', 'wp-jobsearch') ?>
                                     <a href="javascript:void(0)" class="jobsearch-resume-addbtn jobsearch-portfolio-add-btn"><span class="fa fa-plus"></span> <?php esc_html_e('Add Portfolio', 'wp-jobsearch') ?> </a>
-                                </h2> 
+                                </h2>
                             </div>
                             <div class="jobsearch-add-popup jobsearch-add-resume-item-popup">
                                 <span class="close-popup-item"><i class="fa fa-times"></i></span>
@@ -808,7 +818,7 @@ if ($candidate_id > 0) {
                     if ($user_pkg_limits::cand_field_is_locked('resmskills_defields')) {
                         ob_start();
                         ?>
-                        <div class="jobsearch-candidate-title"> 
+                        <div class="jobsearch-candidate-title">
                             <h2>
                                 <?php
                                 ob_start();
@@ -832,7 +842,7 @@ if ($candidate_id > 0) {
                             <?php
                             ob_start();
                             ?>
-                            <div class="jobsearch-candidate-title"> 
+                            <div class="jobsearch-candidate-title">
                                 <h2>
                                     <?php
                                     ob_start();
@@ -843,7 +853,7 @@ if ($candidate_id > 0) {
                                     echo apply_filters('jobsearch_candash_resume_exprtizemain_label', $title_html);
                                     ?>
                                     <a href="javascript:void(0)" class="jobsearch-resume-addbtn"><span class="fa fa-plus"></span> <?php esc_html_e('Add Expertise', 'wp-jobsearch') ?></a>
-                                </h2> 
+                                </h2>
                             </div>
 
                             <div class="jobsearch-add-popup jobsearch-add-resume-item-popup">
@@ -938,7 +948,7 @@ if ($candidate_id > 0) {
                     if ($user_pkg_limits::cand_field_is_locked('resmawards_defields')) {
                         ob_start();
                         ?>
-                        <div class="jobsearch-candidate-title"> 
+                        <div class="jobsearch-candidate-title">
                             <h2>
                                 <i class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Honors & Awards', 'wp-jobsearch') ?>
                             </h2>
@@ -951,12 +961,12 @@ if ($candidate_id > 0) {
                     } else {
                         ob_start();
                         ?>
-                        <div class="jobsearch-candidate-resume-wrap">    
-                            <div class="jobsearch-candidate-title"> 
+                        <div class="jobsearch-candidate-resume-wrap">
+                            <div class="jobsearch-candidate-title">
                                 <h2>
-                                    <i class="jobsearch-icon jobsearch-trophy"></i> <?php esc_html_e('Honors & Awards', 'wp-jobsearch') ?> 
+                                    <i class="jobsearch-icon jobsearch-trophy"></i> <?php esc_html_e('Honors & Awards', 'wp-jobsearch') ?>
                                     <a href="javascript:void(0)" class="jobsearch-resume-addbtn"><span class="fa fa-plus"></span> <?php esc_html_e('Add Award', 'wp-jobsearch') ?></a>
-                                </h2> 
+                                </h2>
                             </div>
 
                             <div class="jobsearch-add-popup jobsearch-add-resume-item-popup">
