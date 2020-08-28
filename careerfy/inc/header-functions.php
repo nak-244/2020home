@@ -130,7 +130,7 @@ if (!function_exists('careerfy_header_section')) {
                 <div class="careerfy-header-twentyone-strip">
                     <div class="container">
                         <?php if ($top_phone != '') { ?>
-                            <p><i class="fa fa-phone"></i><?php echo esc_html__('Call us on:', 'careefy') ?> <?php echo($top_phone) ?></p>
+                            <!-- <p><i class="fa fa-phone"></i><?php echo esc_html__('Call us on:', 'careefy') ?> <?php echo($top_phone) ?></p> -->
                         <?php } ?>
                         <div class="top-strip-social-links">
                             <?php
@@ -143,7 +143,11 @@ if (!function_exists('careerfy_header_section')) {
                                     'is_popup' => true,
                                 );
                                 do_action('jobsearch_user_account_links', $args); ?>
+
+                                <li><?php echo do_shortcode('[gtranslate]'); ?></li>
+
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -1711,4 +1715,3 @@ if (!function_exists('careerfy_header_twelve_top_navigation')) {
 
     add_action('careerfy_header_twelve_top_navigation', 'careerfy_header_twelve_top_navigation', 10);
 }
-
