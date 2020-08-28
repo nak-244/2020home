@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 12:59+0000\n"
-"PO-Revision-Date: 2020-08-24 14:56+0900\n"
+"PO-Revision-Date: 2020-08-28 10:26+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1560,25 +1560,25 @@ msgstr "メッセージを送る"
 #: wp-jobsearch/detail-pages/job/view5-job.php:562
 #: wp-jobsearch/detail-pages/job/view3-job.php:439
 msgid "Days"
-msgstr "日"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view2-job.php:501
 #: wp-jobsearch/detail-pages/job/view5-job.php:562
 #: wp-jobsearch/detail-pages/job/view3-job.php:439
 msgid "Hours"
-msgstr "時間"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view2-job.php:502
 #: wp-jobsearch/detail-pages/job/view5-job.php:563
 #: wp-jobsearch/detail-pages/job/view3-job.php:440
 msgid "Minutes"
-msgstr "分"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view2-job.php:502
 #: wp-jobsearch/detail-pages/job/view5-job.php:563
 #: wp-jobsearch/detail-pages/job/view3-job.php:440
 msgid "Seconds"
-msgstr "秒"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view5-job.php:161
 msgid "Back to Search Result"
