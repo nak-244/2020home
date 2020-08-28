@@ -20,7 +20,8 @@ if ($full_layout === true) {
     if (has_post_thumbnail()) {
         ?>
         <div class="row">
-            <div class="col-md-9 careerfy-content-col">
+            <!-- <div class="col-md-9 careerfy-content-col"> -->
+            <div class="col-md-12 careerfy-content-col">
                 <?php
                 $post_thumbnail_id = get_post_thumbnail_id(get_the_ID());
                 $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'careerfy-img2');
@@ -32,9 +33,11 @@ if ($full_layout === true) {
                 }
                 ?>
             </div>
-            <aside class="col-md-3 careerfy-sidebar-col">
+
+            <!-- <aside class="col-md-3 careerfy-sidebar-col">
                 <?php do_action('careerfy_post_detail_author_info'); ?>
-            </aside>
+            </aside> -->
+
         </div>
         <?php
     }
@@ -51,7 +54,7 @@ if ($full_layout === true) {
 }
 ?>
 
-<div class="content-col-wrap">           
+<div class="content-col-wrap">
 
     <div class="careerfy-detail-wrap">
         <div class="careerfy-detail-editore">
@@ -163,7 +166,7 @@ if ($full_layout === true) {
 
 // entry footer
         careerfy_entry_footer(false)
-        ?>  
+        ?>
         <!-- #post-## -->
     </div>
     <?php

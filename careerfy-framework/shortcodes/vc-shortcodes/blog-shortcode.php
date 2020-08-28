@@ -879,12 +879,14 @@ if (!function_exists('careerfy_blog_grid')) {
                 }
                 ?>
                 <h2>
-                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 8, '...') ?></a>
+                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 20, '...') ?></a>
                 </h2>
                 <ul class="careerfy-blog-grid-option">
+                  <!--
                     <li><?php esc_html_e('BY', 'careerfy-frame'); ?> <a
                                 href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"
                                 class="careerfy-color"><?php echo get_the_author() ?></a></li>
+                                 -->
                     <li>
                         <time datetime="<?php echo date('Y-m-d H:i:s', strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time>
                     </li>
