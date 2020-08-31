@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Careerfy Framework\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-27 14:00+0900\n"
+"PO-Revision-Date: 2020-08-31 11:21+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -666,7 +666,7 @@ msgstr ""
 #: includes/common-functions.php:285
 #, php-format
 msgid "Subject : %s"
-msgstr ""
+msgstr "件名 : %s"
 
 #: includes/common-functions.php:286
 #, php-format
@@ -5090,7 +5090,7 @@ msgstr ""
 
 #: includes/mailchimp/mailchimp-functions.php:168
 msgid "Enter your Email Address"
-msgstr ""
+msgstr "メールアドレス"
 
 #: includes/mailchimp/mailchimp-functions.php:215
 msgid "Subscribe Now"
@@ -5645,27 +5645,27 @@ msgstr ""
 #: shortcodes/vc-shortcodes/contact-information.php:103
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:302
 msgid "Enter Your Name"
-msgstr ""
+msgstr "お名前"
 
 #: shortcodes/vc-shortcodes/contact-information.php:107
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:306
 msgid "Subject"
-msgstr ""
+msgstr "件名"
 
 #: shortcodes/vc-shortcodes/contact-information.php:111
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:311
 msgid "Enter Your Email Address"
-msgstr ""
+msgstr "メールアドレス"
 
 #: shortcodes/vc-shortcodes/contact-information.php:115
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:316
 msgid "Enter Your Phone Number"
-msgstr ""
+msgstr "電話番号"
 
 #: shortcodes/vc-shortcodes/contact-information.php:119
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:322
 msgid "Enter Your Message"
-msgstr ""
+msgstr "お問い合わせ内容をご入力ください。"
 
 #: shortcodes/vc-shortcodes/contact-information.php:122
 #: shortcodes/vc-shortcodes/careerfy-news-letter-shortcode.php:55
@@ -5674,7 +5674,7 @@ msgstr ""
 #: includes/elementor-widget/careerfy-framework-elements/news-letter.php:175
 #: includes/elementor-widget/careerfy-framework-elements/contact-info.php:326
 msgid "Submit"
-msgstr ""
+msgstr "送信"
 
 #: shortcodes/vc-shortcodes/job-packages-shortcode.php:116
 #: shortcodes/vc-shortcodes/job-packages-shortcode.php:122

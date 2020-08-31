@@ -337,7 +337,7 @@ if (!function_exists('careerfy_next_prev_custom_links')) {
                                 ?>
                                 <div class="careerfy-prev-post">
                                     <h6>
-                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 5, '...') ?></a>
+                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 20, '...') ?></a>
                                     </h6>
                                     <a href="<?php echo esc_url(get_permalink($previd)) ?>"
                                        class="careerfy-arrow-nexpre"><i
@@ -363,7 +363,7 @@ if (!function_exists('careerfy_next_prev_custom_links')) {
                                 ?>
                                 <div class="careerfy-next-post">
                                     <h6>
-                                        <a href="<?php echo esc_url(get_permalink($nextid)) ?>"><?php echo wp_trim_words(get_the_title($nextid), 5, '...') ?></a>
+                                        <a href="<?php echo esc_url(get_permalink($nextid)) ?>"><?php echo wp_trim_words(get_the_title($nextid), 20, '...') ?></a>
                                     </h6>
                                     <a href="<?php echo esc_url(get_permalink($nextid)) ?>"
                                        class="careerfy-arrow-nexpre"><?php esc_html_e('Next Post', 'careerfy') ?> <i
@@ -403,7 +403,7 @@ if (function_exists('careerfy_add_param_field')) {
         foreach ($dropdown_options as $dr_opt_key => $dr_opt_val) {
             $dropdown_html .= '<option' . (is_array($value) && in_array($dr_opt_key, $value) ? ' selected="selected"' : '') . ' value="' . esc_html($dr_opt_key) . '">' . esc_html($dr_opt_val) . '</option>';
         }
-        $dropdown_html .= '	
+        $dropdown_html .= '
 		</select>';
         return $dropdown_html;
     }
