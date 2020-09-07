@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-28 14:47+0900\n"
+"PO-Revision-Date: 2020-09-04 09:46+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -3889,7 +3889,7 @@ msgstr ""
 
 #: includes/common-functions/candidate-functions.php:736
 msgid "Full Name"
-msgstr ""
+msgstr "氏名"
 
 #: includes/common-functions/candidate-functions.php:739
 #: includes/meta-boxes/employer-multi-fields/employer-team-fields.php:107
@@ -15037,7 +15037,7 @@ msgstr ""
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:168
 msgid "Full Name *"
-msgstr ""
+msgstr "氏名 *"
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:199
 #: templates/user-dashboard/employer/user-dashboard-settings.php:188

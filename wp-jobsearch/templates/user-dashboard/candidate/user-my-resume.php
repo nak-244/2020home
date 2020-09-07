@@ -53,6 +53,10 @@ if ($candidate_id > 0) {
         });
     });
     </script>
+
+    <!-- カスタマイズ -->
+    <!-- カスタマイズ ここまで -->
+
     <form method="post" id="jobsearch-candidate-resumesub" class="jobsearch-candidate-dasboard" action="<?php echo add_query_arg(array('tab' => 'my-resume'), $page_url) ?>">
         <div class="jobsearch-employer-box-section">
             <div class="jobsearch-profile-title">
@@ -60,6 +64,7 @@ if ($candidate_id > 0) {
             </div>
 
             <div class="jobsearch-candidate-section">
+
                 <?php
                 if (isset($_POST['user_resume_form']) && $_POST['user_resume_form'] == '1') {
                     if (isset($diff_form_errs['user_not_allow_mod']) && $diff_form_errs['user_not_allow_mod'] == true) {
@@ -73,6 +78,7 @@ if ($candidate_id > 0) {
 
                 ob_start();
                 ?>
+
                 <div class="jobsearch-candidate-title"> <h2><i class="jobsearch-icon jobsearch-resume-1"></i> <?php esc_html_e('Cover Letter', 'wp-jobsearch') ?></h2> </div>
                 <?php
                 if ($user_pkg_limits::cand_field_is_locked('coverltr_defields')) {

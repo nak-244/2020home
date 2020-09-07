@@ -501,11 +501,11 @@ if ($user_avatar_id > 0) {
 
                 ob_start();
                 ?>
-                <li class="jobsearch-column-12">
+
+                <!-- <li class="jobsearch-column-12">
                     <?php
                     ob_start();
                     ?>
-                    <!-- <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label> -->
                     <label>自己紹介</label>
                     <?php
                     $title_html = ob_get_clean();
@@ -528,7 +528,8 @@ if ($user_avatar_id > 0) {
                         wp_editor($candidate_content, 'user_bio', $settings);
                     }
                     ?>
-                </li>
+                </li> -->
+
                 <?php
                 $desc_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_desc_contnt_html', $desc_html, $candidate_id);
