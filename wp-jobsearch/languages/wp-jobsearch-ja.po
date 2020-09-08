@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-04 09:46+0900\n"
+"PO-Revision-Date: 2020-09-08 13:54+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1084,7 +1084,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1277
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1413
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: includes/class-user-dashboard.php:1541
 #: includes/class-user-dashboard.php:1623
@@ -7877,7 +7877,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:418
 #, php-format
 msgid "Update \"%s\""
-msgstr ""
+msgstr "更新 “%s”"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:429
 #: templates/detail-pages/job/view1-job.php:265
@@ -14985,7 +14985,7 @@ msgstr "学歴を追加"
 #: templates/user-dashboard/candidate/user-my-resume.php:896
 #: templates/user-dashboard/candidate/user-my-resume.php:1004
 msgid "Drag"
-msgstr ""
+msgstr "ドラッグ"
 
 #: templates/user-dashboard/candidate/user-my-resume.php:432
 #: templates/user-dashboard/candidate/user-my-resume.php:534

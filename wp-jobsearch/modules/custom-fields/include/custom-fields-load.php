@@ -3792,7 +3792,7 @@ class Jobsearch_CustomFieldLoad
 
         $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : ''; // for job salary check
         if ($custom_field_entity == 'candidate') {
-            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check 
+            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check
         }
 
         $job_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
@@ -4814,7 +4814,7 @@ class Jobsearch_CustomFieldLoad
                                 if ($filter_more_counter > 6) {
                                     echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                 }
-                            } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style 
+                            } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style
                                 wp_enqueue_style('jquery-ui');
                                 wp_enqueue_script('jquery-ui');
                                 $rand_id = rand(123, 1231231);
@@ -4952,7 +4952,7 @@ class Jobsearch_CustomFieldLoad
                                         </select>
                                     </div>
                                     <?php
-                                } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style 
+                                } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style
                                     wp_enqueue_style('jquery-ui');
                                     wp_enqueue_script('jquery-ui');
                                     $rand_id = rand(1231110, 9231231);
@@ -5234,6 +5234,6 @@ class Jobsearch_CustomFieldLoad
 
 }
 
-// class Jobsearch_CustomFieldLoad 
+// class Jobsearch_CustomFieldLoad
 $Jobsearch_CustomFieldLoad_obj = new Jobsearch_CustomFieldLoad();
 global $Jobsearch_CustomFieldLoad_obj;

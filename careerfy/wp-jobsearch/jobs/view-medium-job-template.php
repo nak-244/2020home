@@ -145,7 +145,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                     }
                                     ?>
                                     <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                        <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
                                     </a>
                                 </figure>
                                 <?php

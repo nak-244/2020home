@@ -359,7 +359,8 @@ if ($candidate_id > 0) {
                                                             <?php
                                                             ob_start();
                                                             ?>
-                                                            <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label> -->
+                                                            <label>入学年度 - 卒業年度 *</label>
                                                             <?php
                                                             $title_html = ob_get_clean();
                                                             echo apply_filters('jobsearch_candash_resume_eduyear_label', $title_html);
@@ -367,7 +368,8 @@ if ($candidate_id > 0) {
                                                             <input name="jobsearch_field_education_year[]" type="text" value="<?php echo ($education_yearfield_val) ?>">
                                                         </li>
                                                         <li class="jobsearch-column-6">
-                                                            <label><?php esc_html_e('Institute *', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Institute *', 'wp-jobsearch') ?></label> -->
+                                                            <label>専攻・学部・学科等 *</label>
                                                             <input name="jobsearch_field_education_academy[]" type="text" value="<?php echo ($education_academyfield_val) ?>">
                                                         </li>
                                                         <?php
@@ -506,12 +508,12 @@ if ($candidate_id > 0) {
                                     <li class="jobsearch-column-4">
                                         <!-- <label><?php esc_html_e('From Date *', 'wp-jobsearch') ?></label> -->
                                         <label>勤務開始日 *</label>
-                                        <input id="add-expr-date-start" class="jobsearch-req-field" type="text" placeholder="1998">
+                                        <input id="add-expr-date-start" class="jobsearch-req-field" type="text" placeholder="2002-04-02">
                                     </li>
                                     <li class="jobsearch-column-4 cand-expr-todatefield-0">
                                         <!-- <label><?php esc_html_e('To Date', 'wp-jobsearch') ?></label> -->
                                         <label>勤務終了日</label>
-                                        <input id="add-expr-date-end" type="text" placeholder="2002">
+                                        <input id="add-expr-date-end" type="text" placeholder="2010-08-31">
                                     </li>
                                     <li class="jobsearch-column-4 cand-expr-prsntfield">
                                         <!-- <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label> -->
@@ -581,9 +583,11 @@ if ($candidate_id > 0) {
                                             ?>
                                             <li class="jobsearch-column-12 resume-list-item resume-list-exp">
                                                 <div class="jobsearch-resume-education-wrap">
-                                                    <small><?php echo ($experience_start_datefield_val != '' ? date_i18n('d M, Y', strtotime($experience_start_datefield_val)) : '') ?></small>
+                                                    <small><?php echo ($experience_start_datefield_val != '' ? date_i18n('Y/m/d', strtotime($experience_start_datefield_val)) : '') ?></small>
+
                                                     <h2 class="jobsearch-pst-title"><a><?php echo ($exfield) ?></a></h2>
                                                     <span><?php echo ($experience_end_companyfield_val) ?></span>
+
                                                 </div>
                                                 <div class="jobsearch-resume-education-btn">
                                                     <a href="javascript:void(0);" class="jobsearch-icon jobsearch-sort jobsearch-tooltipcon el-drag-item" title="<?php esc_html_e('Drag', 'wp-jobsearch') ?>"></a>
@@ -598,15 +602,18 @@ if ($candidate_id > 0) {
                                                             <input name="jobsearch_field_experience_title[]" type="text" value="<?php echo ($exfield) ?>">
                                                         </li>
                                                         <li class="jobsearch-column-4">
-                                                            <label><?php esc_html_e('Start Date *', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Start Date *', 'wp-jobsearch') ?></label> -->
+                                                            <label>勤務開始日 *</label>
                                                             <input name="jobsearch_field_experience_start_date[]" type="text" value="<?php echo ($experience_start_datefield_val) ?>">
                                                         </li>
                                                         <li class="jobsearch-column-4 cand-expr-todatefield-<?php echo ($rand_num) ?>" <?php echo ($experience_prsnt_datefield_val == 'on' ? 'style="display: none;"' : '') ?>>
-                                                            <label><?php esc_html_e('End Date', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('End Date', 'wp-jobsearch') ?></label> -->
+                                                            <label>勤務終了日</label>
                                                             <input name="jobsearch_field_experience_end_date[]" type="text" value="<?php echo ($experience_end_datefield_val) ?>">
                                                         </li>
                                                         <li class="jobsearch-column-4 cand-expr-prsntfield">
-                                                            <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label> -->
+                                                            <label>現職の場合はチェックを入れてください</label>
                                                             <input class="cand-expr-prsntchkbtn" data-id="<?php echo ($rand_num) ?>" type="checkbox" <?php echo ($experience_prsnt_datefield_val == 'on' ? 'checked' : '') ?>>
                                                             <input name="jobsearch_field_experience_date_prsnt[]" type="hidden" value="<?php echo ($experience_prsnt_datefield_val) ?>">
                                                         </li>
@@ -614,7 +621,8 @@ if ($candidate_id > 0) {
                                                             <?php
                                                             ob_start();
                                                             ?>
-                                                            <label><?php esc_html_e('Company *', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Company *', 'wp-jobsearch') ?></label> -->
+                                                            <label><?php esc_html_e('会社名 *', 'wp-jobsearch') ?></label>
                                                             <?php
                                                             $title_html = ob_get_clean();
                                                             echo apply_filters('jobsearch_candash_resume_expcompny_label', $title_html);
@@ -628,7 +636,8 @@ if ($candidate_id > 0) {
                                                             <?php
                                                             ob_start();
                                                             ?>
-                                                            <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>
+                                                            <!-- <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label> -->
+                                                            <label>業務内容</label>
                                                             <?php
                                                             $title_html = ob_get_clean();
                                                             echo apply_filters('jobsearch_candash_resume_expdesc_label', $title_html);

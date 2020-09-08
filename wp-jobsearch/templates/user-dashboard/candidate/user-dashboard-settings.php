@@ -502,11 +502,11 @@ if ($user_avatar_id > 0) {
                 ob_start();
                 ?>
 
-                <!-- <li class="jobsearch-column-12">
+                <li class="jobsearch-column-12">
                     <?php
                     ob_start();
                     ?>
-                    <label>自己紹介</label>
+                    <label>自己PR</label>
                     <?php
                     $title_html = ob_get_clean();
                     echo apply_filters('jobsearch_candash_profile_description_label', $title_html);
@@ -528,7 +528,7 @@ if ($user_avatar_id > 0) {
                         wp_editor($candidate_content, 'user_bio', $settings);
                     }
                     ?>
-                </li> -->
+                </li>
 
                 <?php
                 $desc_html = ob_get_clean();
