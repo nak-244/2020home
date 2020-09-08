@@ -598,7 +598,8 @@ wp_enqueue_script('isotope-min');
                                     if (!empty($custom_all_fields)) {
                                         ?>
                                         <div class="jobsearch-jobdetail-services">
-                                            <ul class="jobsearch-row">
+
+                                            <!-- <ul class="jobsearch-row">
                                                 <?php
                                                 $cus_fields = array('content' => '');
                                                 $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-4">', '</li>');
@@ -606,7 +607,18 @@ wp_enqueue_script('isotope-min');
                                                     echo($cus_fields['content']);
                                                 }
                                                 ?>
+                                            </ul> -->
+
+                                            <ul class="jobsearch-row">
+                                                <?php
+                                                $cus_fields = array('content' => '');
+                                                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-6">', '</li>');
+                                                if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
+                                                    echo($cus_fields['content']);
+                                                }
+                                                ?>
                                             </ul>
+
                                         </div>
                                         <?php
                                     }
