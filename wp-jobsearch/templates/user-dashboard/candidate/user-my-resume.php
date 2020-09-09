@@ -992,8 +992,8 @@ if ($candidate_id > 0) {
                                         <input id="add-award-title" class="jobsearch-req-field" type="text">
                                     </li>
                                     <li class="jobsearch-column-6">
-                                        <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label>
-                                        <input id="add-award-year" class="jobsearch-req-field" type="text">
+                                        <label>取得年</label>
+                                        <input id="add-award-year" class="jobsearch-req-field" type="text" placeholder="2000">
                                     </li>
                                     <li class="jobsearch-column-12">
                                         <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>
@@ -1034,12 +1034,12 @@ if ($candidate_id > 0) {
                                                     <span class="close-popup-item"><i class="fa fa-times"></i></span>
                                                     <ul class="jobsearch-row jobsearch-employer-profile-form">
                                                         <li class="jobsearch-column-6">
-                                                            <label><?php esc_html_e('Title *', 'wp-jobsearch') ?></label>
+                                                            <label>資格名</label>
                                                             <input name="jobsearch_field_award_title[]" type="text" value="<?php echo ($exfield) ?>">
                                                         </li>
                                                         <li class="jobsearch-column-6">
-                                                            <label><?php esc_html_e('Year *', 'wp-jobsearch') ?></label>
-                                                            <input name="jobsearch_field_award_year[]" type="text" value="<?php echo ($award_yearfield_val) ?>">
+                                                            <label>取得年</label>
+                                                            <input name="jobsearch_field_award_year[]" type="text" value="<?php echo ($award_yearfield_val) ?>" placeholder="2000">
                                                         </li>
                                                         <li class="jobsearch-column-12">
                                                             <label><?php esc_html_e('Description', 'wp-jobsearch') ?></label>

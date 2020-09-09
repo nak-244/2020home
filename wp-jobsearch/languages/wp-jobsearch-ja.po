@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-08 13:54+0900\n"
+"PO-Revision-Date: 2020-09-09 13:47+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1267,7 +1267,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1098
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1147
 msgid "Award Title *"
-msgstr ""
+msgstr "資格名 *"
 
 #: includes/class-user-dashboard.php:2035
 msgid "Only an employer can contact this user."
@@ -4012,7 +4012,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:943
 #: templates/user-dashboard/candidate/user-my-resume.php:957
 msgid "Honors & Awards"
-msgstr ""
+msgstr "資格・免許"
 
 #: includes/common-functions/candidate-functions.php:802
 msgid "CV &amp; Cover Letter"
@@ -10800,7 +10800,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:978
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1082
 msgid "Add Award"
-msgstr ""
+msgstr "資格を追加"
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-award-fields.php:58
 #: includes/meta-boxes/candidate-multi-fields/candidate-award-fields.php:128
@@ -14655,7 +14655,7 @@ msgstr "%s"
 
 #: templates/detail-pages/candidate/view1-candidate.php:911
 msgid "Honors & awards"
-msgstr ""
+msgstr "資格・免許"
 
 #: templates/detail-pages/employer/view1-employer.php:174
 #, php-format
@@ -15153,7 +15153,7 @@ msgstr ""
 
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1112
 msgid "Add award"
-msgstr ""
+msgstr "資格を追加"
 
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1213
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1262
