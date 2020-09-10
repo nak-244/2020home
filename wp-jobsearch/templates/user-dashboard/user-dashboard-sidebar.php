@@ -13,7 +13,7 @@ function jobsearch_user_dashboard_sidebar_html() {
     $user_pkg_limits = new Package_Limits;
 
     $candidate_listing_percent = isset($jobsearch_plugin_options['jobsearch_cand_listpecent']) ? $jobsearch_plugin_options['jobsearch_cand_listpecent'] : '';
-    
+
     $candidate_skills = isset($jobsearch_plugin_options['jobsearch_candidate_skills']) ? $jobsearch_plugin_options['jobsearch_candidate_skills'] : '';
     $user_id = get_current_user_id();
     $user_obj = get_user_by('ID', $user_id);
@@ -142,12 +142,13 @@ function jobsearch_user_dashboard_sidebar_html() {
                                     $overall_candidate_skills = get_post_meta($candidate_id, 'overall_skills_percentage', true);
                                     ?>
                                     <div class="required-skills-detail">
+
                                         <?php
                                         $all_skill_msgs = jobsearch_candidate_skill_percent_count($user_id, 'msgs');
                                         if (!empty($all_skill_msgs) && $overall_candidate_skills < 100) {
                                             if (isset($all_skill_msgs[0])) {
                                                 ?>
-                                                <span class="skills-perc"><?php echo ($all_skill_msgs[0]) ?></span>
+                                                <!-- <span class="skills-perc"><?php echo ($all_skill_msgs[0]) ?></span> -->
                                                 <?php
                                             }
 
@@ -203,8 +204,12 @@ function jobsearch_user_dashboard_sidebar_html() {
                                                                             </div>
                                                                         </div>
                                                                         <div class="minimum-percent">
-                                                                            <span><?php esc_html_e('Minimum Required', 'wp-jobsearch') ?></span>
-                                                                            <small><?php echo ($candidate_min_skill) ?>% <?php esc_html_e('to apply job', 'wp-jobsearch') ?></small>
+
+                                                                          <!-- <span><?php esc_html_e('Minimum Required', 'wp-jobsearch') ?></span>
+                                                                          <small><?php echo ($candidate_min_skill) ?>% <?php esc_html_e('to apply job', 'wp-jobsearch') ?></small> -->
+
+                                                                            <span>求人の応募・選考の開始には<?php echo ($candidate_min_skill) ?>%以上の入力が必要です。</span>
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="profile-improve-con">

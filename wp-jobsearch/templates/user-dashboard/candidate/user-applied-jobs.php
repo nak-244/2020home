@@ -97,7 +97,7 @@ if ($candidate_id > 0) {
                                                 }
                                                 if ($job_post_date != '') {
                                                     ?>
-                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date) ?></li>
+                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
                                                     <?php
                                                 }
                                                 ?>
@@ -195,7 +195,7 @@ if ($candidate_id > 0) {
                                                     }
                                                     if ($job_post_date != '') {
                                                         ?>
-                                                        <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date) ?></li>
+                                                        <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
                                                         <?php
                                                     }
                                                     ?>

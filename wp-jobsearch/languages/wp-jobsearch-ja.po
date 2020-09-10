@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-09 13:47+0900\n"
+"PO-Revision-Date: 2020-09-10 15:40+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -500,7 +500,7 @@ msgstr "タイトル"
 
 #: includes/class-jobsearch-plugin.php:722
 msgid "- see less"
-msgstr ""
+msgstr "- 元に戻す"
 
 #: includes/class-jobsearch-plugin.php:723
 #: includes/classes/class-candidate-filters.php:385
@@ -3944,7 +3944,7 @@ msgstr ""
 
 #: includes/common-functions/candidate-functions.php:777
 msgid "Complete Address"
-msgstr ""
+msgstr "完全な住所"
 
 #: includes/common-functions/candidate-functions.php:782
 #: modules/job-application/include/job-application-load.php:407
@@ -4045,7 +4045,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:891
 #, php-format
 msgid "<small> %s </small> Increase profile score by Sector."
-msgstr ""
+msgstr "<small> %s </small> 希望業種を入力。"
 
 #: includes/common-functions/candidate-functions.php:904
 #, php-format
@@ -4059,12 +4059,12 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:1025
 #, php-format
 msgid "<small> %s </small> Increase profile score by %s."
-msgstr ""
+msgstr "<small> %s </small> %s を入力。"
 
 #: includes/common-functions/candidate-functions.php:989
 #, php-format
 msgid "<small> %s </small> Increase profile score by CV."
-msgstr ""
+msgstr "<small> %s </small> CVファイルをアップロード。"
 
 #: includes/common-functions/candidate-functions.php:999
 #, php-format
@@ -4075,7 +4075,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:1171
 #: templates/user-dashboard/user-dashboard-sidebar.php:194
 msgid "Profile Completion"
-msgstr ""
+msgstr "プロフィール完成"
 
 #: includes/common-functions/candidate-functions.php:1065
 #: modules/locations/locations.php:1837
@@ -8181,7 +8181,7 @@ msgstr "会社ロゴアップロード"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:156
 msgid "Complete Profile"
-msgstr ""
+msgstr "プロフィール完成させよう"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:206
 msgid "Minimum Required"
@@ -8193,7 +8193,7 @@ msgstr ""
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:212
 msgid "Improve your profile"
-msgstr ""
+msgstr "必要な入力項目"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:951
 #: templates/user-dashboard/user-dashboard-sidebar.php:982
@@ -13618,7 +13618,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:641
 msgid "Select CV"
-msgstr ""
+msgstr "CV選択"
 
 #: modules/job-application/include/job-application-load.php:746
 msgid "Upload New CV"

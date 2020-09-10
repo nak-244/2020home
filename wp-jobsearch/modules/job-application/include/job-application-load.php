@@ -98,7 +98,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                     ob_start();
                     ?>
                     <li>
-                        <i class="<?php echo ($attach_icon) ?>"></i> 
+                        <i class="<?php echo ($attach_icon) ?>"></i>
                         <label for="cv_file_<?php echo ($file_uniqid) ?>">
                             <input id="cv_file_<?php echo ($file_uniqid) ?>" type="radio" class="cv_file_item" name="cv_file_item" value="<?php echo ($file_uniqid) ?>">
                             <?php echo (strlen($cv_file_title) > 40 ? substr($cv_file_title, 0, 40) . '...' : $cv_file_title) ?>
@@ -338,7 +338,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                             ?>
                                             <form id="apply-withemail-<?php echo ($p_rand_id) ?>">
                                                 <div class="jobsearch-apply-withemail-con jobsearch-user-form jobsearch-user-form-coltwo">
-                                                    <ul class="apply-fields-list"> 
+                                                    <ul class="apply-fields-list">
                                                         <?php
                                                         ob_start();
                                                         if (isset($wout_fields_sort['name'])) {
@@ -347,11 +347,11 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                                 $field_name_swich = isset($jobsearch_plugin_options[$field_name_swich_key]) ? $jobsearch_plugin_options[$field_name_swich_key] : '';
                                                                 if ($field_sort_key == 'name' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                                     ?>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                                         <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_fullname" type="text" placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
                                                                     </li>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                                         <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_surname" type="text" placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
                                                                     </li>
@@ -363,14 +363,14 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                                         $logedusr_email = isset($loged_user_obj->user_email) ? $loged_user_obj->user_email : '';
                                                                     }
                                                                     ?>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('Email: *', 'wp-jobsearch') ?></label>
                                                                         <input class="required" name="user_email" type="text" <?php if ($logedusr_email != '') { ?> value="<?php echo ($logedusr_email) ?>" readonly<?php } ?> placeholder="<?php esc_html_e('Email Address', 'wp-jobsearch') ?>">
                                                                     </li>
                                                                     <?php
                                                                 } else if ($field_sort_key == 'phone' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                                     ?>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('Phone:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                                         <?php
                                                                         if ($phone_validation_type == 'on') {
@@ -386,14 +386,14 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                                     <?php
                                                                 } else if ($field_sort_key == 'current_jobtitle' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                                     ?>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('Current Job Title:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                                         <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_job_title" type="text" placeholder="<?php esc_html_e('Current Job Title', 'wp-jobsearch') ?>">
                                                                     </li>
                                                                     <?php
                                                                 } else if ($field_sort_key == 'current_salary' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                                     ?>
-                                                                    <li> 
+                                                                    <li>
                                                                         <label><?php esc_html_e('Current Salary:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                                         <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_salary" type="text" placeholder="<?php esc_html_e('Current Salary', 'wp-jobsearch') ?>">
                                                                     </li>
@@ -472,7 +472,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                                 }
                                                             }
                                                             ?>
-                                                            <li class="form-textarea jobsearch-user-form-coltwo-full"> 
+                                                            <li class="form-textarea jobsearch-user-form-coltwo-full">
                                                                 <label><?php esc_html_e('Message', 'wp-jobsearch') ?>:</label>
                                                                 <textarea name="user_msg" placeholder="<?php esc_html_e('Type your Message', 'wp-jobsearch') ?>"></textarea>
                                                             </li>
@@ -706,7 +706,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                             if (!empty($filetype)) {
                                                                 ?>
                                                                 <li<?php echo ($cv_primary == 'yes' ? ' class="active"' : '') ?>>
-                                                                    <i class="<?php echo ($attach_icon) ?>"></i> 
+                                                                    <i class="<?php echo ($attach_icon) ?>"></i>
                                                                     <label for="cv_file_<?php echo ($file_attach_id) ?>">
                                                                         <input id="cv_file_<?php echo ($file_attach_id) ?>" type="radio" class="cv_file_item" name="cv_file_item" <?php echo ($cv_primary == 'yes' ? 'checked="checked"' : '') ?> value="<?php echo ($file_attach_id) ?>">
                                                                         <?php echo (strlen($cv_file_title) > 40 ? substr($cv_file_title, 0, 40) . '...' : $cv_file_title) ?>
@@ -743,7 +743,11 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                 if (isset($cv_files_count) && $cv_files_count < $max_cvs_allow) {
                                                     ?>
                                                     <div class="upload-new-cv-sec">
+                                                      <!--
                                                         <h4><?php esc_html_e('Upload New CV', 'wp-jobsearch') ?> <span class="fileUpLoader"></span></h4>
+                                                         -->
+                                                        <h4>CVデータアップロード <span class="fileUpLoader"></span></h4>
+                                                        <p>履歴書をお持ちの方はアップロードしてください。</p>
                                                         <div class="jobsearch-drpzon-con">
                                                             <script>
                                                                 jQuery(document).ready(function() {
@@ -795,13 +799,13 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                     </div>
                                                     <?php
                                                 }
-                                                
+
                                                 //
                                                 if ($cand_resm_coverletr == 'on') {
                                                     ?>
                                                     <div class="jobsearch-user-form jobsearch-user-form-coltwo jobsearch-frmfields-sec aply-cvr-letter">
-                                                        <ul class="apply-fields-list"> 
-                                                            <li class="form-textarea jobsearch-user-form-coltwo-full"> 
+                                                        <ul class="apply-fields-list">
+                                                            <li class="form-textarea jobsearch-user-form-coltwo-full">
                                                                 <label><?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>:</label>
                                                                 <textarea name="cand_cover_letter" placeholder="<?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>"><?php echo ($cand_cvr_leter) ?></textarea>
                                                             </li>
@@ -809,7 +813,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                     </div>
                                                     <?php
                                                 }
-                                                
+
                                                 echo apply_filters('jobsearch_applying_job_after_cv_upload_file', '');
                                                 echo apply_filters('jobsearch_applying_job_before_apply', '');
                                                 ?>
@@ -888,8 +892,8 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                         <div class="modal-box-area">
                                             <span class="modal-close"><i class="fa fa-times"></i></span>
                                             <div class="jobsearch-user-form jobsearch-user-form-coltwo jobsearch-frmfields-sec aply-cvr-letter">
-                                                <ul class="apply-fields-list"> 
-                                                    <li class="form-textarea jobsearch-user-form-coltwo-full"> 
+                                                <ul class="apply-fields-list">
+                                                    <li class="form-textarea jobsearch-user-form-coltwo-full">
                                                         <label><?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>:</label>
                                                         <textarea name="cand_cover_letter" placeholder="<?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>"><?php echo ($cand_cvr_leter) ?></textarea>
                                                     </li>
@@ -1017,25 +1021,25 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                     $field_name_swich = isset($jobsearch_plugin_options[$field_name_swich_key]) ? $jobsearch_plugin_options[$field_name_swich_key] : '';
                                                     if ($field_sort_key == 'name' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="pt_user_fname" type="text" placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
                                                         </li>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="pt_user_lname" type="text" placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
                                                         </li>
                                                         <?php
                                                     } else if ($field_sort_key == 'email') {
                                                         ?>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('Email: *', 'wp-jobsearch') ?></label>
                                                             <input class="required" name="user_email" type="text" placeholder="<?php esc_html_e('Email Address', 'wp-jobsearch') ?>">
                                                         </li>
                                                         <?php
                                                     } else if ($field_sort_key == 'phone' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('Phone:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <?php
                                                             if ($phone_validation_type == 'on') {
@@ -1055,14 +1059,14 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                         <?php
                                                     } else if ($field_sort_key == 'current_jobtitle' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('Current Job Title:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_job_title" type="text" placeholder="<?php esc_html_e('Current Job Title', 'wp-jobsearch') ?>">
                                                         </li>
                                                         <?php
                                                     } else if ($field_sort_key == 'current_salary' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-                                                        <li> 
+                                                        <li>
                                                             <label><?php esc_html_e('Current Salary:', 'wp-jobsearch') ?><?php echo ($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo ($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>" name="user_salary" type="text" placeholder="<?php esc_html_e('Current Salary', 'wp-jobsearch') ?>">
                                                         </li>
@@ -1137,7 +1141,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                 $cand_resm_coverletr = isset($jobsearch_plugin_options['cand_resm_cover_letr']) ? $jobsearch_plugin_options['cand_resm_cover_letr'] : '';
                                                 if ($cand_resm_coverletr == 'on') {
                                                     ?>
-                                                    <li class="form-textarea jobsearch-user-form-coltwo-full"> 
+                                                    <li class="form-textarea jobsearch-user-form-coltwo-full">
                                                         <label><?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>:</label>
                                                         <textarea name="cand_cover_letter" placeholder="<?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>"></textarea>
                                                     </li>
@@ -1590,9 +1594,9 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
 
         public function job_apply_with_email() {
             global $wpdb, $jobsearch_plugin_options, $sitepress;
-            
+
             $response = array();
-            
+
             $redirect_url = isset($jobsearch_plugin_options['job_apply_redirect_uri']) ? $jobsearch_plugin_options['job_apply_redirect_uri'] : '';
 
             $user_name = isset($_POST['user_fullname']) ? $_POST['user_fullname'] : '';
@@ -1603,7 +1607,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
             $email_commun_check = isset($_POST['email_commun_check']) ? $_POST['email_commun_check'] : '';
 
             $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
-            
+
             if ($job_id > 0) {
                 //
                 $email_apps_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts AS posts"
@@ -1618,7 +1622,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                     wp_die();
                 }
                 //
-                
+
                 $job_filled = get_post_meta($job_id, 'jobsearch_field_job_filled', true);
                 if ($job_filled == 'on') {
                     $response['error'] = '1';
@@ -1658,7 +1662,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                         $att_file_path = jobsearch_cv_attachment_upload_path('cuser_cv_file');
                     }
                 }
-                
+
                 if (!isset($_COOKIE["jobsearch_email_apply_job_" . $job_id])) {
                     setcookie("jobsearch_email_apply_job_" . $job_id, '1', time() + (86400 * 365), "/");
                 }
@@ -1695,7 +1699,7 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                 $response['error'] = '0';
                 $response['redrct_uri'] = $redirect_url;
                 $response['msg'] = esc_html__('Job applied Successfully.', 'wp-jobsearch');
-                
+
             } else {
                 $response['error'] = '1';
                 $response['redrct_uri'] = $redirect_url;

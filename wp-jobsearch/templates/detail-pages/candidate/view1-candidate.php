@@ -1093,32 +1093,64 @@ $field21 = get_field('cf21');
 </div>
 
 <?php
+$field41 = get_field('cf41');
+$field42 = get_field('cf42');
 echo
 '<table class="tbl01"><tbody><tr><th>現在の月収</th><td>';
+if(get_post_meta($post->ID, 'cf31',true)):
 echo number_format(get_post_meta($post->ID,'cf31',true));
 echo
 '円<br />基本給：';
+else:
+echo
+'-円<br />基本給：';
+endif;
+
+if(get_post_meta($post->ID, 'cf32',true)):
 echo number_format(get_post_meta($post->ID,'cf32',true));
 echo
 '円／残業手当：';
+else:
+echo
+'-円／残業手当：';
+endif;
+
+if(get_post_meta($post->ID, 'cf33',true)):
 echo number_format(get_post_meta($post->ID,'cf33',true));
 echo
 '円／その他手当：';
+else:
+echo
+'-円／その他手当：';
+endif;
+
+if(get_post_meta($post->ID, 'cf34',true)):
 echo number_format(get_post_meta($post->ID,'cf34',true));
 echo
 '円</td></tr><tr><th>年間賞与</th><td>';
+else:
+echo
+'-円</td></tr><tr><th>年間賞与</th><td>';
+endif;
+
+if(get_post_meta($post->ID, 'cf35',true)):
 echo number_format(get_post_meta($post->ID,'cf35',true));
 echo
 '円</td></tr><tr><th>現在の年収</th><td>';
+else:
+echo
+'-円</td></tr><tr><th>現在の年収</th><td>';
+endif;
+
+if(get_post_meta($post->ID, 'cf36',true)):
 echo number_format(get_post_meta($post->ID,'cf36',true));
 echo
-'円</td></tr><tr><th>希望月収</th><td>';
-echo number_format(get_post_meta($post->ID,'cf37',true));
+'円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
+else:
 echo
-'円</td></tr><tr><th>希望年収</th><td>';
-echo number_format(get_post_meta($post->ID,'cf38',true));
-echo
-'円</td></tr></tbody></table>';
+'-円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
+endif;
+
 ?>
 
 <style>
