@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-16 14:05+0900\n"
+"PO-Revision-Date: 2020-09-16 15:36+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -965,7 +965,7 @@ msgstr "パスワードを入力してください。"
 
 #: includes/class-user-dashboard.php:194
 msgid "Please Enter the correct password."
-msgstr ""
+msgstr "正しいパスワードを入力してください。"
 
 #: includes/class-user-dashboard.php:206 includes/class-user-dashboard.php:242
 msgid "You are not allowed to delete profile."
