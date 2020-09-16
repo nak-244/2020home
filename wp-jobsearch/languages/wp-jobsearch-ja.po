@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-16 14:00+0900\n"
+"PO-Revision-Date: 2020-09-16 14:05+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -14096,7 +14096,7 @@ msgstr ""
 
 #: modules/login-registration/include/login-registration-submit.php:717
 msgid "Registration complete. You are redirecting to your dashboard."
-msgstr ""
+msgstr "登録完了しました。ダッシュボードにリダイレクトしています。"
 
 #: modules/login-registration/include/login-registration-submit.php:725
 msgid "Registration complete. Password sent to your e-mail."
