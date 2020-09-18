@@ -182,7 +182,27 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     if (!empty($get_job_location) && $all_location_allow == 'on') {
                                         $google_mapurl = 'https://www.google.com/maps/search/' . $get_job_location;
                                         ?>
-                                        <li><i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?> <a class="job-view-map" href="<?php echo esc_url($google_mapurl); ?>" target="_blank"><?php echo esc_html__('View on Map', 'careerfy') ?></a></li>
+
+                                        <!-- <li><i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?> <a class="job-view-map" href="<?php echo esc_url($google_mapurl); ?>" target="_blank"><?php echo esc_html__('View on Map', 'careerfy') ?></a></li> -->
+
+                                        <li><i class="fa fa-map-marker"></i> <?php the_field('workarea3235996'); ?> <a class="job-view-map" href="<?php echo esc_url($google_mapurl); ?>" target="_blank"><?php echo esc_html__('View on Map', 'careerfy') ?></a></li>
+
+                                        <li><i class="fa fa-money" aria-hidden="true"></i>年収：
+                                          <?php
+                                          $field = get_field_object('cf20');
+                                          $value = $field['value'];
+                                          $label = $field['choices'][ $value ]; // ラベルの取得
+                                          echo $label; // ラベルを表示
+                                        ?>
+                                        ～
+                                        <?php
+                                          $field = get_field_object('cf21');
+                                          $value = $field['value'];
+                                          $label = $field['choices'][ $value ]; // ラベルの取得
+                                          echo $label; // ラベルを表示
+                                        ?>
+                                        </li>
+
                                         <?php
                                     }
                                     ?>
@@ -231,6 +251,42 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 </ul>
                             </div>
                             <div class="careerfy-jobdetail-content">
+
+                              <!-- 職種について -->
+                              <div class="careerfy-content-title"><h2>職種</h2></div>
+                              <?php if(get_post_meta($post->ID, 'cf11',true)): ?>
+                              <p>
+                                <?php
+                                  $field = get_field_object('cf11');
+                                  $value = $field['value'];
+                                  $label = $field['choices'][ $value ]; // ラベルの取得
+                                  echo $label; // ラベルを表示
+                                ?>
+                              </p>
+                              <?php endif; ?>
+                              <?php if(get_post_meta($post->ID, 'cf12',true)): ?>
+                              <p>
+                                <?php
+                                  $field = get_field_object('cf12');
+                                  $value = $field['value'];
+                                  $label = $field['choices'][ $value ]; // ラベルの取得
+                                  echo $label; // ラベルを表示
+                                ?>
+                              </p>
+                            <?php endif; ?>
+                            <?php if(get_post_meta($post->ID, 'cf13',true)): ?>
+                              <p>
+                                <?php
+                                  $field = get_field_object('cf13');
+                                  $value = $field['value'];
+                                  $label = $field['choices'][ $value ]; // ラベルの取得
+                                  echo $label; // ラベルを表示
+                                ?>
+                              </p>
+                            <?php endif; ?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <!-- 職種について ここまで -->
+
                                 <?php
                                 ob_start();
                                 $cus_fields = array('content' => '');
@@ -328,7 +384,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                     <?php echo force_balance_tags($skills_list); ?>
                                 </div>
 
-								                                <!-- 企業について -->
+                                <!-- 企業について -->
                                 <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                                 <div class="careerfy-content-title"><h2>企業について</h2></div>
                                 <p><?php the_field('cf01'); ?></p>
