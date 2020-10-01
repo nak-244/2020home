@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-09-16 15:36+0900\n"
+"PO-Revision-Date: 2020-10-01 16:57+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Loco-Version: 2.4.2; wp-5.5\n"
 "Last-Translator: \n"
 "Language: ja\n"
@@ -13401,22 +13401,22 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-post-type.php:26
 msgctxt "post type general name"
 msgid "Job Alerts"
-msgstr "ジョブアラート"
+msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:27
 msgctxt "post type singular name"
 msgid "Job Alert"
-msgstr "ジョブアラート"
+msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:28
 msgctxt "admin menu"
 msgid "Job Alerts"
-msgstr "ジョブアラート"
+msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:29
 msgctxt "add new on admin bar"
 msgid "Job Alert"
-msgstr "ジョブアラート"
+msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:30
 msgctxt "book"
