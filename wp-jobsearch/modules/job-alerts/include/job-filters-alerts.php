@@ -22,7 +22,17 @@ class JobSearch_Job_Alerts_Job_Filters {
 
         ob_start();
         ?>
-        <div class="jobsearch-column-6">
+
+        <!-- <div class="jobsearch-column-6">
+            <div class="jobalert-filter-item">
+                <label><?php esc_html_e('Keyword', 'wp-jobsearch') ?></label>
+                <div class="filter-item-text">
+                    <input type="text" name="search_title" class="chagn-keywords-field" value="<?php echo ($keyword_val) ?>">
+                </div>
+            </div>
+        </div> -->
+
+        <div class="jobsearch-column-12">
             <div class="jobalert-filter-item">
                 <label><?php esc_html_e('Keyword', 'wp-jobsearch') ?></label>
                 <div class="filter-item-text">
@@ -30,6 +40,7 @@ class JobSearch_Job_Alerts_Job_Filters {
                 </div>
             </div>
         </div>
+
         <?php
         $html = ob_get_clean();
 
@@ -39,7 +50,7 @@ class JobSearch_Job_Alerts_Job_Filters {
     public function location_filter_html($global_rand_id, $left_filter_count_switch, $sh_atts) {
 
         global $jobsearch_plugin_options;
-        
+
         $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
         if ($location_map_type == 'mapbox') {
             wp_enqueue_script('jobsearch-mapbox');
@@ -50,7 +61,7 @@ class JobSearch_Job_Alerts_Job_Filters {
             wp_enqueue_script('jobsearch-google-map');
         }
         wp_enqueue_script('jobsearch-location-autocomplete');
-        
+
         $loc_val = '';
         if (isset($_REQUEST['location']) && $_REQUEST['location'] != '') {
             $loc_val = $_REQUEST['location'];
@@ -436,7 +447,7 @@ class JobSearch_Job_Alerts_Job_Filters {
     public function job_alerts_filters_html($html = '', $global_rand_id = 0, $left_filter_count_switch = '', $sh_atts = array()) {
 
         global $jobsearch_plugin_options;
-        
+
         if (isset($_POST['job_shatts_str']) && $_POST['job_shatts_str'] != '') {
             $sh_atts = stripslashes($_POST['job_shatts_str']);
             $sh_atts = json_decode($sh_atts, true);
@@ -444,7 +455,7 @@ class JobSearch_Job_Alerts_Job_Filters {
             $global_rand_id = isset($_POST['sh_globrnd_id']) ? $_POST['sh_globrnd_id'] : '';
             $left_filter_count_switch = isset($sh_atts['job_filters_count']) ? $sh_atts['job_filters_count'] : '';
         }
-        
+
         //
         $job_alfiltr_sectr = isset($jobsearch_plugin_options['job_alerts_filtr_sectr']) ? $jobsearch_plugin_options['job_alerts_filtr_sectr'] : '';
         $job_alfiltr_jobtype = isset($jobsearch_plugin_options['job_alerts_filtr_jobtype']) ? $jobsearch_plugin_options['job_alerts_filtr_jobtype'] : '';
@@ -459,7 +470,7 @@ class JobSearch_Job_Alerts_Job_Filters {
         $filters_op_sort = isset($filters_op_sort['fields']) ? $filters_op_sort['fields'] : '';
 
         if (isset($filters_op_sort['date_posted'])) {
-            
+
             $html .= '<div class="jobsearch-row">';
             $html .= $this->keyword_filter_html($global_rand_id, $sh_atts);
             foreach ($filters_op_sort as $filter_sort_key => $filter_sort_val) {
