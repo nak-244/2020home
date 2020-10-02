@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-01 16:57+0900\n"
+"PO-Revision-Date: 2020-10-02 14:00+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -2496,7 +2496,7 @@ msgstr ""
 #: includes/classes/class-jobs-embeddable.php:543
 #: modules/job-alerts/include/job-filters-alerts.php:27
 msgid "Keyword"
-msgstr ""
+msgstr "キーワード"
 
 #: includes/classes/class-jobs-embeddable.php:545
 msgid "Enter a keyword to search"
@@ -13358,7 +13358,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:563
 #: modules/job-alerts/include/job-alerts-hooks.php:673
 msgid "Email me new jobs"
-msgstr "この検索条件の新着求人をメールで受け取る"
+msgstr "新しい求人をメールで受け取る"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:570
 #: modules/job-alerts/include/job-alerts-hooks.php:678
@@ -13493,7 +13493,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-filters-alerts.php:125
 msgid "Select Job Sector"
-msgstr ""
+msgstr "業種を選択"
 
 #: modules/job-alerts/include/job-filters-alerts.php:189
 msgid "Select Job Type"
