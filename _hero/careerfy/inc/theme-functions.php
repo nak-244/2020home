@@ -337,7 +337,7 @@ if (!function_exists('careerfy_next_prev_custom_links')) {
                                 ?>
                                 <div class="careerfy-prev-post">
                                     <h6>
-                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 5, '...') ?></a>
+                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 15, '...') ?></a>
                                     </h6>
                                     <a href="<?php echo esc_url(get_permalink($previd)) ?>"
                                        class="careerfy-arrow-nexpre"><i
@@ -403,7 +403,7 @@ if (function_exists('careerfy_add_param_field')) {
         foreach ($dropdown_options as $dr_opt_key => $dr_opt_val) {
             $dropdown_html .= '<option' . (is_array($value) && in_array($dr_opt_key, $value) ? ' selected="selected"' : '') . ' value="' . esc_html($dr_opt_key) . '">' . esc_html($dr_opt_val) . '</option>';
         }
-        $dropdown_html .= '	
+        $dropdown_html .= '
 		</select>';
         return $dropdown_html;
     }
@@ -616,6 +616,7 @@ if (!function_exists('careerfy_post_detail_author_info')) {
             $author_box_class = '';
         }
         ?>
+
         <div class="careerfy-author-detail <?php echo sanitize_html_class($author_box_class) ?>">
             <div class="detail-title"><h2><?php esc_html_e('About the Author', 'careerfy') ?></h2></div>
             <figure>
@@ -631,6 +632,7 @@ if (!function_exists('careerfy_post_detail_author_info')) {
             </div>
             <?php do_action('careerfy_post_author_social_links', $post->ID) ?>
         </div>
+
         <?php
     }
 

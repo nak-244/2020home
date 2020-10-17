@@ -34,9 +34,11 @@ while (have_posts()) : the_post(); ?>
                     $comments = esc_html__('Comments', 'careerfy');
                     $comment = esc_html__('Comment', 'careerfy');
                     ?>
-                    <li><i class="fa fa-comment"></i>
+
+                    <!-- <li><i class="fa fa-comment"></i>
                         <a href="<?php comments_link(); ?>"><?php echo comments_number('0 ' . $comments . '', '1 '.$comment.' ', '% ' . $comments . ''); ?></a>
-                    </li>
+                    </li> -->
+
                 </ul>
             </div>
             <?php
@@ -90,4 +92,3 @@ while (have_posts()) : the_post(); ?>
 <?php
 endwhile; // End of the loop.
 get_footer();
-        
