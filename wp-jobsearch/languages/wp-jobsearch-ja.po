@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-02 15:06+0900\n"
+"PO-Revision-Date: 2020-10-20 14:30+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -2284,7 +2284,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:845
 #: templates/user-dashboard/employer/user-packages.php:78
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: includes/classes/class-wc-subscriptions.php:204
 #: includes/classes/class-wc-subscriptions.php:479
@@ -2466,7 +2466,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:1427
 #: includes/meta-boxes/job-metabox.php:664
 msgid "Employers List"
-msgstr ""
+msgstr "会社リスト"
 
 #: includes/classes/class-jobs-embeddable.php:375
 #: includes/common-functions/job-functions.php:1430
@@ -3556,7 +3556,7 @@ msgstr ""
 #: includes/meta-boxes/job-metabox.php:432
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:136
 msgid "Negotiable"
-msgstr ""
+msgstr "交渉可能"
 
 #: includes/common-functions/job-functions.php:644
 msgid "View all jobs"
@@ -3671,7 +3671,7 @@ msgstr "メールアドレス"
 #: includes/common-functions/job-functions.php:1399
 #: includes/meta-boxes/job-metabox.php:637
 msgid "Change Employer"
-msgstr ""
+msgstr "会社変更"
 
 #: includes/common-functions/job-functions.php:1389
 #: includes/common-functions/job-functions.php:2519
@@ -4960,7 +4960,7 @@ msgstr ""
 #: includes/meta-boxes/candidate-metabox.php:558
 #: includes/meta-boxes/job-metabox.php:436
 msgid "Salary Type"
-msgstr ""
+msgstr "給与種類"
 
 #: includes/meta-boxes/candidate-metabox.php:576
 #: includes/meta-boxes/job-metabox.php:455
@@ -5143,11 +5143,11 @@ msgstr ""
 
 #: includes/meta-boxes/job-metabox.php:230
 msgid "Publish Date"
-msgstr ""
+msgstr "公開日"
 
 #: includes/meta-boxes/job-metabox.php:267
 msgid "Application Deadline Date"
-msgstr ""
+msgstr "応募締切日"
 
 #: includes/meta-boxes/job-metabox.php:333
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1539
@@ -5166,26 +5166,26 @@ msgstr ""
 
 #: includes/meta-boxes/job-metabox.php:400
 msgid "Min. Salary"
-msgstr ""
+msgstr "給料（最小）"
 
 #: includes/meta-boxes/job-metabox.php:413
 msgid "Max. Salary"
-msgstr ""
+msgstr "給料（最大）"
 
 #: includes/meta-boxes/job-metabox.php:523
 #: includes/meta-boxes/job-metabox.php:537
 msgid "Featured expiry date"
-msgstr ""
+msgstr "オススメ求人有効期限"
 
 #: includes/meta-boxes/job-metabox.php:545
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1346
 msgid "Urgent Job"
-msgstr ""
+msgstr "急募"
 
 #: includes/meta-boxes/job-metabox.php:570 includes/post-types/job.php:347
 #: includes/post-types/job.php:535
 msgid "Filled"
-msgstr ""
+msgstr "一時中止"
 
 #: includes/meta-boxes/job-metabox.php:577
 msgid "Filled listings will no longer accept applications."
@@ -5194,7 +5194,7 @@ msgstr "一時的に応募を受け付けないときはONにしてください�
 #: includes/meta-boxes/job-metabox.php:585
 #: modules/indeed-jobs-import/include/indeed-jobs-hooks.php:254
 msgid "Posted By"
-msgstr ""
+msgstr "投稿者"
 
 #: includes/meta-boxes/job-metabox.php:623
 #: includes/meta-boxes/employer-metabox.php:131
@@ -5215,7 +5215,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2757
 #: templates/user-dashboard/employer/user-manage-jobs.php:883
 msgid "Admin Review"
-msgstr ""
+msgstr "管理者レビュー"
 
 #: includes/meta-boxes/job-metabox.php:835
 #: includes/meta-boxes/employer-metabox.php:714
@@ -5228,13 +5228,13 @@ msgstr ""
 #: templates/user-dashboard/employer/user-transactions.php:119
 #: templates/user-dashboard/employer/user-manage-jobs.php:875
 msgid "Pending"
-msgstr ""
+msgstr "保留中"
 
 #: includes/meta-boxes/job-metabox.php:837
 #: includes/meta-boxes/employer-metabox.php:718 includes/post-types/job.php:562
 #: templates/user-dashboard/employer/user-manage-jobs.php:879
 msgid "Canceled"
-msgstr "キャンセルしました"
+msgstr "キャンセル"
 
 #: includes/meta-boxes/job-metabox.php:877
 msgid "Add Attachment"
@@ -5944,17 +5944,17 @@ msgstr ""
 #: includes/post-types/job.php:264
 #, php-format
 msgid "Approved (%s)"
-msgstr ""
+msgstr "承認済 (%s)"
 
 #: includes/post-types/job.php:265
 #, php-format
 msgid "Pending (%s)"
-msgstr ""
+msgstr "保留中 (%s)"
 
 #: includes/post-types/job.php:266
 #, php-format
 msgid "Admin Review (%s)"
-msgstr ""
+msgstr "管理者レビュー (%s)"
 
 #: includes/post-types/job.php:341
 #: modules/indeed-jobs-import/include/indeed-jobs-hooks.php:163
@@ -5974,7 +5974,7 @@ msgstr "期限"
 
 #: includes/post-types/job.php:345
 msgid "Posted By "
-msgstr ""
+msgstr "投稿者"
 
 #: includes/post-types/job.php:345
 msgid "Employer Status"
@@ -8051,7 +8051,7 @@ msgstr ""
 #: includes/classes/email-templates/class-job-applied-to-employer.php:86
 #: modules/job-application/include/apply-job-email-tocand.php:107
 msgid "Posted by"
-msgstr ""
+msgstr "投稿者"
 
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1637
 #: includes/shortcode-builder/shortcodes/job-listings.php:296
@@ -10419,7 +10419,7 @@ msgstr "オススメ"
 #: includes/classes/email-templates/class-candidate-message-employer.php:117
 #: includes/classes/email-templates/class-job-submitted-admin.php:99
 msgid "posted by"
-msgstr ""
+msgstr "投稿者"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:101
 #: includes/classes/email-templates/class-job-expire-to-employer.php:101
@@ -10427,7 +10427,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:122
 #: includes/classes/email-templates/class-job-submitted-admin.php:104
 msgid "status"
-msgstr ""
+msgstr "ステータス"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:106
 #: includes/classes/email-templates/class-job-expire-to-employer.php:106
