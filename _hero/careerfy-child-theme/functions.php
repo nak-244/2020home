@@ -13,3 +13,8 @@ endif;
 add_action( 'wp_enqueue_scripts', 'chld_thm_cfg_parent_css', 10 );
 
 // END ENQUEUE PARENT ACTION
+// 
+add_action( 'init' , 'my_remove_post_support' );
+function my_remove_post_support() {
+remove_post_type_support('job','editor'); 
+}
