@@ -106,7 +106,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <figure>
                                 <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
                                     <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
-                                    <img src="<?php the_field('cfimg'); ?>" alt="">
+                                    <img src="<?php the_field('cf30'); ?>" alt="">
                                 </a>
                             </figure>
                             <?php
@@ -261,7 +261,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <figure>
                                 <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
                                     <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
-                                    <img src="<?php the_field('cfimg'); ?>" alt="">
+                                    <img src="<?php the_field('cf30'); ?>" alt="">
                                 </a>
                             </figure>
                             <?php

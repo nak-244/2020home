@@ -49,7 +49,7 @@ $subheader_employer_bg_color = isset($jobsearch_plugin_options['careerfy-emp-img
 if (isset($subheader_employer_bg_color['rgba'])) {
     $subheader_bg_color = $subheader_employer_bg_color['rgba'];
 }
-?>  
+?>
 <!-- Main Content -->
 <div class="job-three-cover"<?php echo ($employer_cover_image_src_style_str); ?>>
     <span class="careerfy-light-transparent" style="background: <?php echo $subheader_bg_color ?>"></span>
@@ -57,7 +57,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
 <div class="careerfy-main-content">
 
     <!-- Main Section -->
-    <div class="careerfy-main-section">      
+    <div class="careerfy-main-section">
         <div class="container" style="position: relative;">
             <div class="row">
                 <?php
@@ -71,7 +71,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                     $post_thumbnail_src = apply_filters('jobsearch_jobemp_image_src', $post_thumbnail_src, $job_id);
                     $application_deadline = get_post_meta($post_id, 'jobsearch_field_job_application_deadline_date', true);
                     $jobsearch_job_posted = get_post_meta($post_id, 'jobsearch_field_job_publish_date', true);
-                    
+
                     $job_max_salary = jobsearch_job_offered_salary($post_id);
                     $jobsearch_job_posted_ago = jobsearch_time_elapsed_string($jobsearch_job_posted, ' ' . esc_html__('posted', 'careerfy') . ' ');
                     $jobsearch_job_posted_formated = '';
@@ -217,7 +217,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                         'btn_class' => 'jobsearch_box_jobdetail_three_apply_btn last',
                                     );
                                     do_action('jobsearch_job_send_to_email_filter', $popup_args);
-                                    
+
                                     ob_start();
                                     echo jobsearch_job_det_applybtn_acthtml('', $job_id, 'page', 'view3');
                                     $apply_bbox = ob_get_clean();
@@ -245,7 +245,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                 'position' => 'aftr_aply',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            
+
                             ob_start();
                             $cus_fields = array('content' => '');
                             $cus_fields = apply_filters('jobsearch_custom_fields_list', 'job', $post_id, $cus_fields, '<li>', '</li>', '', true, true, true, 'careerfy');
@@ -261,7 +261,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                             }
                             $job_fields_output = ob_get_clean();
                             echo apply_filters('jobsearch_job_detail_content_fields', $job_fields_output, $job_id);
-                            
+
                             $ad_args = array(
                                 'post_type' => 'job',
                                 'view' => 'view3',
@@ -275,7 +275,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                             <?php
                             $company_job_html = jobsearch_job_related_company_post($job_id, esc_html__('Similar Jobs', 'careerfy'), 3, 5, 'view2');
                             echo force_balance_tags($company_job_html);
-                            
+
                             $ad_args = array(
                                 'post_type' => 'job',
                                 'view' => 'view3',
@@ -340,16 +340,16 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                     $job_det_output = ob_get_clean();
                                     echo apply_filters('jobsearch_job_detail_content_detail', $job_det_output, $job_id);
                                 }
-                                
+
                                 echo apply_filters('jobsearch_job_defdetail_after_detcont_html', '', $job_id, 'filter', 'view3');
-                                
+
                                 $ad_args = array(
                                     'post_type' => 'job',
                                     'view' => 'view3',
                                     'position' => 'aftr_desc',
                                 );
                                 jobsearch_detail_common_ad_code($ad_args);
-                                
+
                                 $job_attachments_switch = isset($jobsearch_plugin_options['job_attachments']) ? $jobsearch_plugin_options['job_attachments'] : '';
                                 if ($job_attachments_switch == 'on') {
                                     $all_attach_files = get_post_meta($job_id, 'jobsearch_field_job_attachment_files', true);

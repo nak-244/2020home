@@ -426,7 +426,7 @@ class JobSearch_Careerfy_Simple_Jobs_Listins
                     var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
                     jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
                 </script>
-                <?php 
+                <?php
                 echo '</div>';
             } else if ($job_list_style == 'style7') { ?>
                 <!-- Recent Listing -->
@@ -871,7 +871,10 @@ class JobSearch_Careerfy_Simple_Jobs_Listins
                     <li class="col-md-12">
                         <div class="careerfy-recent-list-wrap">
                             <figure><a href="<?php echo get_permalink($job_id) ?>">
-                                    <img src="<?php echo($post_thumbnail_src) ?>" alt="">
+
+                                    <!-- <img src="<?php echo($post_thumbnail_src) ?>" alt=""> -->
+                                    <img src="<?php the_field('cf30',$job_id); ?>" alt="">
+
                                     <?php
                                     if ($jobsearch_job_featured == 'on') { ?>
                                         <i class="fa fa-star"></i>
@@ -881,19 +884,24 @@ class JobSearch_Careerfy_Simple_Jobs_Listins
                             jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id);
                             ?>
                             <div class="careerfy-recent-list-text">
-                                <h2>
-                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo substr(get_the_title($job_id), 0, 20) . (strlen(get_the_title($job_id)) > 20 ? '...' : '') ?><?php echo($elaspedtime > $hourz ? '' : '<span class="careerfy-featuredjobs-listnew">' . esc_html__('New', 'careerfy-frame') . '</span>') ?></a>
-                                </h2>
+                                <h5>
+                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo substr(get_the_title($job_id), 0, 200) . (strlen(get_the_title($job_id)) > 200 ? '...' : '') ?><?php echo($elaspedtime > $hourz ? '' : '<span class="careerfy-featuredjobs-listnew">' . esc_html__('New', 'careerfy-frame') . '</span>') ?></a>
+                                </h5>
+                                <p><?php the_field('cf01',$job_id); ?></p>
                                 <ul>
                                     <li><i class="careerfy-icon careerfy-calendar"></i>
-                                        <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo date_i18n($date_format, $job_deadline) . "<br>"; ?>
+                                        <span>応募締切日</span> <?php echo date_i18n($date_format, $job_deadline) . "<br>"; ?>
                                     </li>
-                                    <?php
-                                    if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
-                                        <li><i class="careerfy-icon careerfy-pin"></i>
-                                            <span><?php echo esc_html__('Location:', 'careerfy-frame') ?></span> <?php echo esc_html__($get_job_location, 'careerfy-frame'); ?>
-                                        </li>
-                                    <?php } ?>
+                                    <!-- 追加 -->
+                                    <li><i class="careerfy-icon careerfy-map-pin-fill"></i>
+                                        <span>勤務地</span> <?php the_field('cf03',$job_id); ?><?php the_field('cf04',$job_id); ?>
+                                    </li>
+                                    <li><i class="careerfy-icon careerfy-money"></i>
+                                        <span><?php the_field('cf06',$job_id); ?></span>
+                                        <?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
+                                        <?php echo number_format($myk_field_name); ?>円
+                                        <?php } ?>
+                                    </li>
                                 </ul>
                                 <?php
                                 if ($job_type_str != '' && $job_types_switch == 'on') {
