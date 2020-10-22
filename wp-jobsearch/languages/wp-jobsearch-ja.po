@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-20 14:30+0900\n"
+"PO-Revision-Date: 2020-10-22 17:10+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -3748,7 +3748,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:1890
 msgid "Apply to this job"
-msgstr ""
+msgstr "この求人に応募する"
 
 #: includes/common-functions/job-functions.php:1905
 msgid "oR Apply with"
