@@ -66,7 +66,7 @@ if ($job_ads_switch == 'yes') {
         }
         $array_i++;
     }
-    // new count 
+    // new count
     $job_ads_after_list_array_count = sizeof($job_ads_after_list_array);
 }
 
@@ -267,13 +267,14 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         ?>
                         <?php if ($post_thumbnail_src != '') { ?>
                             <a href="<?php the_permalink(); ?>">
-                                <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
+                                <img src="<?php the_field('cf30'); ?>" alt="">
                             </a>
                         <?php } ?>
                         <?php
                         if ($jobsearch_job_featured == 'on') {
                             ?>
-                            <span class="careerfy-job-featured"><?php echo esc_html__('Featured', 'careerfy'); ?></span>
+                            <span class="careerfy-job-featured"><?php echo esc_html__('オススメ', 'careerfy'); ?></span>
                             <?php
                         }
                         ?>
@@ -282,22 +283,28 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         <?php
                         ob_start();
                         ?>
-                        <div class="featured-jobs-grid-tag"><?php echo ($company_name) ?></div>
+
+                        <!-- <div class="featured-jobs-grid-tag"><?php echo ($company_name) ?></div> -->
+
                         <?php
                         $comp_name_html = ob_get_clean();
                         echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view-grid2');
                         ?>
-                        <h2>
-                            <a href="<?php echo esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?></a>
-                        </h2>
+                        <h6>
+                            <a href="<?php echo esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 50)); ?></a>
+                        </h6>
                         <ul>
                             <?php
-                            if (!empty($sector_str) && $sectors_enable_switch == 'on') {
-                                echo($sector_str);
-                            }
+
+                            // if (!empty($sector_str) && $sectors_enable_switch == 'on') {
+                            //     echo($sector_str);
+                            // }
+
                             if ($job_post_date != '' && $job_views_publish_date == 'on') {
                                 ?>
-                                <li><?php printf(esc_html__('Published %s', 'careerfy'), jobsearch_time_elapsed_string($job_post_date)); ?></li>
+
+                                <!-- <li><?php printf(esc_html__('Published %s', 'careerfy'), jobsearch_time_elapsed_string($job_post_date)); ?></li> -->
+
                                 <?php
                             }
                             do_action('jobsearch_job_listing_deadline', $atts, $job_id);
@@ -307,6 +314,11 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         do_action('jobsearch_job_listing_custom_fields', $atts, $job_id, $jcus_fields);
                         ?>
                         <div class="featured-jobs-grid-location">
+                          <p>勤務地：<?php the_field('cf03'); ?><?php the_field('cf04'); ?></p>
+                          <p>給与：<?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
+                          <?php echo number_format($myk_field_name); ?>円
+                          <?php } ?></p>
+
                             <?php
                             if ($job_city_title != '' && $all_location_allow == 'on') {
                                 ?>
