@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-22 17:12+0900\n"
+"PO-Revision-Date: 2020-10-27 18:52+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1851,7 +1851,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2633
 #: modules/job-alerts/include/job-filters-alerts.php:186
 msgid "Job Type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/classes/class-job-top-filters.php:142
 #: includes/classes/class-job-top-filters.php:143
@@ -2998,7 +2998,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/advance-search.php:111
 #: modules/locations/include/locations-vc-hooks.php:114
 msgid "State"
-msgstr "都道府県"
+msgstr "地域"
 
 #: includes/classes/class-employer-filters.php:1000
 #: includes/classes/class-job-filters.php:792
@@ -3010,7 +3010,7 @@ msgstr "都道府県"
 #: modules/locations/include/location-settings.php:1454
 #: modules/locations/include/location-settings.php:1470
 msgid "Select State"
-msgstr "都道府県を選択"
+msgstr "地域を選択"
 
 #: includes/classes/class-employer-filters.php:1031
 #: includes/classes/class-job-filters.php:820
@@ -3021,7 +3021,7 @@ msgstr "都道府県を選択"
 #: shortcodes/vc-shortcodes/advance-search.php:59
 #: modules/locations/include/locations-vc-hooks.php:159
 msgid "City"
-msgstr ""
+msgstr "都道府県"
 
 #: includes/classes/class-employer-filters.php:1035
 #: includes/classes/class-job-filters.php:824
@@ -3032,7 +3032,7 @@ msgstr ""
 #: modules/locations/include/location-settings.php:1402
 #: modules/locations/include/location-settings.php:1418
 msgid "Select City"
-msgstr ""
+msgstr "都道府県を選択"
 
 #: includes/classes/class-employer-filters.php:1061
 #: includes/classes/class-job-filters.php:849
@@ -3051,7 +3051,7 @@ msgstr ""
 #: includes/classes/class-job-filters.php:60
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2630
 msgid "Keyword Search"
-msgstr ""
+msgstr "キーワード検索"
 
 #: includes/classes/class-job-filters.php:67
 #: shortcodes/vc-shortcodes/advance-search.php:115
@@ -3059,7 +3059,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:186
 #: includes/shortcode-builder/shortcodes/job-listings.php:245
 msgid "Job Title, Keywords, or Phrase"
-msgstr ""
+msgstr "キーワード・市区町村等"
 
 #: includes/common-functions/email-applicants.php:30
 msgctxt "post type general name"
@@ -6008,7 +6008,7 @@ msgstr ""
 #: includes/post-types/job.php:885
 msgctxt "taxonomy singular name"
 msgid "Job Type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/post-types/job.php:886
 msgid "Search Job Types"
@@ -7985,7 +7985,7 @@ msgstr ""
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1308
 msgid "Job Type *"
-msgstr ""
+msgstr "雇用形態 *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1379
 #: templates/user-dashboard/candidate/user-my-resume.php:129
@@ -10379,7 +10379,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:92
 #: includes/classes/email-templates/class-job-submitted-admin.php:69
 msgid "job type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:76
 #: includes/classes/email-templates/class-job-expire-to-employer.php:76
@@ -14056,7 +14056,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:296
 #: modules/login-registration/templates/login-registration-template.php:922
 msgid "Reset Password"
-msgstr ""
+msgstr "パスワードをリセットする"
 
 #: modules/login-registration/include/login-registration-submit.php:465
 msgid "You cannot change the password."
@@ -14173,7 +14173,7 @@ msgstr "パスワードを保存"
 #: modules/login-registration/templates/login-registration-template.php:315
 #: modules/login-registration/templates/login-registration-template.php:938
 msgid "Get a new password"
-msgstr ""
+msgstr "新しいパスワードを受け取る"
 
 #: modules/login-registration/templates/login-registration-template.php:320
 #: modules/login-registration/templates/login-registration-template.php:767
@@ -14187,6 +14187,8 @@ msgid ""
 "Enter the username or e-mail you used in your profile. A password reset link "
 "will be sent to you by email."
 msgstr ""
+"登録時のユーザー名かメールアドレスを入力してください。パスワードをリセットす"
+"るリンクを送信します。"
 
 #: modules/login-registration/templates/login-registration-template.php:350
 msgid "Signup to your Account"

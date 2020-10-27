@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Careerfy Framework\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-31 11:21+0900\n"
+"PO-Revision-Date: 2020-10-27 16:49+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -2982,7 +2982,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/employee-listing.php:1753
 #: includes/elementor-widget/wp-jobsearch-elements/employee-listing.php:1754
 msgid "Select Sector"
-msgstr "業種"
+msgstr "職種"
 
 #: includes/vc-support/vc-shortcodes.php:2193
 msgid "Explore Jobs Item"
@@ -3226,7 +3226,7 @@ msgstr ""
 
 #: includes/vc-support/vc-shortcodes.php:2790
 msgid "Keyword Search"
-msgstr ""
+msgstr "キーワード検索"
 
 #: includes/vc-support/vc-shortcodes.php:2796
 msgid "Jobs filters 'Keyword Search' switch."
@@ -3491,7 +3491,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/advance-search.php:2014
 #: includes/elementor-widget/wp-jobsearch-elements/advance-search.php:2123
 msgid "Job Title, Keywords, or Phrase"
-msgstr "職種、キーワード"
+msgstr "キーワード"
 
 #: includes/vc-support/vc-shortcodes.php:2975
 #: includes/vc-support/vc-shortcodes.php:3641
@@ -5854,7 +5854,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/job-categories.php:711
 #: includes/elementor-widget/wp-jobsearch-elements/job-categories.php:722
 msgid "Browse All Sectors"
-msgstr "すべての業種を調べる"
+msgstr "すべての職種を調べる"
 
 #: shortcodes/vc-shortcodes/faqs-shortcode.php:156
 msgid "No question found."
@@ -5889,7 +5889,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/simple-jobs-listing.php:1137
 #: includes/elementor-widget/wp-jobsearch-elements/simple-jobs-listing.php:1214
 msgid "Show More Jobs"
-msgstr ""
+msgstr "もっと求人を見る"
 
 #: shortcodes/vc-shortcodes/jobs-simple-listing.php:865
 #: includes/elementor-widget/wp-jobsearch-elements/simple-jobs-listing.php:367
@@ -8518,7 +8518,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/job-categories.php:578
 #, php-format
 msgid "(%s Jobs)"
-msgstr ""
+msgstr "(求人数 %s)"
 
 #: includes/elementor-widget/wp-jobsearch-elements/job-categories.php:616
 #: includes/elementor-widget/wp-jobsearch-elements/job-categories.php:620

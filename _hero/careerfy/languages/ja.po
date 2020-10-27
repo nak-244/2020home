@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 12:59+0000\n"
-"PO-Revision-Date: 2020-10-22 17:06+0900\n"
+"PO-Revision-Date: 2020-10-27 17:16+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1498,7 +1498,7 @@ msgstr ""
 #: wp-jobsearch/detail-pages/job/view5-job.php:524
 #: wp-jobsearch/detail-pages/job/view3-job.php:401
 msgid "Related Jobs"
-msgstr ""
+msgstr "関連求人"
 
 #: wp-jobsearch/detail-pages/job/view2-job.php:70
 #: wp-jobsearch/detail-pages/job/view5-job.php:73

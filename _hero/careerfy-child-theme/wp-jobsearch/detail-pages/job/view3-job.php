@@ -252,7 +252,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
 
                             </div>
                             <!--Widget Detail Services -->
-                            <?php
+                            <!-- <?php
                             $ad_args = array(
                                 'post_type' => 'job',
                                 'view' => 'view3',
@@ -282,7 +282,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                 'position' => 'aftr_cusfilds',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            ?>
+                            ?> -->
                             <!--Widget Detail Services -->
                             <!--Widget Similar Jobs -->
 

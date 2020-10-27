@@ -589,7 +589,8 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                             <?php if ($post_thumbnail_src != '') { ?>
                                 <figure>
                                     <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                        <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
+                                        <img src="<?php the_field('cf30',$job_id); ?>" alt="">
                                     </a>
                                 </figure>
                             <?php } ?>
@@ -611,7 +612,7 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                                         <?php
                                         ob_start();
                                         ?>
-                                        <li><?php echo($company_name) ?></li>
+
                                         <?php
                                         $comp_name_html = ob_get_clean();
                                         echo apply_filters('jobsearch_empname_in_jobdetail_related', $comp_name_html, $job_id, 'view3');
@@ -623,6 +624,17 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                                         }
                                         echo $sector_str = jobsearch_job_get_all_sectors($job_id, '', '', '', '<li><i class="careerfy-icon careerfy-filter-tool-black-shape"></i>', '</li>');
                                         ?>
+                                        <!-- 追加 -->
+                                        <li><i class="careerfy-icon careerfy-map-pin-fill"></i>
+                                            <span>勤務地</span> <?php the_field('cf03',$job_id); ?><?php the_field('cf04',$job_id); ?>
+                                        </li>
+                                        <li><i class="careerfy-icon careerfy-money"></i>
+                                            <span><?php the_field('cf06',$job_id); ?></span>
+                                            <?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
+                                            <?php echo number_format($myk_field_name); ?>円
+                                            <?php } ?>
+                                        </li>
+                                        <!-- 追加 -->
                                     </ul>
                                 </div>
                                 <div class="careerfy-job-userlist">

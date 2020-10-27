@@ -174,7 +174,7 @@ function careerfy_job_categories_shortcode($atts) {
                                         $jobs_query = new WP_Query($job_args);
                                         $found_jobs = $jobs_query->found_posts;
                                         wp_reset_postdata();
-                                        
+
                                         $total_jobs = $found_jobs == 1 ? "Job" : "Jobs";
                                         $term_fields = get_term_meta($term_sector->term_id, 'careerfy_frame_cat_fields', true);
                                         $term_icon = isset($term_fields['icon']) ? $term_fields['icon'] : '';
@@ -255,8 +255,13 @@ function careerfy_job_categories_shortcode($atts) {
                                                             <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view4' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
                                                         <?php }
                                                     } ?>
-                                                    <strong><?php echo($term_sector->name) ?></strong>
-                                                    <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small>
+
+                                                    <!-- <strong><?php echo($term_sector->name) ?></strong> -->
+
+                                                    <p><?php echo($term_sector->name) ?></p>
+
+                                                    <!-- <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small> -->
+
                                                 </a>
                                             </li>
                                         <?php } else if ($cats_view == 'view4') { ?>
