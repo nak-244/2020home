@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Careerfy Framework\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-27 16:49+0900\n"
+"PO-Revision-Date: 2020-10-29 16:47+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1042,7 +1042,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/all-packages.php:158
 #: includes/elementor-widget/wp-jobsearch-elements/jobsearch-features.php:106
 msgid "Featured"
-msgstr ""
+msgstr "オススメ"
 
 #: includes/careerfy-detail-pages.php:507
 #: shortcodes/vc-shortcodes/top-jobs-slider.php:256
@@ -3405,7 +3405,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/jobs-listing.php:656
 #: includes/elementor-widget/wp-jobsearch-elements/simple-job-listing-multi.php:516
 msgid "Featured Jobs"
-msgstr ""
+msgstr "オススメ求人"
 
 #: includes/vc-support/vc-shortcodes.php:2939
 #: includes/elementor-widget/wp-jobsearch-elements/jobs-listing.php:676

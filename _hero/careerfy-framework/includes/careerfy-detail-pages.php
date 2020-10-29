@@ -369,7 +369,7 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
     global $jobsearch_plugin_options;
 
     if ($title != '') { ?>
-        <div class="careerfy-joblisting-view4-title"><h2><?php echo esc_html($title); ?></h2></div>
+        <div class="careerfy-joblisting-view4-title"><h5><?php echo esc_html($title); ?></h5></div>
     <?php } ?>
     <div class="careerfy-job-listing careerfy-joblisting-view4">
         <ul class="row">
@@ -440,7 +440,8 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                     ?>
                                     <figure>
                                         <a href="<?php the_permalink(); ?>">
-                                            <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                            <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
+                                            <img src="<?php the_field('cf30',$job_id); ?>" alt="">
                                         </a>
                                     </figure>
                                     <?php
@@ -466,7 +467,19 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php
                                 ob_start();
                                 ?>
-                                <div class="careerfy-company-name"><?php echo($company_name) ?></div>
+                                <!-- <div class="careerfy-company-name"><?php echo($company_name) ?></div> -->
+                                <p><?php the_field('cf01',$job_id); ?></p>
+                                <p>
+                                  <i class="careerfy-icon careerfy-map-pin-fill"></i>
+                                    <span>勤務地</span> <?php the_field('cf03',$job_id); ?><?php the_field('cf04',$job_id); ?>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <i class="careerfy-icon careerfy-money"></i>
+                                        <span><?php the_field('cf06',$job_id); ?></span>
+                                        <?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
+                                        <?php echo number_format($myk_field_name); ?>円〜
+                                        <?php } ?>
+                                  </p>
+
                                 <?php
                                 $list_emp_title = ob_get_clean();
                                 echo apply_filters('jobsearch_jobs_listing_emp_titleanchr_html', $list_emp_title, $job_id, 'view2');

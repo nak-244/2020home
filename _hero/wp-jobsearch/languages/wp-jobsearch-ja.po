@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-10-27 18:52+0900\n"
+"PO-Revision-Date: 2020-10-29 14:59+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -611,7 +611,7 @@ msgstr "保存済"
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:318
 #: templates/user-dashboard/employer/user-dashboard-settings.php:289
 msgid "Select Sector"
-msgstr "業種選択"
+msgstr "職種選択"
 
 #: includes/class-jobsearch-plugin.php:729 modules/reviews/reviews.php:42
 #: modules/login-registration/templates/login-registration-template.php:253
@@ -1880,7 +1880,7 @@ msgstr "雇用形態"
 #: templates/user-dashboard/employer/user-stats.php:233
 #: templates/user-dashboard/employer/user-stats.php:432
 msgid "Sector"
-msgstr "業種"
+msgstr "職種"
 
 #: includes/classes/class-employer-all-applicants.php:74
 msgid "Applied with Email"
@@ -2949,7 +2949,7 @@ msgstr ""
 #: includes/classes/class-job-filters.php:591
 #: modules/locations/locations.php:1804
 msgid "Locations"
-msgstr "エリア"
+msgstr ""
 
 #: includes/classes/class-employer-filters.php:821
 #: includes/classes/class-job-filters.php:602
@@ -2998,7 +2998,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/advance-search.php:111
 #: modules/locations/include/locations-vc-hooks.php:114
 msgid "State"
-msgstr "地域"
+msgstr ""
 
 #: includes/classes/class-employer-filters.php:1000
 #: includes/classes/class-job-filters.php:792
@@ -3010,7 +3010,7 @@ msgstr "地域"
 #: modules/locations/include/location-settings.php:1454
 #: modules/locations/include/location-settings.php:1470
 msgid "Select State"
-msgstr "地域を選択"
+msgstr ""
 
 #: includes/classes/class-employer-filters.php:1031
 #: includes/classes/class-job-filters.php:820
@@ -3021,7 +3021,7 @@ msgstr "地域を選択"
 #: shortcodes/vc-shortcodes/advance-search.php:59
 #: modules/locations/include/locations-vc-hooks.php:159
 msgid "City"
-msgstr "都道府県"
+msgstr ""
 
 #: includes/classes/class-employer-filters.php:1035
 #: includes/classes/class-job-filters.php:824
@@ -3032,7 +3032,7 @@ msgstr "都道府県"
 #: modules/locations/include/location-settings.php:1402
 #: modules/locations/include/location-settings.php:1418
 msgid "Select City"
-msgstr "都道府県を選択"
+msgstr ""
 
 #: includes/classes/class-employer-filters.php:1061
 #: includes/classes/class-job-filters.php:849
@@ -3286,7 +3286,7 @@ msgstr ""
 #: includes/common-functions/common-functions.php:2123
 #: includes/common-functions/employer-functions.php:3030
 msgid "Please select "
-msgstr ""
+msgstr "選択："
 
 #: includes/common-functions/common-functions.php:2484
 #, php-format
@@ -4045,7 +4045,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:891
 #, php-format
 msgid "<small> %s </small> Increase profile score by Sector."
-msgstr "<small> %s </small> 希望業種を入力。"
+msgstr "<small> %s </small> 希望職種を入力。"
 
 #: includes/common-functions/candidate-functions.php:904
 #, php-format
@@ -4515,7 +4515,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/advance-search.php:62
 #: includes/shortcode-builder/shortcodes/advance-search.php:113
 msgid "Please select"
-msgstr ""
+msgstr "選択："
 
 #: includes/common-functions/candidate-functions.php:2997
 msgid "Email Verification"
@@ -10387,7 +10387,7 @@ msgstr "雇用形態"
 #: includes/classes/email-templates/class-candidate-message-employer.php:97
 #: includes/classes/email-templates/class-job-submitted-admin.php:79
 msgid "sector"
-msgstr "業種"
+msgstr "職種"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:81
 #: includes/classes/email-templates/class-job-expire-to-employer.php:81
@@ -10950,7 +10950,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:23
 #: includes/shortcode-builder/shortcodes/job-listings.php:31
 msgid "Select Sector."
-msgstr "業種選択."
+msgstr "職種選択."
 
 #: includes/shortcode-builder/shortcodes/candidate-listings.php:28
 msgid "Candidate Founds with display counts"
@@ -13493,7 +13493,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-filters-alerts.php:125
 msgid "Select Job Sector"
-msgstr "業種を選択"
+msgstr "職種を選択"
 
 #: modules/job-alerts/include/job-filters-alerts.php:189
 msgid "Select Job Type"
@@ -14240,7 +14240,7 @@ msgstr ""
 
 #: modules/login-registration/templates/login-registration-template.php:531
 msgid "Select Sector:"
-msgstr "業種選択:"
+msgstr "職種選択:"
 
 #: modules/login-registration/templates/login-registration-template.php:756
 #: modules/login-registration/templates/login-registration-template.php:761
@@ -14598,7 +14598,7 @@ msgstr ""
 #: templates/detail-pages/candidate/view1-candidate.php:356
 #, php-format
 msgid "Sector: %s"
-msgstr "業種: %s"
+msgstr "職種: %s"
 
 #: templates/detail-pages/candidate/view1-candidate.php:503
 #: templates/detail-pages/employer/view1-employer.php:770

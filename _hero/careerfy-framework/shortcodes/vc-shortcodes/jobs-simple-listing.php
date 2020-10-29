@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
     die;
 }
 
+
 // main plugin class
 class JobSearch_Careerfy_Simple_Jobs_Listins
 {
@@ -899,7 +900,7 @@ class JobSearch_Careerfy_Simple_Jobs_Listins
                                     <li><i class="careerfy-icon careerfy-money"></i>
                                         <span><?php the_field('cf06',$job_id); ?></span>
                                         <?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
-                                        <?php echo number_format($myk_field_name); ?>円
+                                        <?php echo number_format($myk_field_name); ?>円〜
                                         <?php } ?>
                                     </li>
                                 </ul>

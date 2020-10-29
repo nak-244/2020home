@@ -317,7 +317,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         <div class="featured-jobs-grid-location">
                           <p>勤務地：<?php the_field('cf03'); ?><?php the_field('cf04'); ?></p>
                           <p>給与：<?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
-                          <?php echo number_format($myk_field_name); ?>円
+                          <?php echo number_format($myk_field_name); ?>円〜
                           <?php } ?></p>
 
                             <?php
@@ -371,7 +371,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
             <li class="' . esc_html($columns_class) . '">
                 <div class="no-job-match-error">
                     <span>求人が見つかりません。</span><br />
-                    <a href="' . esc_url($reset_link) . '">条件をリセットする</a>
+                    条件を変更してください。
                 </div>
             </li>';
         }

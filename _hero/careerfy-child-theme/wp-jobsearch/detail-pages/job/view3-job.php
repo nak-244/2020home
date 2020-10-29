@@ -117,6 +117,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                 <div class="jobsearch_box_jobdetail_three_apply_wrap">
 
                                   <img src="<?php the_field('cf30',$job_id); ?>" alt="">
+                                  
 
                                     <?php
                                     if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
