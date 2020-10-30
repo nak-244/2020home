@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 12:59+0000\n"
-"PO-Revision-Date: 2020-10-22 17:03+0900\n"
+"PO-Revision-Date: 2020-08-31 11:36+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1025,7 +1025,7 @@ msgstr ""
 #: wp-jobsearch/jobs/view-grid-4-job-template.php:221
 #: wp-jobsearch/jobs/view-grid-4-job-template.php:365
 msgid "Save this job"
-msgstr "求人を保存"
+msgstr ""
 
 #. %d: total results
 #: woocommerce/loop/result-count.php:38
@@ -1578,7 +1578,7 @@ msgstr ""
 #: wp-jobsearch/detail-pages/job/view5-job.php:563
 #: wp-jobsearch/detail-pages/job/view3-job.php:440
 msgid "Seconds"
-msgstr "秒"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view5-job.php:161
 msgid "Back to Search Result"
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view3-job.php:202
 msgid "Save this Job"
-msgstr "求人を保存"
+msgstr ""
 
 #: wp-jobsearch/detail-pages/job/view3-job.php:276
 msgid "Similar Jobs"

@@ -258,12 +258,12 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         ob_start();
                         if ($post_thumbnail_src != '') {
                             ?>
-                            <figure>
+                            <!-- <figure>
                                 <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
-                                    <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
-                                    <img src="<?php the_field('cfimg'); ?>" alt="">
+                                    <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                     <img src="<?php the_field('cfimg'); ?>" alt="">
                                 </a>
-                            </figure>
+                            </figure> -->
                             <?php
                         }
                         $list_emp_img = ob_get_clean();
