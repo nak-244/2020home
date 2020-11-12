@@ -1078,7 +1078,7 @@ class Jobsearch_JobFilterHTML
                                 $number_option_flag++;
                             }
                             echo '</ul>';
-                            if ($number_option_flag > 6) {
+                            if ($number_option_flag > 7) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                             }
                         }
