@@ -4080,8 +4080,9 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-
+<!-- ここから -->
+<?php if ($dropdown_totnum > 1 ){ ?>
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="checkbox"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
                                                                        value="<?php echo esc_html($cus_field_options_value); ?>"
@@ -4093,6 +4094,8 @@ class Jobsearch_CustomFieldLoad
                                                                     <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
                                                                 <?php } ?>
                                                             </li>
+<?php } ?>
+<!-- ここまで　-->
                                                             <?php
                                                             //
                                                         } else {
@@ -4142,9 +4145,11 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
+
                                     //
                                     } else if ($cus_field['type'] == 'dependent_dropdown') {
                                     $depdrpdwn_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
