@@ -217,6 +217,18 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 ?>
 <div class="jobsearch-job jobsearch-joblisting-classic" id="jobsearch-job-<?php echo absint($job_short_counter) ?>">
 
+<!-- 検索条件リセット常時表示 ここから -->
+<?php if(is_page( '135' )): ?>
+  <div class="no-job-match-error">
+    <div class="careerfy-jobdetail-tags">
+      <a href="https://g-career.biz/job-search/">　検索条件をリセット</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+<?php else: ?>
+<?php endif; ?>
+<!-- 検索条件リセット常時表示 ここまで -->
+
     <ul class="jobsearch-row">
         <?php
         if ($job_loop_obj->have_posts()) {
@@ -390,9 +402,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
         } else {
             echo
                 '<li class="' . esc_html($columns_class) . '">
-                <div class="no-job-match-error">
-                    <a href="' . esc_url($page_url) . '">' . esc_html__('Reset Filters', 'wp-jobsearch') . '</a>
-                </div>
+                求人情報が見つかりませんでした。別の条件で改めて検索してください。
             </li>';
         }
         ?>

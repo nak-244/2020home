@@ -4411,7 +4411,9 @@ class Jobsearch_CustomFieldLoad
                                             $loop_flag = 1;
                                             while ($loop_flag <= $salary_laps) {
                                                 ?>
-                                            <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+
+<!-- ここから -->
+                                            <li class="<?php echo($filter_more_counter > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                 <?php
                                                 // main query array $args_count
                                                 $salary_first = $salary_min + 1;
@@ -4449,7 +4451,10 @@ class Jobsearch_CustomFieldLoad
                                                 <?php if ($left_filter_count_switch == 'yes') { ?>
                                                     <span class="filter-post-count"><?php echo absint($salary_totnum); ?></span>
                                                 <?php } ?>
-                                                </li><?php
+                                                </li>
+
+<!-- ここまで -->   
+                                                <?php
                                                 $salary_min = $salary_min + $salary_interval;
                                                 $loop_flag++;
                                                 $filter_more_counter++;
@@ -4457,7 +4462,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                         <?php
-                                        if ($filter_more_counter > 6) {
+                                        if ($filter_more_counter > 60) {
                                             echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                         }
                                     } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style

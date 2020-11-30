@@ -1052,7 +1052,11 @@ class Jobsearch_JobFilterHTML
                                             $sector_selected = ' checked="checked"';
                                         }
                                         ?>
-                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 6 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+
+                                        <!-- 業種0は非表示　ここから -->
+                                        <?php if ($sector_count_post > 0 ){ ?>
+
+                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 60 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                             <?php
                                             $jobsearch_form_fields->radio_field(
                                                 array(
@@ -1072,13 +1076,17 @@ class Jobsearch_JobFilterHTML
                                                 <span class="filter-post-count"><?php echo $sector_count_post; ?></span>
                                             <?php } ?>
                                         </li>
+
+                                      <?php } ?>
+                                      <!-- ここまで　-->
+
                                         <?php
                                     }
                                 $number_option++;
                                 $number_option_flag++;
                             }
                             echo '</ul>';
-                            if ($number_option_flag > 6) {
+                            if ($number_option_flag > 60) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                             }
                         }
