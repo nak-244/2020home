@@ -215,19 +215,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
     <?php
 }
 ?>
-<div class="jobsearch-job jobsearch-joblisting-classic" id="jobsearch-job-<?php echo absint($job_short_counter) ?>">
 
-<!-- 検索条件リセット常時表示 ここから -->
-<?php if(is_page( '135' )): ?>
-  <div class="no-job-match-error">
-    <div class="careerfy-jobdetail-tags">
-      <a href="https://g-career.biz/job-search/">　検索条件をリセット</a>
-    </div>
-  </div>
-  <p>&nbsp;</p>
-<?php else: ?>
-<?php endif; ?>
-<!-- 検索条件リセット常時表示 ここまで -->
+<div class="jobsearch-job jobsearch-joblisting-classic" id="jobsearch-job-<?php echo absint($job_short_counter) ?>">
 
     <ul class="jobsearch-row">
         <?php

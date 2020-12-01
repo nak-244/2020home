@@ -369,7 +369,8 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
     global $jobsearch_plugin_options;
 
     if ($title != '') { ?>
-        <div class="careerfy-joblisting-view4-title"><h2><?php echo esc_html($title); ?></h2></div>
+        <!-- <div class="careerfy-joblisting-view4-title"><h2><?php echo esc_html($title); ?></h2></div> -->
+        <div class="careerfy-joblisting-view4-title"><h3>関連求人</h3></div>
     <?php } ?>
     <div class="careerfy-job-listing careerfy-joblisting-view4">
         <ul class="row">
@@ -434,19 +435,23 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                             <?php
                             ob_start();
                             ?>
-                            <div class="careerfy-joblisting-media">
+
+                            <!-- <div class="careerfy-joblisting-media">
                                 <?php
                                 if ($post_thumbnail_src != '') {
                                     ?>
+
                                     <figure>
                                         <a href="<?php the_permalink(); ?>">
                                             <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
                                         </a>
                                     </figure>
+
                                     <?php
                                 }
                                 ?>
-                            </div>
+                            </div> -->
+
                             <?php
                             $list_emp_img = ob_get_clean();
                             echo apply_filters('jobsearch_jobs_listing_emp_img_html', $list_emp_img, $job_id, 'view2');
@@ -466,7 +471,88 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php
                                 ob_start();
                                 ?>
+                                <!--
                                 <div class="careerfy-company-name"><?php echo($company_name) ?></div>
+                                 -->
+
+<!-- 追加 ここから -->
+<ul>
+    <?php
+    if ($job_type_str != '') {
+        ?>
+        <?php
+    }
+
+    if (!empty($get_job_location) && $all_location_allow == 'on') {
+        $google_mapurl = 'https://www.google.com/maps/search/' . $get_job_location;
+        ?>
+
+        <?php
+    }
+    ?>
+
+    <li><i class="fa fa-map-marker"></i> <?php the_field('workarea3235996'); ?> </li>
+
+    <li><i class="fa fa-money" aria-hidden="true"></i>年収：
+      <?php
+      $field = get_field_object('cf20');
+      $value = $field['value'];
+      $label = $field['choices'][ $value ]; // ラベルの取得
+      echo $label; // ラベルを表示
+    ?>
+    ～
+    <?php
+      $field = get_field_object('cf21');
+      $value = $field['value'];
+      $label = $field['choices'][ $value ]; // ラベルの取得
+      echo $label; // ラベルを表示
+    ?>
+    </li>
+
+
+    <!-- <li>
+        <?php
+        ob_start();
+        ?>
+        <i class="careerfy-icon careerfy-building"></i>
+        <?php
+        if ($company_name != '') {
+            ob_start();
+            echo force_balance_tags($company_name);
+            $comp_name_html = ob_get_clean();
+            echo apply_filters('jobsearch_empname_in_jobdetail', $comp_name_html, $job_id, 'view2');
+        }
+        $emp_details = ob_get_clean();
+        echo apply_filters('jobsearch_jobs_detail_top_emp_title_html', $emp_details, $job_id, 'view2');
+
+        //
+        if ($jobsearch_job_posted_ago != '' && $job_views_publish_date == 'on') {
+            ?>
+            <small><?php echo esc_html($jobsearch_job_posted_ago,'careerfy'); ?></small>
+        <?php }
+        ?>
+
+    </li> -->
+
+    <?php
+    if ($jobsearch_job_posted_formated != '' && $job_views_publish_date == 'on') {
+        ?>
+        <li>
+            <i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Posted', 'careerfy') ?>: <?php
+            echo esc_html($jobsearch_job_posted_formated);
+            // echo esc_html__(' -Accepting applications', 'careerfy');
+            ?>
+        </li>
+        <?php
+    }
+    if ($job_views_count_switch == 'on') {
+        ?>
+        <li><i class="careerfy-icon careerfy-view"></i> <?php echo esc_html__('View(s)', 'careerfy') ?> <?php echo absint($job_views_count); ?></li>
+        <?php
+    }
+    ?>
+</ul>
+<!-- 追加　ここまで -->
                                 <?php
                                 $list_emp_title = ob_get_clean();
                                 echo apply_filters('jobsearch_jobs_listing_emp_titleanchr_html', $list_emp_title, $job_id, 'view2');
@@ -500,7 +586,11 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php
                             } elseif ($elaspedtime > $hourz) {
                                 ?>
+
+                                <!--
                                 <span class="careerfy-joblisting-view4-date"><?php echo get_the_date('F j, Y', $job_id); ?></span>
+                                -->
+
                                 <?php
                             } else {
                                 ?>
