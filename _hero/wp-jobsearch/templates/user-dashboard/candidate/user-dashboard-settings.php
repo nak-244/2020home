@@ -351,11 +351,10 @@ if ($user_avatar_id > 0) {
                 //
                 ob_start();
                 ?>
-                <li class="jobsearch-column-6">
+                <!-- <li class="jobsearch-column-6">
                     <?php
                     ob_start();
                     ?>
-                    <!-- <label><?php esc_html_e('Job Title', 'wp-jobsearch') ?></label> -->
                     <label>希望職種</label>
                     <?php
                     $title_html = ob_get_clean();
@@ -369,7 +368,7 @@ if ($user_avatar_id > 0) {
                         <?php
                     }
                     ?>
-                </li>
+                </li> -->
                 <?php
                 $jobtitlef_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_profields_jobtitle_html', $jobtitlef_html, $candidate_id);
@@ -502,7 +501,7 @@ if ($user_avatar_id > 0) {
                 ob_start();
                 ?>
 
-                <li class="jobsearch-column-12">
+                <!-- <li class="jobsearch-column-12">
                     <?php
                     ob_start();
                     ?>
@@ -528,7 +527,7 @@ if ($user_avatar_id > 0) {
                         wp_editor($candidate_content, 'user_bio', $settings);
                     }
                     ?>
-                </li>
+                </li> -->
 
                 <?php
                 $desc_html = ob_get_clean();
