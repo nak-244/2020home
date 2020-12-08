@@ -4081,7 +4081,7 @@ class Jobsearch_CustomFieldLoad
                                                             }
                                                             ?>
 <!-- ここから -->
-<?php if ($dropdown_totnum > 1 ){ ?>
+<?php if ($dropdown_totnum > 0 ){ ?>
                                                             <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="checkbox"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
