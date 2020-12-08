@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-12-08 15:05+0900\n"
+"PO-Revision-Date: 2020-12-08 16:48+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -13638,7 +13638,7 @@ msgstr "応募する"
 #: modules/job-application/include/job-application-load.php:1486
 #: modules/job-application/include/job-application-load.php:1625
 msgid "This job is filled and no longer accepting applications."
-msgstr ""
+msgstr "この求人は、現在、受付を一時停止しております。"
 
 #: modules/job-application/include/job-application-load.php:1215
 msgid "Please Enter First Name."
