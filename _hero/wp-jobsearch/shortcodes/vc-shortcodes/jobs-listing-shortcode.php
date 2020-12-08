@@ -2680,7 +2680,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
             if ($keyword_html != '' && $job_filters != 'no') {
                 $page_url = remove_query_arg(array('lang'), $page_url);
                 ?>
-                <div class="jobsearch-filterable" <?php echo($visibility); ?>>
+                <!-- <div class="jobsearch-filterable" <?php echo($visibility); ?>>
                     <ul class="filtration-tags">
                         <?php
                         if ((isset($_POST['ajax_filter']) && $_POST['ajax_filter'] == 'true') || (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] == 'true')) {
@@ -2696,6 +2696,32 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                         <?php
                     }
                     ?>
+                </div> -->
+                <div class="jobsearch-filterable" <?php echo($visibility); ?>>
+                  <!--
+                    <ul class="filtration-tags">
+                        <?php
+                        if ((isset($_POST['ajax_filter']) && $_POST['ajax_filter'] == 'true') || (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] == 'true')) {
+                            echo force_balance_tags($keyword_html);
+                        }
+                        ?>
+                    </ul>
+                     -->
+                    <!-- <?php
+                    if ($page_url != '') {
+                        ?>
+                        <a class="clear-tags" href="<?php echo esc_url($page_url); ?>"
+                           title="<?php esc_html_e('Clear all', 'wp-jobsearch') ?>"><?php esc_html_e('Clear all', 'wp-jobsearch') ?></a>
+                        <?php
+                    }
+                    ?> -->
+                    <!-- 検索条件リセット表示 ここから -->
+                    <div class="no-job-match-error">
+                      <div class="careerfy-jobdetail-tags">
+                        <a href="<?php echo home_url( '/job-search/' ); ?>">　検索条件をリセット</a>
+                      </div>
+                    </div>
+                    <!-- 検索条件リセット常時表示 ここまで -->
                 </div>
                 <?php
             }

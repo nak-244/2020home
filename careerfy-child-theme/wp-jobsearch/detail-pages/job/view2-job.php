@@ -563,20 +563,98 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                     </div>
                     <!-- Job Detail Content -->
 
-
                     <?php
                 endwhile;
                 wp_reset_postdata();
                 ?>
 
                 <!-- Job's Listing's -->
-                <div class="careerfy-column-12">
+                <div class="careerfy-column-8">
                     <?php
                     $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 5, 5, '', 'view2');
                     echo $related_job_html;
                     ?>
                 </div>
                 <!-- Job's Listing's -->
+
+                <!-- 別の求人を探す -->
+                <aside class="careerfy-column-4">
+                  <div class="careerfy-joblisting-view4-title"><h3>&nbsp;</h3></div>
+                    <div class="careerfy-typo-wrap">
+                        <?php
+                        $ad_args = array(
+                            'post_type' => 'job',
+                            'view' => 'view2',
+                            'position' => 'b4_aply',
+                        );
+                        jobsearch_detail_common_ad_code($ad_args);
+                        ?>
+                        <div class="jobsearch_side_box jobsearch_box_application_apply">
+
+                            <?php
+                            if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
+                            }
+
+                            ob_start();
+
+                            $emp_details = ob_get_clean();
+                            echo apply_filters('jobsearch_jobs_detail_emp_imgtitle_html', $emp_details, $job_id, 'view2');
+
+                            if ($social_share_allow == 'on') {
+                                ?>
+                                <ul class="jobsearch_box_application_social">
+                                    <li><a href="javascript:void(0);" data-original-title="twitter" class="fa fa-twitter addthis_button_twitter"></a></li>
+                                    <li><a href="javascript:void(0);" data-original-title="facebook" class="fa fa-facebook-f addthis_button_facebook"></a></li>
+                                    <li><a href="javascript:void(0);" data-original-title="linkedin" class="fa fa-linkedin addthis_button_linkedin"></a></li>
+                                    <li><a href="javascript:void(0);" data-original-title="share_more" class="jobsearch-icon jobsearch-plus addthis_button_compact"></a></li>
+                                </ul>
+                                <!-- 別の求人を探す -->
+                                <div class="careerfy-parallex-text careerfy-logo-text">
+                                  <a href="<?php echo esc_url( home_url('/job-search/') ); ?>" class="careerfy-static-btn careerfy-bgcolor">
+                                    <span>&nbsp;&nbsp;別の求人を探す&nbsp;&nbsp;</span>
+                                  </a>
+                                </div>
+                                <!-- 別の求人を探す ここまで -->
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                        $ad_args = array(
+                            'post_type' => 'job',
+                            'view' => 'view2',
+                            'position' => 'aftr_aply',
+                        );
+                        jobsearch_detail_common_ad_code($ad_args);
+                        //map
+                        $map_switch_arr = isset($jobsearch_plugin_options['jobsearch-detail-map-switch']) ? $jobsearch_plugin_options['jobsearch-detail-map-switch'] : '';
+                        $job_map = false;
+                        if (isset($map_switch_arr) && is_array($map_switch_arr) && sizeof($map_switch_arr) > 0) {
+                            foreach ($map_switch_arr as $map_switch) {
+                                if ($map_switch == 'job') {
+                                    $job_map = true;
+                                }
+                            }
+                        }
+                        if ($job_map) {
+                            ?>
+                            <div class="jobsearch_side_box jobsearch_box_map">
+                                <?php jobsearch_google_map_with_directions($job_id); ?>
+                            </div>
+                            <?php
+                        }
+
+                        $ad_args = array(
+                            'post_type' => 'job',
+                            'view' => 'view2',
+                            'position' => 'aftr_map',
+                        );
+                        jobsearch_detail_common_ad_code($ad_args);
+                        ?>
+                    </div>
+                </aside>
+                <!-- 別の求人を探す　ここまで -->
+
             </div>
         </div>
     </div>

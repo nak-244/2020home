@@ -579,25 +579,7 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php } ?>
                             </div>
 
-                            <?php
-                            if ($jobsearch_job_featured == 'on') {
-                                ?>
-                                <span class="careerfy-joblisting-view4-featured"><?php echo esc_html__('Featured', 'careerfy-frame'); ?></span>
-                                <?php
-                            } elseif ($elaspedtime > $hourz) {
-                                ?>
 
-                                <!--
-                                <span class="careerfy-joblisting-view4-date"><?php echo get_the_date('F j, Y', $job_id); ?></span>
-                                -->
-
-                                <?php
-                            } else {
-                                ?>
-                                <span class="careerfy-joblisting-view4-new"><?php echo esc_html__('New', 'careerfy-frame'); ?></span>
-                                <?php
-                            }
-                            ?>
                         </div>
                     </li>
                 <?php

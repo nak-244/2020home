@@ -1052,7 +1052,7 @@ class Jobsearch_JobFilterHTML
                                             $sector_selected = ' checked="checked"';
                                         }
                                         ?>
-                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 10 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 20 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                             <?php
                                             $jobsearch_form_fields->radio_field(
                                                 array(
@@ -1078,7 +1078,7 @@ class Jobsearch_JobFilterHTML
                                 $number_option_flag++;
                             }
                             echo '</ul>';
-                            if ($number_option_flag > 10) {
+                            if ($number_option_flag > 20) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                             }
                         }

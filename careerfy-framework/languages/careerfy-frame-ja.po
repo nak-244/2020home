@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Careerfy Framework\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-08-31 11:21+0900\n"
+"PO-Revision-Date: 2020-12-01 19:02+0900\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1042,7 +1042,7 @@ msgstr ""
 #: includes/elementor-widget/wp-jobsearch-elements/all-packages.php:158
 #: includes/elementor-widget/wp-jobsearch-elements/jobsearch-features.php:106
 msgid "Featured"
-msgstr ""
+msgstr "オススメ"
 
 #: includes/careerfy-detail-pages.php:507
 #: shortcodes/vc-shortcodes/top-jobs-slider.php:256

@@ -303,6 +303,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             if ($job_post_date != '' && $job_views_publish_date == 'on') {
                                 ?>
 
+
                                 <!-- <li><?php printf(esc_html__('Published %s', 'careerfy'), jobsearch_time_elapsed_string($job_post_date)); ?></li> -->
 
                                 <?php
