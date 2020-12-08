@@ -763,21 +763,21 @@ if ($candidate_id > 0) {
                         ?>
                         <ul>
                             <li>
-                                <div class="jobsearch-stats-list-wrap">
+                                <div class="jobsearch-stats-list-wrap dark-blue">
                                     <h6><?php esc_html_e('Applied jobs', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($user_applied_jobs_count) ?></span>
                                     <small><?php esc_html_e('to find a career', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
                             <li>
-                                <div class="jobsearch-stats-list-wrap green">
+                                <div class="jobsearch-stats-list-wrap light-blue">
                                     <h6><?php esc_html_e('Favorite Jobs', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($fav_jobs_list_count) ?></span>
                                     <small><?php esc_html_e('against opportunities', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
                             <li>
-                                <div class="jobsearch-stats-list-wrap light-blue">
+                                <div class="jobsearch-stats-list-wrap green">
                                     <h6><?php esc_html_e('Job Alerts', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($total_alerts) ?></span>
                                     <small><?php esc_html_e('to get the latest updates', 'wp-jobsearch') ?></small>
