@@ -373,7 +373,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
             global $wpdb, $post, $jobsearch_form_fields, $jobsearch_search_fields, $pagenow, $sitepress, $jobsearch_plugin_options;
 
             $page_id = isset($post->ID) ? $post->ID : '';
-            
+
             $cand_profile_restrict = new Candidate_Profile_Restriction;
 
             $candidate_listing_percent = isset($jobsearch_plugin_options['jobsearch_candidate_skills']) ? $jobsearch_plugin_options['jobsearch_candidate_skills'] : '';
@@ -480,7 +480,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
             if (isset($_REQUEST['loc_polygon_path']) && $_REQUEST['loc_polygon_path'] != '') {
                 $loc_polygon_path = $_REQUEST['loc_polygon_path'];
             }
-            
+
             $radius_locpost_ids = $this->location_radius_filter_ids();
             //var_dump($radius_locpost_ids);
             if (!empty($radius_locpost_ids)) {
@@ -752,7 +752,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
 
             remove_filter('posts_join_paged', array($this, 'edit_join'), 999, 2);
             remove_filter('posts_orderby', array($this, 'edit_orderby'), 999, 2);
-            
+
             $page_container_view = get_post_meta($page_id, 'careerfy_field_page_view', true);
             ?>
             <form id="jobsearch_candidate_frm_<?php echo absint($candidate_short_counter); ?>">
@@ -1226,7 +1226,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
                             }
                             // only ajax request procced
                             if (isset($candidate_view)) {
-                                // search keywords  
+                                // search keywords
                                 $search_keyword_html = apply_filters('jobsearch_candidate_search_keyword', '', $page_url, $atts);
                                 echo force_balance_tags($search_keyword_html);
                                 // sorting fields
@@ -1274,7 +1274,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
                         'std' => $candidate_short_counter,
                     )
                 );
-                
+
                 if ($listing_top_map == 'yes') {
                     if ($page_container_view == 'wide') {
                         echo '</div>';
@@ -1887,7 +1887,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
             }
             return $location_rslt;
         }
-        
+
         public function location_radius_filter_ids()
         {
 
@@ -1898,14 +1898,14 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
                 $default_selctd_contry = isset($jobsearch_plugin_options['restrict_contries_locsugg']) && $jobsearch_plugin_options['restrict_contries_locsugg'] != '' ? $jobsearch_plugin_options['restrict_contries_locsugg'] : '';
 
                 $def_radius_unit = isset($jobsearch_plugin_options['top_search_radius_unit']) ? $jobsearch_plugin_options['top_search_radius_unit'] : '';
-                
+
                 $current_time = current_time('timestamp');
 
                 $jobsearch_loc_address = $_REQUEST['location'] . (isset($default_selctd_contry[0]) && $default_selctd_contry[0] != '' ? ' ' . $default_selctd_contry[0] : '');
                 $radius = $_REQUEST['loc_radius'];
 
                 $location_response = jobsearch_address_to_cords($jobsearch_loc_address);
-                
+
                 $lat = isset($location_response['lat']) ? $location_response['lat'] : '';
                 $lng = isset($location_response['lng']) ? $location_response['lng'] : '';
 
@@ -2493,7 +2493,7 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
             if ($keyword_html != '' && $candidate_filters != 'no') {
                 ?>
                 <div class="jobsearch-filterable" <?php echo($visibility); ?>>
-                    <ul class="filtration-tags">
+                    <!-- <ul class="filtration-tags">
                         <?php
 
                         if ((isset($_POST['ajax_filter']) && $_POST['ajax_filter'] == 'true') || (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] == 'true')) {
@@ -2502,7 +2502,15 @@ if (!class_exists('Jobsearch_Shortcode_Candidates_Frontend')) {
                         ?>
                     </ul>
                     <a class="clear-tags" href="<?php echo esc_url($page_url); ?>"
-                       title="<?php esc_html_e('Clear all', 'wp-jobsearch') ?>"><?php esc_html_e('Clear all', 'wp-jobsearch') ?></a>
+                       title="<?php esc_html_e('Clear all', 'wp-jobsearch') ?>"><?php esc_html_e('Clear all', 'wp-jobsearch') ?></a> -->
+
+                       <!-- 検索条件リセット表示 ここから -->
+                       <div class="no-job-match-error">
+                         <div class="careerfy-jobdetail-tags">
+                           <a href="<?php echo home_url( '/candidate-listing/' ); ?>">　検索条件をリセット</a>
+                         </div>
+                       </div>
+                       <!-- 検索条件リセット常時表示 ここまで -->
                 </div>
                 <?php
             }

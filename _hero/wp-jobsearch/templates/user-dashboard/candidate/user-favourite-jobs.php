@@ -57,8 +57,7 @@ if ($candidate_id > 0) {
                                 <!-- <th><?php esc_html_e('Job Title', 'wp-jobsearch') ?></th>
                                 <th><?php esc_html_e('Company', 'wp-jobsearch') ?></th>
                                 <th><?php esc_html_e('Date Saved', 'wp-jobsearch') ?></th> -->
-                                <th>求人名</th>
-                                <th>会社名</th>
+                                <th>求人タイトル</th>
                                 <th>求人投稿日</th>
                                 <th></th>
                             </tr>
@@ -88,17 +87,17 @@ if ($candidate_id > 0) {
                                     <td>
                                         <a class="jobsearch-savedjobs-thumb">
                                           <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
-                                          <img src="<?php the_field('cfimg',$job_id); ?>" alt="">
+                                          <img src="<?php the_field('cf30',$job_id); ?>" alt="">
                                         </a>
                                         <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
                                     </td>
 
-                                    <td><span>@ <?php echo get_the_title($job_post_employer) ?></span></td>
+                                    <!-- <td><span>@ <?php echo get_the_title($job_post_employer) ?></span></td> -->
 
                                     <?php
                                     if ($job_post_date != '') {
                                         ?>
-                                        <td><?php echo date_i18n('d M, Y', $job_post_date) ?></td>
+                                        <td><?php echo date_i18n('Y/m/d', $job_post_date) ?></td>
                                         <?php
                                     }
                                     ?>
@@ -113,6 +112,7 @@ if ($candidate_id > 0) {
                             ?>
                         </tbody>
                     </table>
+
                 </div>
                 <?php
                 $favjobs_html = ob_get_clean();

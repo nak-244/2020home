@@ -1113,7 +1113,7 @@ if ($candidate_id > 0) {
                                             <figure>
                                                 <a href="<?php the_permalink($_job_id); ?>">
                                                     <!-- <img src="<?php echo esc_url($user_def_avatar_url) ?>" alt=""> -->
-                                                    <img src="<?php the_field('cfimg',$_job_id); ?>" alt="">
+                                                    <img src="<?php the_field('cf30',$_job_id); ?>" alt="">
                                                 </a>
                                             </figure>
                                         <?php } ?>
@@ -1127,14 +1127,15 @@ if ($candidate_id > 0) {
                                                 <ul>
                                                     <?php if ($job_post_date != '') { ?>
                                                         <li>
-                                                            <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date); ?>
+                                                            <!-- <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date); ?> -->
+                                                            <i class="jobsearch-icon jobsearch-calendar"></i>登録日： <?php echo date_i18n('Y/m/d', $job_post_date); ?>
                                                         </li>
                                                         <?php
                                                     }
                                                     if ($job_sector != '') {
                                                         ?>
                                                         <li>
-                                                            <i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>
+                                                            <i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>職種：
                                                             <a><?php echo($job_sector) ?></a></li>
                                                         <?php
                                                     }
@@ -1146,6 +1147,11 @@ if ($candidate_id > 0) {
                                                         <?php
                                                     }
                                                     ?>
+                                                    <!-- 勤務地 -->
+                                                    <li>
+                                                        <i class="fa fa-map-marker"></i>勤務地： <?php the_field('cf03',$_job_id); ?>
+                                                    </li>
+                                                    <!-- 勤務地 ここまで -->
                                                 </ul>
                                             </div>
                                         </div>

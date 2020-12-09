@@ -341,12 +341,15 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             if ($social_share_allow == 'on') {
                                 ?>
                                 <p>仕事№：<?php the_field('cf00'); ?></p>
+                                <p>
                                 <ul class="jobsearch_box_application_social">
                                     <li><a href="javascript:void(0);" data-original-title="twitter" class="fa fa-twitter addthis_button_twitter"></a></li>
                                     <li><a href="javascript:void(0);" data-original-title="facebook" class="fa fa-facebook-f addthis_button_facebook"></a></li>
                                     <li><a href="javascript:void(0);" data-original-title="linkedin" class="fa fa-linkedin addthis_button_linkedin"></a></li>
                                     <li><a href="javascript:void(0);" data-original-title="share_more" class="jobsearch-icon jobsearch-plus addthis_button_compact"></a></li>
                                 </ul>
+                                </p>
+
                                 <?php
                             }
                             if ($job_shortlistbtn_switch == 'on') {

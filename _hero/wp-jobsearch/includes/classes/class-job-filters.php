@@ -1019,7 +1019,7 @@ class Jobsearch_JobFilterHTML
 
                                 if ($input_type_sector == 'checkbox') {
                                     ?>
-                                    <li class="<?php echo $input_type_sector; ?><?php echo($number_option_flag > 6 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                    <li class="<?php echo $input_type_sector; ?><?php echo($number_option_flag > 60 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                         <?php
                                         $sector_selected = '';
                                         if ($sector == $sectoritem->slug) {
@@ -1052,7 +1052,7 @@ class Jobsearch_JobFilterHTML
                                             $sector_selected = ' checked="checked"';
                                         }
                                         ?>
-                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 20 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                        <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 60 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                             <?php
                                             $jobsearch_form_fields->radio_field(
                                                 array(
@@ -1078,7 +1078,7 @@ class Jobsearch_JobFilterHTML
                                 $number_option_flag++;
                             }
                             echo '</ul>';
-                            if ($number_option_flag > 20) {
+                            if ($number_option_flag > 60) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                             }
                         }

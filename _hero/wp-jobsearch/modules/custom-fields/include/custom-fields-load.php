@@ -3952,7 +3952,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
 
                                                                 <input type="checkbox"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -3989,7 +3989,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4014,7 +4014,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
                                     //
@@ -4120,7 +4120,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
