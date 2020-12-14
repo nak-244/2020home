@@ -51,67 +51,70 @@ if ($candidate_id > 0) {
                 ob_start();
                 ?>
                 <div class="jobsearch-candidate-savedjobs">
-                    <table>
-                        <thead>
-                            <tr>
-                                <!-- <th><?php esc_html_e('Job Title', 'wp-jobsearch') ?></th>
-                                <th><?php esc_html_e('Company', 'wp-jobsearch') ?></th>
-                                <th><?php esc_html_e('Date Saved', 'wp-jobsearch') ?></th> -->
-                                <th>求人タイトル</th>
-                                <th>求人投稿日</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($candidate_fav_jobs_list as $job_id) {
+<!-- 追加　-->
+                    <div class="jobsearch-applied-jobs">
+                      <?php
+                      foreach ($candidate_fav_jobs_list as $job_id) {
 
-                                $job_post_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
-                                $job_location = get_post_meta($job_id, 'jobsearch_field_location_address', true);
-                                $job_post_employer = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
+                          $job_post_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
+                          $job_location = get_post_meta($job_id, 'jobsearch_field_location_address', true);
+                          $job_post_employer = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
 
-                                $job_post_user = jobsearch_get_employer_user_id($job_post_employer);
+                          $job_post_user = jobsearch_get_employer_user_id($job_post_employer);
 
-                                $user_def_avatar_url = get_avatar_url($job_post_user, array('size' => 44));
-                                $user_avatar_id = get_post_thumbnail_id($job_post_employer);
-                                if ($user_avatar_id > 0) {
-                                    $user_thumbnail_image = wp_get_attachment_image_src($user_avatar_id, 'thumbnail');
-                                    $user_def_avatar_url = isset($user_thumbnail_image[0]) && esc_url($user_thumbnail_image[0]) != '' ? $user_thumbnail_image[0] : '';
-                                }
-                                $user_def_avatar_url = $user_def_avatar_url == '' ? jobsearch_no_image_placeholder() : $user_def_avatar_url;
+                          $user_def_avatar_url = get_avatar_url($job_post_user, array('size' => 44));
+                          $user_avatar_id = get_post_thumbnail_id($job_post_employer);
+                          if ($user_avatar_id > 0) {
+                              $user_thumbnail_image = wp_get_attachment_image_src($user_avatar_id, 'thumbnail');
+                              $user_def_avatar_url = isset($user_thumbnail_image[0]) && esc_url($user_thumbnail_image[0]) != '' ? $user_thumbnail_image[0] : '';
+                          }
+                          $user_def_avatar_url = $user_def_avatar_url == '' ? jobsearch_no_image_placeholder() : $user_def_avatar_url;
 
-                                $sectors = wp_get_post_terms($job_id, 'sector');
-                                $job_sector = isset($sectors[0]->name) ? $sectors[0]->name : '';
-                                ?>
-                                <tr>
-                                    <td>
-                                        <a class="jobsearch-savedjobs-thumb">
-                                          <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
-                                          <img src="<?php the_field('cf30',$job_id); ?>" alt="">
-                                        </a>
-                                        <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
-                                    </td>
-
-                                    <!-- <td><span>@ <?php echo get_the_title($job_post_employer) ?></span></td> -->
-
-                                    <?php
-                                    if ($job_post_date != '') {
-                                        ?>
-                                        <td><?php echo date_i18n('Y/m/d', $job_post_date) ?></td>
-                                        <?php
-                                    }
-                                    ?>
-                                    <td>
-                                        <a href="javascript:void(0);" class="jobsearch-savedjobs-links jobsearch-delete-fav-job" data-id="<?php echo ($job_id) ?>"><i class="jobsearch-icon jobsearch-rubbish"></i></a>
-                                        <span class="remove-fav-job-loader"></span>
-                                        <a href="<?php echo get_permalink($job_id) ?>" class="jobsearch-savedjobs-links"><i class="jobsearch-icon jobsearch-view"></i></a>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                          $sectors = wp_get_post_terms($job_id, 'sector');
+                          $job_sector = isset($sectors[0]->name) ? $sectors[0]->name : '';
+                          ?>
+                        <ul class="jobsearch-row">
+                                    <li class="jobsearch-column-12">
+                                        <div class="jobsearch-applied-jobs-wrap">
+                                            <a class="jobsearch-applied-jobs-thumb">
+                                              <img src="<?php the_field('cf30',$job_id); ?>" alt="">
+                                            </a>
+                                            <div class="jobsearch-applied-jobs-text">
+                                                <div class="jobsearch-applied-jobs-left">
+                                                    <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
+                                                    <ul>
+                                                        <?php
+                                                        if ($job_location != '') {
+                                                            ?>
+                                                            <li><i class="fa fa-map-marker"></i> <?php echo ($job_location) ?></li>
+                                                            <?php
+                                                        }
+                                                        if ($job_sector != '') {
+                                                            ?>
+                                                            <li><i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>職種： <a><?php echo ($job_sector) ?></a></li>
+                                                            <?php
+                                                        }
+                                                        if ($job_post_date != '') {
+                                                            ?>
+                                                            <li><i class="jobsearch-icon jobsearch-calendar"></i>求人登録日： <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </ul>
+                                                </div>
+                                                <?php echo apply_filters('jobsearch_userdash_apliedjobs_itm_aftrtxt', '', $job_id, $job_post_employer) ?>
+                                                <a href="javascript:void(0);" class="jobsearch-savedjobs-links jobsearch-delete-applied-job" data-id="<?php echo ($job_id) ?>" data-key="<?php echo ($job_key) ?>"><i class="jobsearch-icon jobsearch-rubbish"></i></a>
+                                                <span class="remove-applied-job-loader"></span>
+                                                <a href="<?php echo get_permalink($job_id) ?>" class="jobsearch-savedjobs-links"><i class="jobsearch-icon jobsearch-view"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                        </ul>
+                        <?php
+                    }
+                    ?>
+                    </div>
+<!-- 追加　ここまで　-->
 
                 </div>
                 <?php

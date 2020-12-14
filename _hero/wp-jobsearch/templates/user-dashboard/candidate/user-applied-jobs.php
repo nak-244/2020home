@@ -77,11 +77,13 @@ if ($candidate_id > 0) {
                                 <div class="jobsearch-applied-jobs-wrap">
                                     <a class="jobsearch-applied-jobs-thumb">
                                       <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
-                                      <img src="<?php the_field('cfimg',$job_id); ?>" alt="">
+                                      <img src="<?php the_field('cf30',$job_id); ?>" alt="">
                                     </a>
                                     <div class="jobsearch-applied-jobs-text">
                                         <div class="jobsearch-applied-jobs-left">
+                                          <!--
                                             <span>@ <?php echo get_the_title($job_post_employer) ?></span>
+                                             -->
                                             <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
                                             <ul>
                                                 <?php
@@ -92,12 +94,12 @@ if ($candidate_id > 0) {
                                                 }
                                                 if ($job_sector != '') {
                                                     ?>
-                                                    <li><i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i> <a><?php echo ($job_sector) ?></a></li>
+                                                    <li><i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>職種： <a><?php echo ($job_sector) ?></a></li>
                                                     <?php
                                                 }
                                                 if ($job_post_date != '') {
                                                     ?>
-                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
+                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i>求人登録日： <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
                                                     <?php
                                                 }
                                                 ?>

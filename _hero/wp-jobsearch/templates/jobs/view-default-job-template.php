@@ -217,6 +217,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 ?>
 <div class="jobsearch-job jobsearch-joblisting-classic" id="jobsearch-job-<?php echo absint($job_short_counter) ?>">
 
+
     <ul class="jobsearch-row">
         <?php
         if ($job_loop_obj->have_posts()) {

@@ -939,7 +939,7 @@ if (!function_exists('careerfy_news_grid')) {
                 </figure>
                 <div class="careerfy-news-grid-text">
                     <ul>
-                        <li><?php echo get_the_date() ?></li>
+                        <!-- <li><?php echo get_the_date() ?></li> -->
                         <?php
                         if (!empty($categories)) {
                             echo '<li><a href="' . esc_url(get_category_link($categories[0]->term_id)) . '"> ' . esc_html($categories[0]->name) . '</a></li>';
@@ -947,7 +947,7 @@ if (!function_exists('careerfy_news_grid')) {
                         ?>
                     </ul>
                     <h2>
-                        <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 8, '...') ?></a>
+                        <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 50, '...') ?></a>
                     </h2>
                     <?php
                     if (careerfy_excerpt($excerpt_length)) {

@@ -60,7 +60,8 @@ function jobsearch_user_dashboard_sidebar_html() {
         <div class="jobsearch-typo-wrap">
             <div class="jobsearch-employer-dashboard-nav">
                 <?php
-                if ($user_is_candidate || $user_is_employer) {
+              /*  if ($user_is_candidate || $user_is_employer) { */
+                  if ($user_is_candidate) {
                     ?>
                     <figure>
                         <?php
@@ -250,7 +251,7 @@ function jobsearch_user_dashboard_sidebar_html() {
                     <?php
                 } else {
                     ?>
-                    <h2><a><?php echo ($user_obj->display_name) ?></a></h2>
+                    <!-- <h6><a><?php echo ($user_obj->display_name) ?></a></h6> -->
                     <?php
                 }
                 ?>

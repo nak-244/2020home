@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-12-08 16:48+0900\n"
+"PO-Revision-Date: 2020-12-11 16:02+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1336,7 +1336,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:1816
 #: includes/common-functions/employer-functions.php:1878
 msgid "Mail sent successfully"
-msgstr ""
+msgstr "メールは正常に送信されました"
 
 #: includes/class-user-dashboard.php:2117
 msgid "Only a candidate can contact this user."
@@ -4677,7 +4677,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:556
 #: includes/common-functions/employer-functions.php:632
 msgid "Resume added to the list."
-msgstr ""
+msgstr "リストに追加されました。"
 
 #: includes/common-functions/employer-functions.php:636
 #: modules/job-application/include/job-application-load.php:1512

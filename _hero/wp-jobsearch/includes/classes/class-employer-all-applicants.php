@@ -23,13 +23,13 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
         public function all_applicants_list() {
 
             global $jobsearch_plugin_options;
-            
+
             $page_id = $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
             $page_id = $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
             $page_url = jobsearch_wpml_lang_page_permalink($page_id, 'page');
-            
+
             $email_applicants = isset($jobsearch_plugin_options['emp_dash_email_applics']) ? $jobsearch_plugin_options['emp_dash_email_applics'] : '';
-    
+
             $user_id = get_current_user_id();
             $employer_id = jobsearch_get_user_employer_id($user_id);
 
@@ -78,6 +78,7 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                         </div>
                         <div class="jobsearch-allaplicants-holder" data-uid="<?php echo ($user_id) ?>" data-eid="<?php echo ($employer_id) ?>">
 
+                            <!-- 非表示
                             <div class="select-appsjob-con">
                                 <div class="allapps-selctcounts-holdr">
                                     <div class="allapps-job-label"><h2><?php esc_html_e('Filter by Job', 'wp-jobsearch') ?></h2></div>
@@ -95,7 +96,8 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                                         <li><span class="rej-apps"><?php esc_html_e('Rejected Applicants ', 'wp-jobsearch') ?></span><div class="applicnt-count-box rej-apps"> <a class="overall-site-rejaplicnts">0</a></div></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> -->
+
                             <?php
                             if (!empty($jobs_posts)) {
                                 add_action('wp_footer', function () {
@@ -132,10 +134,10 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                                                                     </div>
                                                                     <?php jobsearch_terms_and_con_link_txt(); ?>
                                                                 </li>
-                                                            </ul> 
+                                                            </ul>
                                                             <div class="message-box message-box-0" style="display:none;"></div>
                                                         </div>
-                                                    </form>    
+                                                    </form>
                                                 </div>
 
                                             </div>
@@ -276,7 +278,7 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                     $candidate_phone = get_post_meta($_candidate_id, 'jobsearch_field_user_phone', true);
 
                     $job_cver_ltrs = get_post_meta($_job_id, 'jobsearch_job_apply_cvrs', true);
-                    
+
                     $send_message_form_rand = rand(100000, 999999);
                     ?>
                     <li class="jobsearch-column-12">
@@ -398,7 +400,7 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                                                         <?php
                                                     }
                                                     echo apply_filters('employer_dash_apps_acts_list_after_download_link', '', $_candidate_id, $_job_id);
-                                                    
+
                                                     //
                                                     if (isset($job_cver_ltrs[$_candidate_id]) && $job_cver_ltrs[$_candidate_id] != '') {
                                                         ?>
@@ -451,10 +453,10 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
                                                                                             </div>
                                                                                             <?php jobsearch_terms_and_con_link_txt(); ?>
                                                                                         </li>
-                                                                                    </ul> 
+                                                                                    </ul>
                                                                                     <div class="message-box message-box-<?php echo esc_html($p_masg_rand); ?>" style="display:none;"></div>
                                                                                 </div>
-                                                                            </form>    
+                                                                            </form>
                                                                         </div>
 
                                                                     </div>
@@ -584,12 +586,14 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
 
                     <div class="sjob-aplicants-list">
                         <div class="thjob-title">
-                            <h2><?php echo get_the_title($_job_id) ?></h2>
+                            <h2 style="width:80%;"><?php echo get_the_title($_job_id) ?></h2>
                             <div class="total-appcreds-con">
                                 <ul>
                                     <li><div class="applicnt-count-box tot-apps"><span><?php esc_html_e('Total Applicants: ', 'wp-jobsearch') ?></span> <?php echo absint($job_applicants_count) ?></div></li>
+                                    <!-- 非表示
                                     <li><div class="applicnt-count-box sh-apps"><span><?php esc_html_e('Shortlisted Applicants: ', 'wp-jobsearch') ?></span> <?php echo absint($job_short_int_list_c) ?></div></li>
                                     <li><div class="applicnt-count-box rej-apps"><span><?php esc_html_e('Rejected Applicants: ', 'wp-jobsearch') ?></span> <?php echo absint($job_reject_int_list_c) ?></div></li>
+                                     -->
                                 </ul>
                             </div>
                         </div>
@@ -708,7 +712,7 @@ if (!class_exists('jobsearch_empall_applicants_handle')) {
         public function load_more_apswith_apps_lis() {
             $page_num = absint($_POST['page_num']);
             $_job_id = absint($_POST['_job_id']);
-            
+
             $employer_id = isset($_POST['emp_id']) ? $_POST['emp_id'] : 0;
             $employer_id = absint($employer_id);
 

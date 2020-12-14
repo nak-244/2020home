@@ -589,9 +589,59 @@ wp_enqueue_script('isotope-min');
                                 $show_disp_name = apply_filters('jobsearch_candidate_detail_content_top_displayname', $user_displayname, $candidate_id);
                                 ?>
 
+                                <!-- 追加　-->
                                 <div class="jobsearch-candidate-title">
                                   <h2><i class="jobsearch-icon jobsearch-resume"></i> 基本情報</h2>
                                 </div>
+
+                                <!-- カスタムフィールド出力 -->
+                                <?php
+                                $user_phone = get_post_meta($candidate_id, 'jobsearch_field_user_phone', true);
+                                $user_email = isset($user_obj->user_email) ? $user_obj->user_email : '';
+                                echo
+                                '<table class="tbl01">
+                                <tbody>
+                                <tr>
+                                <th>氏名</th>
+                                <td>'.$show_disp_name.'</td>
+                                </tr>
+                                <tr>
+                                <th>Eメール</th>
+                                <td>'.$user_email.'</td>
+                                </tr>
+                                <tr>
+                                <th>TEL</th>
+                                <td>'.$user_phone.'</td>
+                                </tr>
+                                </tbody>
+                                </table>'
+                                ;
+                                ?>
+
+                                <style>
+                                .tbl01 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td {
+                                    text-align: left;
+                                }
+                                .tbl01 td,
+                                .tbl01 th {
+                                padding-left: 5px;
+                                }
+                                .jobsearch-typo-wrap {
+                                  color:#333333;
+                                }
+                                </style>
+                                <!-- カスタムフィールド出力 ここまで -->
+
+
+                                <div class="jobsearch-candidate-title">
+                                  <h2>&nbsp;</h2>
+                                </div>
+
+                                <div class="jobsearch-candidate-title">
+                                  <h2><i class="jobsearch-icon jobsearch-check-sign-in-a-rounded-black-square"></i> 属性</h2>
+                                </div>
+
+                                <!-- 追加　-->
 
                                 <?php
                                 if (!$cand_profile_restrict::cand_field_is_locked('customfields_defields', 'detail_page')) {
@@ -601,110 +651,15 @@ wp_enqueue_script('isotope-min');
                                         ?>
                                         <div class="jobsearch-jobdetail-services">
 
-                                            <!-- <ul class="jobsearch-row">
+                                            <ul class="jobsearch-row">
                                                 <?php
                                                 $cus_fields = array('content' => '');
-                                                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-4">', '</li>');
+                                                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-3">', '</li>');
                                                 if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
                                                     echo($cus_fields['content']);
                                                 }
                                                 ?>
-                                            </ul> -->
-
-                                                <?php
-                                                $cus_fields = array('content' => '');
-                                                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-6">', '</li>');
-                                                if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
-                                                }
-// カスタムフィールド出力
-// $field = get_field('mmmail');
-// if($field){
-//  echo
-//  '<p>'.$field.'</p>'
-//  ;}
-$user_phone = get_post_meta($candidate_id, 'jobsearch_field_user_phone', true);
-$user_email = isset($user_obj->user_email) ? $user_obj->user_email : '';
-$field1 = get_field('cf1');
-$field2 = get_field('cf2');
-$field3 = get_field('cf3');
-$field4 = get_field('cf4');
-$field5 = get_field('cf5');
-$field6 = get_field('cf6');
-$field7 = get_field('cf7');
-$field8 = get_field('cf8');
-$field9 = get_field('cf9');
-$field10 = get_field('cf10');
-$field11 = get_field('cf11');
-$field20 = get_field('cf20');
-$field21 = get_field('cf21');
-
-    echo
-  '<table class="tbl01">
-	<tbody>
-		<tr>
-			<th>氏名</th>
-			<td>'.$show_disp_name.'（'.$field1.'）</td>
-		</tr>
-    <tr>
-			<th>住所</th>
-			<td>'.$candidate_address.'</td>
-		</tr>
-    <tr>
-			<th>生年月日</th>
-			<td>'.$field4.'</td>
-		</tr>
-    <tr>
-      <th>性別</th>
-      <td>'.$field2.'</td>
-    </tr>
-    <tr>
-      <th>Eメール</th>
-      <td>'.$user_email.'</td>
-    </tr>
-    <tr>
-      <th>TEL</th>
-      <td>'.$user_phone.'</td>
-    </tr>
-    <tr>
-      <th>国籍</th>
-      <td>'.$field5.'</td>
-    </tr>
-    <tr>
-      <th>配偶者（扶養義務）</th>
-      <td>'.$field6.'（'.$field7.'）</td>
-    </tr>
-    <tr>
-      <th>転勤</th>
-      <td>'.$field8.'</td>
-    </tr>
-    <tr>
-      <th>在留資格</th>
-      <td>'.$field9.'</td>
-    </tr>
-    <tr>
-      <th>在留資格期限</th>
-      <td>'.$field10.'</td>
-    </tr>
-    <tr>
-      <th>就業開始可能時期</th>
-      <td>'.$field11.'</td>
-    </tr>
-    <tr>
-      <th>PCスキル（Word）</th>
-      <td>'.$field20.'</td>
-    </tr>
-    <tr>
-      <th>PCスキル（Excel）</th>
-      <td>'.$field21.'</td>
-    </tr>
-	</tbody>
-</table>'
-;
-
-// カスタムフィールド出力
-
-                                                ?>
-
+                                            </ul>
                                         </div>
 
                                         <?php
@@ -1078,94 +1033,6 @@ $field21 = get_field('cf21');
                                 do_action('jobsearch_add_review_form', $review_form_args);
                             }
                             ?>
-
-<!-- 追加　-->
-
-<div class="jobsearch-candidate-title">
-  <h2><i class="jobsearch-icon jobsearch-check-sign-in-a-rounded-black-square"></i> 自己PR</h2>
-</div>
-<div class="jobsearch-description">
-    <?php echo($candidate_content) ?>
-</div>
-
-<div class="jobsearch-candidate-title">
-  <h2><i class="jobsearch-icon jobsearch-salary"></i> 給与情報</h2>
-</div>
-
-<?php
-$field41 = get_field('cf41');
-$field42 = get_field('cf42');
-echo
-'<table class="tbl01"><tbody><tr><th>現在の月収</th><td>';
-if(get_post_meta($post->ID, 'cf31',true)):
-echo number_format(get_post_meta($post->ID,'cf31',true));
-echo
-'円<br />基本給：';
-else:
-echo
-'-円<br />基本給：';
-endif;
-
-if(get_post_meta($post->ID, 'cf32',true)):
-echo number_format(get_post_meta($post->ID,'cf32',true));
-echo
-'円／残業手当：';
-else:
-echo
-'-円／残業手当：';
-endif;
-
-if(get_post_meta($post->ID, 'cf33',true)):
-echo number_format(get_post_meta($post->ID,'cf33',true));
-echo
-'円／その他手当：';
-else:
-echo
-'-円／その他手当：';
-endif;
-
-if(get_post_meta($post->ID, 'cf34',true)):
-echo number_format(get_post_meta($post->ID,'cf34',true));
-echo
-'円</td></tr><tr><th>年間賞与</th><td>';
-else:
-echo
-'-円</td></tr><tr><th>年間賞与</th><td>';
-endif;
-
-if(get_post_meta($post->ID, 'cf35',true)):
-echo number_format(get_post_meta($post->ID,'cf35',true));
-echo
-'円</td></tr><tr><th>現在の年収</th><td>';
-else:
-echo
-'-円</td></tr><tr><th>現在の年収</th><td>';
-endif;
-
-if(get_post_meta($post->ID, 'cf36',true)):
-echo number_format(get_post_meta($post->ID,'cf36',true));
-echo
-'円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
-else:
-echo
-'-円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
-endif;
-
-?>
-
-<style>
-.tbl01 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td {
-    text-align: left;
-}
-.tbl01 td,
-.tbl01 th {
-padding-left: 5px;
-}
-.jobsearch-typo-wrap {
-  color:#333333;
-}
-</style>
-<!-- 追加　-->
 
                         </div>
                         <?php

@@ -109,7 +109,9 @@ if ($full_layout === true) {
             $rel_qry = new WP_Query($args);
             if ($rel_qry->have_posts()) {
                 ?>
-                <div class="careerfy-widgettitle"> <h2><?php esc_html_e('Related', 'careerfy') ?> <span><?php esc_html_e('Posts', 'careerfy') ?></span></h2> </div>
+                <div class="careerfy-widgettitle">
+                  <h2>関連記事</h2>
+                </div>
 
                 <div class="careerfy-blog careerfy-related-blog">
                     <ul class="row">
@@ -156,7 +158,9 @@ if ($full_layout === true) {
                                         <img src="<?php echo esc_url_raw($avatar_link); ?>" alt=""></a><a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"><?php echo get_the_author() ?>
                                         </a> -->
                                     </div>
-                                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" class="careerfy-continue-reading"><?php esc_html_e('Continue Reading', 'careerfy'); ?> <i class="fa fa-angle-right"></i></a>
+                                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" class="careerfy-continue-reading">
+                                      記事を読む <i class="fa fa-angle-right"></i>
+                                    </a>
                                 </div>
                             </li>
 

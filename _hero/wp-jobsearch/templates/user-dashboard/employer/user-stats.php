@@ -685,14 +685,14 @@ if ($employer_id > 0) {
                             echo apply_filters('jobsearch_emp_dash_stats_reviewed_cands', $stats_html, $overall_viewed_cands, $_job_posts);
                             ob_start();
                             ?>
-                            <li>
+
+                            <!-- <li>
                                 <div class="jobsearch-stats-list-wrap light-blue">
-                                    <!-- <h6><?php esc_html_e('Shortlisted', 'wp-jobsearch') ?></h6> -->
                                     <h6>候補者保存数</h6>
                                     <span><?php echo absint($employer_resumes_count) ?></span>
-                                    <!-- <small><?php esc_html_e('candidates against jobs', 'wp-jobsearch') ?></small> -->
                                 </div>
-                            </li>
+                            </li> -->
+
                             <?php
                             $stats_html = ob_get_clean();
                             echo apply_filters('jobsearch_emp_dash_stats_shortlist_cands', $stats_html, $employer_resumes_count, $_job_posts);
@@ -749,9 +749,9 @@ if ($employer_id > 0) {
                             <small><?php esc_html_e('Total Applicants', 'wp-jobsearch') ?></small>
                         </div>
                         <ul>
-                            <li><i class="fa fa-circle"></i> <?php esc_html_e('Viewed CVs', 'wp-jobsearch') ?></li>
-                            <li><i class="fa fa-circle light-blue"></i> <?php esc_html_e('Unviewed CVs', 'wp-jobsearch') ?></li>
                             <li><i class="fa fa-circle dark-blue"></i> <?php esc_html_e('Total CVs', 'wp-jobsearch') ?></li>
+                            <li><i class="fa fa-circle light-blue"></i> <?php esc_html_e('Unviewed CVs', 'wp-jobsearch') ?></li>
+                            <li><i class="fa fa-circle"></i> <?php esc_html_e('Viewed CVs', 'wp-jobsearch') ?></li>
                         </ul>
                     </div>
                     <?php
@@ -953,6 +953,7 @@ if ($employer_id > 0) {
                                                         $email_html = ob_get_clean();
                                                         echo apply_filters('jobsearch_emp_dash_stats_apps_list_emailhtml', $email_html, $candidate_id, $_job_id);
                                                         ?>
+
                                                     </ul>
                                                     <?php
                                                     echo apply_filters('jobsearch_empdash_stats_candlits_aftr_detul', '', $candidate_id, $_job_id);

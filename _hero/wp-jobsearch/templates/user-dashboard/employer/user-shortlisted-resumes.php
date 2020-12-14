@@ -69,8 +69,10 @@ if ($employer_id > 0) {
             </form>
             <div class="jobsearch-profile-title">
                 <h2><?php echo apply_filters('jobsearch_empdash_savedcands_maintitle', esc_html__('Saved Candidates', 'wp-jobsearch')) ?></h2>
+                <!-- 
                 <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-list-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;">候補者一覧</a>
-                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">設定</a>
+                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">設定</a> -->
+
                 <?php
                 echo apply_filters('jobsearch_empdash_resmsaved_aftrmacts_html', '');
 
@@ -331,7 +333,7 @@ if ($employer_id > 0) {
                                                                                 </li>
                                                                                 <li>
                                                                                     <div class="input-field-submit">
-                                                                                        <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="Send"/>
+                                                                                        <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="送信"/>
                                                                                         <span class="loader-box loader-box-<?php echo esc_html($p_masg_rand); ?>"></span>
                                                                                     </div>
                                                                                 </li>
@@ -347,7 +349,7 @@ if ($employer_id > 0) {
                                                     <?php
                                                 }, 11, 1);
                                                 ?>
-                                                <li><a href="<?php echo get_permalink($candidate_id) ?>"><i class="jobsearch-icon jobsearch-user-1"></i> <?php esc_html_e('View Profile', 'wp-jobsearch') ?></a></li>
+                                                <li><a href="<?php echo get_permalink($candidate_id) ?>"><i class="jobsearch-icon jobsearch-user-1"></i> プロフィール</a></li>
                                                 <?php
                                                 if ($get_user_linkedin_url != '') {
                                                     ?>

@@ -107,6 +107,7 @@ $http_request = jobsearch_server_protocol();
 
 ?>
 
+
 <div class="jobsearch-candidate jobsearch-candidate-default"
      id="jobsearch-candidate-<?php echo absint($candidate_short_counter) ?>">
 
@@ -211,7 +212,35 @@ $http_request = jobsearch_server_protocol();
                                     }
                                     echo apply_filters('jobsearch_incand_listin_after_secli', '', $candidate_id);
                                     ?>
+
                                 </ul>
+                                <br />
+                                <ul>
+                                  <!-- カスタムフィールド -->
+                                  <?php
+                                  $cus_fields = array('content' => '');
+                                  $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li style="white-space: nowrap;">', '</li>');
+                                  if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
+                                      echo($cus_fields['content']);
+                                  }
+                                  ?>
+                                  <!-- カスタムフィールド ここまで -->
+                                </ul>
+<!-- カスタムフィールド用CSS -->
+<style type="text/css">
+.jobsearch-candidate-default-text ul li {
+  font-size: 16px;
+  padding: 0px 30px;
+  border-left: 0px solid #e0e0e0;
+  color: #333333;
+}
+.jobsearch-services-text small{
+  font-size: 16px;
+  color: #333333;
+}
+</style>
+<!-- カスタムフィールド用CSS ここまで -->
+
                             </div>
                             <?php do_action('jobsearch_add_employer_resume_to_list_btn', array('id' => $candidate_id)); ?>
                             <?php do_action('jobsearch_candlist_after_saversm_btn', array('id' => $candidate_id)); ?>
