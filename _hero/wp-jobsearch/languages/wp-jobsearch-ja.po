@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2020-12-11 16:02+0900\n"
+"PO-Revision-Date: 2021-01-27 16:36+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -13525,7 +13525,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:181
 msgid "Login to Apply to Job"
-msgstr ""
+msgstr "この仕事に応募"
 
 #: modules/job-application/include/job-application-load.php:335
 msgid "You have already applied for this job."
