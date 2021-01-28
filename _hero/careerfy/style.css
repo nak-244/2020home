@@ -91,7 +91,7 @@ Tags: two-columns, left-sidebar, custom-background, custom-colors, custom-header
         05.3 Social Network
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;700&display=swap');
 
 * {
     margin: 0;
@@ -117,21 +117,27 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
 }
 h1 {
     font-size: 26px;
+    font-weight: bold;
 }
 h2 {
     font-size: 24px;
+    font-weight: bold;
 }
 h3 {
     font-size: 22px;
+    font-weight: bold;
 }
 h4 {
     font-size: 20px;
+    font-weight: bold;
 }
 h5 {
     font-size: 18px;
+    font-weight: bold;
 }
 h6 {
     font-size: 16px;
+    font-weight: bold;
 }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     color: #333333;
