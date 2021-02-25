@@ -506,6 +506,7 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php } ?>
                             </div>
 
+
                             <?php
                             if ($jobsearch_job_featured == 'on') {
                                 ?>
@@ -513,7 +514,7 @@ function careerfy_job_detail_related_view2_callback($html = '', $related_atts = 
                                 <?php
                             } elseif ($elaspedtime > $hourz) {
                                 ?>
-                                <span class="careerfy-joblisting-view4-date"><?php echo get_the_date('F j, Y', $job_id); ?></span>
+                                <span class="careerfy-joblisting-view4-date"><?php echo get_the_date('Y年n月j日', $job_id); ?></span>
                                 <?php
                             } else {
                                 ?>

@@ -491,3 +491,23 @@ require trailingslashit(get_template_directory()) . 'inc/jetpack.php';
 if (class_exists('WooCommerce')) {
     require_once trailingslashit(get_template_directory()) . 'inc/woocommerce-config.php';
 }
+
+/**
+ * カスタムフィールドインポート設定
+ */
+ function rsci_meta_filter( $meta, $post, $is_update ) {
+   foreach ($meta as $key => $value) {
+     // checkeboxフィールドの場合
+     if($key == 'cf_01') {
+       // $valueが空の場合、データに a:1:{i:0;s:0:"";} という空データが入ってしまうため
+       // 空ではない場合にパースする
+       if ($value != "") {
+         $meta[$key] = preg_split("/,+/", $value);
+       } else {
+         $meta_array[$key] = "";
+       }
+     }
+   }
+   return $meta;
+ }
+ add_filter( 'really_simple_csv_importer_save_meta', 'rsci_meta_filter', 10, 3 );

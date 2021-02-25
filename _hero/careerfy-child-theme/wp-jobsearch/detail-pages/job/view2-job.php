@@ -166,6 +166,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                     <div class="careerfy-column-8">
                         <div class="careerfy-typo-wrap">
                             <div class="careerfy-jobdetail-content-list">
+                              <p class="small"><?php the_field('cf01_1'); ?></p>
                               <ul>
                                   <?php
                                   if ($job_type_str != '') {
@@ -232,69 +233,165 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             </div>
                             <div class="careerfy-jobdetail-content">
 
-                              <div class="careerfy-content-title"><h2>職種</h2></div>
-                              <p><?php the_field('cf-type'); ?></p>
+                            <div class="careerfy-content-title"><h2>雇用形態</h2></div>
+                            <?php
+                            if ($terms = get_the_terms($post->ID, 'jobtype')) {
+                                foreach ( $terms as $term ) {
+                                    echo '<p>' .$term->name. '</p>';
+                                }
+                            }
+                            ?>
 
-                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                              <div class="careerfy-content-title"><h2>勤務地</h2></div>
-                              <p><?php the_field('cf03'); ?><?php the_field('cf04'); ?></p>
+<?php if(get_post_meta($post->ID, 'cf60',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>紹介後の雇用形態</h2></div>
+                            <p><?php the_field('cf60'); ?></p>
+<?php endif; ?>
 
-                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                              <div class="careerfy-content-title"><h2>最寄り駅</h2></div>
-                              <p><?php the_field('cf05'); ?></p>
+<?php if(get_post_meta($post->ID, 'cf61',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>紹介予定派遣期間</h2></div>
+                            <p><?php the_field('cf61'); ?></p>
+<?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'cf-type',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>職種</h2></div>
+                            <p><?php the_field('cf-type'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf03',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>勤務地</h2></div>
+                            <p><?php the_field('cf03'); ?><?php the_field('cf04'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf05_1',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>最寄り駅</h2></div>
+                            <p><?php the_field('cf05_1'); ?>
+                              <?php if(get_post_meta($post->ID, 'cf05_2',true)):?> / <?php the_field('cf05_2'); ?><?php endif; ?>
+                              <?php if(get_post_meta($post->ID, 'cf05_2',true)):?> / <?php the_field('cf05_2'); ?><?php endif; ?>
+                            </p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf05_0',true)):?>
+                            <p><?php the_field('cf05_0'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf07',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>給与</h2></div>
                               <p><?php the_field('cf06'); ?>：<?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
                               <?php echo number_format($myk_field_name); ?>円〜
                               <?php } ?></p>
-
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                              <div class="careerfy-content-title"><h2>仕事内容</h2></div>
-                              <p><?php the_field('cf08'); ?></p>
+                              <div class="careerfy-content-title"><h5>給与備考</h5></div>
+                              <p><?php the_field('cf07_1'); ?></p>
+<?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'cf08',true)):?>
+                            <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                            <div class="careerfy-content-title"><h2>仕事内容</h2></div>
+                            <p><?php the_field('cf08'); ?></p>
+<?php if(get_post_meta($post->ID, 'cf08_1',true)):?>
+                            <div class="careerfy-content-title"><p>&nbsp;</p></div>
+                            <p><?php the_field('cf08_1'); ?></p>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf09_1',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>勤務時間</h2></div>
-                              <p><?php the_field('cf09'); ?></p>
+                              <p><?php the_field('cf09_1'); ?>
+                                <?php if(get_post_meta($post->ID, 'cf09_2',true)):?><br /><?php the_field('cf09_2'); ?><?php endif; ?>
+                                <?php if(get_post_meta($post->ID, 'cf09_3',true)):?><br /><?php the_field('cf09_3'); ?><?php endif; ?>
+                                <?php if(get_post_meta($post->ID, 'cf09_4',true)):?><br /><?php the_field('cf09_4'); ?><?php endif; ?>
+                                <?php if(get_post_meta($post->ID, 'cf09_5',true)):?><br /><?php the_field('cf09_5'); ?><?php endif; ?>
+                              </p>
+                              <p><?php if(get_post_meta($post->ID, 'cf09_0',true)):?><?php the_field('cf09_0'); ?><?php endif; ?></p>
+<?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'cf10',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>休憩時間</h2></div>
                               <p><?php the_field('cf10'); ?></p>
+<?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'cf11_1',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>勤務曜日</h2></div>
+                              <p><?php the_field('cf11_1'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf11_2',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>休日</h2></div>
-                              <p><?php the_field('cf11'); ?></p>
+                              <p><?php the_field('cf11_2'); ?></p>
+<?php endif; ?>
 
-                              <?php if(post_custom('cf12')): ?>
+<?php if(get_post_meta($post->ID, 'cf15',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>待遇・福利厚生</h2></div>
+                              <p><?php the_field('cf15'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf701',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>交通費</h2></div>
+                              <p><?php the_field('cf701'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf12',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>備考</h2></div>
                               <p><?php the_field('cf12'); ?></p>
-                              <?php endif; ?>
+<?php endif; ?>
 
-                              <?php if(post_custom('cf13')): ?>
+<?php if(get_post_meta($post->ID, 'cf13',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>経験など</h2></div>
                               <p><?php the_field('cf13'); ?></p>
-                              <?php endif; ?>
+<?php endif; ?>
 
-                              <?php if(post_custom('cf14')): ?>
+<?php if(get_post_meta($post->ID, 'cf13_1',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                              <div class="careerfy-content-title"><h2>経験など</h2></div>
+                              <div class="careerfy-content-title"><h2>研修</h2></div>
+                              <p><?php the_field('cf13_1'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf14',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>勤務期間</h2></div>
                               <p><?php the_field('cf14'); ?></p>
-                              <?php endif; ?>
+<?php endif; ?>
 
-                              <?php if(post_custom('cf15')): ?>
+<?php if(get_post_meta($post->ID, 'cf70',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
-                              <div class="careerfy-content-title"><h2>福利厚生</h2></div>
-                              <p><?php the_field('cf15'); ?></p>
+                              <div class="careerfy-content-title"><h2>勤務条件</h2></div>
+                              <p><?php the_field('cf70'); ?></p>
+                              <?php if(get_post_meta($post->ID, 'cf70_1',true)):?>
+                              <p><?php the_field('cf70_1'); ?></p>
                               <?php endif; ?>
+<?php endif; ?>
 
-                              <?php if(post_custom('cf20')): ?>
+<?php if(get_post_meta($post->ID, 'cf20',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h2>担当支店</h2></div>
-                              <p><?php the_field('cf20'); ?></p>
-                              <?php endif; ?>
+                              <p><?php the_field('cf20'); ?>支店</p>
+<?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'cf80',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>問い合わせTEL</h2></div>
+                              <p><?php the_field('cf80'); ?></p>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf81',true)):?>
+                              <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
+                              <div class="careerfy-content-title"><h2>問い合わせメールアドレス</h2></div>
+                              <p><?php the_field('cf81'); ?></p>
+<?php endif; ?>
 
                             </div>
                         </div>
