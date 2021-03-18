@@ -492,6 +492,10 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             $popup_html = apply_filters('jobsearch_job_send_message_html_filter', '', $popup_args);
                             echo force_balance_tags($popup_html);
                             ?>
+
+                            <!-- 202103追加 -->
+                            あああ
+                            <!-- //202103追加 -->
                         </div>
                         <?php
                         $ad_args = array(
