@@ -493,9 +493,39 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             echo force_balance_tags($popup_html);
                             ?>
 
-                            <!-- 202103追加 -->
-                            あああ
-                            <!-- //202103追加 -->
+<!-- 202103追加 -->
+<link rel="stylesheet" type="text/css" href="https://medical-heros.com/add_modal/css/iziModal.css" media="screen" />
+<script type="text/javascript" src="https://medical-heros.com/add_modal/js/iziModal.js"></script>
+<script type="text/javascript">
+  $(function() {
+    $(".iziModal_iframe").iziModal({
+      iframe: true,
+      fullscreen: false,
+      transitionIn: "fadeInUp",
+      transitionOut: "fadeOutDown",
+      iframeHeight: 800,
+      overlayClose: false,
+    });
+  })
+</script>
+<style>
+  @keyframes move-y {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(10px);
+    }
+  }
+</style>
+
+<!-- .iziModal -->
+<a href="" data-iziModal-open=".iziModal">資料請求<span></span></a>
+<div class="iziModal_iframe" data-izimodal-title="資料請求・お問い合わせ" data-izimodal-subtitle="お急ぎの場合はお電話にてお問い合わせください。" data-izimodal-iframeURL="https://www.olp.co.jp/lp/2021ion-e-air/contact-intro.html" style="margin-right: 0px; margin-bottom: 0px;">
+</div>
+<!-- / .iziModal -->
+<!-- //202103追加 -->
                         </div>
                         <?php
                         $ad_args = array(
