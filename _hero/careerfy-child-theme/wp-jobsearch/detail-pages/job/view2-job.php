@@ -467,7 +467,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             $current_date = strtotime(current_time('d-m-Y H:i:s'));
 
                             ob_start();
-                            echo jobsearch_job_det_applybtn_acthtml('', $job_id, 'page', 'view2');
+                            // 応募するボタンdefault削除
+                            // echo jobsearch_job_det_applybtn_acthtml('', $job_id, 'page', 'view2');
                             $apply_bbox = ob_get_clean();
                             echo apply_filters('jobsearch_job_defdet_applybtn_boxhtml', $apply_bbox, $job_id);
 
@@ -480,9 +481,9 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                 ?>
                                 <div class="careerfy-applywith-title"><small><?php echo esc_html__('Application End', 'careerfy'); ?></small></div>
                                 <div id="widget-application-countdown" class="jobsearch-box-application-countdown"></div>
+
                                 <?php
                             }
-
                             $popup_args = array(
                                 'job_employer_id' => $job_employer_id,
                                 'job_id' => $job_id,
@@ -493,39 +494,10 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             echo force_balance_tags($popup_html);
                             ?>
 
-<!-- 202103追加 -->
-<link rel="stylesheet" type="text/css" href="https://medical-heros.com/add_modal/css/iziModal.css" media="screen" />
-<script type="text/javascript" src="https://medical-heros.com/add_modal/js/iziModal.js"></script>
-<script type="text/javascript">
-  $(function() {
-    $(".iziModal_iframe").iziModal({
-      iframe: true,
-      fullscreen: false,
-      transitionIn: "fadeInUp",
-      transitionOut: "fadeOutDown",
-      iframeHeight: 800,
-      overlayClose: false,
-    });
-  })
-</script>
-<style>
-  @keyframes move-y {
-    from {
-      transform: translateY(0);
-    }
+<!-- 追加 -->
+<a class="jobsearch-open-signin-tab jobsearch-wredirct-url jobsearch-apply-btn-6426357 widget_application_apply_btn jobsearch-applyjob-btn" data-iziModal-open=".iziModal">この仕事に応募</a>
+<!-- //追加 -->
 
-    to {
-      transform: translateY(10px);
-    }
-  }
-</style>
-
-<!-- .iziModal -->
-<a href="" data-iziModal-open=".iziModal">資料請求<span></span></a>
-<div class="iziModal_iframe" data-izimodal-title="資料請求・お問い合わせ" data-izimodal-subtitle="お急ぎの場合はお電話にてお問い合わせください。" data-izimodal-iframeURL="https://www.olp.co.jp/lp/2021ion-e-air/contact-intro.html" style="margin-right: 0px; margin-bottom: 0px;">
-</div>
-<!-- / .iziModal -->
-<!-- //202103追加 -->
                         </div>
                         <?php
                         $ad_args = array(
@@ -559,6 +531,54 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                         );
                         jobsearch_detail_common_ad_code($ad_args);
                         ?>
+
+<!-- 202103追加 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+<script type="text/javascript" src="https://medical-heros.com/add_modal/js/iziModal.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://medical-heros.com/add_modal/css/iziModal.css" media="screen" />
+<!-- <button data-iziModal-open=".iziModal">クリックするとウィンドウが表示されます</button> -->
+
+<script type="text/javascript">
+  $(function() {
+    $(".iziModal_iframe").iziModal({
+      iframe: true,
+      fullscreen: false,
+      transitionIn: "fadeInUp",
+      transitionOut: "fadeOutDown",
+      iframeHeight: 800,
+      overlayClose: false,
+    });
+  })
+</script>
+<style>
+  @keyframes move-y {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(10px);
+    }
+  }
+  .iziModal_iframe {
+    z-index: 10000!important;
+  }
+  .iziModal .iziModal-header {
+    background: #50C1BA!important;
+  }
+  .iziModal .iziModal-header-subtitle {
+    color: rgba(255, 255, 255, 1);
+  }
+
+
+</style>
+
+<div id="frame" class="iziModal_iframe" data-izimodal-title="求人応募フォーム" data-izimodal-subtitle="応募求人：<?php echo force_balance_tags(get_the_title()); ?>" data-izimodal-iframeURL="https://sigotora.jp/index.cfm?fuseaction=job.oubo&sgtno=<?php the_field('cf00'); ?>#A" style="">
+</div>
+
+<!-- //202103追加 -->
+
                     </div>
                 </aside>
                 <!-- Job Detail SideBar -->
