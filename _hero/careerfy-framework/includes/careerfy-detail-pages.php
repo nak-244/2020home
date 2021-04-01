@@ -601,16 +601,15 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                     <li class="careerfy-column-12">
                         <div class="careerfy-joblisting-classic-wrap">
                             <?php if ($post_thumbnail_src != '') { ?>
-                                <figure>
+                                <!-- <figure>
                                     <a href="<?php the_permalink(); ?>">
-                                        <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
                                         <img src="<?php the_field('cf30',$job_id); ?>" alt="">
                                     </a>
-                                </figure>
+                                </figure> -->
                             <?php } ?>
                             <div class="careerfy-joblisting-text">
                                 <div class="careerfy-list-option">
-                                    <h2>
+                                    <h6>
                                         <a href="<?php echo esc_url(get_permalink($job_id)); ?>"
                                            title="<?php echo get_the_title($job_id); ?>">
                                             <?php echo esc_html(wp_trim_words(get_the_title($job_id), $jobsearch_title_limit)); ?>
@@ -621,8 +620,8 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                                             <?php
                                         }
                                         ?>
-                                    </h2>
-                                    <ul>
+                                    </h6>
+                                    <!-- <ul>
                                         <?php
                                         ob_start();
                                         ?>
@@ -638,7 +637,6 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                                         }
                                         echo $sector_str = jobsearch_job_get_all_sectors($job_id, '', '', '', '<li><i class="careerfy-icon careerfy-filter-tool-black-shape"></i>', '</li>');
                                         ?>
-                                        <!-- 追加 -->
                                         <li><i class="careerfy-icon careerfy-map-pin-fill"></i>
                                             <span>勤務地</span> <?php the_field('cf03',$job_id); ?><?php the_field('cf04',$job_id); ?>
                                         </li>
@@ -648,25 +646,49 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
                                             <?php echo number_format($myk_field_name); ?>円
                                             <?php } ?>
                                         </li>
-                                        <!-- 追加 -->
-                                    </ul>
+                                    </ul> -->
+
+                                    <!-- 202104追加 -->
+                                    <p class="related_txt">
+                                    <?php the_field('cf01'); ?></p>
+
+                                    <div class="careerfy-column-4">
+                                    <img src="<?php the_field('cf30',$job_id); ?>" alt="" class="img-thumbnail">
+                                    </div>
+                                    <div class="careerfy-column-8">
+                                      <p class="related_txt">
+                                      <span><i class="careerfy-icon careerfy-map-pin-fill"></i>&ensp;勤務地：</span> <?php the_field('cf03',$job_id); ?><br>
+                                      <span><i class="careerfy-icon careerfy-money"></i>&ensp;<?php the_field('cf06',$job_id); ?>：</span> <?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
+                                      <?php echo number_format($myk_field_name); ?>円
+                                      <?php } ?>
+                                      </p>
+                                      <?php
+                                      if ($job_type_str != '' && $job_types_switch == 'on') {
+                                          echo($job_type_str);
+                                      }
+                                      ?>
+                                    </div>
+
+                                    <!-- //202104追加 -->
+
                                 </div>
-                                <div class="careerfy-job-userlist">
+
+                                <!-- <div class="careerfy-job-userlist">
                                     <?php
                                     if ($job_type_str != '' && $job_types_switch == 'on') {
                                         echo($job_type_str);
                                     }
-                                    $book_mark_args = array(
-                                        'job_id' => $job_id,
-                                        'before_icon' => 'fa fa-heart-o',
-                                        'after_icon' => 'fa fa-heart',
-                                        'container_class' => '',
-                                        'anchor_class' => 'careerfy-job-like',
-                                    );
-                                    do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
-                                    ?>
+                                    // $book_mark_args = array(
+                                    //     'job_id' => $job_id,
+                                    //     'before_icon' => 'fa fa-heart-o',
+                                    //     'after_icon' => 'fa fa-heart',
+                                    //     'container_class' => '',
+                                    //     'anchor_class' => 'careerfy-job-like',
+                                    // );
+                                    // do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
+                                    // ?>
+                                </div> -->
 
-                                </div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -678,6 +700,17 @@ function careerfy_job_detail_related_view3_callback($html = '', $related_atts = 
             ?>
         </ul>
     </div>
+
+    <!-- 202104追加 -->
+    <style>
+    .related_txt {
+      padding-bottom: 10px;
+      font-size: 0.8em;
+      line-height: 110%;
+    }
+    </style>
+    <!-- //202104追加 -->
+
 
     <?php
 }

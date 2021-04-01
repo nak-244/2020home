@@ -579,6 +579,15 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 <!-- //202103追加 -->
 
+<!-- 202104追加 -->
+<!-- Job's Listing's -->
+    <?php
+    $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 10, 10, '', 'view3');
+    echo $related_job_html;
+    ?>
+<!-- Job's Listing's -->
+<!-- //202104追加 -->
+
                     </div>
                 </aside>
                 <!-- Job Detail SideBar -->
