@@ -591,14 +591,10 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                     </div>
                 </aside>
                 <!-- Job Detail SideBar -->
+
+                <!-- Job's Listing's サイドに移動 -->
                 <!-- Job's Listing's -->
-                <div class="careerfy-column-12">
-                    <?php
-                    $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 5, 5, '', 'view2');
-                    echo $related_job_html;
-                    ?>
-                </div>
-                <!-- Job's Listing's -->
+
             </div>
         </div>
     </div>
