@@ -495,7 +495,9 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             ?>
 
 <!-- 追加 -->
-<a class="jobsearch-open-signin-tab jobsearch-wredirct-url jobsearch-apply-btn-6426357 widget_application_apply_btn jobsearch-applyjob-btn" data-iziModal-open=".iziModal">この仕事に応募</a>
+<!-- <a class="jobsearch-open-signin-tab jobsearch-wredirct-url jobsearch-apply-btn-6426357 widget_application_apply_btn jobsearch-applyjob-btn" data-iziModal-open=".iziModal">この仕事に応募</a> -->
+<a class="jobsearch-wredirct-url jobsearch-apply-btn-6426357 widget_application_apply_btn jobsearch-applyjob-btn" data-iziModal-open=".iziModal">この仕事に応募</a>
+
 <!-- //追加 -->
 
                         </div>
@@ -544,23 +546,15 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
     $(".iziModal_iframe").iziModal({
       iframe: true,
       fullscreen: false,
-      transitionIn: "fadeInUp",
-      transitionOut: "fadeOutDown",
+      // transitionIn: "fadeInUp",
+      // transitionOut: "fadeOutDown",
       iframeHeight: 800,
       overlayClose: false,
     });
   })
 </script>
 <style>
-  @keyframes move-y {
-    from {
-      transform: translateY(0);
-    }
 
-    to {
-      transform: translateY(10px);
-    }
-  }
   .iziModal_iframe {
     z-index: 10000!important;
   }
