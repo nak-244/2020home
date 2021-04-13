@@ -183,6 +183,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         $jcus_fields = isset($job_arg['custom_fields']) ? $job_arg['custom_fields'] : '';
                         do_action('jobsearch_job_listing_custom_fields', $atts, $job_id, $jcus_fields);
                         ?>
+
                         <div class="featured-jobs-grid-location">
                             <?php
                             if ($job_city_title != '' && $all_location_allow == 'on') {
@@ -201,6 +202,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                             ?>
                         </div>
+
                         <?php
                         if (jobsearch_excerpt(0, $job_id) != '') { ?>
                             <div class="jobsearch-list-excerpt">
@@ -267,7 +269,6 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         ?>
                         <?php if ($post_thumbnail_src != '') { ?>
                             <a href="<?php the_permalink(); ?>">
-                                <!-- <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""> -->
                                 <img src="<?php the_field('cf30'); ?>" alt="">
                             </a>
                         <?php } ?>
@@ -321,22 +322,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                           <?php echo number_format($myk_field_name); ?>円〜
                           <?php } ?></p>
 
-                            <?php
-                            if ($job_city_title != '' && $all_location_allow == 'on') {
-                                ?>
-                                <p><i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo($job_city_title) ?>
-                                </p>
-                                <?php
-                            }
-                            $book_mark_args = array(
-                                'job_id' => $job_id,
-                                'before_icon' => 'fa fa-heart-o',
-                                'after_icon' => 'fa fa-heart',
-                                'container_class' => '',
-                                'anchor_class' => 'featured-jobs-grid-like',
-                            );
-                            do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
-                            ?>
+
                         </div>
                         <?php
                         if (jobsearch_excerpt(0, $job_id) != '') {

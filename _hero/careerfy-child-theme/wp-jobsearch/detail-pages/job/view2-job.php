@@ -568,7 +568,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 </style>
 
-<div id="frame" class="iziModal_iframe" data-izimodal-title="求人応募フォーム" data-izimodal-subtitle="応募求人：<?php echo force_balance_tags(get_the_title()); ?>" data-izimodal-iframeURL="https://sigotora.jp/index.cfm?fuseaction=job.oubo&sgtno=<?php the_field('cf00'); ?>#A" style="">
+<div id="frame" class="iziModal_iframe" data-izimodal-title="応募フォーム【仕事№：<?php the_field('cf00'); ?>】" data-izimodal-subtitle="応募求人：<?php echo force_balance_tags(get_the_title()); ?>" data-izimodal-iframeURL="https://sigotora.jp/index.cfm?fuseaction=job.oubo&sgtno=<?php the_field('cf00'); ?>#A" style="">
 </div>
 
 <!-- //202103追加 -->
