@@ -67,7 +67,7 @@ if ($job_ads_switch == 'yes') {
         }
         $array_i++;
     }
-    // new count 
+    // new count
     $job_ads_after_list_array_count = sizeof($job_ads_after_list_array);
 }
 
@@ -310,7 +310,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                             class="fa fa-star"></i></span>
                             <?php } ?>
                             <a class="careerfy-jobs-style9-title <?php echo($quick_apply_job_btn) ?>" data-job-id="<?php echo esc_html($job_id); ?>"
-                               href="<?php echo $quick_apply_job == 'on' ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?></a>
+                               href="<?php echo $quick_apply_job == 'on' ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 60)); ?></a>
                             <?php
                             if ($job_type_str != '' && $job_types_switch == 'on') {
                                 echo($job_type_str);
@@ -409,4 +409,3 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
         ?>
     </ul>
 </div>
-

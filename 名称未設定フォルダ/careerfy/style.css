@@ -28,7 +28,7 @@ Tags: two-columns, left-sidebar, custom-background, custom-colors, custom-header
                 03.1.3 Blog Grid Two
                 03.1.4 Blog Medium
                 03.1.5 Blog Detail
-        
+
         03.4 Team
                 03.4.1 Team Grid
                 03.4.2 Team list
@@ -47,7 +47,7 @@ Tags: two-columns, left-sidebar, custom-background, custom-colors, custom-header
                 03.5.10 List
                 03.5.11 Table
                 03.5.12 Typography
- 
+
         03.6 Default Pages Style
                 03.6.1 404
                 03.6.2 UnderCuntruction
@@ -72,7 +72,7 @@ Tags: two-columns, left-sidebar, custom-background, custom-colors, custom-header
                 03.9.1 Shop Grid
                 03.9.2 Shop List
                 03.9.3 Shop Detail
- 
+
 04. Sidebar Widget
         04.1 Widget CATEGORY WIDGET
         04.2 Widget Search
@@ -84,7 +84,7 @@ Tags: two-columns, left-sidebar, custom-background, custom-colors, custom-header
         04.9 Popular Tags
         04.10 Featured Articles
         04.11 Widget Calendar
- 
+
 05. Footer
         05.1 backTo Top
         05.2 CopyRight
@@ -315,7 +315,7 @@ address                         { font-style: italic; }
     font-size: 20px;
 }
 .post-password-form {
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
     margin-top: 10px;
     text-align: center;
     float: left;
@@ -1361,7 +1361,7 @@ li:hover .careerfy-read-more { background-color: transparent; }
 .blog-heading {
     float: left;
     width: 100%;
-} 
+}
 .blog-heading > h2 {
     font-weight: bold;
     font-size: 36px;
@@ -1396,7 +1396,7 @@ blockquote {
     font-size: 16px;
     font-style: italic;
     position: relative;
-    line-height: 30px; 
+    line-height: 30px;
     padding: 0px 0px 0px 0px;
     letter-spacing: 2px;
     margin: 0 0 25px;
@@ -1648,7 +1648,7 @@ div.careerfy-prenxt-post {
     margin: 0px 0px 30px;
     line-height: 0.7;
     float: left;
-    width: 100%;  
+    width: 100%;
 }
 
 /*comment*/
@@ -1661,7 +1661,7 @@ div.careerfy-prenxt-post {
 .thumblist {
     margin: 0 0 40px;
 }
-.comments-area .children { 
+.comments-area .children {
     margin: 0px;
     padding: 0px 0px 0px 80px;
 }
@@ -3639,7 +3639,7 @@ div.wpcf7 input[type="file"] { margin-bottom: 10px; }
 /* Comment Form */
 .comment-respond,.comment-respond input[type="text"] {
     float: left;
-    width: 100%;    
+    width: 100%;
 }
 .comment-respond form               {margin: 0px -15px 0px -15px;}
 .comment-respond p.careerfy-full-form {
@@ -3665,7 +3665,7 @@ div.wpcf7 input[type="file"] { margin-bottom: 10px; }
     height: 156px;
     font-size: 15px;
     padding: 8px 21px 0px 21px;
-    color:#000; 
+    color:#000;
     background-color: #ffffff;
     width: 100%;
     border: 1px solid #ececec;
@@ -4565,10 +4565,10 @@ form.careerfy-banner-twelve-search.all-searches-on .careerfy-twelve-fields li:la
 .careerfy-sixteen-banner .selectize-control {
     height: 53px; }
 .careerfy-sixteen-banner ul li:first-child {
-    border-right: 1px solid #ddd;    
+    border-right: 1px solid #ddd;
 }
 .careerfy-sixteen-banner ul li:nth-child(3) {
-    border-left: 1px solid #ddd;    
+    border-left: 1px solid #ddd;
 }
 .careerfy-sixteen-banner.search-keyword-off.search-cat-off ul li {
     border: none; }
@@ -7232,7 +7232,7 @@ body .gform_wrapper img.ui-datepicker-trigger {
     top: 4px;
     width: 1px;
     height: 29px;
-    background-color: #363c3f; 
+    background-color: #363c3f;
 }
 .careerfy-headfive-option li {
     float: left;
@@ -7278,9 +7278,9 @@ body .gform_wrapper img.ui-datepicker-trigger {
     right: -16px;
     padding: 4px 7px;
     color: #ffffff;
-    white-space: nowrap; 
-    -moz-border-radius: 40px; 
-    -webkit-border-radius: 40px;  
+    white-space: nowrap;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
     border-radius: 40px;
     opacity: 1;
     z-index: 9;
@@ -17493,7 +17493,7 @@ li:hover .careerfy-twelve-blog-grid-btn {
      border: 1px solid #b8bbbd;
      box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.30) inset;
      border-radius: 2px;
-     cursor: pointer;     
+     cursor: pointer;
      margin-right: 7px;
      outline: none;
 }
@@ -18054,7 +18054,7 @@ li:hover .careerfy-refejobs-list-btn span {
      width: 16px;
      border: none;
      border-radius: 100%;
-     cursor: pointer;     
+     cursor: pointer;
      margin-right: 7px;
      outline: none;
 }
@@ -22098,11 +22098,19 @@ li:hover .careerfy-candidate-style8-detail {
     vertical-align: middle;
     margin-right: -4px;
 }
-.careerfy-jobs-box1,
+
+/* .careerfy-jobs-box1,
 .jobsearch-typo-wrap .careerfy-jobs-box1 {
     width: 75%;
     padding: 30px;
+} */
+
+.careerfy-jobs-box1,
+.jobsearch-typo-wrap .careerfy-jobs-box1 {
+    width: 75%;
+    padding: 10px 30px;
 }
+
 .careerfy-jobs-box2,
 .jobsearch-typo-wrap .careerfy-jobs-box2 {
     width: 25%;
