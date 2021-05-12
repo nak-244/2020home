@@ -4081,6 +4081,7 @@ class Jobsearch_CustomFieldLoad
                                                             }
                                                             ?>
 <!-- ここから -->
+
                                                             <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="checkbox"
                                                                        id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4093,6 +4094,7 @@ class Jobsearch_CustomFieldLoad
                                                                     <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
                                                                 <?php } ?>
                                                             </li>
+
 <!-- ここまで　-->
                                                             <?php
                                                             //

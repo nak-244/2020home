@@ -1525,7 +1525,8 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                 );
                 echo apply_filters('jobsearch_job_listin_before_sort_orders', '', $paging_args, $atts);
                 ?>
-                <div class="jobsearch-filterable jobsearch-filter-sortable">
+
+                <!-- <div class="jobsearch-filterable jobsearch-filter-sortable">
                     <?php
                     ob_start();
                     ?>
@@ -1643,7 +1644,7 @@ if (!class_exists('Jobsearch_Shortcode_Jobs_Frontend')) {
                     <?php
                     $this->job_layout_switcher_fields($atts, $job_short_counter, $view = '');
                     ?>
-                </div>
+                </div> -->
                 <!-- filter-moving -->
                 <?php
                 //

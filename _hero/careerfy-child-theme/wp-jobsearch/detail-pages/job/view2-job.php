@@ -227,7 +227,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                   ?>
                               </ul>
                                 <h3><?php echo force_balance_tags(get_the_title()); ?></h3>
-                                <h4><?php the_field('cf01'); ?></h4>
+                                <h6><?php the_field('cf01'); ?></h6>
                                 <p>&nbsp;</p>
                                 <p><?php the_field('cf02'); ?></p>
                             </div>
@@ -285,9 +285,11 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                               <p><?php the_field('cf06'); ?>：<?php $myk_field_name = get_field('cf07',$job_id);if($myk_field_name){ ?>
                               <?php echo number_format($myk_field_name); ?>円〜
                               <?php } ?></p>
+<?php if(get_post_meta($post->ID, 'cf07_1',true)):?>
                               <div class="careerfy-content-title"><h2>&nbsp;</h2></div>
                               <div class="careerfy-content-title"><h5>給与備考</h5></div>
                               <p><?php the_field('cf07_1'); ?></p>
+<?php endif; ?>
 <?php endif; ?>
 
 <?php if(get_post_meta($post->ID, 'cf08',true)):?>
@@ -396,11 +398,13 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             </div>
                         </div>
                     </div>
+
                     <!-- Job Detail Content -->
                     <?php
                 endwhile;
                 wp_reset_postdata();
                 ?>
+
                 <!-- Job Detail SideBar -->
                 <aside class="careerfy-column-4">
                     <div class="careerfy-typo-wrap">
@@ -574,6 +578,35 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 <!-- //202103追加 -->
 
 <!-- 202104追加 -->
+
+<!-- ここから -->
+<a href="https://medical-heros.com/job-search/" class="jobsearch-applyjob-btn1">検索条件を変更する</a>
+<style>
+.jobsearch-applyjob-btn1 {
+    background-color: #50C1BA;
+    border: 1px solid #50C1BA;
+    float: left;
+    width: 100%;
+    font-size: 16px;
+    color: #ffffff;
+    text-transform: uppercase;
+    padding: 16px 10px 17px 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 12px;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    margin-bottom: 40px;
+  }
+</style>
+<!-- ここまで -->
+
+
 <!-- Job's Listing's -->
     <?php
     $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 10, 10, '', 'view3');
