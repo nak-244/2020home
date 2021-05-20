@@ -209,6 +209,12 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 <div class="careerfy-jobdetail-style5-content-list">
 
+  <?php if(get_post_meta($post->ID, 'cfimg',true)):?>
+  <div class="cfimg sp">
+  <img src="<?php the_field('cfimg'); ?>" />
+  </div>
+  <?php endif; ?>
+
 <ul>
   <li>
     <span class="shigotono">仕事№：<?php the_field('cf00'); ?></span>
@@ -582,7 +588,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                             </div>
                         </div>
                         <!-- Job Detail SideBar -->
-                        <aside class="careerfy-column-4">
+                        <aside class="careerfy-column-4 pc">
                             <div class="careerfy-typo-wrap">
                                 <div class="jobsearch_side_box_style5">
 
@@ -621,6 +627,12 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                         </aside>
 
 <!-- 追加 -->
+<div class="careerfy-column-4 re_search__width related__width">
+<div class="jobsearch_apply_job_style5">
+<a href="<?php echo esc_url( home_url( '/job-list/' ) ); ?>" class="jobsearch-sendmessage-popup-btn-style5">別の条件で検索</a>
+</div>
+</div>
+
 <div class="careerfy-column-4 related__width">
     <?php
     $related_job_html = jobsearch_job_related_post($post_id, esc_html__('Related Jobs', 'careerfy'), 3, 5, '', 'view1');
