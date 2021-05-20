@@ -1,19 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"PO-Revision-Date: 2021-01-27 16:36+0900\n"
+"Language-Team: 日本語\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.3.0; wp-5.2.2"
+"X-Generator: Poedit 2.4.1\n"
+"X-Loco-Version: 2.4.2; wp-5.5\n"
+"Last-Translator: \n"
+"Language: ja\n"
 
 #: includes/class-form-fields.php:396 includes/class-form-fields.php:467
 #: modules/ads-management/include/ads-management-hooks.php:462
@@ -109,14 +108,12 @@ msgstr ""
 msgid "This theme requires the following plugin: %1$s."
 msgid_plural "This theme requires the following plugins: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:531
 #, php-format
 msgid "This theme recommends the following plugin: %1$s."
 msgid_plural "This theme recommends the following plugins: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:535
 #, php-format
@@ -127,46 +124,39 @@ msgid_plural ""
 "The following plugins need to be updated to their latest version to ensure "
 "maximum compatibility with this theme: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:539
 #, php-format
 msgid "There is an update available for: %1$s."
 msgid_plural "There are updates available for the following plugins: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:543
 #, php-format
 msgid "The following required plugin is currently inactive: %1$s."
 msgid_plural "The following required plugins are currently inactive: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:547
 #, php-format
 msgid "The following recommended plugin is currently inactive: %1$s."
 msgid_plural "The following recommended plugins are currently inactive: %1$s."
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:551
 msgid "Begin installing plugin"
 msgid_plural "Begin installing plugins"
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:554
 msgid "Begin updating plugin"
 msgid_plural "Begin updating plugins"
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:557
 msgid "Begin activating plugin"
 msgid_plural "Begin activating plugins"
 msgstr[0] ""
-msgstr[1] ""
 
 #: includes/class-jobsearch-plugin.php:560
 msgid "Return to Required Plugins Installer"
@@ -506,11 +496,11 @@ msgstr ""
 #: admin/redux-ext/extensions/jobsearch_multi_textareas/jobsearch_multi_textareas/field_jobsearch_multi_textareas.php:134
 #: modules/ads-management/include/redux-ext/extensions/jobsearch_ads_banner/jobsearch_ads_banner/field_jobsearch_ads_banner.php:321
 msgid "Title"
-msgstr ""
+msgstr "タイトル"
 
 #: includes/class-jobsearch-plugin.php:722
 msgid "- see less"
-msgstr ""
+msgstr "- 元に戻す"
 
 #: includes/class-jobsearch-plugin.php:723
 #: includes/classes/class-candidate-filters.php:385
@@ -524,7 +514,7 @@ msgstr ""
 #: modules/custom-fields/include/custom-fields-load.php:4462
 #: modules/custom-fields/include/custom-fields-load.php:4815
 msgid "+ see more"
-msgstr ""
+msgstr "+ もっと見る"
 
 #: includes/class-jobsearch-plugin.php:724
 #: includes/class-user-dashboard.php:1531
@@ -570,7 +560,7 @@ msgstr ""
 #: admin/redux-ext/extensions/jobsearch_multi_textareas/jobsearch_multi_textareas/field_jobsearch_multi_textareas.php:108
 #: admin/redux-ext/extensions/jobsearch_multi_textareas/jobsearch_multi_textareas/field_jobsearch_multi_textareas.php:138
 msgid "Description"
-msgstr ""
+msgstr "説明文"
 
 #: includes/class-jobsearch-plugin.php:725
 msgid "Save"
@@ -599,7 +589,7 @@ msgstr ""
 #: includes/class-jobsearch-plugin.php:727
 #: includes/common-functions/employer-functions.php:375
 msgid "Saved"
-msgstr ""
+msgstr "保存済"
 
 #: includes/class-jobsearch-plugin.php:728
 #: includes/classes/class-jobs-embeddable.php:567
@@ -621,7 +611,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:318
 #: templates/user-dashboard/employer/user-dashboard-settings.php:289
 msgid "Select Sector"
-msgstr ""
+msgstr "職種選択"
 
 #: includes/class-jobsearch-plugin.php:729 modules/reviews/reviews.php:42
 #: modules/login-registration/templates/login-registration-template.php:253
@@ -637,7 +627,7 @@ msgstr ""
 
 #: includes/class-jobsearch-plugin.php:730
 msgid "Please accept our terms and conditions."
-msgstr ""
+msgstr "利用規約に同意してください。"
 
 #: includes/class-jobsearch-plugin.php:731
 #: includes/class-jobsearch-plugin.php:969 includes/widgets/contact-us.php:102
@@ -830,7 +820,7 @@ msgstr ""
 #: includes/class-jobsearch-plugin.php:1022
 #: templates/user-dashboard/user-dashboard-sidebar.php:973
 msgid "Are you sure! You want to delete your profile."
-msgstr ""
+msgstr "アカウント情報を削除します。"
 
 #: includes/class-jobsearch-plugin.php:847
 msgid "This field should not be blank."
@@ -867,7 +857,7 @@ msgstr ""
 
 #: includes/class-jobsearch-plugin.php:974
 msgid "Are you sure!"
-msgstr ""
+msgstr "本当にいいですか？"
 
 #: includes/class-user-jobs.php:61 includes/class-user-jobs.php:65
 msgid "<strong>Error!</strong> You are not allowed to add or update any job."
@@ -879,7 +869,7 @@ msgstr ""
 
 #: includes/class-user-jobs.php:104
 msgid "Please enter the proper user Email Address."
-msgstr ""
+msgstr "正しいメールアドレスを入力してください。"
 
 #: includes/class-user-jobs.php:107
 msgid "The username field should not be blank."
@@ -971,11 +961,11 @@ msgstr ""
 
 #: includes/class-user-dashboard.php:188
 msgid "Please Enter the password."
-msgstr ""
+msgstr "パスワードを入力してください。"
 
 #: includes/class-user-dashboard.php:194
 msgid "Please Enter the correct password."
-msgstr ""
+msgstr "正しいパスワードを入力してください。"
 
 #: includes/class-user-dashboard.php:206 includes/class-user-dashboard.php:242
 msgid "You are not allowed to delete profile."
@@ -984,7 +974,7 @@ msgstr ""
 #: includes/class-user-dashboard.php:233 includes/class-user-dashboard.php:249
 #: includes/class-user-dashboard.php:252
 msgid "Your profile deleted successfully."
-msgstr ""
+msgstr "プロフィールが正常に削除されました。"
 
 #: includes/class-user-dashboard.php:992 includes/class-user-dashboard.php:997
 msgid "You are not allowed to upload a profile image."
@@ -1029,7 +1019,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:753
 #: templates/user-dashboard/candidate/user-my-resume.php:1012
 msgid "Title *"
-msgstr ""
+msgstr "タイトル *"
 
 #: includes/class-user-dashboard.php:1521
 #: includes/class-user-dashboard.php:1707
@@ -1094,7 +1084,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1277
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1413
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: includes/class-user-dashboard.php:1541
 #: includes/class-user-dashboard.php:1623
@@ -1105,7 +1095,7 @@ msgstr ""
 #: includes/class-user-dashboard.php:1924
 #: includes/class-user-dashboard.php:1974
 msgid "Added Successfully."
-msgstr ""
+msgstr "追加しました。"
 
 #: includes/class-user-dashboard.php:1547
 #: includes/class-user-dashboard.php:1629
@@ -1139,7 +1129,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:504
 #: templates/user-dashboard/candidate/user-my-resume.php:593
 msgid "Present"
-msgstr ""
+msgstr "現在"
 
 #: includes/class-user-dashboard.php:1605
 #: templates/user-dashboard/candidate/user-my-resume.php:512
@@ -1198,7 +1188,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1223
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1273
 msgid "Upload Photo"
-msgstr ""
+msgstr "写真をアップロード"
 
 #: includes/class-user-dashboard.php:1769
 #: includes/common-functions/common-functions.php:1496
@@ -1243,7 +1233,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:918
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1008
 msgid "Experience *"
-msgstr ""
+msgstr "職歴 *"
 
 #: includes/class-user-dashboard.php:1848
 #: includes/meta-boxes/employer-multi-fields/employer-team-fields.php:120
@@ -1277,7 +1267,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1098
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1147
 msgid "Award Title *"
-msgstr ""
+msgstr "資格名 *"
 
 #: includes/class-user-dashboard.php:2035
 msgid "Only an employer can contact this user."
@@ -1306,7 +1296,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:1840
 #: includes/common-functions/employer-functions.php:1846
 msgid "Please Enter your Name."
-msgstr ""
+msgstr "お名前を入力してください。"
 
 #: includes/class-user-dashboard.php:2072
 #: includes/class-user-dashboard.php:2164
@@ -1332,7 +1322,7 @@ msgstr ""
 #: includes/class-user-dashboard.php:2173
 #, php-format
 msgid "Phone Number: %s"
-msgstr ""
+msgstr "電話番号: %s"
 
 #: includes/class-user-dashboard.php:2082
 #, php-format
@@ -1346,7 +1336,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:1816
 #: includes/common-functions/employer-functions.php:1878
 msgid "Mail sent successfully"
-msgstr ""
+msgstr "メールは正常に送信されました"
 
 #: includes/class-user-dashboard.php:2117
 msgid "Only a candidate can contact this user."
@@ -1368,7 +1358,7 @@ msgstr ""
 #: includes/common-functions/common-functions.php:1383
 #, php-format
 msgid "Email : %s"
-msgstr ""
+msgstr "メールアドレス : %s"
 
 #: includes/class-user-dashboard.php:2174
 #: includes/common-functions/common-functions.php:1385
@@ -1413,7 +1403,7 @@ msgstr ""
 #: templates/user-dashboard/user-dashboard-sidebar.php:562
 #: templates/user-dashboard/user-dashboard-sidebar.php:645
 msgid "Dashboard"
-msgstr ""
+msgstr "ダッシュボード"
 
 #: includes/user-account-links.php:109 includes/user-account-links.php:212
 #: includes/user-account-links.php:217 includes/user-account-links.php:410
@@ -1451,7 +1441,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:205
 #: templates/user-dashboard/employer/user-stats.php:404
 msgid "Manage Jobs"
-msgstr ""
+msgstr "求人管理"
 
 #: includes/user-account-links.php:129 includes/user-account-links.php:263
 #: includes/user-account-links.php:268 includes/user-account-links.php:428
@@ -1471,7 +1461,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:207
 #: templates/user-dashboard/employer/user-stats.php:406
 msgid "Saved Candidates"
-msgstr ""
+msgstr "保存された候補者"
 
 #: includes/user-account-links.php:139 includes/user-account-links.php:280
 #: includes/user-account-links.php:285 includes/user-account-links.php:437
@@ -1574,7 +1564,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:211
 #: templates/user-dashboard/employer/user-stats.php:410
 msgid "Change Password"
-msgstr ""
+msgstr "パスワードを変更する"
 
 #: includes/user-account-links.php:195 includes/user-account-links.php:200
 #: includes/user-account-links.php:404
@@ -1588,12 +1578,11 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:203
 #: templates/user-dashboard/employer/user-stats.php:402
 msgid "Company Profile"
-msgstr ""
+msgstr "会社概要"
 
 #: includes/user-account-links.php:246 includes/user-account-links.php:251
 #: includes/user-account-links.php:422
 #: includes/classes/class-employer-all-applicants.php:70
-#: includes/common-functions/applicants-functions.php:24
 #: includes/common-functions/applicants-functions.php:24
 #: includes/common-functions/members-limitations.php:301
 #: modules/packages/packages.php:1139
@@ -1605,7 +1594,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:206
 #: templates/user-dashboard/employer/user-stats.php:405
 msgid "All Applicants"
-msgstr ""
+msgstr "すべての応募者"
 
 #: includes/user-account-links.php:324 includes/user-account-links.php:329
 #: includes/common-functions/members-limitations.php:305
@@ -1632,7 +1621,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:228
 #: templates/user-dashboard/candidate/user-stats.php:459
 msgid "My Profile"
-msgstr ""
+msgstr "プロフィール"
 
 #: includes/user-account-links.php:509 includes/user-account-links.php:514
 #: includes/user-account-links.php:709
@@ -1647,7 +1636,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:460
 #: templates/user-dashboard/candidate/user-my-resume.php:59
 msgid "My Resume"
-msgstr ""
+msgstr "経歴"
 
 #: includes/user-account-links.php:526 includes/user-account-links.php:531
 #: includes/user-account-links.php:715
@@ -1665,7 +1654,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:843
 #: templates/user-dashboard/candidate/user-favourite-jobs.php:36
 msgid "Favorite Jobs"
-msgstr ""
+msgstr "お気に入りの求人"
 
 #: includes/user-account-links.php:543 includes/user-account-links.php:548
 #: includes/user-account-links.php:721
@@ -1680,7 +1669,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:462
 #: templates/user-dashboard/candidate/user-cv-manager.php:82
 msgid "CV Manager"
-msgstr ""
+msgstr "履歴書管理"
 
 #: includes/user-account-links.php:560 includes/user-account-links.php:565
 #: includes/user-account-links.php:727
@@ -1697,7 +1686,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:840
 #: templates/user-dashboard/candidate/user-applied-jobs.php:32
 msgid "Applied Jobs"
-msgstr ""
+msgstr "応募済み求人"
 
 #: includes/user-account-links.php:621 includes/user-account-links.php:626
 #: includes/common-functions/members-limitations.php:63
@@ -1717,21 +1706,21 @@ msgstr ""
 #: templates/user-dashboard/user-dashboard-sidebar.php:942
 #: templates/detail-pages/candidate/view1-candidate.php:202
 msgid "Logout"
-msgstr ""
+msgstr "ログアウト"
 
 #: includes/user-account-links.php:798 includes/user-account-links.php:812
 msgid "Register"
-msgstr ""
+msgstr "新規登録"
 
 #: includes/user-account-links.php:806
 #: modules/login-registration/templates/login-registration-template.php:260
 msgid "Sign Up"
-msgstr ""
+msgstr "新規登録"
 
 #: includes/user-account-links.php:816
 #: modules/login-registration/templates/login-registration-template.php:254
 msgid "Sign In"
-msgstr ""
+msgstr "ログイン"
 
 #: admin/user/user-custom-fields.php:18 admin/user/user-custom-fields.php:55
 msgid "Extra profile information"
@@ -1773,7 +1762,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:504
 #: modules/login-registration/templates/login-registration-template.php:1136
 msgid "Phone Number"
-msgstr ""
+msgstr "電話番号"
 
 #: includes/classes/class-candidate-top-filters.php:33
 #: includes/classes/class-candidate-top-filters.php:34
@@ -1862,7 +1851,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2633
 #: modules/job-alerts/include/job-filters-alerts.php:186
 msgid "Job Type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/classes/class-job-top-filters.php:142
 #: includes/classes/class-job-top-filters.php:143
@@ -1891,7 +1880,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:233
 #: templates/user-dashboard/employer/user-stats.php:432
 msgid "Sector"
-msgstr ""
+msgstr "職種"
 
 #: includes/classes/class-employer-all-applicants.php:74
 msgid "Applied with Email"
@@ -1918,7 +1907,7 @@ msgstr ""
 #: includes/classes/class-employer-all-applicants.php:93
 #: includes/classes/class-employer-email-applicants.php:85
 msgid "Total Applicants "
-msgstr ""
+msgstr "応募数合計"
 
 #: includes/classes/class-employer-all-applicants.php:94
 msgid "Shortlisted Applicants "
@@ -1941,7 +1930,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:658
 #: templates/user-dashboard/employer/user-followers.php:151
 msgid "Subject"
-msgstr ""
+msgstr "件名"
 
 #: includes/classes/class-employer-all-applicants.php:122
 #: includes/classes/class-employer-all-applicants.php:441
@@ -1959,13 +1948,13 @@ msgstr ""
 #: templates/user-dashboard/employer/user-followers.php:128
 #: templates/user-dashboard/employer/user-followers.php:159
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: includes/classes/class-employer-all-applicants.php:130
 #: includes/common-functions/job-functions.php:1097
 #: includes/common-functions/job-functions.php:1339
 msgid "Send"
-msgstr ""
+msgstr "送信"
 
 #: includes/classes/class-employer-all-applicants.php:157
 #: includes/classes/class-employer-email-applicants.php:102
@@ -1995,14 +1984,14 @@ msgstr ""
 #: includes/meta-boxes/job-metabox.php:1376
 #: templates/user-dashboard/employer/user-manage-jobs.php:535
 msgid "(Viewed)"
-msgstr ""
+msgstr "(閲覧済)"
 
 #: includes/classes/class-employer-all-applicants.php:324
 #: includes/common-functions/applicants-functions.php:296
 #: includes/meta-boxes/job-metabox.php:1380
 #: templates/user-dashboard/employer/user-manage-jobs.php:539
 msgid "(Unviewed)"
-msgstr ""
+msgstr "(未閲覧)"
 
 #: includes/classes/class-employer-all-applicants.php:334
 #: includes/common-functions/applicants-functions.php:306
@@ -2022,7 +2011,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:560
 #, php-format
 msgid "Phone: %s"
-msgstr ""
+msgstr "電話番号: %s"
 
 #: includes/classes/class-employer-all-applicants.php:348
 #: includes/classes/class-employer-email-applicants.php:233
@@ -2031,7 +2020,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:569
 #, php-format
 msgid "Applied at: %s"
-msgstr ""
+msgstr "応募日: %s"
 
 #: includes/classes/class-employer-all-applicants.php:353
 #: includes/classes/class-employer-email-applicants.php:238
@@ -2044,14 +2033,14 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:574
 #, php-format
 msgid "Salary: %s"
-msgstr ""
+msgstr "給与: %s"
 
 #: includes/classes/class-employer-all-applicants.php:372
 #: includes/classes/class-jobs-embeddable.php:657
 #: includes/meta-boxes/job-metabox.php:1431
 #: templates/user-dashboard/employer/user-manage-jobs.php:598
 msgid "Preview"
-msgstr ""
+msgstr "プレビュー"
 
 #: includes/classes/class-employer-all-applicants.php:376
 #: includes/classes/class-wc-subscriptions.php:304
@@ -2063,7 +2052,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:745
 #: templates/user-dashboard/employer/user-stats.php:170
 msgid "Actions"
-msgstr ""
+msgstr "アクション"
 
 #: includes/classes/class-employer-all-applicants.php:386
 #: includes/classes/class-employer-all-applicants.php:397
@@ -2088,7 +2077,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-followers.php:80
 #: templates/user-dashboard/employer/user-followers.php:91
 msgid "Download CV"
-msgstr ""
+msgstr "履歴書ダウンロード"
 
 #: includes/classes/class-employer-all-applicants.php:405
 #: templates/user-dashboard/employer/user-manage-jobs.php:419
@@ -2101,13 +2090,13 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:424
 #: templates/user-dashboard/employer/user-manage-jobs.php:635
 msgid "Email to Candidate"
-msgstr ""
+msgstr "候補者にメール"
 
 #: includes/classes/class-employer-all-applicants.php:471
 #: templates/user-dashboard/employer/user-manage-jobs.php:485
 #: templates/user-dashboard/employer/user-manage-jobs.php:696
 msgid "Undo Reject"
-msgstr ""
+msgstr "不合格を外す"
 
 #: includes/classes/class-employer-all-applicants.php:480
 #: includes/common-functions/employer-functions.php:2180
@@ -2121,20 +2110,20 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:688
 #: templates/user-dashboard/employer/user-stats.php:958
 msgid "Shortlisted"
-msgstr ""
+msgstr "登録済"
 
 #: includes/classes/class-employer-all-applicants.php:484
 #: includes/meta-boxes/job-metabox.php:1555
 #: templates/user-dashboard/employer/user-manage-jobs.php:709
 msgid "Shortlist for Interview"
-msgstr ""
+msgstr "面接リストに登録"
 
 #: includes/classes/class-employer-all-applicants.php:493
 #: includes/common-functions/employer-functions.php:2276
 #: includes/meta-boxes/job-metabox.php:1566
 #: templates/user-dashboard/employer/user-manage-jobs.php:718
 msgid "Rejected"
-msgstr ""
+msgstr "不合格"
 
 #: includes/classes/class-employer-all-applicants.php:497
 #: includes/meta-boxes/job-metabox.php:1287
@@ -2143,7 +2132,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:490
 #: templates/user-dashboard/employer/user-manage-jobs.php:722
 msgid "Reject"
-msgstr ""
+msgstr "不合格"
 
 #: includes/classes/class-employer-all-applicants.php:506
 #: includes/common-functions/common-functions.php:1485
@@ -2163,7 +2152,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:494
 #: templates/user-dashboard/employer/user-manage-jobs.php:731
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: includes/classes/class-employer-all-applicants.php:540
 #: includes/common-functions/applicants-functions.php:336
@@ -2191,7 +2180,7 @@ msgstr ""
 #: includes/common-functions/email-applicants.php:172
 #: includes/common-functions/email-applicants.php:382
 msgid "Total Applicants: "
-msgstr ""
+msgstr "応募数合計："
 
 #: includes/classes/class-employer-all-applicants.php:591
 #: includes/common-functions/applicants-functions.php:69
@@ -2219,7 +2208,7 @@ msgstr ""
 #: includes/common-functions/applicants-functions.php:488
 #: includes/common-functions/email-applicants.php:406
 msgid "No applicant found."
-msgstr ""
+msgstr "応募者が見つかりません。"
 
 #: includes/classes/class-employer-all-applicants.php:658
 #: includes/classes/class-employer-email-applicants.php:360
@@ -2415,7 +2404,7 @@ msgstr ""
 #: includes/classes/class-wc-subscriptions.php:543
 msgctxt "table heading"
 msgid "Expiry"
-msgstr ""
+msgstr "期限"
 
 #: includes/classes/class-wc-subscriptions.php:322
 #: includes/classes/class-wc-subscriptions.php:570
@@ -2441,14 +2430,14 @@ msgstr ""
 #: templates/user-dashboard/employer/user-packages.php:390
 #: templates/user-dashboard/employer/user-followers.php:213
 msgid "No record found."
-msgstr ""
+msgstr "見つかりません。"
 
 #: includes/classes/class-wc-subscriptions.php:441
 #: includes/meta-boxes/candidate-metabox.php:1014
 #: includes/classes/email-templates/class-candidates-package-expire-alert.php:79
 #: templates/user-dashboard/candidate/user-packages.php:60
 msgid "Total Applications"
-msgstr ""
+msgstr "応募数合計"
 
 #: includes/classes/class-candidate-filters.php:390
 #: includes/classes/class-employer-filters.php:568
@@ -2507,7 +2496,7 @@ msgstr ""
 #: includes/classes/class-jobs-embeddable.php:543
 #: modules/job-alerts/include/job-filters-alerts.php:27
 msgid "Keyword"
-msgstr ""
+msgstr "キーワード"
 
 #: includes/classes/class-jobs-embeddable.php:545
 msgid "Enter a keyword to search"
@@ -3019,7 +3008,6 @@ msgstr ""
 #: modules/locations/include/location-settings.php:257
 #: modules/locations/include/location-settings.php:763
 #: modules/locations/include/location-settings.php:1454
-#: modules/locations/include/location-settings.php:1454
 #: modules/locations/include/location-settings.php:1470
 msgid "Select State"
 msgstr ""
@@ -3042,7 +3030,6 @@ msgstr ""
 #: modules/locations/include/locations-vc-hooks.php:161
 #: modules/locations/include/location-settings.php:263
 #: modules/locations/include/location-settings.php:1402
-#: modules/locations/include/location-settings.php:1402
 #: modules/locations/include/location-settings.php:1418
 msgid "Select City"
 msgstr ""
@@ -3054,7 +3041,7 @@ msgstr ""
 #: modules/indeed-jobs-import/indeed-jobs.php:39
 #: modules/custom-fields/include/custom-fields-load.php:4161
 msgid "Submit"
-msgstr ""
+msgstr "設定"
 
 #: includes/classes/class-employer-filters.php:1092
 #: includes/classes/class-job-filters.php:877
@@ -3064,7 +3051,7 @@ msgstr ""
 #: includes/classes/class-job-filters.php:60
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2630
 msgid "Keyword Search"
-msgstr ""
+msgstr "キーワード検索"
 
 #: includes/classes/class-job-filters.php:67
 #: shortcodes/vc-shortcodes/advance-search.php:115
@@ -3072,7 +3059,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:186
 #: includes/shortcode-builder/shortcodes/job-listings.php:245
 msgid "Job Title, Keywords, or Phrase"
-msgstr ""
+msgstr "キーワード・市区町村等"
 
 #: includes/common-functions/email-applicants.php:30
 msgctxt "post type general name"
@@ -3124,11 +3111,11 @@ msgstr ""
 
 #: includes/common-functions/email-applicants.php:42
 msgid "No applicants found."
-msgstr ""
+msgstr "応募者が見つかりません。"
 
 #: includes/common-functions/email-applicants.php:43
 msgid "No applicants found in Trash."
-msgstr ""
+msgstr "応募者が見つかりません。"
 
 #: includes/common-functions/email-applicants.php:48
 #: includes/common-functions/job-desc-templates.php:43
@@ -3257,7 +3244,7 @@ msgstr ""
 #: includes/common-functions/common-functions.php:1384
 #, php-format
 msgid "Phone Number : %s"
-msgstr ""
+msgstr "電話番号 : %s"
 
 #: includes/common-functions/common-functions.php:1389
 #: includes/common-functions/job-functions.php:1256
@@ -3299,12 +3286,12 @@ msgstr ""
 #: includes/common-functions/common-functions.php:2123
 #: includes/common-functions/employer-functions.php:3030
 msgid "Please select "
-msgstr ""
+msgstr "選択："
 
 #: includes/common-functions/common-functions.php:2484
 #, php-format
 msgid "%1$s %2$s ago"
-msgstr ""
+msgstr "%1$s %2$s 前"
 
 #: includes/common-functions/common-functions.php:3372
 msgid "Only image files are allowed to upload."
@@ -3365,7 +3352,7 @@ msgstr ""
 #: modules/reviews/include/dashboard.php:204
 #: templates/user-dashboard/employer/user-manage-jobs.php:162
 msgid "Recent"
-msgstr ""
+msgstr "新しい順"
 
 #: includes/common-functions/common-functions.php:4714
 #: includes/common-functions/job-functions.php:432
@@ -3391,19 +3378,19 @@ msgstr ""
 #: includes/classes/email-templates/class-job-submitted-admin.php:326
 #: templates/user-dashboard/employer/user-manage-jobs.php:844
 msgid "Featured"
-msgstr ""
+msgstr "オススメ"
 
 #: includes/common-functions/common-functions.php:4715
 #: modules/locations/include/location-settings.php:347
 msgid "Alphabetical"
-msgstr ""
+msgstr "アルファベット順"
 
 #: includes/common-functions/common-functions.php:4716
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1541
 #: shortcodes/vc-shortcodes/employer-shortcode.php:1223
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1560
 msgid "Most Viewed"
-msgstr ""
+msgstr "閲覧数順"
 
 #: includes/common-functions/common-functions.php:5182
 #: includes/common-functions/dashboard-notifications.php:724
@@ -3417,9 +3404,11 @@ msgstr ""
 #: includes/common-functions/common-functions.php:5785
 #, php-format
 msgid ""
-"You accept our <a href=\"%s\">Terms and Conditions</a> and <a href=\"%s\">"
-"Privacy Policy</a>"
+"You accept our <a href=\"%s\">Terms and Conditions</a> and <a href=\"%s"
+"\">Privacy Policy</a>"
 msgstr ""
+"当サイトの <a href=“%s”>利用規約</a> と <a href=“%s”>プライバシーポリシー</"
+"a> に同意します"
 
 #: includes/common-functions/common-functions.php:5793
 #, php-format
@@ -3578,7 +3567,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1433
 #: templates/user-dashboard/candidate/user-my-resume.php:180
 msgid "Suggested Skills"
-msgstr ""
+msgstr "候補"
 
 #: includes/common-functions/job-functions.php:698
 #: includes/common-functions/job-functions.php:723
@@ -3628,7 +3617,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-memb-dashboard.php:59
 #: templates/user-dashboard/employer/user-dashboard-settings.php:163
 msgid "Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: includes/common-functions/job-functions.php:1126
 msgid "Required 'Candidate' login for send message"
@@ -3642,7 +3631,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:1128
 #: includes/common-functions/job-functions.php:1157
 msgid "logout"
-msgstr ""
+msgstr "ログアウト"
 
 #: includes/common-functions/job-functions.php:1129
 #: includes/common-functions/job-functions.php:1158
@@ -3676,7 +3665,7 @@ msgstr ""
 #: modules/reviews/include/frontend.php:147
 #: templates/user-dashboard/employer/user-dashboard-settings.php:653
 msgid "Email Address"
-msgstr ""
+msgstr "メールアドレス"
 
 #: includes/common-functions/job-functions.php:1382
 #: includes/common-functions/job-functions.php:1399
@@ -3722,7 +3711,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:1610
 #: includes/meta-boxes/job-metabox.php:245
 msgid "Expiry Date"
-msgstr ""
+msgstr "有効期限"
 
 #: includes/common-functions/job-functions.php:1614
 msgid "Choose Date"
@@ -3741,7 +3730,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:1952
 #: includes/common-functions/job-functions.php:2019
 msgid "Successfully Applied"
-msgstr ""
+msgstr "正常に処理しました。"
 
 #: includes/common-functions/job-functions.php:1837
 #: includes/common-functions/job-functions.php:1892
@@ -3749,7 +3738,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2020
 #: modules/job-application/include/job-application-load.php:1570
 msgid "Applied"
-msgstr ""
+msgstr "応募済"
 
 #: includes/common-functions/job-functions.php:1885
 #: includes/common-functions/job-functions.php:1946
@@ -3759,7 +3748,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:1890
 msgid "Apply to this job"
-msgstr ""
+msgstr "この求人に応募する"
 
 #: includes/common-functions/job-functions.php:1905
 msgid "oR Apply with"
@@ -3767,7 +3756,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:1951
 msgid "Apply for this job"
-msgstr ""
+msgstr "応募する"
 
 #: includes/common-functions/job-functions.php:1966
 msgid "OR Apply with"
@@ -3787,7 +3776,7 @@ msgstr ""
 
 #: includes/common-functions/job-functions.php:2018
 msgid "Apply for the job"
-msgstr ""
+msgstr "応募する"
 
 #: includes/common-functions/job-functions.php:2040
 msgid "y"
@@ -3812,7 +3801,7 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2047
 #, php-format
 msgid "Application ends in %s"
-msgstr ""
+msgstr "応募締め切りまで %s"
 
 #: includes/common-functions/job-functions.php:2062
 msgid "OR apply with"
@@ -3857,17 +3846,17 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2432
 #, php-format
 msgid "Displayed Here: %s Jobs"
-msgstr ""
+msgstr "表示中： %s 件"
 
 #: includes/common-functions/job-functions.php:2464
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1536
 msgid "Job Found"
-msgstr ""
+msgstr "件の求人が見つかりました"
 
 #: includes/common-functions/job-functions.php:2466
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1538
 msgid "Jobs Found"
-msgstr ""
+msgstr "件"
 
 #: includes/common-functions/job-functions.php:2750
 #, php-format
@@ -3882,12 +3871,12 @@ msgstr ""
 #: includes/common-functions/job-functions.php:2756
 #, php-format
 msgid "%s Vacancy"
-msgstr ""
+msgstr "%s 件"
 
 #: includes/common-functions/job-functions.php:2758
 #, php-format
 msgid "%s Vacancies"
-msgstr ""
+msgstr "%s 件"
 
 #: includes/common-functions/candidate-restrictions.php:164
 #: includes/common-functions/candidate-functions.php:2903
@@ -3900,7 +3889,7 @@ msgstr ""
 
 #: includes/common-functions/candidate-functions.php:736
 msgid "Full Name"
-msgstr ""
+msgstr "氏名"
 
 #: includes/common-functions/candidate-functions.php:739
 #: includes/meta-boxes/employer-multi-fields/employer-team-fields.php:107
@@ -3955,13 +3944,13 @@ msgstr ""
 
 #: includes/common-functions/candidate-functions.php:777
 msgid "Complete Address"
-msgstr ""
+msgstr "完全な住所"
 
 #: includes/common-functions/candidate-functions.php:782
 #: modules/job-application/include/job-application-load.php:407
 #: modules/job-application/include/job-application-load.php:1076
 msgid "Resume"
-msgstr ""
+msgstr "履歴書"
 
 #: includes/common-functions/candidate-functions.php:785
 #: modules/packages/packages.php:720 modules/packages/packages.php:973
@@ -3974,7 +3963,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:242
 #: templates/user-dashboard/candidate/user-my-resume.php:255
 msgid "Education"
-msgstr ""
+msgstr "学歴"
 
 #: includes/common-functions/candidate-functions.php:788
 #: modules/packages/packages.php:733 modules/packages/packages.php:986
@@ -3989,7 +3978,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:407
 #: templates/user-dashboard/candidate/user-my-resume.php:427
 msgid "Experience"
-msgstr ""
+msgstr "職歴"
 
 #: includes/common-functions/candidate-functions.php:791
 #: modules/packages/packages.php:746 modules/packages/packages.php:999
@@ -4023,7 +4012,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:943
 #: templates/user-dashboard/candidate/user-my-resume.php:957
 msgid "Honors & Awards"
-msgstr ""
+msgstr "資格・免許"
 
 #: includes/common-functions/candidate-functions.php:802
 msgid "CV &amp; Cover Letter"
@@ -4041,7 +4030,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:855
 #, php-format
 msgid "<small> %s </small> Increase profile score by Profile Image."
-msgstr ""
+msgstr "<small> %s </small> プロフィール画像を登録。"
 
 #: includes/common-functions/candidate-functions.php:867
 #, php-format
@@ -4056,7 +4045,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:891
 #, php-format
 msgid "<small> %s </small> Increase profile score by Sector."
-msgstr ""
+msgstr "<small> %s </small> 希望職種を入力。"
 
 #: includes/common-functions/candidate-functions.php:904
 #, php-format
@@ -4070,12 +4059,12 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:1025
 #, php-format
 msgid "<small> %s </small> Increase profile score by %s."
-msgstr ""
+msgstr "<small> %s </small> %s を入力。"
 
 #: includes/common-functions/candidate-functions.php:989
 #, php-format
 msgid "<small> %s </small> Increase profile score by CV."
-msgstr ""
+msgstr "<small> %s </small> CVファイルをアップロード。"
 
 #: includes/common-functions/candidate-functions.php:999
 #, php-format
@@ -4086,7 +4075,7 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:1171
 #: templates/user-dashboard/user-dashboard-sidebar.php:194
 msgid "Profile Completion"
-msgstr ""
+msgstr "プロフィール完成"
 
 #: includes/common-functions/candidate-functions.php:1065
 #: modules/locations/locations.php:1837
@@ -4491,27 +4480,27 @@ msgstr ""
 #: includes/common-functions/candidate-functions.php:2096
 #: includes/common-functions/candidate-functions.php:2101
 msgid "Urgent"
-msgstr ""
+msgstr "急募"
 
 #: includes/common-functions/candidate-functions.php:2098
 msgid "urgent"
-msgstr ""
+msgstr "急募"
 
 #: includes/common-functions/candidate-functions.php:2220
 #: includes/common-functions/candidate-functions.php:2228
 #, php-format
 msgid "Displayed Here: %s Candidates"
-msgstr ""
+msgstr "表示中： %s 人"
 
 #: includes/common-functions/candidate-functions.php:2379
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1521
 msgid "Candidate Found"
-msgstr ""
+msgstr "人の候補者を表示中"
 
 #: includes/common-functions/candidate-functions.php:2381
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1519
 msgid "Candidates Found"
-msgstr ""
+msgstr "人の候補者を表示中"
 
 #: includes/common-functions/candidate-functions.php:2667
 #: modules/locations/locations.php:44 modules/locations/locations.php:108
@@ -4526,7 +4515,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/advance-search.php:62
 #: includes/shortcode-builder/shortcodes/advance-search.php:113
 msgid "Please select"
-msgstr ""
+msgstr "選択："
 
 #: includes/common-functions/candidate-functions.php:2997
 msgid "Email Verification"
@@ -4554,7 +4543,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2756
 #: templates/user-dashboard/employer/user-manage-jobs.php:881
 msgid "Approved"
-msgstr ""
+msgstr "承認済"
 
 #: includes/common-functions/dashboard-notifications.php:75
 #: includes/common-functions/dashboard-notifications.php:383
@@ -4577,8 +4566,8 @@ msgstr ""
 #: includes/common-functions/dashboard-notifications.php:691
 #, php-format
 msgid ""
-"You are rejected for interview the job '<a href=\"%s\">%s</a>' by '<a "
-"href=\"%s\">%s</a>' you applied."
+"You are rejected for interview the job '<a href=\"%s\">%s</a>' by '<a href="
+"\"%s\">%s</a>' you applied."
 msgstr ""
 
 #: includes/common-functions/dashboard-notifications.php:84
@@ -4595,22 +4584,22 @@ msgstr ""
 #: includes/common-functions/dashboard-notifications.php:594
 #: includes/common-functions/dashboard-notifications.php:715
 msgid "Notifications"
-msgstr ""
+msgstr "お知らせ"
 
 #: includes/common-functions/dashboard-notifications.php:143
 #: includes/common-functions/dashboard-notifications.php:253
 msgid "Notifications List"
-msgstr ""
+msgstr "通知リスト"
 
 #: includes/common-functions/dashboard-notifications.php:144
 #: includes/common-functions/dashboard-notifications.php:254
 #: templates/user-dashboard/employer/user-shortlisted-resumes.php:73
 msgid "Settings"
-msgstr ""
+msgstr "設定"
 
 #: includes/common-functions/dashboard-notifications.php:164
 msgid "Notify me on new job post"
-msgstr ""
+msgstr "新しい求人が登録されたとき"
 
 #: includes/common-functions/dashboard-notifications.php:172
 msgid "Notify me when Shortlist for Interview"
@@ -4625,11 +4614,11 @@ msgstr ""
 #: includes/common-functions/dashboard-notifications.php:597
 #: includes/common-functions/dashboard-notifications.php:729
 msgid "You have no notifications."
-msgstr ""
+msgstr "通知はありません。"
 
 #: includes/common-functions/dashboard-notifications.php:271
 msgid "Notify me on apply job"
-msgstr ""
+msgstr "候補者から応募があったとき"
 
 #: includes/common-functions/dashboard-notifications.php:378
 msgid "Read less"
@@ -4669,7 +4658,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:375
 #: includes/common-functions/employer-functions.php:436
 msgid "Save Candidate"
-msgstr ""
+msgstr "保存"
 
 #: includes/common-functions/employer-functions.php:412
 msgid "Choose Type"
@@ -4688,7 +4677,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:556
 #: includes/common-functions/employer-functions.php:632
 msgid "Resume added to the list."
-msgstr ""
+msgstr "リストに追加されました。"
 
 #: includes/common-functions/employer-functions.php:636
 #: modules/job-application/include/job-application-load.php:1512
@@ -4719,7 +4708,7 @@ msgstr ""
 #: templates/detail-pages/candidate/view1-candidate.php:379
 #, php-format
 msgid "Member Since, %s"
-msgstr ""
+msgstr "登録日： %s"
 
 #: includes/common-functions/employer-functions.php:803
 msgid "Only an Employer can download a resume."
@@ -4729,7 +4718,7 @@ msgstr ""
 #: templates/detail-pages/employer/view1-employer.php:462
 #, php-format
 msgid "Experience: %s"
-msgstr ""
+msgstr "職歴: %s"
 
 #: includes/common-functions/employer-functions.php:1760
 msgid "Please Enter subject."
@@ -4741,7 +4730,7 @@ msgstr ""
 
 #: includes/common-functions/employer-functions.php:1922
 msgid "Undo Rejection"
-msgstr ""
+msgstr "不合格を外す"
 
 #: includes/common-functions/employer-functions.php:2148
 msgid "Deleted"
@@ -4788,7 +4777,7 @@ msgstr ""
 #: includes/common-functions/employer-functions.php:2648
 #: modules/login-registration/include/login-registration-submit.php:461
 msgid "Confirm password does not match."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 #: includes/common-functions/employer-functions.php:2716
 msgid "This member has been added to your profile successfully."
@@ -4958,7 +4947,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:231
 #: templates/user-dashboard/employer/user-stats.php:430
 msgid "Phone"
-msgstr ""
+msgstr "電話番号"
 
 #: includes/meta-boxes/candidate-metabox.php:455
 msgid "Urgent Candidate"
@@ -5036,7 +5025,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:552
 #: templates/user-dashboard/employer/user-dashboard-settings.php:459
 msgid "Social Links"
-msgstr ""
+msgstr "SNSアカウント"
 
 #: includes/meta-boxes/candidate-metabox.php:749
 msgid "CV Files"
@@ -5200,7 +5189,7 @@ msgstr ""
 
 #: includes/meta-boxes/job-metabox.php:577
 msgid "Filled listings will no longer accept applications."
-msgstr ""
+msgstr "一時的に応募を受け付けないときはONにしてください。"
 
 #: includes/meta-boxes/job-metabox.php:585
 #: modules/indeed-jobs-import/include/indeed-jobs-hooks.php:254
@@ -5245,7 +5234,7 @@ msgstr ""
 #: includes/meta-boxes/employer-metabox.php:718 includes/post-types/job.php:562
 #: templates/user-dashboard/employer/user-manage-jobs.php:879
 msgid "Canceled"
-msgstr ""
+msgstr "キャンセルしました"
 
 #: includes/meta-boxes/job-metabox.php:877
 msgid "Add Attachment"
@@ -5285,7 +5274,7 @@ msgstr ""
 #: includes/meta-boxes/job-metabox.php:1056
 #: includes/meta-boxes/job-metabox.php:1091
 msgid "Applicants"
-msgstr ""
+msgstr "応募者"
 
 #: includes/meta-boxes/job-metabox.php:1078
 msgid "Save Job Applicants"
@@ -5295,24 +5284,24 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:133
 #, php-format
 msgid "Applicants (%s)"
-msgstr ""
+msgstr "応募者 (%s)"
 
 #: includes/meta-boxes/job-metabox.php:1154
 #: templates/user-dashboard/employer/user-manage-jobs.php:134
 #, php-format
 msgid "Shortlisted for Interview (%s)"
-msgstr ""
+msgstr "面接リスト (%s)"
 
 #: includes/meta-boxes/job-metabox.php:1157
 #: templates/user-dashboard/employer/user-manage-jobs.php:135
 #, php-format
 msgid "Rejected (%s)"
-msgstr ""
+msgstr "不合格 (%s)"
 
 #: includes/meta-boxes/job-metabox.php:1165
 #: templates/user-dashboard/employer/user-manage-jobs.php:142
 msgid "Select all"
-msgstr ""
+msgstr "すべて選択"
 
 #: includes/meta-boxes/job-metabox.php:1184
 #: modules/reviews/include/dashboard.php:200
@@ -5320,7 +5309,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:160
 #: templates/user-dashboard/employer/user-manage-jobs.php:161
 msgid "Sort by"
-msgstr ""
+msgstr "並び替え"
 
 #: includes/meta-boxes/job-metabox.php:1186
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1540
@@ -5328,7 +5317,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1559
 #: templates/user-dashboard/employer/user-manage-jobs.php:163
 msgid "Alphabet Order"
-msgstr ""
+msgstr "アルファベット順"
 
 #: includes/meta-boxes/job-metabox.php:1187
 #: templates/user-dashboard/employer/user-manage-jobs.php:164
@@ -5340,13 +5329,13 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:165
 #: templates/user-dashboard/employer/user-manage-jobs.php:368
 msgid "Viewed"
-msgstr ""
+msgstr "閲覧済"
 
 #: includes/meta-boxes/job-metabox.php:1189
 #: templates/user-dashboard/employer/user-manage-jobs.php:166
 #: templates/user-dashboard/employer/user-manage-jobs.php:368
 msgid "Unviewed"
-msgstr ""
+msgstr "未閲覧"
 
 #: includes/meta-boxes/job-metabox.php:1207
 #: templates/user-dashboard/employer/user-manage-jobs.php:183
@@ -5356,7 +5345,7 @@ msgstr ""
 #: includes/meta-boxes/job-metabox.php:1212
 #: templates/user-dashboard/employer/user-manage-jobs.php:186
 msgid "Email to Candidates"
-msgstr ""
+msgstr "候補者にメール"
 
 #: includes/meta-boxes/job-metabox.php:1282
 #: modules/indeed-jobs-import/include/indeed-jobs-frontend-view.php:80
@@ -5409,19 +5398,19 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:909
 #, php-format
 msgid "Created: <span>%s</span>"
-msgstr ""
+msgstr "登録日: <span>%s</span>"
 
 #: includes/meta-boxes/employer-metabox.php:754
 #: templates/user-dashboard/employer/user-manage-jobs.php:914
 #, php-format
 msgid "Expiry: <span>%s</span>"
-msgstr ""
+msgstr "有効期限: <span>%s</span>"
 
 #: includes/meta-boxes/employer-metabox.php:777
 #: templates/user-dashboard/employer/user-manage-jobs.php:958
 #, php-format
 msgid "%s Application(s)"
-msgstr ""
+msgstr "%s 件"
 
 #: includes/meta-boxes/employer-metabox.php:1196
 #: templates/user-dashboard/employer/user-packages.php:330
@@ -5566,7 +5555,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:241
 #: templates/user-dashboard/employer/user-dashboard-settings.php:659
 msgid "Password:"
-msgstr ""
+msgstr "パスワード:"
 
 #: includes/meta-boxes/employer-metabox.php:1303
 #: includes/classes/email-templates/class-new-candidate-approval.php:81
@@ -5579,12 +5568,12 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:1387
 #: templates/user-dashboard/employer/user-dashboard-settings.php:660
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: includes/meta-boxes/employer-metabox.php:1306
 #: templates/user-dashboard/employer/user-dashboard-settings.php:663
 msgid "Confirm Password:"
-msgstr ""
+msgstr "パスワード（確認）:"
 
 #: includes/meta-boxes/employer-metabox.php:1308
 #: modules/login-registration/include/login-registration-submit.php:408
@@ -5592,7 +5581,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:1392
 #: templates/user-dashboard/employer/user-dashboard-settings.php:664
 msgid "Confirm Password"
-msgstr ""
+msgstr "パスワード（確認）"
 
 #: includes/meta-boxes/employer-metabox.php:1312
 #: includes/meta-boxes/employer-metabox.php:1460
@@ -5707,7 +5696,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/employer-shortcode.php:691
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:968
 msgid "City, State or ZIP"
-msgstr ""
+msgstr "都道府県、市区町村"
 
 #: includes/post-types/candidate.php:170
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1055
@@ -5744,7 +5733,7 @@ msgstr ""
 #: includes/post-types/candidate.php:676 includes/post-types/job.php:349
 #: includes/post-types/employer.php:306
 msgid "Action"
-msgstr ""
+msgstr "アクション"
 
 #: includes/post-types/candidate.php:697 includes/post-types/email.php:138
 #: includes/post-types/job.php:374 includes/post-types/employer.php:330
@@ -5926,7 +5915,7 @@ msgstr ""
 
 #: includes/post-types/job.php:98
 msgid "Search Jobs"
-msgstr ""
+msgstr "求人検索"
 
 #: includes/post-types/job.php:99
 msgid "Parent Jobs:"
@@ -5981,7 +5970,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:675
 #: templates/user-dashboard/employer/user-stats.php:587
 msgid "Expiry"
-msgstr ""
+msgstr "期限"
 
 #: includes/post-types/job.php:345
 msgid "Posted By "
@@ -6019,7 +6008,7 @@ msgstr ""
 #: includes/post-types/job.php:885
 msgctxt "taxonomy singular name"
 msgid "Job Type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/post-types/job.php:886
 msgid "Search Job Types"
@@ -6117,7 +6106,7 @@ msgstr ""
 #: templates/detail-pages/candidate/view1-candidate.php:954
 #: templates/user-dashboard/candidate/user-my-resume.php:116
 msgid "Skills"
-msgstr ""
+msgstr "スキル"
 
 #: includes/post-types/employer.php:57
 msgctxt "post type general name"
@@ -6198,7 +6187,7 @@ msgstr ""
 #: includes/post-types/employer.php:303
 #: templates/detail-pages/employer/view1-employer.php:326
 msgid "Posted Jobs"
-msgstr ""
+msgstr "登録求人"
 
 #: includes/post-types/employer.php:548
 msgctxt "taxonomy general name"
@@ -6386,7 +6375,7 @@ msgstr ""
 #: includes/shortcode-builder/class-shortcode-insert.php:391
 #: templates/user-dashboard/user-dashboard-sidebar.php:983
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: includes/single-pages/single-job.php:61
 msgid "Back to Home"
@@ -6507,7 +6496,7 @@ msgstr ""
 
 #: includes/widgets/flickr.php:195 includes/widgets/flickr.php:221
 msgid "No results found."
-msgstr ""
+msgstr "見つかりません。"
 
 #: includes/widgets/flickr.php:198 includes/widgets/flickr.php:201
 msgid "Error: "
@@ -6628,18 +6617,18 @@ msgstr ""
 
 #: modules/job-alerts/job-alerts.php:53
 msgid "Please enter an alert name."
-msgstr ""
+msgstr "ジョブアラート名を入力してください。"
 
 #: modules/job-alerts/job-alerts.php:54
 #: modules/job-alerts/include/job-alerts-hooks.php:576
 #: modules/job-alerts/include/job-alerts-hooks.php:692
 msgid "Create Alert"
-msgstr ""
+msgstr "ジョブアラート登録"
 
 #: modules/job-alerts/job-alerts.php:55
 #: modules/job-alerts/include/job-alerts-hooks.php:838
 msgid "Save Jobs Alert"
-msgstr ""
+msgstr "保存"
 
 #: modules/job-alerts/job-alerts.php:119
 #: modules/job-alerts/include/job-alerts-hooks.php:105
@@ -6664,7 +6653,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:643
 #: modules/job-alerts/include/job-alerts-hooks.php:795
 msgid "Monthly"
-msgstr ""
+msgstr "毎月"
 
 #: modules/job-alerts/job-alerts.php:128
 #: modules/job-alerts/include/job-alerts-hooks.php:141
@@ -6672,7 +6661,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:642
 #: modules/job-alerts/include/job-alerts-hooks.php:794
 msgid "Fortnightly"
-msgstr ""
+msgstr "隔週"
 
 #: modules/job-alerts/job-alerts.php:131
 #: admin/ReduxFramework/jobsearch-options/options-config.php:396
@@ -6681,7 +6670,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:641
 #: modules/job-alerts/include/job-alerts-hooks.php:793
 msgid "Weekly"
-msgstr ""
+msgstr "毎週"
 
 #: modules/job-alerts/job-alerts.php:134
 #: modules/job-alerts/include/job-alerts-hooks.php:165
@@ -6689,7 +6678,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:640
 #: modules/job-alerts/include/job-alerts-hooks.php:792
 msgid "Daily"
-msgstr ""
+msgstr "毎日"
 
 #: modules/job-application/job-application.php:97
 msgid "There is some error."
@@ -6722,15 +6711,15 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:679
 #: templates/user-dashboard/employer/user-dashboard-settings.php:591
 msgid "Address / Location"
-msgstr ""
+msgstr "住所"
 
 #: modules/locations/locations.php:1273 modules/locations/locations.php:2159
 msgid "Full Address"
-msgstr ""
+msgstr "住所"
 
 #: modules/locations/locations.php:1276
 msgid "Full Address *"
-msgstr ""
+msgstr "住所 *"
 
 #: modules/locations/locations.php:1302
 msgid "Enter a location"
@@ -6746,7 +6735,7 @@ msgstr ""
 
 #: modules/locations/locations.php:1368
 msgid "For the precise location, you can drag and drop the pin."
-msgstr ""
+msgstr "ピンを正確な位置に移動してください。"
 
 #: modules/locations/locations.php:1789
 msgid "Location Settings"
@@ -7220,7 +7209,7 @@ msgstr ""
 
 #: modules/packages/packages.php:75 modules/packages/packages.php:148
 msgid "Featured Job only"
-msgstr ""
+msgstr "オススメ求人のみ"
 
 #: modules/packages/packages.php:75
 msgid "This package is for employers to post featured jobs only."
@@ -7787,7 +7776,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1557
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1569
 msgid "Most Recent"
-msgstr ""
+msgstr "新しい順"
 
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1561
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1575
@@ -7796,7 +7785,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1581
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1595
 msgid "Records Per Page"
-msgstr ""
+msgstr "1ページ表示件数"
 
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1562
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1563
@@ -7820,7 +7809,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1587
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:1588
 msgid "Per Page"
-msgstr ""
+msgstr "件"
 
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1634
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:1656
@@ -7869,8 +7858,6 @@ msgstr ""
 
 #: shortcodes/vc-shortcodes/candidate-shortcode.php:2505
 #: shortcodes/vc-shortcodes/employer-shortcode.php:2123
-#: shortcodes/vc-shortcodes/employer-shortcode.php:2123
-#: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:2695
 #: shortcodes/vc-shortcodes/jobs-listing-shortcode.php:2695
 msgid "Clear all"
 msgstr ""
@@ -7890,7 +7877,7 @@ msgstr ""
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:418
 #, php-format
 msgid "Update \"%s\""
-msgstr ""
+msgstr "更新 “%s”"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:429
 #: templates/detail-pages/job/view1-job.php:265
@@ -7915,7 +7902,7 @@ msgstr ""
 #: modules/job-alerts/include/job-filters-alerts.php:292
 #: modules/job-alerts/include/job-filters-alerts.php:383
 msgid "Select"
-msgstr ""
+msgstr "選択"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:521
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:862
@@ -7971,12 +7958,12 @@ msgstr ""
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1174
 msgid "Description *"
-msgstr ""
+msgstr "説明文 *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1204
 #: modules/login-registration/templates/login-registration-template.php:426
 msgid "Email Address *"
-msgstr ""
+msgstr "メールアドレス *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1212
 msgid "Username *"
@@ -7998,13 +7985,13 @@ msgstr ""
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1308
 msgid "Job Type *"
-msgstr ""
+msgstr "雇用形態 *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1379
 #: templates/user-dashboard/candidate/user-my-resume.php:129
 #: templates/user-dashboard/candidate/user-my-resume.php:149
 msgid "Add Skills"
-msgstr ""
+msgstr "スキルを追加"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1383
 #: templates/user-dashboard/candidate/user-my-resume.php:133
@@ -8075,37 +8062,37 @@ msgstr ""
 #: templates/employers/filters-employer-template.php:30
 #: templates/jobs/filters-job-template.php:41
 msgid "Filter Sorting"
-msgstr ""
+msgstr "検索"
 
 #: templates/candidates/view-default-candidate-template.php:233
 #: templates/employers/view-default-employer-template.php:281
 #: templates/jobs/view-default-job-template.php:388
 msgid "No Record"
-msgstr ""
+msgstr "見つかりません"
 
 #: templates/candidates/view-default-candidate-template.php:234
 #: templates/employers/view-default-employer-template.php:282
 #: templates/jobs/view-default-job-template.php:389
 msgid "Sorry!"
-msgstr ""
+msgstr " "
 
 #: templates/candidates/view-default-candidate-template.php:234
 #: templates/employers/view-default-employer-template.php:282
 #: templates/jobs/view-default-job-template.php:389
 msgid "Does not match record with your keyword"
-msgstr ""
+msgstr "レコードとキーワードが一致しません　"
 
 #: templates/candidates/view-default-candidate-template.php:235
 #: templates/employers/view-default-employer-template.php:283
 #: templates/jobs/view-default-job-template.php:390
 msgid "Change your filter keywords to re-submit"
-msgstr ""
+msgstr "フィルターのキーワードを変更して再送信してください　"
 
 #: templates/candidates/view-default-candidate-template.php:237
 #: templates/employers/view-default-employer-template.php:285
 #: templates/jobs/view-default-job-template.php:392
 msgid "Reset Filters"
-msgstr ""
+msgstr "　フィルターをリセットする"
 
 #: templates/employers/view-default-employer-template.php:228
 msgid "team size"
@@ -8137,7 +8124,7 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-email-template.php:284
 #, php-format
 msgid "Published %s"
-msgstr ""
+msgstr "公開日 %s"
 
 #: templates/user-dashboard/user-change-password.php:50
 #: templates/user-dashboard/candidate/user-my-resume.php:68
@@ -8169,15 +8156,15 @@ msgstr ""
 #: templates/user-dashboard/user-change-password.php:74
 #: modules/login-registration/include/login-registration-submit.php:458
 msgid "Password changed successfully."
-msgstr ""
+msgstr "パスワードの変更が完了しました。"
 
 #: templates/user-dashboard/user-change-password.php:82
 msgid "Old Password *"
-msgstr ""
+msgstr "現在のパスワード *"
 
 #: templates/user-dashboard/user-change-password.php:86
 msgid "New Password *"
-msgstr ""
+msgstr "新しいパスワード *"
 
 #: templates/user-dashboard/user-change-password.php:124
 #: templates/user-dashboard/user-change-password.php:146
@@ -8186,15 +8173,15 @@ msgstr ""
 
 #: templates/user-dashboard/user-change-password.php:170
 msgid "Update Password"
-msgstr ""
+msgstr "パスワードを変更"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:111
 msgid "Upload Company Logo"
-msgstr ""
+msgstr "会社ロゴアップロード"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:156
 msgid "Complete Profile"
-msgstr ""
+msgstr "プロフィール完成させよう"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:206
 msgid "Minimum Required"
@@ -8206,20 +8193,20 @@ msgstr ""
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:212
 msgid "Improve your profile"
-msgstr ""
+msgstr "必要な入力項目"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:951
 #: templates/user-dashboard/user-dashboard-sidebar.php:982
 msgid "Delete Profile"
-msgstr ""
+msgstr "アカウントを削除"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:974
 msgid "This can't be undone!"
-msgstr ""
+msgstr "この操作はやり直しができません！"
 
 #: templates/user-dashboard/user-dashboard-sidebar.php:977
 msgid "Please enter your login Password to confirm"
-msgstr ""
+msgstr "ログイン時のパスワードを入力してください。"
 
 #: templates/embed-jobs/embeddable-code.php:17
 msgid "Jobs From"
@@ -8820,8 +8807,8 @@ msgstr ""
 #, php-format
 msgid ""
 "Enable/Disable and reorder candidate dashboard menu items however you want. "
-"You can add custom dashboard menu from <a href=\"%s\" target=\"_blank\">"
-"here</a>"
+"You can add custom dashboard menu from <a href=\"%s\" target=\"_blank"
+"\">here</a>"
 msgstr ""
 
 #: admin/ReduxFramework/jobsearch-options/options-config.php:1191
@@ -9767,7 +9754,7 @@ msgstr ""
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2866
 #: modules/job-application/include/job-application-load.php:1154
 msgid "Apply Job"
-msgstr ""
+msgstr "応募する"
 
 #: admin/ReduxFramework/jobsearch-options/options-config.php:2868
 msgid "Allow employers to post a new job with different apply job methods."
@@ -10392,7 +10379,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:92
 #: includes/classes/email-templates/class-job-submitted-admin.php:69
 msgid "job type"
-msgstr ""
+msgstr "雇用形態"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:76
 #: includes/classes/email-templates/class-job-expire-to-employer.php:76
@@ -10400,7 +10387,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:97
 #: includes/classes/email-templates/class-job-submitted-admin.php:79
 msgid "sector"
-msgstr ""
+msgstr "職種"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:81
 #: includes/classes/email-templates/class-job-expire-to-employer.php:81
@@ -10416,7 +10403,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:107
 #: includes/classes/email-templates/class-job-submitted-admin.php:89
 msgid "expiry date"
-msgstr ""
+msgstr "有効期限"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:91
 #: includes/classes/email-templates/class-job-expire-to-employer.php:91
@@ -10424,7 +10411,7 @@ msgstr ""
 #: includes/classes/email-templates/class-candidate-message-employer.php:112
 #: includes/classes/email-templates/class-job-submitted-admin.php:94
 msgid "featured"
-msgstr ""
+msgstr "オススメ"
 
 #: includes/classes/email-templates/class-job-approved-to-employer.php:96
 #: includes/classes/email-templates/class-job-expire-to-employer.php:96
@@ -10560,11 +10547,11 @@ msgstr ""
 #: includes/classes/email-templates/class-user-password-change.php:84
 #: modules/login-registration/include/login-registration-submit.php:399
 msgid "New Password"
-msgstr ""
+msgstr "新しいパスワード"
 
 #: includes/classes/email-templates/class-user-password-change.php:125
 msgid "Password Changed"
-msgstr ""
+msgstr "パスワード変更済み"
 
 #: includes/classes/email-templates/class-user-shortlist-for-interview.php:49
 #: includes/classes/email-templates/class-user-shortlist-for-interview.php:50
@@ -10573,7 +10560,7 @@ msgstr ""
 
 #: includes/classes/email-templates/class-user-shortlist-for-interview.php:118
 msgid "Shortlisted for Interview"
-msgstr ""
+msgstr "面接リスト"
 
 #: includes/classes/email-templates/class-user-shortlist-to-candidate.php:48
 #: includes/classes/email-templates/class-user-shortlist-to-candidate.php:49
@@ -10694,7 +10681,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:732
 #: templates/user-dashboard/employer/user-stats.php:749
 msgid "Total CVs"
-msgstr ""
+msgstr "応募合計"
 
 #: includes/classes/email-templates/class-cvs-package-expire-alert.php:84
 msgid "Used CVs"
@@ -10813,7 +10800,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:978
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1082
 msgid "Add Award"
-msgstr ""
+msgstr "資格を追加"
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-award-fields.php:58
 #: includes/meta-boxes/candidate-multi-fields/candidate-award-fields.php:128
@@ -10838,7 +10825,7 @@ msgstr ""
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-education-fields.php:42
 msgid "Add Education"
-msgstr ""
+msgstr "学歴を追加"
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-education-fields.php:61
 #: includes/meta-boxes/candidate-multi-fields/candidate-education-fields.php:146
@@ -10848,7 +10835,7 @@ msgstr ""
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-experience-fields.php:62
 msgid "Add Experience"
-msgstr ""
+msgstr "職歴を追加"
 
 #: includes/meta-boxes/candidate-multi-fields/candidate-experience-fields.php:81
 #: includes/meta-boxes/candidate-multi-fields/candidate-experience-fields.php:212
@@ -10963,7 +10950,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:23
 #: includes/shortcode-builder/shortcodes/job-listings.php:31
 msgid "Select Sector."
-msgstr ""
+msgstr "職種選択."
 
 #: includes/shortcode-builder/shortcodes/candidate-listings.php:28
 msgid "Candidate Founds with display counts"
@@ -11208,7 +11195,7 @@ msgstr ""
 #: includes/shortcode-builder/shortcodes/employer-listings.php:270
 #: includes/shortcode-builder/shortcodes/job-listings.php:354
 msgid "Records per Page"
-msgstr ""
+msgstr "1ページ表示件数"
 
 #: includes/shortcode-builder/shortcodes/candidate-listings.php:222
 msgid ""
@@ -12646,7 +12633,7 @@ msgstr ""
 #: admin/redux-ext/extensions/jobsearch_multi_textareas/jobsearch_multi_textareas/field_jobsearch_multi_textareas.php:160
 #: admin/redux-ext/extensions/jobsearch_multi_dashlinks/jobsearch_multi_dashlinks/field_jobsearch_multi_dashlinks.php:160
 msgid "Add More"
-msgstr ""
+msgstr "さらに追加"
 
 #: modules/custom-fields/include/custom-fields-html.php:2123
 #, php-format
@@ -12699,7 +12686,7 @@ msgstr ""
 
 #: modules/custom-fields/include/custom-fields-load.php:1247
 msgid "Other Information"
-msgstr ""
+msgstr "その他の情報"
 
 #: modules/custom-fields/include/custom-fields-load.php:1543
 #: modules/custom-fields/include/custom-fields-load.php:2798
@@ -13211,7 +13198,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-email-template.php:77
 msgid "Job Alert Frequency"
-msgstr ""
+msgstr "ジョブアラートの頻度"
 
 #: modules/job-alerts/include/job-alerts-email-template.php:82
 msgid "Job Alert Full Listing URL"
@@ -13243,7 +13230,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-hooks.php:66
 msgid "Job Alerts Settings"
-msgstr ""
+msgstr "ジョブアラート設定"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:74
 #: modules/job-alerts/include/job-alerts-hooks.php:275
@@ -13259,7 +13246,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:826
 #: templates/user-dashboard/candidate/user-stats.php:845
 msgid "Job Alerts"
-msgstr ""
+msgstr "ジョブアラート"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:75
 msgid "Switch On/Off Job Alerts."
@@ -13371,12 +13358,12 @@ msgstr ""
 #: modules/job-alerts/include/job-alerts-hooks.php:563
 #: modules/job-alerts/include/job-alerts-hooks.php:673
 msgid "Email me new jobs"
-msgstr ""
+msgstr "新しい求人をメールで受け取る"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:570
 #: modules/job-alerts/include/job-alerts-hooks.php:678
 msgid "Job alert name..."
-msgstr ""
+msgstr "ジョブアラート名を入力."
 
 #: modules/job-alerts/include/job-alerts-hooks.php:573
 #: modules/job-alerts/include/job-alerts-hooks.php:679
@@ -13393,7 +13380,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-hooks.php:940
 msgid "Provided data is incomplete."
-msgstr ""
+msgstr "不完全です。"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:968
 msgid "Alert already exists with this criteria"
@@ -13401,7 +13388,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-hooks.php:1004
 msgid "Job alert successfully added."
-msgstr ""
+msgstr "ジョブアラートを追加しました。"
 
 #: modules/job-alerts/include/job-alerts-hooks.php:1017
 msgid "Job alert successfully unsubscribed."
@@ -13446,7 +13433,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:33
 msgid "Edit Job Alert"
-msgstr ""
+msgstr "ジョブアラートを編集"
 
 #: modules/job-alerts/include/job-alerts-post-type.php:34
 msgid "View Job Alert"
@@ -13474,7 +13461,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-alerts-post-type.php:63
 msgid "Job Alert Options"
-msgstr ""
+msgstr "ジョブアラートオプション"
 
 #: modules/job-alerts/include/job-alerts-post-type.php:102
 msgid "Alert Query"
@@ -13506,7 +13493,7 @@ msgstr ""
 
 #: modules/job-alerts/include/job-filters-alerts.php:125
 msgid "Select Job Sector"
-msgstr ""
+msgstr "職種を選択"
 
 #: modules/job-alerts/include/job-filters-alerts.php:189
 msgid "Select Job Type"
@@ -13538,7 +13525,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:181
 msgid "Login to Apply to Job"
-msgstr ""
+msgstr "この仕事に応募"
 
 #: modules/job-application/include/job-application-load.php:335
 msgid "You have already applied for this job."
@@ -13563,7 +13550,7 @@ msgstr ""
 #: modules/job-application/include/job-application-load.php:1039
 #: modules/login-registration/templates/login-registration-template.php:490
 msgid "Phone:"
-msgstr ""
+msgstr "電話番号:"
 
 #: modules/job-application/include/job-application-load.php:390
 #: modules/job-application/include/job-application-load.php:1059
@@ -13582,7 +13569,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:637
 #: modules/login-registration/templates/login-registration-template.php:1297
 msgid "Drop a resume file or click to upload."
-msgstr ""
+msgstr "履歴書データをドロップしてください。"
 
 #: modules/job-application/include/job-application-load.php:415
 #: modules/job-application/include/job-application-load.php:786
@@ -13593,9 +13580,11 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-cv-manager.php:274
 #, php-format
 msgid ""
-"To upload file size is <span>(Max %s)</span> <span class=\"uplod-info-and\">"
-"and</span> allowed file types are <span>(%s)</span>"
+"To upload file size is <span>(Max %s)</span> <span class=\"uplod-info-and"
+"\">and</span> allowed file types are <span>(%s)</span>"
 msgstr ""
+"アップロードの最大サイズ： <span> %s </span> <span class=“uplod-info-and”>｜"
+"</span> 対応ファイル： <span>(%s)</span>"
 
 #: modules/job-application/include/job-application-load.php:417
 #: modules/job-application/include/job-application-load.php:788
@@ -13617,11 +13606,11 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-cv-manager.php:227
 #: templates/user-dashboard/candidate/user-cv-manager.php:278
 msgid "Upload Resume"
-msgstr ""
+msgstr "履歴書ファイルを選択"
 
 #: modules/job-application/include/job-application-load.php:477
 msgid "Type your Message"
-msgstr ""
+msgstr "メッセージを入力"
 
 #: modules/job-application/include/job-application-load.php:493
 msgid "You accept email communication."
@@ -13629,7 +13618,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:641
 msgid "Select CV"
-msgstr ""
+msgstr "CV選択"
 
 #: modules/job-application/include/job-application-load.php:746
 msgid "Upload New CV"
@@ -13639,17 +13628,17 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-cv-manager.php:222
 #: templates/user-dashboard/candidate/user-cv-manager.php:273
 msgid "Drop files here to upload."
-msgstr ""
+msgstr "ここにファイルをドロップしてアップロードします。"
 
 #: modules/job-application/include/job-application-load.php:1006
 msgid "Apply for this Job"
-msgstr ""
+msgstr "応募する"
 
 #: modules/job-application/include/job-application-load.php:1187
 #: modules/job-application/include/job-application-load.php:1486
 #: modules/job-application/include/job-application-load.php:1625
 msgid "This job is filled and no longer accepting applications."
-msgstr ""
+msgstr "この求人は、現在、受付を一時停止しております。"
 
 #: modules/job-application/include/job-application-load.php:1215
 msgid "Please Enter First Name."
@@ -13657,7 +13646,7 @@ msgstr ""
 
 #: modules/job-application/include/job-application-load.php:1224
 msgid "Please Enter your Last Name."
-msgstr ""
+msgstr "Last Nameを入力してください。"
 
 #: modules/job-application/include/job-application-load.php:1249
 msgid "You are not a candidate. Please try with another email address."
@@ -13668,6 +13657,8 @@ msgid ""
 "Applied Successfully. You can view it after logged in your account. Also "
 "please check your e-mail."
 msgstr ""
+"正常に応募が完了しました。アカウントにログインすると表示できます。メールもご"
+"確認ください。"
 
 #: modules/job-application/include/job-application-load.php:1399
 msgid "You cannot apply for this job."
@@ -13979,8 +13970,8 @@ msgstr ""
 #: modules/login-registration/include/login-registration-submit.php:59
 #: modules/login-registration/include/login-registration-submit.php:178
 msgid ""
-"If you have activation code then <a href=\"javascript:void(0);\" "
-"class=\"jobsearch-activcode-popupbtn\">Click here</a> to activate account."
+"If you have activation code then <a href=\"javascript:void(0);\" class="
+"\"jobsearch-activcode-popupbtn\">Click here</a> to activate account."
 msgstr ""
 
 #: modules/login-registration/include/login-registration-submit.php:63
@@ -14006,7 +13997,7 @@ msgstr ""
 
 #: modules/login-registration/include/login-registration-submit.php:222
 msgid "Login successful, reloading page..."
-msgstr ""
+msgstr "ログインに成功しました。ページを読み込んでいます…"
 
 #: modules/login-registration/include/login-registration-submit.php:235
 #: modules/login-registration/include/login-registration-submit.php:609
@@ -14065,7 +14056,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:296
 #: modules/login-registration/templates/login-registration-template.php:922
 msgid "Reset Password"
-msgstr ""
+msgstr "パスワードをリセットする"
 
 #: modules/login-registration/include/login-registration-submit.php:465
 msgid "You cannot change the password."
@@ -14085,7 +14076,7 @@ msgstr ""
 
 #: modules/login-registration/include/login-registration-submit.php:634
 msgid "Confirm password field does not match with your password."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 #: modules/login-registration/include/login-registration-submit.php:640
 msgid "Username already exists. Please try another username."
@@ -14098,14 +14089,14 @@ msgstr ""
 #: modules/login-registration/include/login-registration-submit.php:702
 msgid ""
 "Registration complete. Before you can login, you must active your account "
-"with the code sent to your email address. Please <a href=\"javascript:void(0)"
-";\" class=\"jobsearch-activcode-popupbtn\">Click here</a> to activate your "
-"account."
+"with the code sent to your email address. Please <a href=\"javascript:"
+"void(0);\" class=\"jobsearch-activcode-popupbtn\">Click here</a> to activate "
+"your account."
 msgstr ""
 
 #: modules/login-registration/include/login-registration-submit.php:717
 msgid "Registration complete. You are redirecting to your dashboard."
-msgstr ""
+msgstr "登録完了しました。ダッシュボードにリダイレクトしています。"
 
 #: modules/login-registration/include/login-registration-submit.php:725
 msgid "Registration complete. Password sent to your e-mail."
@@ -14146,7 +14137,7 @@ msgstr ""
 
 #: modules/login-registration/templates/login-registration-template.php:181
 msgid "Login to your account"
-msgstr ""
+msgstr "アカウントにログイン"
 
 #: modules/login-registration/templates/login-registration-template.php:196
 #: modules/login-registration/templates/login-registration-template.php:367
@@ -14173,22 +14164,22 @@ msgstr ""
 
 #: modules/login-registration/templates/login-registration-template.php:258
 msgid "Forgot Password?"
-msgstr ""
+msgstr "パスワードをお忘れですか？"
 
 #: modules/login-registration/templates/login-registration-template.php:264
 msgid "Save Password"
-msgstr ""
+msgstr "パスワードを保存"
 
 #: modules/login-registration/templates/login-registration-template.php:315
 #: modules/login-registration/templates/login-registration-template.php:938
 msgid "Get a new password"
-msgstr ""
+msgstr "新しいパスワードを受け取る"
 
 #: modules/login-registration/templates/login-registration-template.php:320
 #: modules/login-registration/templates/login-registration-template.php:767
 #: modules/login-registration/templates/login-registration-template.php:933
 msgid "Already have an account? Login"
-msgstr ""
+msgstr "アカウント登録済の方はこちら"
 
 #: modules/login-registration/templates/login-registration-template.php:326
 #: modules/login-registration/templates/login-registration-template.php:943
@@ -14196,10 +14187,12 @@ msgid ""
 "Enter the username or e-mail you used in your profile. A password reset link "
 "will be sent to you by email."
 msgstr ""
+"登録時のユーザー名かメールアドレスを入力してください。パスワードをリセットす"
+"るリンクを送信します。"
 
 #: modules/login-registration/templates/login-registration-template.php:350
 msgid "Signup to your Account"
-msgstr ""
+msgstr "アカウントを新規登録"
 
 #: modules/login-registration/templates/login-registration-template.php:377
 msgid "I want to discover awesome companies."
@@ -14235,11 +14228,11 @@ msgstr ""
 
 #: modules/login-registration/templates/login-registration-template.php:470
 msgid "Password *"
-msgstr ""
+msgstr "パスワード *"
 
 #: modules/login-registration/templates/login-registration-template.php:478
 msgid "Confirm Password *"
-msgstr ""
+msgstr "パスワード（確認） *"
 
 #: modules/login-registration/templates/login-registration-template.php:520
 msgid "Organization Name *"
@@ -14247,43 +14240,43 @@ msgstr ""
 
 #: modules/login-registration/templates/login-registration-template.php:531
 msgid "Select Sector:"
-msgstr ""
+msgstr "職種選択:"
 
 #: modules/login-registration/templates/login-registration-template.php:756
 #: modules/login-registration/templates/login-registration-template.php:761
 #: modules/login-registration/templates/login-registration-template.php:1434
 #: modules/login-registration/templates/login-registration-template.php:1441
 msgid "Sign up"
-msgstr ""
+msgstr "新規登録"
 
 #: modules/login-registration/templates/login-registration-template.php:831
 msgid "Login to our site"
-msgstr ""
+msgstr "アカウントをお持ちの方"
 
 #: modules/login-registration/templates/login-registration-template.php:871
 msgid "Enter the username and password to login:"
-msgstr ""
+msgstr "ユーザー名orメールアドレスとパスワードを入力してください："
 
 #: modules/login-registration/templates/login-registration-template.php:885
 msgid "Forgot your password?"
-msgstr ""
+msgstr "パスワードをお忘れですか？"
 
 #: modules/login-registration/templates/login-registration-template.php:976
 #, php-format
 msgid "You have already logged in as %1$s. <a href=\"%2$s\">Logout?</a>"
-msgstr ""
+msgstr "ログイン済みです。 %1$s <a href=“%2$s”>ログアウトしますか?</a>"
 
 #: modules/login-registration/templates/login-registration-template.php:1047
 msgid "Sign up now"
-msgstr ""
+msgstr "新規登録"
 
 #: modules/login-registration/templates/login-registration-template.php:1052
 msgid "Fill the form below to get instant access:"
-msgstr ""
+msgstr "以下のフォームより登録してください："
 
 #: modules/login-registration/templates/login-registration-template.php:1119
 msgid "Email *"
-msgstr ""
+msgstr "メールアドレス *"
 
 #: modules/packages/include/custom-fields.php:147
 msgid "Reviews on Job"
@@ -14388,11 +14381,11 @@ msgstr ""
 
 #: modules/packages/include/package-post-type.php:71
 msgid "Featured Job"
-msgstr ""
+msgstr "オススメ求人"
 
 #: modules/packages/include/package-post-type.php:73
 msgid "Featured Jobs"
-msgstr ""
+msgstr "オススメ求人"
 
 #: modules/packages/include/package-post-type.php:75
 msgid "CV Package"
@@ -14508,11 +14501,11 @@ msgstr ""
 
 #: modules/reviews/include/frontend.php:601
 msgid "Please enter your name."
-msgstr ""
+msgstr "お名前を入力してください。"
 
 #: modules/reviews/include/frontend.php:606
 msgid "Please enter your email address."
-msgstr ""
+msgstr "メールアドレスを入力してください。"
 
 #: modules/reviews/include/frontend.php:618
 #: modules/reviews/include/frontend.php:820
@@ -14605,52 +14598,52 @@ msgstr ""
 #: templates/detail-pages/candidate/view1-candidate.php:356
 #, php-format
 msgid "Sector: %s"
-msgstr ""
+msgstr "職種: %s"
 
 #: templates/detail-pages/candidate/view1-candidate.php:503
 #: templates/detail-pages/employer/view1-employer.php:770
 msgid "User Name:"
-msgstr ""
+msgstr "ユーザーネーム:"
 
 #: templates/detail-pages/candidate/view1-candidate.php:505
 #: templates/detail-pages/employer/view1-employer.php:772
 msgid "Enter Your Name"
-msgstr ""
+msgstr "お名前を入力"
 
 #: templates/detail-pages/candidate/view1-candidate.php:510
 #: templates/detail-pages/employer/view1-employer.php:777
 msgid "Email Address:"
-msgstr ""
+msgstr "メールアドレス:"
 
 #: templates/detail-pages/candidate/view1-candidate.php:512
 #: templates/detail-pages/employer/view1-employer.php:779
 msgid "Enter Your Email Address"
-msgstr ""
+msgstr "メールアドレスを入力"
 
 #: templates/detail-pages/candidate/view1-candidate.php:517
 #: templates/detail-pages/employer/view1-employer.php:784
 msgid "Phone Number:"
-msgstr ""
+msgstr "電話番号:"
 
 #: templates/detail-pages/candidate/view1-candidate.php:519
 #: templates/detail-pages/employer/view1-employer.php:786
 msgid "Enter Your Phone Number"
-msgstr ""
+msgstr "電話番号を入力"
 
 #: templates/detail-pages/candidate/view1-candidate.php:524
 #: templates/detail-pages/employer/view1-employer.php:791
 msgid "Message:"
-msgstr ""
+msgstr "メッセージ:"
 
 #: templates/detail-pages/candidate/view1-candidate.php:526
 #: templates/detail-pages/employer/view1-employer.php:793
 msgid "Type Your Message here"
-msgstr ""
+msgstr "メッセージを入力"
 
 #: templates/detail-pages/candidate/view1-candidate.php:557
 #: templates/detail-pages/employer/view1-employer.php:826
 msgid "Send now"
-msgstr ""
+msgstr "送信"
 
 #: templates/detail-pages/candidate/view1-candidate.php:563
 #: templates/detail-pages/employer/view1-employer.php:832
@@ -14660,11 +14653,11 @@ msgstr ""
 #: templates/detail-pages/candidate/view1-candidate.php:592
 #, php-format
 msgid "About %s"
-msgstr ""
+msgstr "%s"
 
 #: templates/detail-pages/candidate/view1-candidate.php:911
 msgid "Honors & awards"
-msgstr ""
+msgstr "資格・免許"
 
 #: templates/detail-pages/employer/view1-employer.php:174
 #, php-format
@@ -14825,12 +14818,12 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:380
 #: templates/user-dashboard/candidate/user-stats.php:616
 msgid "Education:"
-msgstr ""
+msgstr "学歴:"
 
 #: templates/user-dashboard/candidate/user-stats.php:384
 #: templates/user-dashboard/candidate/user-stats.php:620
 msgid "Experience:"
-msgstr ""
+msgstr "職歴:"
 
 #: templates/user-dashboard/candidate/user-stats.php:388
 #: templates/user-dashboard/candidate/user-stats.php:624
@@ -14876,79 +14869,79 @@ msgstr ""
 
 #: templates/user-dashboard/candidate/user-stats.php:749
 msgid "Applications Statistics"
-msgstr ""
+msgstr "応募統計"
 
 #: templates/user-dashboard/candidate/user-stats.php:767
 msgid "Applied jobs"
-msgstr ""
+msgstr "応募済み求人"
 
 #: templates/user-dashboard/candidate/user-stats.php:769
 msgid "to find a career"
-msgstr ""
+msgstr " "
 
 #: templates/user-dashboard/candidate/user-stats.php:776
 msgid "against opportunities"
-msgstr ""
+msgstr " "
 
 #: templates/user-dashboard/candidate/user-stats.php:783
 msgid "to get the latest updates"
-msgstr ""
+msgstr " "
 
 #: templates/user-dashboard/candidate/user-stats.php:790
 msgid "to apply jobs"
-msgstr ""
+msgstr " "
 
 #: templates/user-dashboard/candidate/user-stats.php:813
 #, php-format
 msgid "Applied Jobs: %s"
-msgstr ""
+msgstr "応募済み求人: %s"
 
 #: templates/user-dashboard/candidate/user-stats.php:813
 #, php-format
 msgid "Favorite Jobs: %s"
-msgstr ""
+msgstr "お気に入りの求人: %s"
 
 #: templates/user-dashboard/candidate/user-stats.php:813
 #, php-format
 msgid "Job Alerts: %s"
-msgstr ""
+msgstr "ジョブアラート: %s"
 
 #: templates/user-dashboard/candidate/user-stats.php:836
 msgid "Total Applied Jobs"
-msgstr ""
+msgstr "応募合計"
 
 #: templates/user-dashboard/candidate/user-stats.php:860
 msgid "Jobs Applied Recently"
-msgstr ""
+msgstr "最近応募した求人"
 
 #: templates/user-dashboard/candidate/user-stats.php:892
 #: templates/user-dashboard/candidate/user-stats.php:1042
 #: templates/user-dashboard/employer/user-stats.php:804
 msgid "Total applicants"
-msgstr ""
+msgstr "応募数合計"
 
 #: templates/user-dashboard/candidate/user-stats.php:900
 #: templates/user-dashboard/candidate/user-stats.php:1050
 #: templates/user-dashboard/employer/user-stats.php:812
 msgid "Job Salary"
-msgstr ""
+msgstr "給与"
 
 #: templates/user-dashboard/candidate/user-stats.php:906
 #: templates/user-dashboard/candidate/user-stats.php:1056
 #: templates/user-dashboard/employer/user-stats.php:820
 msgid "Total visits"
-msgstr ""
+msgstr "訪問数合計"
 
 #: templates/user-dashboard/candidate/user-stats.php:912
 #: templates/user-dashboard/candidate/user-stats.php:1062
 #: templates/user-dashboard/employer/user-stats.php:825
 #, php-format
 msgid "Expiry Date: %s"
-msgstr ""
+msgstr "有効期限: %s"
 
 #: templates/user-dashboard/candidate/user-stats.php:1170
 msgid "No Applications found."
-msgstr ""
+msgstr "応募履歴がありません。"
 
 #: templates/user-dashboard/candidate/user-transactions.php:50
 #: templates/user-dashboard/employer/user-transactions.php:65
@@ -14986,7 +14979,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:256
 #: templates/user-dashboard/candidate/user-my-resume.php:296
 msgid "Add education"
-msgstr ""
+msgstr "学歴を追加"
 
 #: templates/user-dashboard/candidate/user-my-resume.php:330
 #: templates/user-dashboard/candidate/user-my-resume.php:573
@@ -14994,12 +14987,12 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-my-resume.php:896
 #: templates/user-dashboard/candidate/user-my-resume.php:1004
 msgid "Drag"
-msgstr ""
+msgstr "ドラッグ"
 
 #: templates/user-dashboard/candidate/user-my-resume.php:432
 #: templates/user-dashboard/candidate/user-my-resume.php:534
 msgid "Add experience"
-msgstr ""
+msgstr "職歴を追加"
 
 #: templates/user-dashboard/candidate/user-my-resume.php:496
 msgid "From Date *"
@@ -15011,7 +15004,7 @@ msgstr ""
 
 #: templates/user-dashboard/candidate/user-my-resume.php:1065
 msgid "Update Resume"
-msgstr ""
+msgstr "更新"
 
 #: templates/user-dashboard/candidate/user-applied-jobs.php:144
 msgid "Applied Jobs by Email"
@@ -15027,13 +15020,13 @@ msgstr ""
 #: templates/user-dashboard/employer/user-memb-dashboard.php:25
 #: templates/user-dashboard/employer/user-dashboard-settings.php:78
 msgid "Basic Information"
-msgstr ""
+msgstr "基本情報"
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:100
 #: templates/user-dashboard/employer/user-memb-dashboard.php:31
 #: templates/user-dashboard/employer/user-dashboard-settings.php:86
 msgid "<strong>Success!</strong> All changes updated."
-msgstr ""
+msgstr "<strong>更新完了</strong>しました。"
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:129
 #: templates/user-dashboard/employer/user-dashboard-settings.php:119
@@ -15046,7 +15039,7 @@ msgstr ""
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:168
 msgid "Full Name *"
-msgstr ""
+msgstr "氏名 *"
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:199
 #: templates/user-dashboard/employer/user-dashboard-settings.php:188
@@ -15063,7 +15056,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-shortlisted-resumes.php:149
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1485
 msgid "Save Settings"
-msgstr ""
+msgstr "保存"
 
 #: templates/user-dashboard/employer/user-transactions.php:110
 msgid "Successfull"
@@ -15090,7 +15083,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-manage-jobs.php:120
 #, php-format
 msgid "\"%s\" Applicants"
-msgstr ""
+msgstr "“%s” 応募者一覧"
 
 #: templates/user-dashboard/employer/user-manage-jobs.php:813
 msgid "Search job"
@@ -15098,7 +15091,7 @@ msgstr ""
 
 #: templates/user-dashboard/employer/user-manage-jobs.php:934
 msgid "Fill Job"
-msgstr ""
+msgstr "応募受付停止"
 
 #: templates/user-dashboard/employer/user-manage-jobs.php:942
 msgid "Fill this Job"
@@ -15162,7 +15155,7 @@ msgstr ""
 
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1112
 msgid "Add award"
-msgstr ""
+msgstr "資格を追加"
 
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1213
 #: templates/user-dashboard/employer/user-dashboard-settings.php:1262
@@ -15224,11 +15217,11 @@ msgstr ""
 
 #: templates/user-dashboard/employer/user-stats.php:646
 msgid "Applications statistics"
-msgstr ""
+msgstr "応募統計"
 
 #: templates/user-dashboard/employer/user-stats.php:664
 msgid "Posted jobs"
-msgstr ""
+msgstr "登録求人"
 
 #: templates/user-dashboard/employer/user-stats.php:666
 msgid "to find talent"
@@ -15257,40 +15250,40 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:725
 #, php-format
 msgid "Total CVs: %s"
-msgstr ""
+msgstr "応募合計: %s"
 
 #: templates/user-dashboard/employer/user-stats.php:725
 #, php-format
 msgid "Unviewed CVs: %s"
-msgstr ""
+msgstr "未確認応募数: %s"
 
 #: templates/user-dashboard/employer/user-stats.php:725
 #, php-format
 msgid "Viewed CVs: %s"
-msgstr ""
+msgstr "閲覧済応募数: %s"
 
 #: templates/user-dashboard/employer/user-stats.php:733
 #: templates/user-dashboard/employer/user-stats.php:748
 msgid "Unviewed CVs"
-msgstr ""
+msgstr "未確認応募数"
 
 #: templates/user-dashboard/employer/user-stats.php:734
 #: templates/user-dashboard/employer/user-stats.php:747
 msgid "Viewed CVs"
-msgstr ""
+msgstr "閲覧済応募数"
 
 #: templates/user-dashboard/employer/user-stats.php:744
 msgid "Total Applicants"
-msgstr ""
+msgstr "応募数合計"
 
 #: templates/user-dashboard/employer/user-stats.php:764
 msgid "Recent Applicants"
-msgstr ""
+msgstr "直近の応募"
 
 #: templates/user-dashboard/employer/user-stats.php:990
 #: templates/user-dashboard/employer/user-stats.php:995
 msgid "No Applicants found."
-msgstr ""
+msgstr "応募者が見つかりません。"
 
 #: admin/redux-ext/extensions/jobsearch_multi_socialfileds/extension_jobsearch_multi_socialfileds.php:97
 #: admin/redux-ext/extensions/jobsearch_multi_socialfileds/jobsearch_multi_socialfileds/field_jobsearch_multi_socialfileds.php:111

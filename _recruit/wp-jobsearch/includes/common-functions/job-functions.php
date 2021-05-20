@@ -406,7 +406,7 @@ if (!function_exists('jobsearch_job_related_post')) {
 
                 if ($view == 'view1') {
                     if ($title != '') { ?>
-                        <div class="jobsearch-section-title"><h2><?php echo esc_html($title); ?></h2></div>
+                        <div class="careerfy-content-title-style5 margin_top_related"><h2>関連求人</h2></div>
                         <?php
                     }
                     ob_start();
@@ -448,22 +448,18 @@ if (!function_exists('jobsearch_job_related_post')) {
                                 $job_type_str = jobsearch_job_get_all_jobtypes($job_id, 'jobsearch-option-btn');
                                 $sector_str = jobsearch_job_get_all_sectors($job_id, '', '', '', '<li><i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>', '</li>');
                                 ?>
+
                                 <li class="jobsearch-column-12">
                                     <div class="jobsearch-joblisting-classic-wrap">
-                                        <?php
-                                        ob_start();
-                                        if ($post_thumbnail_src != '') {
-                                            ?>
-                                            <figure>
-                                                <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
-                                                    <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
-                                                </a>
-                                            </figure>
-                                            <?php
-                                        }
-                                        $list_emp_img = ob_get_clean();
-                                        echo apply_filters('jobsearch_jobs_listing_emp_img_html', $list_emp_img, $job_id, 'view1');
-                                        ?>
+
+<?php if(get_post_meta($job_id, 'cfimg',true)):?>
+<div class="cfimg">
+<a href="<?php echo esc_url(get_permalink($job_id)); ?>" title="<?php echo esc_html(get_the_title($job_id)); ?>">
+<img src="<?php the_field('cfimg'); ?>" />
+</a>
+</div>
+<?php endif; ?>
+
                                         <div class="jobsearch-joblisting-text">
                                             <div class="jobsearch-list-option">
                                                 <h2 class="jobsearch-pst-title">
@@ -479,43 +475,27 @@ if (!function_exists('jobsearch_job_related_post')) {
                                                     }
                                                     ?>
                                                 </h2>
-                                                <ul>
-                                                    <?php if ($company_name != '') {
-                                                        ob_start();
-                                                        ?>
-                                                        <li><?php echo($company_name); ?></li>
-                                                        <?php
-                                                        $comp_name_html = ob_get_clean();
-                                                        echo apply_filters('jobsearch_empname_in_jobdetail_related', $comp_name_html, $job_id, 'view1');
-                                                    }
-                                                    if (!empty($job_city_title) && $all_location_allow == 'on') {
-                                                        ?>
-                                                        <li>
-                                                            <i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo esc_html($job_city_title); ?>
-                                                        </li>
-                                                        <?php
-                                                    }
-                                                    if (!empty($sector_str) && $sectors_enable_switch == 'on') {
-                                                        echo apply_filters('jobsearch_joblisting_sector_str_html', $sector_str, $job_id, '<li><i class="jobsearch-icon jobsearch-calendar"></i>', '</li>');
-                                                    }
-                                                    ?>
-                                                </ul>
+
+<p class="related_txt"><?php the_field('cf01'); ?></p>
+
                                             </div>
+
                                             <div class="jobsearch-job-userlist">
                                                 <?php
                                                 if ($job_type_str != '' && $job_types_switch == 'on') {
                                                     echo($job_type_str);
                                                 }
                                                 $figcaption_div = true;
-                                                $book_mark_args = array(
-                                                    'job_id' => $job_id,
-                                                    'before_icon' => 'fa fa-heart-o',
-                                                    'after_icon' => 'fa fa-heart',
-                                                    'anchor_class' => $job_like_class
-                                                );
-                                                do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
+                                                // $book_mark_args = array(
+                                                //     'job_id' => $job_id,
+                                                //     'before_icon' => 'fa fa-heart-o',
+                                                //     'after_icon' => 'fa fa-heart',
+                                                //     'anchor_class' => $job_like_class
+                                                // );
+                                                // do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                                 ?>
                                             </div>
+
                                             <div class="clearfix"></div>
                                         </div>
                                     </div>
@@ -1073,7 +1053,7 @@ if (!function_exists('jobsearch_job_send_message_employer_callback')) {
             }
         } else {
             $user_data = wp_get_current_user();
-            // send to employer email 
+            // send to employer email
             $cur_user_id = isset($user_data->ID) ? $user_data->ID : '';
             $user_candidate_id = jobsearch_get_user_candidate_id($cur_user_id);
             if ($user_candidate_id > 0) {
