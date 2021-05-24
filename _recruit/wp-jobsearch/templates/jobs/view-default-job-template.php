@@ -302,7 +302,9 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                     <span><i class="fa fa-star"></i> <?php echo esc_html__('Featured', 'wp-jobsearch'); ?></span>
                                                 <?php } ?>
                                             </h2>
-<!-- 追加 -->
+
+<!-- 編集 -->
+
 <?php if(get_post_meta($job_id, 'cf01_1',true)):?>
 <h6 class="joblist__subtitle"><?php the_field('cf01_1'); ?></h6>
 <?php endif; ?>
@@ -311,7 +313,22 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 <p><?php the_field('cf01'); ?></p>
 <?php endif; ?>
 
-<!-- //追加 -->
+<ul class="job_list_meta">
+  <li>あああ</li>
+  <li>ああああ</li>
+  <li>ああああ</li>
+</ul>
+
+<ul>
+<li class="job-company-name"><?php echo force_balance_tags($company_name); ?></li>
+<li>
+<i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo jobsearch_esc_html($job_city_title); ?>
+</li>
+<li>
+<i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo jobsearch_esc_html($get_job_location); ?>
+</li>
+</ul>
+<!-- //編集 -->
                                         </div>
                                     </div>
                                     <div class="jobsearch-table-cell">
