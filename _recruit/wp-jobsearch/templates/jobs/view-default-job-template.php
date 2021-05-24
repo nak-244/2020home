@@ -255,7 +255,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 ?>
                 <li class="<?php echo esc_html($columns_class); ?>">
                     <div class="jobsearch-joblisting-classic-wrap">
-                        <?php 
+                        <?php
                         echo apply_filters('jobsearch_jobs_listing_befor_urgent_html', '', $job_id, 'listin_1');
                         jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_listv1') ?>
                         <?php
