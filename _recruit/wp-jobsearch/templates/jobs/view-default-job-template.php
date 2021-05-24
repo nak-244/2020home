@@ -275,7 +275,9 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 -->
 <?php if(get_post_meta($job_id, 'cfimg',true)):?>
 <div class="cfimg">
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
 <img src="<?php the_field('cfimg'); ?>" />
+</a>
 </div>
 <?php endif; ?>
 
@@ -307,11 +309,15 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 <!-- 編集 -->
 
 <?php if(get_post_meta($job_id, 'cf01_1',true)):?>
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
 <h6 class="joblist__subtitle"><?php the_field('cf01_1'); ?></h6>
+</a>
 <?php endif; ?>
 
 <?php if(get_post_meta($job_id, 'cf01',true)):?>
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
 <p><?php the_field('cf01'); ?></p>
+</a>
 <?php endif; ?>
 
 <ul class="job_list_meta">
@@ -353,6 +359,11 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                             );
                                             // do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                             ?>
+<div>
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">詳しくみる</a>
+</div>
+
+
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
