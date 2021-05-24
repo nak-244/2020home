@@ -2727,7 +2727,7 @@ function jobsearch_job_det_applybtn_acthtml($html, $job_id, $use_in = 'filter', 
             }
         }
     } else { ?>
-        <div class="jobsearch_apply_job_wrap">
+        <div class="jobsearch_apply_job_wrap sp_oubo_btn">
             <?php
             if (wp_is_mobile()) { ?>
                 <div class="insta-sypapply-stickycon"></div>

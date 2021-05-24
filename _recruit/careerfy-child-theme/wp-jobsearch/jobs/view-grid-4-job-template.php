@@ -302,15 +302,19 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 $job_post = get_post($job_id);
                 $job_desc = $job_post->post_content;
                 ?>
+
                 <li class="<?php echo esc_html($columns_class); ?>">
                     <div class="careerfy-jobs-wrapper-style9">
-                        <div class="careerfy-jobs-box1">
+
+<!-- ↓編集 -->
+                        <div class="careerfy-jobs-box1 job_list_box">
                             <?php if ($jobsearch_job_featured == 'on') { ?>
                                 <span class="careerfy-jobs-style9-featured jobsearch-tooltipcon" title="Featured"><i
                                             class="fa fa-star"></i></span>
                             <?php } ?>
                             <a class="careerfy-jobs-style9-title <?php echo($quick_apply_job_btn) ?>" data-job-id="<?php echo esc_html($job_id); ?>"
                                href="<?php echo $quick_apply_job == 'on' ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 60)); ?></a>
+<!--
                             <?php
                             if ($job_type_str != '' && $job_types_switch == 'on') {
                                 echo($job_type_str);
@@ -320,7 +324,20 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                 <span class="careerfy-jobs-style9-loc"><i
                                             class="fa fa-map-marker"></i> <?php echo($get_job_location) ?></span>
                             <?php } ?>
+-->
 
+<div>
+  <?php echo($job_type_str); ?>
+</div>
+
+<?php if(get_post_meta($job_id, 'cf01_1',true)):?>
+<h6 class="joblist__subtitle"><?php the_field('cf01_1'); ?></h6>
+<?php endif; ?>
+
+<?php if(get_post_meta($job_id, 'cf01',true)):?>
+<p><?php the_field('cf01'); ?></p>
+<?php endif; ?>
+<!--
                             <small class="careerfy-jobs-style9-options">
                                 <i class="careerfy-icon careerfy-calendar1"></i>
                                 <?php printf(esc_html__('Published %s', 'careerfy'), jobsearch_time_elapsed_string($job_post_date)); ?>
@@ -336,12 +353,16 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             if (jobsearch_excerpt(0, $job_id) != '') { ?>
                                 <p><?php echo jobsearch_excerpt(35, $job_id) ?></p>
                             <?php } ?>
-
+-->
                         </div>
+<!-- ↑編集 -->
+<!-- ↓編集 -->
+
                         <div class="careerfy-jobs-box2">
                             <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
                                 jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'style9');
                             } ?>
+<!--
                             <figure>
                                 <?php if ($post_thumbnail_src != '') { ?>
                                     <a href="<?php echo $quick_apply_job == 'on' ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
@@ -352,6 +373,12 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                     </a>
                                 <?php } ?>
                             </figure>
+-->
+<?php if(get_post_meta($job_id, 'cfimg',true)):?>
+<div class="cfimg">
+<img src="<?php the_field('cfimg'); ?>" />
+</div>
+<?php endif; ?>
 
                             <?php if (!empty($company_name)) { ?>
                                 <small><?php echo($company_name) ?></small>
@@ -373,6 +400,8 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 
                             do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args); ?>
                         </div>
+<!-- ↑編集 -->
+
                     </div>
                 </li>
                 <?php
