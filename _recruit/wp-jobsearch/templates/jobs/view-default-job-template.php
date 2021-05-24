@@ -274,14 +274,18 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                 </a>
 -->
 <?php if(get_post_meta($job_id, 'cfimg',true)):?>
-<div class="cfimg">
+<div class="cfimg pc">
   <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
 <img src="<?php the_field('cfimg'); ?>" />
 </a>
+
+<a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?> detail_btn">詳しくみる</a>
+
 </div>
 <?php endif; ?>
 
                             </figure>
+
                             <?php
                         }
                         $list_emp_img = ob_get_clean();
@@ -293,6 +297,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                 <div class="jobsearch-table-row">
                                     <div class="jobsearch-table-cell">
                                         <div class="jobsearch-list-option">
+
                                             <h2 class="jobsearch-pst-title <?php echo($quick_apply_job_btn) ?>"
                                                 data-job-id="<?php echo esc_html($job_id); ?>">
                                                 <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
@@ -359,10 +364,6 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                             );
                                             // do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                             ?>
-<div>
-  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">詳しくみる</a>
-</div>
-
 
                                         </div>
                                     </div>
