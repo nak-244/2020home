@@ -253,6 +253,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 $sector_str = jobsearch_job_get_all_sectors($job_id, '', '', '', '<li><i class="jobsearch-icon jobsearch-filter-tool-black-shape"></i>', '</li>');
 
                 ?>
+
                 <li class="<?php echo esc_html($columns_class); ?>">
                     <div class="jobsearch-joblisting-classic-wrap">
                         <?php
@@ -314,19 +315,22 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 <?php endif; ?>
 
 <ul class="job_list_meta">
+  <?php if(get_post_meta($job_id, 'cf03',true)):?>
   <li>
-    勤務地：<?php the_field('cf03'); ?><?php the_field('cf04'); ?>
+    勤務地：<?php the_field('cf03'); ?><?php if(get_post_meta($job_id, 'cf04',true)):?><?php the_field('cf04'); ?><?php endif; ?>
   </li>
+  <?php endif; ?>
+
+  <?php if(get_post_meta($job_id, 'cf06',true)):?>
   <li>
-    <?php if(get_post_meta($job_id, 'cf06',true)):?>
-      <?php the_field('cf06'); ?>
-    <?php endif; ?>
+    <?php the_field('cf06'); ?>
     <?php if(get_post_meta($job_id, 'cf07',true)):?>
       <?php $cf07 = get_field('cf07');if($cf07){ ?>
         <?php echo number_format($cf07); ?>
       <?php } ?>円〜
     <?php endif; ?>
   </li>
+  <?php endif; ?>
 </ul>
 
 <!-- //編集 -->
