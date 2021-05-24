@@ -314,20 +314,21 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 <?php endif; ?>
 
 <ul class="job_list_meta">
-  <li>あああ</li>
-  <li>ああああ</li>
-  <li>ああああ</li>
+  <li>
+    勤務地：<?php the_field('cf03'); ?><?php the_field('cf04'); ?>
+  </li>
+  <li>
+    <?php if(get_post_meta($job_id, 'cf06',true)):?>
+      <?php the_field('cf06'); ?>
+    <?php endif; ?>
+    <?php if(get_post_meta($job_id, 'cf07',true)):?>
+      <?php $cf07 = get_field('cf07');if($cf07){ ?>
+        <?php echo number_format($cf07); ?>
+      <?php } ?>円〜
+    <?php endif; ?>
+  </li>
 </ul>
 
-<ul>
-<li class="job-company-name"><?php echo force_balance_tags($company_name); ?></li>
-<li>
-<i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo jobsearch_esc_html($job_city_title); ?>
-</li>
-<li>
-<i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo jobsearch_esc_html($get_job_location); ?>
-</li>
-</ul>
 <!-- //編集 -->
                                         </div>
                                     </div>
@@ -346,7 +347,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                 'before_icon' => 'fa fa-heart-o',
                                                 'after_icon' => 'fa fa-heart',
                                             );
-                                            do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
+                                            // do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                             ?>
                                         </div>
                                     </div>
