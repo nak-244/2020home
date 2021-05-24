@@ -367,7 +367,14 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 
                                         </div>
                                     </div>
+
                                     <div class="clearfix"></div>
+
+<span class="sp job_list_detail_btn">
+<a href="http://g-career.2-d.jp/recruit/job-list/" class="job_list_detail_btn">詳しくみる</a>
+</span>
+
+
                                 </div>
                             </div>
                             <?php
