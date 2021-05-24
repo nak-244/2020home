@@ -302,7 +302,16 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                     <span><i class="fa fa-star"></i> <?php echo esc_html__('Featured', 'wp-jobsearch'); ?></span>
                                                 <?php } ?>
                                             </h2>
+<!-- 追加 -->
+<?php if(get_post_meta($job_id, 'cf01_1',true)):?>
+<h6 class="joblist__subtitle"><?php the_field('cf01_1'); ?></h6>
+<?php endif; ?>
 
+<?php if(get_post_meta($job_id, 'cf01',true)):?>
+<p><?php the_field('cf01'); ?></p>
+<?php endif; ?>
+
+<!-- //追加 -->
                                         </div>
                                     </div>
                                     <div class="jobsearch-table-cell">
