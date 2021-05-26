@@ -326,6 +326,12 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
 <?php endif; ?>
 
 <ul class="job_list_meta">
+
+  <li>
+    職種：<?php $terms = get_the_terms($job_id,'sector'); foreach( $terms as $term ) { echo $term->name; } ?>
+  </li>
+
+
   <?php if(get_post_meta($job_id, 'cf03',true)):?>
   <li>
     勤務地：<?php the_field('cf03'); ?><?php if(get_post_meta($job_id, 'cf04',true)):?><?php the_field('cf04'); ?><?php endif; ?>

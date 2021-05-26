@@ -1,0 +1,347 @@
+
+
+/* ---------------------------
+    Footer Css 
+------------------------------*/
+
+
+.rs-footer{
+    background: #21202e;
+    .widget{
+        margin: 0 0 20px;
+        ul{
+            li{
+                .fa{
+                    padding-right: 10px;
+                }
+            }
+        }
+        &.widget_nav_menu{
+            ul{
+                li{
+                    position: relative;                    
+                    a{                        
+                        &:hover{
+                            color: @primaryColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+     .container-fluid{
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+}
+
+.rs-footer {
+    
+    background: @hoverColor;
+    font-size: 14px;
+    .footer-top {
+        padding: 60px 0 25px;
+        h3.footer-title {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            margin-bottom: 24px;
+            padding: 0 0 18px;
+            &:after{
+                content:"";
+                position: absolute;
+                left: 0;
+                transition: all .5s ease;
+                bottom: 0;
+                background: #fff;
+                width: 50px;
+                height: 2px;
+                display: block;
+            } 
+        }
+        .col-lg-3{
+            &:hover{
+                h3.footer-title{
+                    &:after{
+                        width: 50%;
+                    }
+                }
+            }
+        }
+        
+        .mc4wp-form-fields{            
+            p{
+                margin: 30px 0 0;
+                position: relative;
+            }
+            input[type="email"]{
+                background: none;
+                border: 1px solid #898989;
+                width: 100%;
+                font-size: 13px;
+                padding: 10px 10px;
+                margin: 0;
+            }
+            input[type="submit"]{
+                position: absolute;
+                top: 1px;
+                right: 1px;
+                bottom: 1px;
+                font-size: 0px;
+                background: @secondaryColor;
+                border-radius: 0;
+                padding: 0 40px 0 14px;                
+                &:hover{
+                    background:@secondaryColor;
+                }
+            }
+            #main-form input[type=submit]{
+                background: @primaryColor !important;
+            }
+            i{
+                position: absolute;
+                right: 0;
+                transform: rotate(-90deg);
+                top: 0;
+                bottom: 0;
+                padding: 16px 22px;
+                pointer-events: none;
+                color: #fff;
+            }
+
+            .rs-saas-newslatter{
+                input[type="email"]{
+                    border-radius: 30px;
+                    border-color: #7230f4 !important;
+                    padding-left: 16px;
+                }
+                input[type="submit"]{
+                    background: #7230f4 !important; 
+                    border-radius:0 30px 30px 0;
+                }
+
+                input{
+                    outline: none;
+                    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                      color: #aaa;
+                      opacity: 1;
+                    }
+                    &::-moz-placeholder { /* Firefox 19+ */
+                      color: #aaa;
+                      opacity: 1;
+                    }
+                    &:-ms-input-placeholder { /* IE 10+ */
+                      color: #aaa;
+                      opacity: 1;
+                    }
+                    &:-moz-placeholder { /* Firefox 18- */
+                      color: #aaa;
+                      opacity: 1;
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    .footer-address{
+        line-height: 35px;
+    }
+    li.about-widget-img{      
+        img {
+            margin-bottom: 10px;
+            margin-top: 0px;
+            height: 35px;
+        }
+    }
+    a{
+        color: #fff;
+        &:hover{
+            color:#eee;
+        }
+    }
+    ul{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        li{
+            padding: 0 0 16px 0;
+        }
+    }
+    .recent-post-widget{
+        margin-bottom: 0;
+        .show-featured{
+            clear: both;
+            overflow: hidden;
+            margin-bottom: 20px;
+            .post-img{
+                img{
+                    border-radius: 3px;
+                }
+            }
+            .post-desc{
+                line-height: 22px;
+                i{
+                    margin-right: 3px;
+                    position: relative;
+                    bottom: 1px;
+                }
+                span{
+                    color: #aaa;
+                    display: block;
+                    margin-top: 4px;
+                }
+            }
+        }
+    }
+    .about-widget{
+        p{
+            img{
+                margin-bottom: 22px;
+            }
+        }
+    }
+    .footer-logo-light{
+        height: 25px;
+        margin: 11px 0 29px;
+    }
+    .fa-ul{
+        margin-left: 0;
+        text-align: left;
+        li{
+            padding: 4px 0;
+            i{
+                padding-right: 10px;
+                color: fff;
+            }
+            a{
+                color: #fff;
+                &:hover{
+                    color: @primaryColor;
+                }
+            }
+        }
+    }
+    &.footerlight{
+        color: #666666;
+        .footer-top {
+            h3.footer-title{
+                color: #212121;
+                &:after{
+                    background: #666666;
+                }
+            }
+        }
+        .footer_social{
+            li{
+                a{
+                    color: #666666;
+                }
+            }
+        }
+        .fa-ul {
+            li {
+                a{
+                    color: #666666;
+                }
+            }
+        }
+        a{
+            color: #666666;
+        }
+    }
+    &.footerdark{
+        .footer-bottom{
+            border-color: #eee6;
+        }
+        .footer-top{
+            .mc4wp-form-fields{
+                input[type="email"]{
+                    border-color: #eee6;
+                }
+            }
+        }
+    }
+    .footer-logo{
+        img{
+            height: 35px;
+            margin: 8px 0 28px;
+        }
+    }
+}
+
+.error404{
+    .rs-footer{
+        margin: 0
+    }
+}
+
+
+
+ul.footer_social{   
+    li{
+        display: inline-block;
+        margin-right: 7px;
+        text-align: center;
+        a{
+            border: 1px solid #61616b;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            display: block;
+            &:hover{
+                background:@primaryColor;
+                border: 1px solid @primaryColor;
+                color: #222;
+            }
+            i{
+                padding: 0 !important;
+            }            
+        }        
+    }
+}
+
+.footer-bottom{
+    border-top: 1px solid #313047;
+    padding: 15px 0;
+    .copyright{
+        text-align: center;
+        p{
+            margin: 0;
+        }
+    }
+}
+
+.rs-footer .widget.widget_nav_menu ul ul.sub-menu, 
+.rs-footer .widget.widget_pages ul ul.sub-menu, 
+.rs-footer .widget.widget_categories ul ul.sub-menu {
+    padding-left: 15px;
+}
+
+.rs-footer .widget.widget_nav_menu ul li, 
+.rs-footer .widget.widget_pages ul li, 
+.rs-footer .widget.widget_categories ul li {
+    position: relative;
+    padding: 0;
+}
+
+.rs-footer .widget.widget_nav_menu ul li a, 
+.rs-footer .widget.widget_pages ul li a, 
+.rs-footer .widget.widget_categories ul li a {
+    position: relative;
+    padding: 6px 0 6px 0px !important;
+    display: inline-block;
+    color: #fff;
+}
+.rs-footer .widget a:hover{
+    color:@primaryColor;
+}
+
+.rs-footer a:focus{
+    color:#fff;
+}
+

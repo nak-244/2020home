@@ -1,0 +1,1139 @@
+# Copyright (C) 2018 RSTheme
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: finoptis 1.0.0\n"
+"Report-Msgid-Bugs-To: support@rstheme\n"
+"POT-Creation-Date: 2018-12-07 12:00+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator:  support@rstheme\n"
+"Language-Team: LANGUAGE <support@rstheme>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+
+#: 404.php:20
+msgid "404"
+msgstr ""
+
+#: 404.php:31
+msgid "Page Not Found"
+msgstr ""
+
+#: 404.php:44
+msgid "OR BACK TO HOMEPAGE"
+msgstr ""
+
+#: comments.php:30
+msgid "comments title"
+msgstr ""
+
+#: comments.php:50
+msgid "Comments are closed."
+msgstr ""
+
+#: index.php:98
+msgid "Read More"
+msgstr ""
+
+#: searchform.php:11
+msgid "Search for:"
+msgstr ""
+
+#: single-teams.php:46
+msgid "Team Information"
+msgstr ""
+
+#: single-teams.php:51
+msgid "Designation"
+msgstr ""
+
+#: single-teams.php:58
+msgid "Company:"
+msgstr ""
+
+#: single-teams.php:91
+msgid "Address::"
+msgstr ""
+
+#: single-teams.php:99
+msgid "City:"
+msgstr ""
+
+#: single-teams.php:108
+msgid "State:"
+msgstr ""
+
+#: single-teams.php:116
+msgid "Country:"
+msgstr ""
+
+#: single-teams.php:124
+msgid "Phone:"
+msgstr ""
+
+#: single-teams.php:132
+msgid "Email:"
+msgstr ""
+
+#: single-teams.php:142
+msgid "Website:"
+msgstr ""
+
+#: single-teams.php:169
+msgid "Pages:"
+msgstr ""
+
+
+#: single.php:34
+msgid "Tags: "
+msgstr ""
+
+#: inc/template-sidebar.php:10
+msgid "Sidebar"
+msgstr ""
+
+#: inc/template-sidebar.php:12
+msgid "Add widgets here."
+msgstr ""
+
+#: inc/template-sidebar.php:20
+msgid "Off Canvas Sidebar"
+msgstr ""
+
+#: inc/template-sidebar.php:22
+msgid "Add widgets here."
+msgstr ""
+
+#: inc/template-sidebar.php:30
+msgid "Footer One Widget Area"
+msgstr ""
+
+#: inc/template-sidebar.php:32
+msgid "Add Text widgets area"
+msgstr ""
+
+#: inc/template-sidebar.php:40
+msgid "Footer Two Widget Area"
+msgstr ""
+
+#: inc/template-sidebar.php:42
+msgid "Add text box widgets area"
+msgstr ""
+
+#: inc/template-sidebar.php:49
+msgid "Footer Three Widget Area"
+msgstr ""
+
+#: inc/template-sidebar.php:51
+msgid "Add text box widgets area"
+msgstr ""
+
+#: inc/template-sidebar.php:59
+msgid "Footer Four Widget Area"
+msgstr ""
+
+#: inc/template-sidebar.php:61
+msgid "Add text box widgets area"
+msgstr ""
+
+#: inc/template-tags.php:27
+msgid "Posted on %s", "post date"
+msgstr ""
+
+#: inc/template-tags.php:33
+msgid "by %s", "post author"
+msgstr ""
+
+#: inc/template-tags.php:50
+msgid ", "
+msgstr ""
+
+#: inc/template-tags.php:53
+msgid "Posted in %1$s"
+msgstr ""
+
+#: inc/template-tags.php:57
+msgid ", ", "list item separator"
+msgstr ""
+
+#: inc/template-tags.php:60
+msgid "Tagged %1$s"
+msgstr ""
+
+#: inc/template-tags.php:70
+msgid "Leave a Comment<span class="screen-reader-text"> on %s</span>"
+msgstr ""
+
+#: inc/template-tags.php:87
+msgid "Edit <span class="screen-reader-text">%s</span>"
+msgstr ""
+
+#: inc/header/menu-single.php:22
+msgid "Primary navigation menu is missing. Add one from "Appearance" -> "Menus" "
+msgstr ""
+
+#: inc/header/menu-single.php:29
+msgid "x"
+msgstr ""
+
+#: inc/page-header/breadcrumbs-search.php:8
+msgid "Search Results for: %s"
+msgstr ""
+
+#: inc/page-header/breadcrumbs-search.php:10
+msgid "Nothing Found"
+msgstr ""
+
+#: inc/page-header/breadcrumbs-blog.php:16
+msgid "All Blogs"
+msgstr ""
+
+#: inc/page-header/breadcrumbs-blog.php:44
+msgid "Blog"
+msgstr "
+
+#: inc/portfolio/single-gallery.php:50
+msgid "Project Information"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:53
+msgid "Client:"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:57
+msgid "Location:"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:61
+msgid "Surface Area:"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:61
+msgid "2"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:65
+msgid "Completed Date:"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:69
+msgid "Project Value:"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:73
+msgid "Architect"
+msgstr ""
+
+#: inc/portfolio/single-gallery.php:83
+msgid "Project Gallery"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:56
+msgid "Project Information"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:59
+msgid "Client:"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:63
+msgid "Location:"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:67
+msgid "Surface Area:"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:67
+msgid "2"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:71
+msgid "Completed Date:"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:75
+msgid "Project Value:"
+msgstr ""
+
+#: inc/portfolio/single-slider.php:79
+msgid "Architect"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:34
+msgid "Project Information"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:37
+msgid "Client:"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:41
+msgid "Location:"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:45
+msgid "Surface Area:"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:45
+msgid "2"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:49
+msgid "Completed Date:"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:53
+msgid "Project Value:"
+msgstr ""
+
+#: inc/portfolio/single-standard.php:57
+msgid "Architect"
+msgstr ""
+
+#: template-parts/content.php:32
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/content.php:43
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/content-page.php:15
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/content-page.php:36
+msgid "Edit <span class="screen-reader-text">%s</span>"
+msgstr ""
+
+#: template-parts/content-none.php:18
+msgid "Ready to publish your first post? <a href="%1$s">Get started here</a>."
+msgstr ""
+
+#: template-parts/content-none.php:31
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr ""
+
+#: template-parts/content-none.php:37
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr ""
+
+#: template-parts/content-single.php:15
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/content-single.php:28
+msgid "Edit <span class="screen-reader-text">%s</span>"
+msgstr ""
+
+#: template-parts/post/content.php:56
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content.php:67
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-aside.php:24
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-aside.php:35
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-audio.php:68
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-audio.php:73
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-image.php:44
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-image.php:72
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-gallery.php:67
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-gallery.php:72
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-link.php:35
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-link.php:46
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-quote.php:67
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-quote.php:72
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-video.php:61
+msgid "Continue reading<span class="screen-reader-text"> "%s"</span>"
+msgstr ""
+
+#: template-parts/post/content-video.php:66
+msgid "Pages:"
+msgstr ""
+
+#: template-parts/post/content-none.php:11
+msgid "Nothing Found"
+msgstr ""
+
+#: template-parts/post/content-none.php:17
+msgid "Ready to publish your first post? <a href="%1$s">Get started here</a>."
+msgstr ""
+
+#: template-parts/post/content-none.php:21
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr ""
+
+#: libs/theme-option/config.php:37
+msgid "finoptis Options"
+msgstr ""
+
+#: libs/theme-option/config.php:38
+msgid "finoptis Options"
+msgstr ""
+
+#: libs/theme-option/config.php:144
+msgid "finoptis Theme"
+msgstr ""
+
+#: libs/theme-option/config.php:146
+msgid "finoptis Theme"
+msgstr ""
+
+#: libs/theme-option/config.php:171
+msgid "General Sections"
+msgstr ""
+
+#: libs/theme-option/config.php:178
+msgid "Upload Default Logo"
+msgstr ""
+
+#: libs/theme-option/config.php:179
+msgid "Upload your logo"
+msgstr ""
+
+#: libs/theme-option/config.php:187
+msgid "Upload Your Light"
+msgstr ""
+
+#: libs/theme-option/config.php:188
+msgid "Upload your light logo"
+msgstr ""
+
+#: libs/theme-option/config.php:196
+msgid "Upload Your Sticky Logo"
+msgstr ""
+
+#: libs/theme-option/config.php:197
+msgid "Upload your sticky logo"
+msgstr ""
+
+#: libs/theme-option/config.php:206
+msgid "Upload Favicon"
+msgstr ""
+
+#: libs/theme-option/config.php:207
+msgid "Upload your faviocn here"
+msgstr ""
+
+#: libs/theme-option/config.php:214
+msgid "Sticky Menu"
+msgstr ""
+
+#: libs/theme-option/config.php:215
+msgid "You can show or hide sticky menu here"
+msgstr ""
+
+#: libs/theme-option/config.php:222
+msgid "Show Search"
+msgstr ""
+
+#: libs/theme-option/config.php:223
+msgid "You can show or hide search icon at menu area"
+msgstr
+
+#: libs/theme-option/config.php:230
+msgid "Show off Canvas"
+msgstr
+
+#: libs/theme-option/config.php:231
+msgid "You can show or hide off canvas here"
+msgstr
+
+#: libs/theme-option/config.php:238
+msgid "Show Preloader"
+msgstr
+
+#: libs/theme-option/config.php:239
+msgid "You can show or hide preloader"
+msgstr
+
+#: libs/theme-option/config.php:246
+msgid "Go to Top"
+msgstr
+
+#: libs/theme-option/config.php:247
+msgid "You can show or hide here"
+msgstr
+
+#: libs/theme-option/config.php:259
+msgid "Header"
+msgstr
+
+#: libs/theme-option/config.php:270
+msgid "Header Top Area"
+msgstr
+
+#: libs/theme-option/config.php:271
+msgid ""
+msgstr
+
+#: libs/theme-option/config.php:277
+msgid "Show Top Bar"
+msgstr
+
+#: libs/theme-option/config.php:278
+msgid "You can select top bar show or hide"
+msgstr
+
+#: libs/theme-option/config.php:284
+msgid "Top Bar Welcome Text"
+msgstr
+
+#: libs/theme-option/config.php:285
+msgid "Top Bar Welcome Text Add Here"
+msgstr
+
+#: libs/theme-option/config.php:295
+msgid "Show Social Icons at Header"
+msgstr
+
+#: libs/theme-option/config.php:296
+msgid "You can select Social Icons show or hide"
+msgstr
+
+#: libs/theme-option/config.php:305
+msgid "Header Area"
+msgstr
+
+#: libs/theme-option/config.php:306
+msgid ""
+msgstr
+
+#: libs/theme-option/config.php:312
+msgid "Phone Number Pre Text"
+msgstr
+
+#: libs/theme-option/config.php:313
+msgid "Enter Phone Number Pre Text"
+msgstr
+
+#: libs/theme-option/config.php:320
+msgid "Phone Number"
+msgstr
+
+#: libs/theme-option/config.php:321
+msgid "Enter Phone Number"
+msgstr
+
+#: libs/theme-option/config.php:328
+msgid "E-mail Pre Text"
+msgstr
+
+#: libs/theme-option/config.php:329
+msgid "Enter E-mail Pre Text"
+msgstr
+
+#: libs/theme-option/config.php:336
+msgid "Email Address"
+msgstr
+
+#: libs/theme-option/config.php:337
+msgid "Enter Email Address"
+msgstr
+
+#: libs/theme-option/config.php:346
+msgid "Location Title"
+msgstr
+
+#: libs/theme-option/config.php:347
+msgid "Pre Text"
+msgstr
+
+#: libs/theme-option/config.php:354
+msgid "Add Location"
+msgstr
+
+#: libs/theme-option/config.php:355
+msgid "Enter Address Here"
+msgstr
+
+#: libs/theme-option/config.php:362
+msgid "Quote Button Text"
+msgstr
+
+#: libs/theme-option/config.php:369
+msgid "Quote Button Link"
+msgstr
+
+#: libs/theme-option/config.php:370
+msgid "Enter Quote Button Link Here"
+msgstr
+
+#: libs/theme-option/config.php:381
+msgid "Header Layout"
+msgstr
+
+#: libs/theme-option/config.php:390
+msgid "Header Layout"
+msgstr
+
+#: libs/theme-option/config.php:391
+msgid "Select header layout. Choose between 1, 2 ,3 or 4 layout."
+msgstr
+
+#: libs/theme-option/config.php:428
+msgid "Style"
+msgstr
+
+#: libs/theme-option/config.php:435
+msgid "Global Style"
+msgstr
+
+#: libs/theme-option/config.php:436
+msgid "Style your theme"
+msgstr
+
+#: libs/theme-option/config.php:443
+msgid "Body Backgroud Color"
+msgstr
+
+#: libs/theme-option/config.php:444
+msgid "Pick body background color"
+msgstr
+
+#: libs/theme-option/config.php:452
+msgid "Text Color"
+msgstr
+
+#: libs/theme-option/config.php:453
+msgid "Pick text color"
+msgstr
+
+#: libs/theme-option/config.php:461
+msgid "Primary Color"
+msgstr
+ 
+#: libs/theme-option/config.php:462
+msgid "Select Primary Color."
+msgstr
+ 
+#: libs/theme-option/config.php:470
+msgid "Secondary Color"
+msgstr
+ 
+#: libs/theme-option/config.php:471
+msgid "Select Secondary Color."
+msgstr
+ 
+#: libs/theme-option/config.php:479
+msgid "Link Color"
+msgstr
+ 
+#: libs/theme-option/config.php:480
+msgid "Pick Link color"
+msgstr
+ 
+#: libs/theme-option/config.php:488
+msgid "Link Hover Color"
+msgstr
+ 
+#: libs/theme-option/config.php:489
+msgid "Pick link hover color"
+msgstr
+ 
+#: libs/theme-option/config.php:497
+msgid "Footer Bg Color"
+msgstr 
+
+#: libs/theme-option/config.php:498
+msgid "Pick color."
+msgstr
+
+#: libs/theme-option/config.php:511
+msgid "Main Menu"
+msgstr
+
+#: libs/theme-option/config.php:512
+msgid "Main Menu Style Here"
+msgstr
+
+#: libs/theme-option/config.php:519
+msgid "Main Menu Text Color"
+msgstr
+
+#: libs/theme-option/config.php:520
+msgid "Pick color"
+msgstr
+
+#: libs/theme-option/config.php:528
+msgid "Main Menu Text Hover Color"
+msgstr
+
+#: libs/theme-option/config.php:529
+msgid "Pick color"
+msgstr
+
+#: libs/theme-option/config.php:536
+msgid "Main Menu Text Active Color"
+msgstr
+
+#: libs/theme-option/config.php:537
+msgid "Pick color"
+msgstr
+
+#: libs/theme-option/config.php:545
+msgid "Main Menu Text Hover Background"
+msgstr
+
+#: libs/theme-option/config.php:546
+msgid "Pick color"
+msgstr
+
+#: libs/theme-option/config.php:553
+msgid "Main Menu Text Active Background"
+msgstr
+
+#: libs/theme-option/config.php:554
+msgid "Pick color"
+msgstr
+
+#: libs/theme-option/config.php:562
+msgid "Dropdown Menu Background Color"
+msgstr
+
+#: libs/theme-option/config.php:563
+msgid "Pick bg color"
+msgstr
+
+#: libs/theme-option/config.php:572
+msgid "Dropdown Menu Text Color"
+msgstr
+
+#: libs/theme-option/config.php:581
+msgid "Dropdown Menu Hover Text Color"
+msgstr
+
+#: libs/theme-option/config.php:582
+msgid "Pick text color"
+msgstr
+
+#: libs/theme-option/config.php:591
+msgid "Dropdown Menu item Hover Background Color"
+msgstr
+
+#: libs/theme-option/config.php:592
+msgid "Pick text color"
+msgstr
+
+#: libs/theme-option/config.php:600
+msgid "Dropdown Menu item Seperate Border Color"
+msgstr
+
+#: libs/theme-option/config.php:601
+msgid "Pick a color"
+msgstr
+
+#: libs/theme-option/config.php:615
+msgid "Typography"
+msgstr
+
+#: libs/theme-option/config.php:617
+msgid "You can specify your body and heading font here"
+msgstr
+
+#: libs/theme-option/config.php:623
+msgid "Body Font"
+msgstr
+
+#: libs/theme-option/config.php:624
+msgid "Specify the body font properties."
+msgstr
+
+#: libs/theme-option/config.php:636
+msgid "Navigation Font"
+msgstr
+
+#: libs/theme-option/config.php:637
+msgid "Specify the menu font properties."
+msgstr
+
+#: libs/theme-option/config.php:653
+msgid "Heading H1"
+msgstr
+
+#: libs/theme-option/config.php:657
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:670
+msgid "Heading H2"
+msgstr
+
+#: libs/theme-option/config.php:675
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:688
+msgid "Heading H3"
+msgstr
+
+#: libs/theme-option/config.php:691
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:704
+msgid "Heading H4"
+msgstr
+
+#: libs/theme-option/config.php:712
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:725
+msgid "Heading H5"
+msgstr
+
+#: libs/theme-option/config.php:733
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:746
+msgid "Heading H6"
+msgstr
+
+#: libs/theme-option/config.php:752
+msgid "Typography option with each property can be called individually."
+msgstr
+
+#: libs/theme-option/config.php:770
+msgid "Blog"
+msgstr
+
+#: libs/theme-option/config.php:779
+msgid "Blog Settings"
+msgstr
+
+#: libs/theme-option/config.php:788
+msgid "Blog Page Banner"
+msgstr
+
+#: libs/theme-option/config.php:794
+msgid "Blog  Title"
+msgstr
+
+#: libs/theme-option/config.php:795
+msgid "Enter Blog  Title Here"
+msgstr
+
+#: libs/theme-option/config.php:802
+msgid "Select Blog Layout"
+msgstr
+
+#: libs/theme-option/config.php:803
+msgid "Select your blog layout"
+msgstr
+
+#: libs/theme-option/config.php:824
+msgid "Select Blog Gird"
+msgstr
+
+#: libs/theme-option/config.php:825
+msgid "Select your blog gird layout"
+msgstr
+
+#: libs/theme-option/config.php:839
+msgid "Show Author Info"
+msgstr
+
+#: libs/theme-option/config.php:840
+msgid "Select author info show or hide"
+msgstr
+
+#: libs/theme-option/config.php:853
+msgid "Show ReadMore"
+msgstr
+
+#: libs/theme-option/config.php:854
+msgid "You can show/hide readmore at blog page"
+msgstr
+
+#: libs/theme-option/config.php:867
+msgid "Single Post"
+msgstr
+
+#: libs/theme-option/config.php:876
+msgid "Blog Single page banner"
+msgstr
+
+#: libs/theme-option/config.php:884
+msgid "Show Comment"
+msgstr
+
+#: libs/theme-option/config.php:885
+msgid "Select comments show or hide"
+msgstr
+
+#: libs/theme-option/config.php:898
+msgid "Show Ahthor Info"
+msgstr
+
+#: libs/theme-option/config.php:899
+msgid "Select author info show or hide"
+msgstr
+
+#: libs/theme-option/config.php:912
+msgid "Show Related Post"
+msgstr
+
+#: libs/theme-option/config.php:913
+msgid "Choose related product show or hide"
+msgstr
+
+#: libs/theme-option/config.php:940
+msgid "Portfolio Single page banner image"
+msgstr
+
+#: libs/theme-option/config.php:947
+msgid "Portfolio Slug"
+msgstr
+
+#: libs/theme-option/config.php:948
+msgid "Enter Portfolio Slug Here"
+msgstr
+
+#: libs/theme-option/config.php:959
+msgid "Team Section"
+msgstr
+
+#: libs/theme-option/config.php:968
+msgid "Team Single page banner image"
+msgstr
+
+#: libs/theme-option/config.php:975
+msgid "Team Slug"
+msgstr
+
+#: libs/theme-option/config.php:976
+msgid "Enter Team Slug Here"
+msgstr
+
+#: libs/theme-option/config.php:989
+msgid "Service Section"
+msgstr
+
+#: libs/theme-option/config.php:998
+msgid "Service Single page banner image"
+msgstr
+  
+#: libs/theme-option/config.php:1005
+msgid "Service Slug"
+msgstr
+  
+#: libs/theme-option/config.php:1006
+msgid "Enter Service Slug Here"
+msgstr
+  
+#: libs/theme-option/config.php:1018
+msgid "Social Icons"
+msgstr
+  
+#: libs/theme-option/config.php:1019
+msgid "Add your social icon here"
+msgstr
+  
+#: libs/theme-option/config.php:1025
+msgid "Facebook Link"
+msgstr
+  
+#: libs/theme-option/config.php:1026
+msgid "Enter Facebook Link"
+msgstr
+  
+#: libs/theme-option/config.php:1032
+msgid "Twitter Link"
+msgstr
+  
+#: libs/theme-option/config.php:1033
+msgid "Enter Twitter Link"
+msgstr
+  
+#: libs/theme-option/config.php:1039
+msgid "Rss Link"
+msgstr
+  
+#: libs/theme-option/config.php:1040
+msgid "Enter Rss Link"
+msgstr
+  
+#: libs/theme-option/config.php:1046
+msgid "Pinterest Link"
+msgstr
+  
+#: libs/theme-option/config.php:1047
+msgid "Enter Pinterest Link"
+msgstr
+  
+#: libs/theme-option/config.php:1052
+msgid "Linkedin Link"
+msgstr
+  
+#: libs/theme-option/config.php:1053
+msgid "Enter Linkedin Link"
+msgstr
+  
+#: libs/theme-option/config.php:1059
+msgid "Google Plus Link"
+msgstr
+  
+#: libs/theme-option/config.php:1060
+msgid "Enter Google Plus  Link"
+msgstr
+  
+#: libs/theme-option/config.php:1066
+msgid "Instagram Link"
+msgstr
+  
+#: libs/theme-option/config.php:1067
+msgid "Enter Instagram Link"
+msgstr
+  
+#: libs/theme-option/config.php:1073
+msgid "Youtube Link"
+msgstr
+  
+#: libs/theme-option/config.php:1074
+msgid "Enter Youtube Link"
+msgstr
+  
+#: libs/theme-option/config.php:1080
+msgid "Tumblr Link"
+msgstr
+  
+#: libs/theme-option/config.php:1081
+msgid "Enter Tumblr Link"
+msgstr
+  
+#: libs/theme-option/config.php:1087
+msgid "Vimeo Link"
+msgstr
+  
+#: libs/theme-option/config.php:1088
+msgid "Enter Vimeo Link"
+msgstr
+  
+#: libs/theme-option/config.php:1098
+msgid "Footer Option"
+msgstr
+  
+#: libs/theme-option/config.php:1099
+msgid "Footer style here"
+msgstr
+   
+#: libs/theme-option/config.php:1108
+msgid "Footer Logo"
+msgstr
+   
+#: libs/theme-option/config.php:1109
+msgid "Upload your footer logo"
+msgstr
+   
+#: libs/theme-option/config.php:1115
+msgid "Show Social Icons at Footer"
+msgstr
+   
+#: libs/theme-option/config.php:1116
+msgid "You can select Social Icons show or hide"
+msgstr
+   
+#: libs/theme-option/config.php:1124
+msgid "Footer CopyRight"
+msgstr
+   
+#: libs/theme-option/config.php:1125
+msgid "Change your footer copyright text ?"
+msgstr
+   
+#: libs/theme-option/config.php:1132
+msgid "Copyright Background"
+msgstr
+   
+#: libs/theme-option/config.php:1133
+msgid "Copyright Background Color"
+msgstr
+   
+#: libs/theme-option/config.php:1145
+msgid "404 Error Page"
+msgstr
+   
+#: libs/theme-option/config.php:1146
+msgid "404 details  here"
+msgstr
+   
+#: libs/theme-option/config.php:1154
+msgid "Title"
+msgstr
+   
+#: libs/theme-option/config.php:1155
+msgid "Enter title for 404 page"
+msgstr
+   
+#: libs/theme-option/config.php:1162
+msgid "Text"
+msgstr
+   
+#: libs/theme-option/config.php:1163
+msgid "Enter text for 404 page"
+msgstr
+   
+#: libs/theme-option/config.php:1171
+msgid "Back to Home Button Label"
+msgstr
+   
+#: libs/theme-option/config.php:1172
+msgid "Enter label for "Back to Home" button"
+msgstr
+   
+#: libs/theme-option/config.php:1271
+msgid "Section via hook"
+msgstr
+   
+#: libs/theme-option/config.php:1272
+msgid "<p class="description">This is a section created by adding a filter to the sections array. Can be used by child themes to add/remove sections from the options.</p>'"
+msgstr
+   
+#: libs/theme-option/config.php:1272
+msgid "<p class="description">This is a section created by adding a filter to the sections array. Can be used by child themes to add/remove sections from the options.</p>'"
+msgstr

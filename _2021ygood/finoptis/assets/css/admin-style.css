@@ -1,0 +1,51 @@
+.wrap-import{
+	float: left;
+}
+.wrap-import button{
+	border:none;
+	background: #28406D;
+	color: #fff;
+	padding: 10px 15px;
+	font-weight: bold;
+	margin-right: 20px;
+	cursor: pointer;
+}
+.wrap-import{
+	margin-bottom: 20px;
+}
+.radio-select input[type='radio']{
+	display:none !important;
+}
+.radio-select label{
+	margin-right: 10px;
+}
+.radio-select label.active img{
+	border:2px solid #4caf50;
+}
+.wp-picker-container{
+	display: inline-block !important;
+}
+.ocdi.wrap.about-wrap .notice-info{
+   display: none !important;
+}
+.ocdi__demo-import-notice{
+	color: #ff0000 !important;
+	font-size: 20px !important;
+	font-weight: bold !important;
+	line-height: 25px !important;
+}
+
+.notice.notice-success{
+	color: green !important;
+	font-size: 20px !important;
+	font-weight: bold !important;
+	line-height: 25px !important;
+}
+
+.redux-container #redux-header .display_header span.redux-dev-mode-notice{
+	display:none !important;
+}
+
+#redux-header .rAds{
+	display:none !important;
+}
