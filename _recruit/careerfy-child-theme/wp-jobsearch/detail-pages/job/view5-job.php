@@ -410,9 +410,6 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
   <p class="subtitle">仕事内容</p>
   <div class="jobsearch-description">
     <?php the_field('cf08'); ?>
-<?php if(get_post_meta($post->ID, 'cf08_1',true)):?>
-    <br /><br /><?php the_field('cf08_1'); ?>
-<?php endif; ?>
   </div>
 </div>
 <?php endif; ?>
@@ -421,7 +418,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 <div class="content__wrap">
   <p class="subtitle">勤務地</p>
   <div class="jobsearch-description">
-    <?php the_field('cf03'); ?><?php the_field('cf04'); ?>
+    <?php the_field('cf03'); ?>
   </div>
 </div>
 <?php endif; ?>
@@ -441,12 +438,10 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 <div class="content__wrap">
   <p class="subtitle">給与</p>
   <div class="jobsearch-description">
-    <?php if(get_post_meta($post->ID, 'cf06',true)):?><?php the_field('cf06'); ?><?php endif; ?>
-    <?php if(get_post_meta($post->ID, 'cf07',true)):?>
+    年収
       <?php $cf07 = get_field('cf07');if($cf07){ ?>
         <?php echo number_format($cf07); ?>
-      <?php } ?>円
-    <?php endif; ?>
+      <?php } ?>円〜
     <?php if(get_post_meta($post->ID, 'cf07_1',true)):?><br /><br />【給与備考】<br /><?php the_field('cf07_1'); ?><?php endif; ?>
   </div>
 </div>
@@ -457,10 +452,6 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
   <p class="subtitle">勤務時間</p>
   <div class="jobsearch-description">
     <?php the_field('cf09_1'); ?>
-    <?php if(get_post_meta($post->ID, 'cf09_2',true)):?><br /><?php the_field('cf09_2'); ?><?php endif; ?>
-    <?php if(get_post_meta($post->ID, 'cf09_3',true)):?><br /><?php the_field('cf09_3'); ?><?php endif; ?>
-    <?php if(get_post_meta($post->ID, 'cf09_4',true)):?><br /><?php the_field('cf09_4'); ?><?php endif; ?>
-    <?php if(get_post_meta($post->ID, 'cf09_5',true)):?><br /><?php the_field('cf09_5'); ?><?php endif; ?>
     <?php if(get_post_meta($post->ID, 'cf09_0',true)):?><br /><br />【勤務時間備考】<br /><?php the_field('cf09_0'); ?><?php endif; ?>
   </div>
 </div>

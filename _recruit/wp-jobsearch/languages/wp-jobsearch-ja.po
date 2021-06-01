@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-01-27 16:36+0900\n"
+"PO-Revision-Date: 2021-05-27 15:56+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -2949,7 +2949,7 @@ msgstr ""
 #: includes/classes/class-job-filters.php:591
 #: modules/locations/locations.php:1804
 msgid "Locations"
-msgstr ""
+msgstr "勤務地"
 
 #: includes/classes/class-employer-filters.php:821
 #: includes/classes/class-job-filters.php:602
@@ -2986,7 +2986,7 @@ msgstr ""
 #: modules/locations/include/location-settings.php:1537
 #: modules/locations/include/location-settings.php:1801
 msgid "Select Country"
-msgstr ""
+msgstr "▼選択してください"
 
 #: includes/classes/class-employer-filters.php:987
 #: includes/classes/class-job-filters.php:779

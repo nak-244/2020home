@@ -4146,7 +4146,9 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+
+<!-- number_option_flag の数字変更 -->
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
 
                                                                 <input type="checkbox"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4185,7 +4187,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4212,7 +4214,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
                                     //
@@ -4279,7 +4281,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="checkbox"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
                                                                        value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
@@ -4315,7 +4317,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4340,7 +4342,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
                                     //
@@ -4905,7 +4907,7 @@ class Jobsearch_CustomFieldLoad
                                                                         $checked = ' checked="checked"';
                                                                     }
                                                                     ?>
-                                                                    <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
 
                                                                         <input type="checkbox"
                                                                                id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4944,7 +4946,7 @@ class Jobsearch_CustomFieldLoad
                                                                         $custom_dropdown_selected = ' checked="checked"';
                                                                     }
                                                                     ?>
-                                                                    <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                         <input type="radio"
                                                                                name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                                id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -4971,7 +4973,7 @@ class Jobsearch_CustomFieldLoad
                                                     ?>
                                                 </ul>
                                             <?php
-                                            if ($number_option_flag > 6) {
+                                            if ($number_option_flag > 60) {
                                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                             }
                                             //
@@ -5042,7 +5044,7 @@ class Jobsearch_CustomFieldLoad
                                                                         $checked = ' checked="checked"';
                                                                     }
                                                                     ?>
-                                                                    <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                         <input type="checkbox"
                                                                                id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
                                                                                value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
@@ -5078,7 +5080,7 @@ class Jobsearch_CustomFieldLoad
                                                                         $custom_dropdown_selected = ' checked="checked"';
                                                                     }
                                                                     ?>
-                                                                    <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                         <input type="radio"
                                                                                name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                                id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -5103,7 +5105,7 @@ class Jobsearch_CustomFieldLoad
                                                     ?>
                                                 </ul>
                                             <?php
-                                            if ($number_option_flag > 6) {
+                                            if ($number_option_flag > 60) {
                                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                             }
                                             //
@@ -5520,7 +5522,7 @@ class Jobsearch_CustomFieldLoad
 
         $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : ''; // for job salary check
         if ($custom_field_entity == 'candidate') {
-            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check 
+            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check
         }
 
         $job_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
@@ -5694,7 +5696,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
 
                                                                 <input type="checkbox"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -5703,7 +5705,7 @@ class Jobsearch_CustomFieldLoad
                                                                 <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
                                                                     <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
                                                                 </label>
-                                                                <?php 
+                                                                <?php
                                                                 $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
 
                                                                 if ($left_filter_count_switch == 'yes') {
@@ -5735,7 +5737,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -5766,7 +5768,7 @@ class Jobsearch_CustomFieldLoad
                                                     $number_option_flag++;
                                                     $cut_field_flag++;
                                                 }
-                                                
+
                                                 if (!empty($filter_html_arr)) {
                                                     if ($filter_sort_by == 'desc') {
                                                         krsort($filter_html_arr);
@@ -5791,7 +5793,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
                                     //
@@ -5864,7 +5866,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
 
                                                                 <input type="checkbox"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -5901,7 +5903,7 @@ class Jobsearch_CustomFieldLoad
                                                                 $custom_dropdown_selected = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
                                                                        name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
                                                                        id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
@@ -5952,7 +5954,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                     <?php
-                                    if ($number_option_flag > 6) {
+                                    if ($number_option_flag > 60) {
                                         echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                     }
                                     //
@@ -6727,7 +6729,7 @@ class Jobsearch_CustomFieldLoad
                                 if ($filter_more_counter > 6) {
                                     //echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                 }
-                            } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style 
+                            } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style
                                 wp_enqueue_style('jquery-ui');
                                 wp_enqueue_script('jquery-ui');
                                 $rand_id = rand(123, 1231231);
@@ -6869,7 +6871,7 @@ class Jobsearch_CustomFieldLoad
                                         </select>
                                     </div>
                                     <?php
-                                } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style 
+                                } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style
                                     wp_enqueue_style('jquery-ui');
                                     wp_enqueue_script('jquery-ui');
                                     $rand_id = rand(1231110, 9231231);
@@ -7161,6 +7163,6 @@ class Jobsearch_CustomFieldLoad
 
 }
 
-// class Jobsearch_CustomFieldLoad 
+// class Jobsearch_CustomFieldLoad
 $Jobsearch_CustomFieldLoad_obj = new Jobsearch_CustomFieldLoad();
 global $Jobsearch_CustomFieldLoad_obj;

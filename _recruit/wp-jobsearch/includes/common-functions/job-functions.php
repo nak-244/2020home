@@ -478,6 +478,12 @@ if (!function_exists('jobsearch_job_related_post')) {
 
 <p class="related_txt"><?php the_field('cf01'); ?></p>
 
+<?php if(get_post_meta($job_id, 'cf03',true)):?>
+<p class="related_txt">
+  勤務地：<?php the_field('cf03'); ?>
+</p>
+<?php endif; ?>
+
                                             </div>
 
                                             <div class="jobsearch-job-userlist">

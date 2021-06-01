@@ -857,11 +857,17 @@ class Jobsearch_JobFilterHTML
                             <ul class="jobsearch-row jobsearch-employer-profile-form">
                                 <?php if ($loc_optionstype == '0' || $loc_optionstype == '1') { ?>
                                     <li class="jobsearch-column-12">
+<!--
                                         <label><?php esc_html_e('Country', 'wp-jobsearch') ?></label>
+-->
+<label>都道府県</label>
                                         <div id="jobsearch-gdapilocs-contrycon" data-val="<?php echo($loc_location1) ?>"
                                              class="jobsearch-profile-select">
+
                                             <select name="location_location1" <?php echo('class="countries" id="countryId"') ?>>
+<!--
                                                 <option value=""><?php esc_html_e('Select Country', 'wp-jobsearch') ?></option>
+-->
                                                 <?php
                                                 if ($is_ajax) {
                                                     foreach ($api_contries_list as $api_cntry_key => $api_cntry_val) {
@@ -879,6 +885,7 @@ class Jobsearch_JobFilterHTML
                                     <?php
                                 }
                                 ?>
+<!--
                                 <li class="jobsearch-column-12">
                                     <label><?php esc_html_e('State', 'wp-jobsearch') ?></label>
                                     <?php
@@ -918,6 +925,7 @@ class Jobsearch_JobFilterHTML
                                         </select>
                                     </div>
                                 </li>
+-->
                                 <?php
                                 if ($loc_optionstype == '1' || $loc_optionstype == '2') { ?>
                                     <li class="jobsearch-column-12">

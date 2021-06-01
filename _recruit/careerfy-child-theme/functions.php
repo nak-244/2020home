@@ -13,3 +13,9 @@ endif;
 add_action( 'wp_enqueue_scripts', 'chld_thm_cfg_parent_css', 10 );
 
 // END ENQUEUE PARENT ACTION
+
+
+// エディター非表示
+ add_action( 'init', function() { 
+	remove_post_type_support( 'job', 'editor' ); 
+}, 99);
