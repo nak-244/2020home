@@ -252,6 +252,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                             </li>
                                         </ul>
 -->
+
                                         <?php
                                         if ($social_share_allow == 'on') {
                                             wp_enqueue_script('jobsearch-addthis'); ?>
@@ -296,6 +297,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 
                                 <div class="careerfy-jobdetail-content careerfy-jobdetail-content-style5">
+
+<!--
                                     <?php
                                     ob_start();
                                     $cus_fields = array('content' => '');
@@ -396,6 +399,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
                                             </div>
                                         <?php }
                                     } ?>
+-->
 
 <!-- コンテンツ -->
 <div class="content__wrap">
@@ -568,13 +572,8 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 <!-- //コンテンツ -->
 
-<!--
-                                    <div class="careerfy-content-title-style5">
-                                        <h2><?php echo esc_html__('Required skills', 'careerfy') ?></h2></div>
-                                    <div class="careerfy-jobdetail-tags">
-                                        <?php echo force_balance_tags($skills_list); ?>
-                                    </div>
--->
+
+
                                 </div>
                             </div>
                         </div>
