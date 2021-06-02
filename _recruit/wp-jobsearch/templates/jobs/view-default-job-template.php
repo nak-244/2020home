@@ -350,6 +350,18 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
   <?php endif; ?>
 </ul>
 
+<?php
+$job_feas = get_field('job_fea');
+if ($job_feas):
+?>
+<ul>
+    <?php
+    foreach ($job_feas as $job_fea) : ?>
+        <li class="job_fea_detail"><span class="job_detail_label"><?php echo $job_fea; ?></span></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
 <!-- //編集 -->
                                         </div>
                                     </div>

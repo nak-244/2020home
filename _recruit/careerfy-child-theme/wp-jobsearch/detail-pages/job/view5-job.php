@@ -402,176 +402,19 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 -->
 
 <!-- コンテンツ -->
-<div class="content__wrap">
-  <p class="subtitle">職種</p>
-  <div class="jobsearch-description">
-    <?php echo force_balance_tags(get_the_title()); ?>
-  </div>
-</div>
-
-<?php if(get_post_meta($post->ID, 'cf08',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">仕事内容</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf08'); ?>
-  </div>
-</div>
+<?php
+$job_feas = get_field('job_fea');
+if ($job_feas):
+?>
+<ul>
+    <?php
+    foreach ($job_feas as $job_fea) : ?>
+        <li class="job_fea_detail"><span class="job_detail_label"><?php echo $job_fea; ?></span></li>
+    <?php endforeach; ?>
+</ul>
 <?php endif; ?>
 
-<?php if(get_post_meta($post->ID, 'cf03',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">勤務地</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf03'); ?>
-  </div>
-</div>
-<?php endif; ?>
 
-<?php if(get_post_meta($post->ID, 'cf05_1',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">最寄り駅</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf05_1'); ?>
-    <?php if(get_post_meta($post->ID, 'cf05_2',true)):?><br /><?php the_field('cf05_2'); ?><?php endif; ?>
-    <?php if(get_post_meta($post->ID, 'cf05_3',true)):?><br /><?php the_field('cf05_3'); ?><?php endif; ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf07',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">給与</p>
-  <div class="jobsearch-description">
-    年収
-      <?php $cf07 = get_field('cf07');if($cf07){ ?>
-        <?php echo number_format($cf07); ?>
-      <?php } ?>円〜
-    <?php if(get_post_meta($post->ID, 'cf07_1',true)):?><br /><br />【給与備考】<br /><?php the_field('cf07_1'); ?><?php endif; ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf09_1',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">勤務時間</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf09_1'); ?>
-    <?php if(get_post_meta($post->ID, 'cf09_0',true)):?><br /><br />【勤務時間備考】<br /><?php the_field('cf09_0'); ?><?php endif; ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf10',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">休憩時間</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf10'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf11_2',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">休日</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf11_2'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf701',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">交通費</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf701'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf91',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">転勤</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf91'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf15',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">待遇・福利厚生</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf15'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf90',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">部署の規模・所属人数</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf90'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf13',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">経験など</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf13'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf13_1',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">研修</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf13_1'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf12',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">備考</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf12'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf20',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">管轄支店</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf20'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf80',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">問い合わせ電話番号</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf80'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if(get_post_meta($post->ID, 'cf81',true)):?>
-<div class="content__wrap">
-  <p class="subtitle">問い合わせ電話番号</p>
-  <div class="jobsearch-description">
-    <?php the_field('cf81'); ?>
-  </div>
-</div>
-<?php endif; ?>
-
-<!-- //コンテンツ -->
-
-<!-- テーブル -->
 <table class="tbl01">
 <tr>
   <th>職種</th>
@@ -712,6 +555,25 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 </tr>
 <?php endif; ?>
 
+<?php if(get_post_meta($post->ID, 'job_kod',true)):?>
+<tr>
+  <th>特徴</th>
+	<td>
+    <?php
+    $job_kods = get_field('job_kod');
+    if ($job_kods):
+    ?>
+    <ul class="job_detail_job_kod_ul">
+        <?php
+        foreach ($job_kods as $job_kod) : ?>
+            <li class="job_fea_detail"><?php echo $job_kod; ?></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+  </td>
+</tr>
+<?php endif; ?>
+
 <?php if(get_post_meta($post->ID, 'cf20',true)):?>
 <tr>
   <th>管轄支店</th>
@@ -742,7 +604,7 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 </table>
 
 
-<!-- //テーブル -->
+<!-- //コンテンツ -->
 
 
                                 </div>
