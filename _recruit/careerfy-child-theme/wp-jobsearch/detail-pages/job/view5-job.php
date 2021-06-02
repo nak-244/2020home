@@ -569,9 +569,56 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 </div>
 <?php endif; ?>
 
-
 <!-- //コンテンツ -->
 
+<!-- テーブル -->
+<table class="tbl01">
+<tr><th>項目１</th><td>項目１の内容がここに入ります。</td></tr>
+<tr><th>項目２</th><td>項目２の内容がここに入ります。</td></tr>
+</table>
+
+<style>
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.tbl01 {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em auto;
+}
+
+.tbl01 th, .tbl01 td {
+  padding: 0.5em 5%;
+  border: 1px solid #aaa;
+  vertical-align: top;
+  text-align: left;
+}
+
+.tbl01 th {
+  background: #eee;
+  width: 20%;
+}
+
+.tbl01 td {
+  background: #fff;
+}
+
+@media only screen and (max-width:480px) {
+  .tbl01 th, .tbl01 td {
+    display: block;
+    width: auto;
+    border-bottom: none;
+  }
+
+  .tbl01 tr:last-child {
+    border-bottom: 1px solid #aaa;
+  }
+}
+</style>
+<!-- //テーブル -->
 
 
                                 </div>
