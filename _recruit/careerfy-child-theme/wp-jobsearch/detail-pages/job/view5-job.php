@@ -573,51 +573,175 @@ $sector_str = jobsearch_job_get_all_sectors($job_id, '', '  ', '', '<li>', '</li
 
 <!-- テーブル -->
 <table class="tbl01">
-<tr><th>項目１</th><td>項目１の内容がここに入ります。</td></tr>
-<tr><th>項目２</th><td>項目２の内容がここに入ります。</td></tr>
+<tr>
+  <th>職種</th>
+  <td>
+    <?php echo force_balance_tags(get_the_title()); ?>
+  </td>
+</tr>
+<?php if(get_post_meta($post->ID, 'cf08',true)):?>
+<tr>
+  <th>仕事内容</th>
+	<td>
+		<?php the_field('cf08'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf03',true)):?>
+<tr>
+  <th>勤務地</th>
+	<td>
+		<?php the_field('cf03'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf05_1',true)):?>
+<tr>
+  <th>最寄り駅</th>
+	<td>
+		<?php the_field('cf05_1'); ?>
+		<?php if(get_post_meta($post->ID, 'cf05_2',true)):?><br /><?php the_field('cf05_2'); ?><?php endif; ?>
+		<?php if(get_post_meta($post->ID, 'cf05_3',true)):?><br /><?php the_field('cf05_3'); ?><?php endif; ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf07',true)):?>
+<tr>
+  <th>給与</th>
+	<td>
+		年収
+		<?php $cf07 = get_field('cf07');if($cf07){ ?>
+			<?php echo number_format($cf07); ?>
+		<?php } ?>円〜
+		<?php if(get_post_meta($post->ID, 'cf07_1',true)):?><br /><br />【給与備考】<br /><?php the_field('cf07_1'); ?><?php endif; ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf09_1',true)):?>
+<tr>
+  <th>勤務時間</th>
+	<td>
+		<?php the_field('cf09_1'); ?>
+		<?php if(get_post_meta($post->ID, 'cf09_0',true)):?><br /><br />【勤務時間備考】<br /><?php the_field('cf09_0'); ?><?php endif; ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf10',true)):?>
+<tr>
+  <th>休憩時間</th>
+	<td>
+		<?php the_field('cf10'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf11_2',true)):?>
+<tr>
+  <th>休日</th>
+	<td>
+		<?php the_field('cf11_2'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf701',true)):?>
+<tr>
+  <th>交通費</th>
+	<td>
+		<?php the_field('cf701'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf91',true)):?>
+<tr>
+  <th>転勤</th>
+	<td>
+		<?php the_field('cf91'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf15',true)):?>
+<tr>
+  <th>待遇・福利厚生</th>
+	<td>
+		<?php the_field('cf15'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf90',true)):?>
+<tr>
+  <th>部署の規模・所属人数</th>
+	<td>
+		<?php the_field('cf90'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf13',true)):?>
+<tr>
+  <th>経験など</th>
+	<td>
+		<?php the_field('cf13'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf13_1',true)):?>
+<tr>
+  <th>研修</th>
+	<td>
+		<?php the_field('cf13_1'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf12',true)):?>
+<tr>
+  <th>備考</th>
+	<td>
+		<?php the_field('cf12'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf20',true)):?>
+<tr>
+  <th>管轄支店</th>
+	<td>
+		<?php the_field('cf20'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf80',true)):?>
+<tr>
+  <th>問い合わせ電話番号</th>
+	<td>
+		<?php the_field('cf80'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
+<?php if(get_post_meta($post->ID, 'cf81',true)):?>
+<tr>
+  <th>問い合わせ電話番号</th>
+	<td>
+		<?php the_field('cf81'); ?>
+  </td>
+</tr>
+<?php endif; ?>
+
 </table>
 
-<style>
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
-.tbl01 {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1em auto;
-}
-
-.tbl01 th, .tbl01 td {
-  padding: 0.5em 5%;
-  border: 1px solid #aaa;
-  vertical-align: top;
-  text-align: left;
-}
-
-.tbl01 th {
-  background: #eee;
-  width: 20%;
-}
-
-.tbl01 td {
-  background: #fff;
-}
-
-@media only screen and (max-width:480px) {
-  .tbl01 th, .tbl01 td {
-    display: block;
-    width: auto;
-    border-bottom: none;
-  }
-
-  .tbl01 tr:last-child {
-    border-bottom: 1px solid #aaa;
-  }
-}
-</style>
 <!-- //テーブル -->
 
 
