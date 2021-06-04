@@ -2698,7 +2698,7 @@ if (!function_exists('jobsearch_get_query_whereclase_by_array')) {
 
                 if (isset($val['key']) || isset($val['value'])) {
                     $string .= get_meta_condition($val);
-                } else {  // if inner array 
+                } else {  // if inner array
                     if (isset($val) && is_array($val)) {
                         foreach ($val as $inner_var => $inner_val) {
                             $inner_relation = isset($inner_val['relation']) ? $inner_val['relation'] : 'and';
@@ -6107,8 +6107,13 @@ if (!function_exists('jobsearch_terms_and_con_link_txt')) {
             if ($privcy_page_id != '') {
                 ?>
                 <div class="terms-priv-chek-con">
-                    <p><input type="checkbox"
-                              name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('By clicking checkbox, you agree to our <a href="%s">Terms and Conditions</a> and <a href="%s">Privacy Policy</a>', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+                    <p>
+<!--
+                    <input type="checkbox" name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('By clicking checkbox, you agree to our <a href="%s">Terms and Conditions</a> and <a href="%s">Privacy Policy</a>', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+-->
+
+                    <input type="checkbox" name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('チェックボックスをクリックすると、 <a href="%s">利用規約</a> と <a href="%s">プライバシーポリシー</a>に同意したことになります。', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+
                     </p>
                 </div>
                 <?php
@@ -6538,7 +6543,7 @@ function jobsearch_notification_count_in_admin_menu()
 {
     global $menu;
     /*
-     * pending jobs query 
+     * pending jobs query
      */
 
     $jobs_pending_count = 0;

@@ -253,18 +253,17 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                 if ($field_sort_key == 'name' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                     ?>
                                                     <li>
-                                                        <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
-                                                        <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
-                                                               name="pt_user_lname" type="text"
-                                                               placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
-                                                    </li>
-                                                    <li>
                                                         <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                         <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
                                                                name="pt_user_fname" type="text"
                                                                placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
                                                     </li>
-
+                                                    <li>
+                                                        <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
+                                                        <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
+                                                               name="pt_user_lname" type="text"
+                                                               placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
+                                                    </li>
                                                     <?php
                                                 } else if ($field_sort_key == 'email') {
                                                     ?>
@@ -2473,18 +2472,20 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                     $field_name_swich = isset($jobsearch_plugin_options[$field_name_swich_key]) ? $jobsearch_plugin_options[$field_name_swich_key] : '';
                                                     if ($field_sort_key == 'name' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-                                                        <li>
-                                                            <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
-                                                            <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
-                                                                   name="pt_user_fname" type="text"
-                                                                   placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
-                                                        </li>
+<!-- 修正 -->
                                                         <li>
                                                             <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
                                                                    name="pt_user_lname" type="text"
                                                                    placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
                                                         </li>
+                                                        <li>
+                                                            <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
+                                                            <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
+                                                                   name="pt_user_fname" type="text"
+                                                                   placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
+                                                        </li>
+<!-- //修正 -->
                                                         <?php
                                                     } else if ($field_sort_key == 'email') {
                                                         ?>
@@ -2637,12 +2638,14 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                 $cand_resm_coverletr = isset($jobsearch_plugin_options['cand_resm_cover_letr']) ? $jobsearch_plugin_options['cand_resm_cover_letr'] : '';
                                                 if ($cand_resm_coverletr == 'on') {
                                                     ?>
+<!-- Cover Letter　非表示
                                                     <li class="form-textarea jobsearch-user-form-coltwo-full">
                                                         <label><?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>
                                                             :</label>
                                                         <textarea name="cand_cover_letter"
                                                                   placeholder="<?php esc_html_e('Cover Letter', 'wp-jobsearch') ?>"></textarea>
                                                     </li>
+ //Cover Letter　非表示 -->
                                                     <?php
                                                 }
                                             } else {
