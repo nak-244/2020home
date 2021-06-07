@@ -380,16 +380,16 @@ class Jobsearch_Login_Registration_Template
 
                             ob_start();
                             if ($flnames_fields_allow == 'on') { ?>
+                              <li>
+                                  <label><?php _e('Last Name *', 'wp-jobsearch') ?></label>
+                                  <input class="required" name="pt_user_lname" type="text"
+                                         placeholder="<?php _e('Last Name *', 'wp-jobsearch'); ?>" required>
+                                  <i class="jobsearch-icon jobsearch-user"></i>
+                              </li>
                                 <li>
-                                    <label>111<?php _e('First Name *', 'wp-jobsearch') ?></label>
+                                    <label><?php _e('First Name *', 'wp-jobsearch') ?></label>
                                     <input class="required" name="pt_user_fname" type="text"
                                            placeholder="<?php _e('First Name *', 'wp-jobsearch'); ?>" required>
-                                    <i class="jobsearch-icon jobsearch-user"></i>
-                                </li>
-                                <li>
-                                    <label><?php _e('Last Name *', 'wp-jobsearch') ?></label>
-                                    <input class="required" name="pt_user_lname" type="text"
-                                           placeholder="<?php _e('Last Name *', 'wp-jobsearch'); ?>" required>
                                     <i class="jobsearch-icon jobsearch-user"></i>
                                 </li>
                             <?php }
