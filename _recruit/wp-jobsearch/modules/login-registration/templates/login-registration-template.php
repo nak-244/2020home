@@ -478,7 +478,7 @@ class Jobsearch_Login_Registration_Template
                                 <li class="jobsearch-user-form-coltwo-full">
                                     <label><?php _e('Phone:', 'wp-jobsearch') ?><?php echo($signup_user_phone == 'on_req' ? ' *' : '') ?></label>
                                     <?php
-                                    if ($phone_validation_type == 'on') {
+                                    if ($phone_validation_type == 'off') {
                                         wp_enqueue_script('jobsearch-intlTelInput');
                                         $itltell_input_ats = array(
                                             'set_before_vals' => 'all',
