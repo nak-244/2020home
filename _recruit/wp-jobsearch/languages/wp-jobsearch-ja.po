@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-07 10:13+0900\n"
+"PO-Revision-Date: 2021-06-07 10:18+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1395,7 +1395,7 @@ msgstr ""
 
 #: includes/user-account-links.php:87
 msgid "My Account"
-msgstr ""
+msgstr "マイアカウント"
 
 #: includes/user-account-links.php:100 includes/user-account-links.php:182
 #: includes/user-account-links.php:481
