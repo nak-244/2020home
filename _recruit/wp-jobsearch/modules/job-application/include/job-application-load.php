@@ -2498,7 +2498,8 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                         <li>
                                                             <label><?php esc_html_e('Phone:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <?php
-                                                            if ($phone_validation_type == 'on') {
+//                                                            if ($phone_validation_type == 'on') {
+if ($phone_validation_type == 'off') {
                                                                 $rand_numb = rand(100000000, 999999999);
                                                                 $itltell_input_ats = array(
                                                                     'sepc_name' => 'user_phone',
