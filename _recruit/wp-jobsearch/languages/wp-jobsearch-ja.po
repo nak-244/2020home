@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-07 16:22+0900\n"
+"PO-Revision-Date: 2021-06-07 17:35+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1564,7 +1564,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:211
 #: templates/user-dashboard/employer/user-stats.php:410
 msgid "Change Password"
-msgstr "パスワードを変更する"
+msgstr "パスワード変更"
 
 #: includes/user-account-links.php:195 includes/user-account-links.php:200
 #: includes/user-account-links.php:404
@@ -13656,9 +13656,7 @@ msgstr ""
 msgid ""
 "Applied Successfully. You can view it after logged in your account. Also "
 "please check your e-mail."
-msgstr ""
-"正常に応募が完了しました。アカウントにログインすると表示できます。メールもご"
-"確認ください。"
+msgstr "正常に応募が完了しました。メールもご確認ください。"
 
 #: modules/job-application/include/job-application-load.php:1399
 msgid "You cannot apply for this job."
