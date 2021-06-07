@@ -191,7 +191,7 @@
 	background-color: #ea4c89; }
 .jobsearch_box_jobdetail_three_apply_btn {
 	float: left;
-	padding: 13px 14px 11px 14px;
+	padding: 13px 23px 11px 23px;
 	font-weight: 500;
 	border: 1px solid #efefef;
 	border-radius: 4px;
@@ -204,6 +204,10 @@
 	     -o-transition: all 0.4s ease-in-out;
 	        transition: all 0.4s ease-in-out;
 }
+.jobsearch_box_jobdetail_three_apply_btn.jobsearch-send-email-popup-btn {
+    color: #444; }
+.jobsearch_box_jobdetail_three_apply_btn.jobsearch-send-email-popup-btn:hover {
+	color: #13b5ea; }
 .jobsearch_box_jobdetail_three_apply_btn i {
 	font-size: 16px;
 	float: left;
@@ -214,7 +218,8 @@
 	color: #13b5ea; }
 .jobsearch_box_jobdetail_three_apply_btn.last {
 	margin-right: 0px; }
-.jobsearch_box_jobdetail_three_apply_btn:hover {
+.jobsearch_box_jobdetail_three_apply_btn:hover,
+.jobsearch_box_jobdetail_three_apply_btn:hover i {
 	color: #13b5ea;
 	border-color: #13b5ea;
 }
@@ -222,6 +227,7 @@
 	float: left;
 	width: 100%;
 	background-color: #53b427;
+	border: 1px solid #53b427;
 	color: #ffffff;
 	font-size: 16px;
 	text-transform: uppercase;
@@ -230,6 +236,15 @@
 	padding: 14px 10px;
 	line-height: 1;
 	margin-top: 15px;
+	-webkit-transition: all 0.4s ease-in-out;
+	   -moz-transition: all 0.4s ease-in-out;
+	    -ms-transition: all 0.4s ease-in-out;
+	     -o-transition: all 0.4s ease-in-out;
+	        transition: all 0.4s ease-in-out;
+}
+.jobsearch_box_jobdetail_three_apply_link:hover {
+	background-color: #ffffff;
+	color: #53b427;
 }
 .jobsearch_box_jobdetail_three_apply_social_icon { margin: 0px -7px; }
 .jobsearch_box_jobdetail_three_apply_social_icon li a {
@@ -285,4 +300,8 @@
 	position: relative;
 	height: 320px;
 	margin-bottom: -260px;
+}
+.body-nowhite-bg .jobsearch_box_similarjobs ul {
+	background-color: #ffffff;
+	padding: 15px 15px 5px 15px;
 }

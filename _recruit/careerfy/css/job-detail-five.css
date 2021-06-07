@@ -61,6 +61,9 @@
 .careerfy-jobdetail-style5-content {
     border: 1px solid #e2e3e5;
     border-bottom: 4px double #e2e3e5;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
 }
 .careerfy-jobdetail-style5-image {
     float: left;
@@ -127,7 +130,7 @@
     display: none; }
 .careerfy-jobdetail-btn-style5,
 .careerfy-jobdetail-style5-email {
-    display: inline-block;
+    float: left;
     border: 1px solid;
     padding: 9px 10px;
     line-height: 1;
@@ -153,3 +156,144 @@
     margin-bottom: 10px; }
 .careerfy-jobdetail-content.careerfy-jobdetail-content-style5 {
     border-top: none; }
+.careerfy-content-title-style5,
+.careerfy-jobdetail-services-style5,
+.careerfy-jobdetail-services-style5 .careerfy-services-text {
+    float: left;
+    width: 100%;
+}
+.careerfy-content-title-style5 {
+    margin-bottom: 30px; }
+.careerfy-jobdetail-services-style5 {
+    margin-bottom: 25px; }
+.careerfy-content-title-style5 h2 {
+    position: relative;
+    font-size: 22px;
+    padding-bottom: 6px;
+    margin-bottom: 0px;
+}
+.careerfy-content-title-style5 h2:before {
+    content: '';
+    width: 43px;
+    height: 3px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+}
+.careerfy-jobdetail-services-style5 ul li {
+    list-style: none;
+    position: relative;
+    margin-bottom: 15px;
+}
+.careerfy-jobdetail-services-style5 .careerfy-services-text {
+    background-color: #f6f9fc;
+    border: 1px solid #efefef;
+    border-radius: 80px;
+    padding: 7px 25px 7px 70px;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 600;
+}
+.careerfy-jobdetail-services-style5 .careerfy-services-text.has-no-icon {
+    padding-left: 25px;
+}
+.careerfy-jobdetail-services-style5 i {
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    width: 51px;
+    height: 100%;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 40px 0px 0px 40px;
+    font-size: 24px;
+    padding-top: 10px;
+}
+.careerfy-services-text small {
+    float: right;
+    width: 50%;
+    font-weight: 400;
+    margin: 0px;
+}
+.careerfy-jobdetail-content-style5 .jobsearch-description ul li:before {
+    content: "\eb60";
+    font-family: careerfy;
+}
+.careerfy-jobdetail-content-style5 .jobsearch-description ul li {
+    margin-bottom: 8px; }
+.careerfy-jobdetail-content-style5 .jobsearch-description h5 {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.jobsearch_side_box_style5,
+.jobsearch_apply_job_style5,
+.jobsearch_apply_job_style5 a,
+.jobsearch-about-company-content-style5,
+.jobsearch-about-company-content-style5 span,
+.jobsearch-about-company-style5,
+.jobsearch_side_box_style5 .jobsearch_box_map {
+    float: left;
+    width: 100%;
+}
+.jobsearch_side_box_style5 {
+    background-color: #ffffff;
+    border: 1px solid #e2e4e5;
+    padding: 28px 28px 0px 28px;
+}
+.jobsearch_apply_job_style5 {
+    margin-bottom: 25px; }
+.jobsearch_apply_job_style5 a {
+    padding: 16px 10px;
+    color: #ffffff;
+    background-color: #ffb14a;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 4px;
+}
+.jobsearch_apply_job_style5 a i {
+    margin-right: 10px; }
+.jobsearch_apply_job_style5 a.jobsearch-applyjob-linkedin-btn,
+.jobsearch_apply_job_style5 a.jobsearch-applyjob-btn-style5 {
+    background-color: #007ab9; }
+.jobsearch-about-company-content-style5 span {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.jobsearch-about-company-content-style5 span a { color: #666666; }
+.jobsearch-about-company-content-style5 span small {
+    font-weight: 700;
+    font-size: 16px;
+}
+.jobsearch-about-company-style5 {
+    margin-bottom: 40px; }
+.jobsearch_side_box_style5 .jobsearch_box_map {
+    margin-bottom: 35px; }
+.careerfy-jobdetail-style5-content .careerfy-jobs-style9-featured i {
+    padding-top: 7px; }
+.careerfy-jobdetail-style5-content .urgntpkg-badge-style9 {
+    padding: 4px 25px; }
+.jobsearch_apply_job_style5 a.facebook {
+    background-color: #3b5998;
+}
+.jobsearch_apply_job_style5 a.google {
+    background-color: #fb353f;
+}
+.jobsearch_apply_job_style5 a.jobsearch-nonuser-apply-btn,
+.jobsearch_apply_job_style5 a.jobsearch-applyjob-btn-style5 {
+    background-color: #53b427;
+    border: 1px solid #53b427;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.jobsearch_apply_job_style5 a.jobsearch-applyjob-btn-style5:hover {
+    background-color: #ffffff;
+    color: #53b427;
+}

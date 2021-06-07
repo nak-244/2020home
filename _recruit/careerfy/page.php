@@ -11,7 +11,11 @@
  *
  * @package Careerfy
  */
-get_header();
+if (wp_is_mobile()) {
+    get_header('mobile');
+} else {
+    get_header();
+}
 
 $page_spacing = get_post_meta($post->ID, 'careerfy_field_page_spacing', true);
 $page_spacing_class = '';
@@ -22,7 +26,7 @@ if ($page_spacing == 'no') {
 $page_view = get_post_meta($post->ID, 'careerfy_field_page_view', true);
 $page_pading_class = $page_view == 'wide' ? 'careerfy-full-wide-page' : '';
 ?>
-<div class="careerfy-main-content<?php echo esc_html($page_spacing_class) ?> <?php echo sanitize_html_class($page_pading_class) ?>">
+<div class="careerfy-main-content<?php echo esc_html($page_spacing_class) ?> <?php echo sanitize_html_class($page_pading_class) ?>"<?php echo apply_filters('careerfy_page_maincon_extr_atts', '', $post->ID) ?>>
     <?php
     $page_layout = get_post_meta($post->ID, 'careerfy_field_post_layout', true);
     if ($page_view != 'wide') {

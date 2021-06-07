@@ -129,13 +129,14 @@ if (!function_exists('careerfy_footer_bottom_sec')) {
                                 <div class="copyright-wrap">
                                     <?php
                                     if ($appstore_logo != '') { ?>
-                                        <img src="<?php echo($appstore_logo); ?>"
-                                             alt="<?php echo esc_html__("IOS", "careerfy"); ?>">
+                                        <a href="<?php echo($ios_app_link) ?>"><img src="<?php echo($appstore_logo); ?>"
+                                                                                    alt="<?php echo esc_html__("IOS", "careerfy"); ?>"></a>
                                         <?php
                                     }
                                     if ($googlestore_logo != '') { ?>
-                                        <img src="<?php echo($googlestore_logo); ?>"
-                                             alt="<?php echo esc_html__("Google", "careerfy"); ?>">
+                                        <a href="<?php echo($android_app_link) ?>"><img
+                                                    src="<?php echo($googlestore_logo); ?>"
+                                                    alt="<?php echo esc_html__("Google", "careerfy"); ?>"></a>
                                         <?php
                                     }
                                     if ($footer_social == 'on') {
@@ -469,8 +470,8 @@ if (!function_exists('careerfy_footer_top_secion_callback')) {
                     </div>
                     <div class="col-md-4">
                         <div class="careerfy-footer-reg-btn">
-                            <a class="footer-register-btn"
-                               href="<?php echo esc_url($footer_section_desc); ?>"><?php echo esc_html($footer_section_tbtn_text); ?></a>
+                            <a class="footer-register-btn" target="_blank"
+                               href="<?php echo esc_url($footer_section_tbtn_link); ?>"><?php echo esc_html($footer_section_tbtn_text); ?></a>
                         </div>
                     </div>
                 </div>

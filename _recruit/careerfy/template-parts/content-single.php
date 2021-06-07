@@ -19,10 +19,8 @@ if (is_active_sidebar('sidebar-1') && $post_layout == '') {
 if ($full_layout === true) {
     if (has_post_thumbnail()) {
         ?>
-
         <div class="row">
-            <!-- <div class="col-md-9 careerfy-content-col"> -->
-            <div class="col-md-12 careerfy-content-col">
+            <div class="col-md-9 careerfy-content-col">
                 <?php
                 $post_thumbnail_id = get_post_thumbnail_id(get_the_ID());
                 $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'careerfy-img2');
@@ -34,13 +32,10 @@ if ($full_layout === true) {
                 }
                 ?>
             </div>
-
-            <!-- <aside class="col-md-3 careerfy-sidebar-col">
+            <aside class="col-md-3 careerfy-sidebar-col">
                 <?php do_action('careerfy_post_detail_author_info'); ?>
-            </aside> -->
-
+            </aside>
         </div>
-
         <?php
     }
 } else {
@@ -56,7 +51,7 @@ if ($full_layout === true) {
 }
 ?>
 
-<div class="content-col-wrap">
+<div class="content-col-wrap">           
 
     <div class="careerfy-detail-wrap">
         <div class="careerfy-detail-editore">
@@ -109,9 +104,7 @@ if ($full_layout === true) {
             $rel_qry = new WP_Query($args);
             if ($rel_qry->have_posts()) {
                 ?>
-                <div class="careerfy-widgettitle">
-                  <h2>関連記事</h2>
-                </div>
+                <div class="careerfy-widgettitle"> <h2><?php esc_html_e('Related', 'careerfy') ?> <span><?php esc_html_e('Posts', 'careerfy') ?></span></h2> </div>
 
                 <div class="careerfy-blog careerfy-related-blog">
                     <ul class="row">
@@ -134,16 +127,16 @@ if ($full_layout === true) {
                                     ?>
                                 </figure>
                                 <div class="careerfy-related-blog-text">
-                                    <h2><a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 30, '...') ?></a></h2>
+                                    <h2><a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 5, '...') ?></a></h2>
                                     <ul class="careerfy-related-blog-option">
                                         <li><i class="fa fa-calendar"></i> <time datetime="<?php echo date('Y-m-d H:i:s', strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time></li>
-                                        <!-- <li><i class="fa fa-comment"></i> <a href="<?php comments_link(); ?>"><?php echo comments_number('0 Comments', '1 Comment', '% Comments'); ?></a></li> -->
+                                        <li><i class="fa fa-comment"></i> <a href="<?php comments_link(); ?>"><?php echo comments_number('0 Comments', '1 Comment', '% Comments'); ?></a></li>
                                         <li><i class="fa fa-eye"></i> <?php echo absint($post_views_count); ?></li>
                                     </ul>
                                     <?php
-                                    if (careerfy_excerpt(100)) {
+                                    if (careerfy_excerpt(15)) {
                                         ?>
-                                        <p><?php echo careerfy_excerpt(100) ?></p>
+                                        <p><?php echo careerfy_excerpt(15) ?></p>
                                         <?php
                                     }
                                     $avatar_link = get_avatar_url(get_the_author_meta('ID'), array('size' => 62));
@@ -153,14 +146,8 @@ if ($full_layout === true) {
                                         $avatar_link = get_template_directory_uri() . '/images/default_avatar.jpg';
                                     }
                                     ?>
-                                    <div class="post-author">
-                                      <!-- <a class="author-img" href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>">
-                                        <img src="<?php echo esc_url_raw($avatar_link); ?>" alt=""></a><a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"><?php echo get_the_author() ?>
-                                        </a> -->
-                                    </div>
-                                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" class="careerfy-continue-reading">
-                                      記事を読む <i class="fa fa-angle-right"></i>
-                                    </a>
+                                    <div class="post-author"><a class="author-img" href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"><img src="<?php echo esc_url_raw($avatar_link); ?>" alt=""></a><a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"><?php echo get_the_author() ?></a></div>
+                                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" class="careerfy-continue-reading"><?php esc_html_e('Continue Reading', 'careerfy'); ?> <i class="fa fa-angle-right"></i></a>
                                 </div>
                             </li>
 
@@ -176,7 +163,7 @@ if ($full_layout === true) {
 
 // entry footer
         careerfy_entry_footer(false)
-        ?>
+        ?>  
         <!-- #post-## -->
     </div>
     <?php

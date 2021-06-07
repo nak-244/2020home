@@ -25,7 +25,7 @@ if (post_password_required()) {
     if (have_comments()) : ?>
         <div class="careerfy-comments careerfy-postreviews">
             <div class="careerfy-widgettitle">
-                <h2><?php esc_html_e('Comments', 'careerfy') ?></h2>
+                <h2><?php echo esc_html__('Comments', 'careerfy') ?></h2>
             </div>
             <ul>
                 <?php
@@ -83,6 +83,7 @@ if (post_password_required()) {
                 <input id="email" name="email" class="emailinput" type="text" placeholder="' . esc_html__('Enter Your Email', 'careerfy') . '" required tabindex="2">
                 ' .
                 '</p>',
+
                     )
             ),
             'comment_field' => '<p class="careerfy-full-form">
