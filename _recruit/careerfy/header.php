@@ -40,17 +40,21 @@ if (!(class_exists('Careerfy_MMC') && true == Careerfy_MMC::is_construction_mode
     <?php } ?>
     <!--// Header \\-->
     <header id="careerfy-header" class="<?php echo careerfy_header_class() ?>">
+        <!--// MainHeader \\-->
         <?php
         // header section
         do_action('careerfy_header_section');
         ?>
+        <!--// MainHeader \\-->
     </header>
-    <?php do_action('careerfy_header_after_html');
 
-    do_action('header_advance_search');
-
+    <!--// Header Advance Search\\-->
+    <?php do_action('header_advance_search'); ?>
+    <!--// Header Navigation for only style12\\-->
+    <?php
     do_action('header_navigation_style_twelve');
-
-
+    ?>
+    <!--// Header \\-->
+    <?php 
     do_action('careerfy_header_breadcrumbs');
 }

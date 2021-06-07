@@ -7,11 +7,7 @@
  * @package Careerfy
  */
 do_action('careerfy_before_single_post_header', get_the_ID());
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 
 while (have_posts()) : the_post(); ?>
 
@@ -25,7 +21,9 @@ while (have_posts()) : the_post(); ?>
 
                 if ($subheader_title !== true) { ?>
                     <div class="blog-heading"><?php the_title('<h2>', '</h2>'); ?></div>
-                <?php } ?>
+                    <?php
+                }
+                ?>
 
                 <ul class="careerfy-blog-other">
                     <?php
@@ -36,15 +34,17 @@ while (have_posts()) : the_post(); ?>
                     $comments = esc_html__('Comments', 'careerfy');
                     $comment = esc_html__('Comment', 'careerfy');
                     ?>
-                    <li><i class="fa fa-comment"></i>
-                        <a href="<?php comments_link(); ?>"><?php echo comments_number('0 ' . $comments . '', '1 ' . $comment . ' ', '% ' . $comments . ''); ?></a>
-                    </li>
+
+                    <!-- <li><i class="fa fa-comment"></i>
+                        <a href="<?php comments_link(); ?>"><?php echo comments_number('0 ' . $comments . '', '1 '.$comment.' ', '% ' . $comments . ''); ?></a>
+                    </li> -->
+
                 </ul>
             </div>
             <?php
             $post_layout = get_post_meta($post->ID, 'careerfy_field_post_layout', true);
             $post_sidebar = get_post_meta($post->ID, 'careerfy_field_post_sidebar', true);
-            //
+
             $full_layout = true;
             if ($post_layout == 'right' || $post_layout == 'left') {
             $full_layout = false;
@@ -60,13 +60,17 @@ while (have_posts()) : the_post(); ?>
                     <div class="col-md-12">
                         <?php
                         }
+
                         get_template_part('template-parts/content', 'single');
+
+
                         ?>
                     </div>
                     <?php
                     // page sidebar
                     $sidebar_class = $post_layout == 'left' ? 'pull-left' : 'pull-right';
-                    if ($full_layout !== true) { ?>
+                    if ($full_layout !== true) {
+                        ?>
                         <aside class="col-md-3 careerfy-sidebar-col <?php echo sanitize_html_class($sidebar_class) ?>">
                             <?php
                             do_action('careerfy_post_detail_author_info');
@@ -77,7 +81,9 @@ while (have_posts()) : the_post(); ?>
                             }
                             ?>
                         </aside>
-                    <?php } ?>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -86,4 +92,3 @@ while (have_posts()) : the_post(); ?>
 <?php
 endwhile; // End of the loop.
 get_footer();
-        

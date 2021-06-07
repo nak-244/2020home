@@ -6,11 +6,7 @@
  *
  * @package Careerfy
  */
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 ?>
 <div class="careerfy-main-content">
     <div class="careerfy-main-section">

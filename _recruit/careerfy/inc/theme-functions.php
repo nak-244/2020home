@@ -61,10 +61,12 @@ if (!function_exists('careerfy_google_fonts_url')) {
 }
 
 if (!function_exists('careerfy_excerpt')) {
+
     /*
      * Custom excerpt.
      * @return content
      */
+
     function careerfy_excerpt($length = '', $read_more = false, $cont = false, $id = '')
     {
         $excerpt = get_the_excerpt();
@@ -78,7 +80,6 @@ if (!function_exists('careerfy_excerpt')) {
                 $excerpt = get_post_field('post_content', $id);
             }
         }
-
         if ($length > 0) {
             $excerpt = wp_trim_words($excerpt, $length, '...');
         }
@@ -336,11 +337,11 @@ if (!function_exists('careerfy_next_prev_custom_links')) {
                                 ?>
                                 <div class="careerfy-prev-post">
                                     <h6>
-                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 5, '...') ?></a>
+                                        <a href="<?php echo esc_url(get_permalink($previd)) ?>"><?php echo wp_trim_words(get_the_title($previd), 30, '...') ?></a>
                                     </h6>
                                     <a href="<?php echo esc_url(get_permalink($previd)) ?>"
                                        class="careerfy-arrow-nexpre"><i
-                                                class="careerfy-icon careerfy-down-arrow"></i> <?php echo esc_html__('Previous Post', 'careerfy') ?>
+                                                class="careerfy-icon careerfy-down-arrow"></i> <?php esc_html_e('Previous Post', 'careerfy') ?>
                                     </a>
                                 </div>
                                 <?php
@@ -362,10 +363,10 @@ if (!function_exists('careerfy_next_prev_custom_links')) {
                                 ?>
                                 <div class="careerfy-next-post">
                                     <h6>
-                                        <a href="<?php echo esc_url(get_permalink($nextid)) ?>"><?php echo wp_trim_words(get_the_title($nextid), 5, '...') ?></a>
+                                        <a href="<?php echo esc_url(get_permalink($nextid)) ?>"><?php echo wp_trim_words(get_the_title($nextid), 30, '...') ?></a>
                                     </h6>
                                     <a href="<?php echo esc_url(get_permalink($nextid)) ?>"
-                                       class="careerfy-arrow-nexpre"><?php echo esc_html__('Next Post', 'careerfy') ?> <i
+                                       class="careerfy-arrow-nexpre"><?php esc_html_e('Next Post', 'careerfy') ?> <i
                                                 class="careerfy-icon careerfy-down-arrow"></i></a>
                                 </div>
                                 <?php
@@ -402,7 +403,7 @@ if (function_exists('careerfy_add_param_field')) {
         foreach ($dropdown_options as $dr_opt_key => $dr_opt_val) {
             $dropdown_html .= '<option' . (is_array($value) && in_array($dr_opt_key, $value) ? ' selected="selected"' : '') . ' value="' . esc_html($dr_opt_key) . '">' . esc_html($dr_opt_val) . '</option>';
         }
-        $dropdown_html .= '	
+        $dropdown_html .= '
 		</select>';
         return $dropdown_html;
     }
@@ -416,7 +417,9 @@ if (function_exists('careerfy_add_param_field')) {
     function careerfy_vc_image_browse_field($settings, $value)
     {
         $_class = 'wpb_vc_param_value wpb-textinput ' . esc_attr($settings['param_name']) . ' ' . esc_attr($settings['type']) . '_field';
+
         $id = esc_attr($settings['param_name']) . rand(1000000, 9999999);
+
         $image_display = $value == '' ? 'none' : 'block';
 
         $_html = '
@@ -427,8 +430,10 @@ if (function_exists('careerfy_add_param_field')) {
 
         $_html .= '<input type="hidden" id="' . $id . '" class="' . esc_html($_class) . '" name="' . esc_attr($settings['param_name']) . '" value="' . $value . '" />';
         $_html .= '<input type="button" class="careerfy-upload-media careerfy-bk-btn" name="' . $id . '" value="' . __('Browse', 'careerfy') . '" />';
+
         return $_html;
     }
+
 }
 
 function careerfy_wpml_lang_switcher()
@@ -444,62 +449,60 @@ function careerfy_wpml_lang_switcher()
                 }
             }
             ?>
-            <li>
-                <div class="careerfy-wpml-switcher">
-                    <?php
-                    if ($current_lang_index != '' && isset($all_langs[$current_lang_index])) {
-                        $curnt_lng_obj = $all_langs[$current_lang_index];
-                        ?>
-                        <a href="<?php echo($curnt_lng_obj['url']) ?>" class="current-wpml-lng">
-                            <?php
-                            if (isset($curnt_lng_obj['country_flag_url']) && $curnt_lng_obj['country_flag_url'] != '') {
-                                ?>
-                                <img class="wpml-ls-flag" src="<?php echo($curnt_lng_obj['country_flag_url']) ?>"
-                                     alt="<?php echo($curnt_lng_obj['code']) ?>"
-                                     title="<?php echo($curnt_lng_obj['native_name']) ?>">
-                                <?php
-                            }
-                            ?>
-                            <span class="lang-trans-name"><?php echo($curnt_lng_obj['translated_name']) ?></span> <span
-                                    class="lang-native-name">(<?php echo($curnt_lng_obj['native_name']) ?>)</span>
-                        </a>
-                        <?php
-                    }
+            <div class="careerfy-wpml-switcher">
+                <?php
+                if ($current_lang_index != '' && isset($all_langs[$current_lang_index])) {
+                    $curnt_lng_obj = $all_langs[$current_lang_index];
                     ?>
-                    <ul>
+                    <a href="<?php echo($curnt_lng_obj['url']) ?>" class="current-wpml-lng">
                         <?php
-                        $lang_countr = 0;
-                        foreach ($all_langs as $lang_index => $lang_itm) {
-                            if ($lang_index == $current_lang_index) {
-                                continue;
-                            }
-                            $lang_act_url = $lang_itm['url'];
-                            if ($lang_itm['url'] == 'str' || $lang_itm['url'] == 'str?user-dashboard') {
-                                $lang_act_url = get_permalink();
-                            }
+                        if (isset($curnt_lng_obj['country_flag_url']) && $curnt_lng_obj['country_flag_url'] != '') {
                             ?>
-                            <li>
-                                <a href="<?php echo($lang_act_url) ?>" class="wpml-lng-item">
-                                    <?php
-                                    if (isset($lang_itm['country_flag_url']) && $lang_itm['country_flag_url'] != '') {
-                                        ?>
-                                        <img class="wpml-ls-flag" src="<?php echo($lang_itm['country_flag_url']) ?>"
-                                             alt="<?php echo($lang_itm['code']) ?>"
-                                             title="<?php echo($lang_itm['native_name']) ?>">
-                                        <?php
-                                    }
-                                    ?>
-                                    <span class="lang-trans-name"><?php echo($lang_itm['translated_name']) ?></span> <span
-                                            class="lang-native-name">(<?php echo($lang_itm['native_name']) ?>)</span>
-                                </a>
-                            </li>
+                            <img class="wpml-ls-flag" src="<?php echo($curnt_lng_obj['country_flag_url']) ?>"
+                                 alt="<?php echo($curnt_lng_obj['code']) ?>"
+                                 title="<?php echo($curnt_lng_obj['native_name']) ?>">
                             <?php
-                            $lang_countr++;
                         }
                         ?>
-                    </ul>
-                </div>
-            </li>
+                        <span class="lang-trans-name"><?php echo($curnt_lng_obj['translated_name']) ?></span> <span
+                                class="lang-native-name">(<?php echo($curnt_lng_obj['native_name']) ?>)</span>
+                    </a>
+                    <?php
+                }
+                ?>
+                <ul>
+                    <?php
+                    $lang_countr = 0;
+                    foreach ($all_langs as $lang_index => $lang_itm) {
+                        if ($lang_index == $current_lang_index) {
+                            continue;
+                        }
+                        $lang_act_url = $lang_itm['url'];
+                        if ($lang_itm['url'] == 'str' || $lang_itm['url'] == 'str?user-dashboard') {
+                            $lang_act_url = get_permalink();
+                        }
+                        ?>
+                        <li>
+                            <a href="<?php echo($lang_act_url) ?>" class="wpml-lng-item">
+                                <?php
+                                if (isset($lang_itm['country_flag_url']) && $lang_itm['country_flag_url'] != '') {
+                                    ?>
+                                    <img class="wpml-ls-flag" src="<?php echo($lang_itm['country_flag_url']) ?>"
+                                         alt="<?php echo($lang_itm['code']) ?>"
+                                         title="<?php echo($lang_itm['native_name']) ?>">
+                                    <?php
+                                }
+                                ?>
+                                <span class="lang-trans-name"><?php echo($lang_itm['translated_name']) ?></span> <span
+                                        class="lang-native-name">(<?php echo($lang_itm['native_name']) ?>)</span>
+                            </a>
+                        </li>
+                        <?php
+                        $lang_countr++;
+                    }
+                    ?>
+                </ul>
+            </div>
             <?php
         }
     }
@@ -518,56 +521,8 @@ if (!function_exists('careerfy_comments')) {
         $GLOBALS['comment'] = $comment;
         $args['reply_text'] = '<i class="fa fa-share"></i> ' . esc_html__('Reply to this comment', 'careerfy') . '';
         $args['after'] = '';
-        $_comment_type = $comment->comment_type;
-
-        switch ($_comment_type) {
-            case ($_comment_type == '') :
-
-                $comment_time = strtotime($comment->comment_date);
-
-                $get_author = get_comment_author();
-                $author_obj = get_user_by('login', $get_author);
-                ?>
-
-                <li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
-                <div id="comment-<?php comment_ID(); ?>" class="thumblist">
-                    <ul>
-                        <li>
-
-                            <?php
-                            $avatar_link = get_avatar_url($comment, array('size' => 62));
-                            if (@getimagesize($avatar_link)) {
-                                $avatar_link = $avatar_link;
-                            } else {
-                                $avatar_link = get_template_directory_uri() . '/images/default_avatar.jpg';
-                            }
-                            ?>
-                            <figure><img src="<?php echo esc_url_raw($avatar_link); ?>" alt=""></figure>
-                            <div class="careerfy-comment-text">
-
-                                <h6><a><?php comment_author(); ?></a> -
-                                    <span><?php echo date_i18n(get_option('date_format'), strtotime($comment->comment_date)) ?></span>
-                                </h6>
-
-                                <?php if ($comment->comment_approved == '0') : ?>
-                                    <div class="comment-awaiting-moderation"><?php echo esc_html__('Your comment is awaiting moderation.', 'careerfy'); ?></div>
-                                <?php endif; ?>
-                                <?php comment_text(); ?>
-                                <?php
-                                if (function_exists('careerfy_time_elapsed')) {
-                                    ?>
-                                    <span><?php echo careerfy_time_elapsed($comment_time) ?></span>
-                                    <?php
-                                }
-                                comment_reply_link(array_merge($args, array('depth' => $depth)));
-                                ?>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <?php
-                break;
-            case ($_comment_type == 'comment') :
+        switch ($comment->comment_type) {
+            case '' :
 
                 $comment_time = strtotime($comment->comment_date);
 
@@ -661,6 +616,7 @@ if (!function_exists('careerfy_post_detail_author_info')) {
             $author_box_class = '';
         }
         ?>
+
         <div class="careerfy-author-detail <?php echo sanitize_html_class($author_box_class) ?>">
             <div class="detail-title"><h2><?php esc_html_e('About the Author', 'careerfy') ?></h2></div>
             <figure>
@@ -676,6 +632,7 @@ if (!function_exists('careerfy_post_detail_author_info')) {
             </div>
             <?php do_action('careerfy_post_author_social_links', $post->ID) ?>
         </div>
+
         <?php
     }
 

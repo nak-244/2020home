@@ -21,7 +21,7 @@ if (!function_exists('careerfy_setup')) :
          * If you're building a theme based on Careerfy, use a find and replace
          * to change 'careerfy' to the name of your theme in all the template files.
          */
-        load_theme_textdomain('careerfy');
+        load_theme_textdomain('careerfy', trailingslashit(get_template_directory()) . 'languages');
 
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
@@ -150,7 +150,7 @@ function careerfy_register_required_plugins() {
             'slug' => 'careerfy-demo-data', // The plugin slug (typically the folder name).
             'source' => 'http://careerfy.net/download-plugins/careerfy-demo-data.zip', // The plugin source.
             'required' => true, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '2.5', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
+            'version' => '2.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
             'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
             'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
             'external_url' => '', // If set, overrides default API URL and points to an external URL.
@@ -183,27 +183,18 @@ function careerfy_register_required_plugins() {
             'slug' => 'js_composer', // The plugin slug (typically the folder name).
             'source' => get_template_directory() . '/inc/activation-plugins/js_composer.zip', // The plugin source.
             'required' => true, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '6.4.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
+            'version' => '6.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
             'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
             'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
             'external_url' => '', // If set, overrides default API URL and points to an external URL.
             'is_callable' => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
         );
         $plugins[] = array(
-            'name' => esc_html__('Elemetor', 'careerfy'),
-            'slug' => 'elementor',
-            'required' => false,
-            'version' => '',
-            'force_activation' => false,
-            'force_deactivation' => false,
-            'external_url' => '',
-        );
-        $plugins[] = array(
             'name' => esc_html__('Revolution Slider', 'careerfy'), // The plugin name.
             'slug' => 'revslider', // The plugin slug (typically the folder name).
             'source' => get_template_directory() . '/inc/activation-plugins/revslider.zip', // The plugin source.
             'required' => true, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '6.3.3', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
+            'version' => '6.1.8', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
             'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
             'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
             'external_url' => '', // If set, overrides default API URL and points to an external URL.
@@ -217,39 +208,6 @@ function careerfy_register_required_plugins() {
             'force_activation' => false,
             'force_deactivation' => false,
             'external_url' => '',
-        );
-        $plugins[] = array(
-            'name' => esc_html__('Addon Jobsearch Scheduled Meetings', 'careerfy'), // The plugin name.
-            'slug' => 'aaddon-jobsearch-scheduled-meetings', // The plugin slug (typically the folder name).
-            'source' => get_template_directory() . '/inc/activation-plugins/addon-jobsearch-scheduled-meetings.zip', // The plugin source.
-            'required' => false, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '1.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
-            'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-            'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-            'external_url' => '', // If set, overrides default API URL and points to an external URL.
-            'is_callable' => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
-        );
-        $plugins[] = array(
-            'name' => esc_html__('Addon Jobsearch Resume Export', 'careerfy'), // The plugin name.
-            'slug' => 'addon-jobsearch-export-resume', // The plugin slug (typically the folder name).
-            'source' => get_template_directory() . '/inc/activation-plugins/addon-jobsearch-export-resume.zip', // The plugin source.
-            'required' => false, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '1.6', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
-            'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-            'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-            'external_url' => '', // If set, overrides default API URL and points to an external URL.
-            'is_callable' => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
-        );
-        $plugins[] = array(
-            'name' => esc_html__('Addon Jobsearch Chat', 'careerfy'), // The plugin name.
-            'slug' => 'addon-jobsearch-chat', // The plugin slug (typically the folder name).
-            'source' => get_template_directory() . '/inc/activation-plugins/addon-jobsearch-chat.zip', // The plugin source.
-            'required' => false, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '1.8', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
-            'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
-            'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
-            'external_url' => '', // If set, overrides default API URL and points to an external URL.
-            'is_callable' => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
         );
         $plugins[] = array(
             'name' => esc_html__('Loco Translate', 'careerfy'),
@@ -274,20 +232,11 @@ function careerfy_register_required_plugins() {
             'slug' => 'wp-all-import-jobsearch', // The plugin slug (typically the folder name).
             'source' => get_template_directory() . '/inc/activation-plugins/wp-all-import-jobsearch.zip', // The plugin source.
             'required' => false, // If false, the plugin is only 'recommended' instead of required.
-            'version' => '1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
+            'version' => '1.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
             'force_activation' => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
             'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
             'external_url' => '', // If set, overrides default API URL and points to an external URL.
             'is_callable' => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
-        );
-        $plugins[] = array(
-            'name' => esc_html__('Login as User', 'careerfy'),
-            'slug' => 'login-as-user',
-            'required' => false,
-            'version' => '',
-            'force_activation' => false,
-            'force_deactivation' => false,
-            'external_url' => '',
         );
     }
 
@@ -413,7 +362,6 @@ function careerfy_front_scripts() {
     wp_register_style('careerfy-candidate-detail-two', trailingslashit(get_template_directory_uri()) . 'css/candidate-detail-two.css', array(), CAREERFY_VERSION);
     wp_register_style('careerfy-candidate-detail-three', trailingslashit(get_template_directory_uri()) . 'css/candidate-detail-three.css', array(), CAREERFY_VERSION);
     wp_register_style('careerfy-candidate-detail-four', trailingslashit(get_template_directory_uri()) . 'css/candidate-detail-four.css', array(), CAREERFY_VERSION);
-    wp_register_style('careerfy-candidate-detail-five', trailingslashit(get_template_directory_uri()) . 'css/candidate-detail-five.css', array(), CAREERFY_VERSION);
 
     // register progress bars
     wp_register_script('careerfy-progress-circle', trailingslashit(get_template_directory_uri()) . 'js/progress-circle.js', array('jquery'), CAREERFY_VERSION, true);
@@ -432,7 +380,6 @@ function careerfy_front_scripts() {
     }
     // scripts
     wp_enqueue_script('bootstrap', trailingslashit(get_template_directory_uri()) . 'js/bootstrap.js', array('jquery'), CAREERFY_VERSION, true);
-    wp_enqueue_script('fitvideo', trailingslashit(get_template_directory_uri()) . 'js/fitvideo.js', array(), CAREERFY_VERSION, true);
     wp_enqueue_script('careerfy-functions', trailingslashit(get_template_directory_uri()) . 'js/functions.js', array('jquery'), CAREERFY_VERSION, true);
     // Localize the script
     $careerfy_arr = array(
@@ -441,13 +388,17 @@ function careerfy_front_scripts() {
         'nav_close_img' => get_template_directory_uri() . '/images/cross.png',
     );
     wp_localize_script('careerfy-functions', 'careerfy_funnc_vars', $careerfy_arr);
+    if (!wp_is_mobile()) {
+        wp_enqueue_script('careerfy-resize-functions', trailingslashit(get_template_directory_uri()) . 'js/resize-functions.js', array('jquery'), CAREERFY_VERSION, true);
+    }
+    wp_enqueue_script('fitvideo', trailingslashit(get_template_directory_uri()) . 'js/fitvideo.js', array(), CAREERFY_VERSION, true);
 
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
 }
 
-add_action('wp_enqueue_scripts', 'careerfy_front_scripts', 99);
+add_action('wp_enqueue_scripts', 'careerfy_front_scripts');
 
 /**
  * Enqueue scripts and styles.
@@ -540,3 +491,23 @@ require trailingslashit(get_template_directory()) . 'inc/jetpack.php';
 if (class_exists('WooCommerce')) {
     require_once trailingslashit(get_template_directory()) . 'inc/woocommerce-config.php';
 }
+
+/**
+ * カスタムフィールドインポート設定
+ */
+ function rsci_meta_filter( $meta, $post, $is_update ) {
+   foreach ($meta as $key => $value) {
+     // checkeboxフィールドの場合
+     if($key == 'cf_01') {
+       // $valueが空の場合、データに a:1:{i:0;s:0:"";} という空データが入ってしまうため
+       // 空ではない場合にパースする
+       if ($value != "") {
+         $meta[$key] = preg_split("/,+/", $value);
+       } else {
+         $meta_array[$key] = "";
+       }
+     }
+   }
+   return $meta;
+ }
+ add_filter( 'really_simple_csv_importer_save_meta', 'rsci_meta_filter', 10, 3 );

@@ -172,9 +172,12 @@ if (class_exists('JobSearch_plugin')) {
                                 if (function_exists('jobsearch_member_promote_profile_iconlab')) {
                                     echo jobsearch_member_promote_profile_iconlab($candidate_id);
                                 }
-                                if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) { ?>
+                                if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
+                                    ?>
                                     <img src="<?php echo ($post_thumbnail_src) ?>" alt=""> <span class="careerfy-team-parallex-status" <?php echo ($final_color) ?>></span>
-                                    <?php }  ?>
+                                    <?php
+                                }
+                                ?>
                             </a>
                             <figcaption>
                                 <h2>
@@ -186,11 +189,12 @@ if (class_exists('JobSearch_plugin')) {
                                 if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
                                     echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_dclassic');
                                 }
+                                
                                 //
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title')) {
                                     if ($candidate_company_str != '') {
                                         ?>
-                                        <span><?php echo jobsearch_esc_html($candidate_company_str) ?></span>
+                                        <span><?php echo ($candidate_company_str) ?></span>
                                         <?php
                                     }
                                 }

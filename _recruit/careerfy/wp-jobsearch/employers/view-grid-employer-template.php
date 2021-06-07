@@ -131,6 +131,7 @@ if (class_exists('JobSearch_plugin')) {
                         $get_employer_location = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city);
                     }
 
+
                     $jobsearch_employer_team_title_list = get_post_meta($employer_id, 'jobsearch_field_team_title', true);
                     $team_imagefield_list = get_post_meta($employer_id, 'jobsearch_field_team_image', true);
                     $jargs = array(
@@ -186,17 +187,17 @@ if (class_exists('JobSearch_plugin')) {
                                 <figcaption>
                                     <?php
                                     if (!empty($sector_str) && $sectors_enable_switch == 'on') {
-                                        echo ($sector_str);
+                                        echo($sector_str);
                                     }
                                     ?>
                                     <h2>
                                         <a href="<?php echo esc_url(get_permalink($employer_id)); ?>">
-                                            <?php echo jobsearch_esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
+                                            <?php echo esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
                                         </a>
                                     </h2>
                                     <?php
                                     if (!empty($get_employer_location) && $all_location_allow == 'on') { ?>
-                                        <span><?php echo jobsearch_esc_html($get_employer_location); ?></span>
+                                        <span><?php echo esc_html($get_employer_location); ?></span>
                                     <?php } ?>
                                 </figcaption>
                             </figure>
@@ -223,7 +224,7 @@ if (class_exists('JobSearch_plugin')) {
                                 </ul>
 
                                 <a href="<?php echo esc_url(get_permalink($employer_id)); ?>"
-                                   class="careerfy-employer-thumblist-size"><?php echo jobsearch_esc_html($jobsearch_employer_team_count); ?><?php echo esc_html__('team size', 'careerfy'); ?></a>
+                                   class="careerfy-employer-thumblist-size"><?php echo esc_html($jobsearch_employer_team_count); ?><?php echo esc_html__('team size', 'careerfy'); ?></a>
 
                                 <?php
                             }

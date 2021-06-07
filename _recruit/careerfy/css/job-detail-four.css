@@ -26,9 +26,8 @@
 	border: 1px solid #ffffff;
 	text-align: center;
 	min-height: 260px;
-	padding: 15px;
+	padding-top: 20px;
 	background-color: #ffffff;
-	overflow: hidden;
 }
 .careerfy-jobdetail-four-list figure ~ .careerfy-jobdetail-four-list-text {
 	margin-left: 322px;
@@ -78,7 +77,7 @@
 	font-style: italic;
 }
 .careerfy-jobdetail-four-btn {
-	float: left;
+	display: inline-block;
 	padding: 13px 24px;
 	background-color: #f8b00e;
 	color: #ffffff;
@@ -129,23 +128,13 @@
 	margin-top: 20px;
 }
 .careerfy-jobdetail-four-links a {
-	display: inline-block;
-	vertical-align: top;
-	margin-right: -4px;
+	float: left;
 	padding: 12px 15px;
 	line-height: 1;
 	border: 1px solid #e3e3e3;
 	border-radius: 5px;
 	margin: 10px 10px 0px 0px;
 	font-weight: 500;
-	-webkit-transition: all 0.4s ease-in-out;
-       -moz-transition: all 0.4s ease-in-out;
-        -ms-transition: all 0.4s ease-in-out;
-         -o-transition: all 0.4s ease-in-out;
-            transition: all 0.4s ease-in-out;
-}
-.careerfy-jobdetail-four-btn:hover {
-    color: #fff;
 }
 .careerfy-jobdetail-four-links a i {
 	font-size: 16px;
@@ -168,14 +157,6 @@
 	color: #ffffff;
 	border-color: #3b5998;
 }
-.jobsearch-applyjob-google-btn {
-	background-color: #fb353f;
-	color: #ffffff;
-}
-.careerfy-jobdetail-four-links a.jobsearch-applyjob-google-btn i,
-.careerfy-jobdetail-four-links a.color2 i,
-.careerfy-jobdetail-four-links a.color3 i {
-	color: #ffffff; }
 .bottom-spacer {
 	float: left;
 	width: 100%;
@@ -183,7 +164,3 @@
 }
 .common-header-transparent ~ .careerfy-jobdetail-four-list {
 	padding-top: 140px; }
-.careerfy-jobdetail-four-links a.color1:hover {
-    background-color: transparent;
-    color: #53b427;
-}

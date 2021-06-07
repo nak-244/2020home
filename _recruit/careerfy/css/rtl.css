@@ -1,7 +1,7 @@
 body {
 	direction: rtl;
 }
-.slick-slider,.careerfy-nineteen-testimonial-wrapper,.careerfy-twenty-testimonial {
+.slick-slider {
 	direction: ltr;
 }
 .careerfy-banner-nine {
@@ -56,9 +56,7 @@ body {
  .careerfy-header-seventeen .nav-item-children li i,.careerfy-header-seventeen-strip p,.careerfy-seventeen-search ul li,.careerfy-seventeen-search ul > li > span,
  .careerfy-seventeen-search-radio,.careerfy-seventeen-testimonial figure > a,.careerfy-refejobs-list figure > a,.careerfy-sector-grid span a,.careerfy-eighteen-blog-grid figure,
  .careerfy-eighteen-newslatter-left, .careerfy-eighteen-newslatter-right,.careerfy-header-eighteen .nav-item-children li i,.careerfy-header-fourteen-main .navbar-nav,
- .careerfy-blog-style14-grid-thumb img,.careerfy-blog-style14-bottom ul li i,.careerfy-footer-fourteen .widget_nav_menu ul li a:before,.copyright-fourteen p,
- .careerfy-header-twentyone-strip p,.careerfy-services-twentyone-style2 img,.careerfy-header-nineteen .jobsearch-navigation,.careerfy-twentytwo-loc-search-newsletter li,
- .careerfy-twenty-search,.careerfy-services-twenty-style2-counter,.careerfy-twenty-loc-search-style2 ul li {
+ .careerfy-blog-style14-grid-thumb img,.careerfy-blog-style14-bottom ul li i,.careerfy-footer-fourteen .widget_nav_menu ul li a:before,.copyright-fourteen p {
 	float: right;
 }
 .careerfy-right,.careerfy-simple-btn,.jobsearch-filterable .clear-tags,.careerfy-like-list,.careerfy-logo-thumb, .careerfy-typo-wrap .careerfy-logo-thumb,.jobsearch-applicants-stats,
@@ -71,10 +69,7 @@ body {
 .careerfy-video-testimonial-slider .slick-dots li,.careerfy-fifteen-recent-jobs strong,.jobsearch-user-form-info,.jobsearch-user-form-info .jobsearch-checkbox,
 .edu-loding-msg,.jobsearch-company-review figure figcaption time,.jobsearch-empmember-add-popup,.jobsearch-reset-password .jobsearch-modal .modal-close,.careerfy-continue-reading,
 .careerfy-header-twelve .careerfy-user-section,.careerfy-featured-candidates-hr,.copyright-sixteen-social,.careerfy-blockseventeen-element,.careerfy-header-seventeen .jobsearch-navigation,
-.careerfy-header-seventeen-social,.careerfy-seventeen-search input[type="submit"],.careerfy-sector-grid span small,.careerfy-howit-works-text p,.copyright-fourteen-social,
-.careerfy-header-twentyone .top-strip-social-links,.careerfy-header-twentyone-wrapper .collapse,.careerfy-header-twentyone-strip p a,.careerfy-headerninteen-user,
-.careerfy-header-nineteen-social,.careerfy-header-nineteen-strip p, [dir='rtl'] .careerfy-nineteen-testimonial-wrapper .slick-slide,.careerfy-header-twenty-user,
-.careerfy-header-twenty .jobsearch-navigation,[dir='rtl'] .careerfy-testimonial-description.slick-slide {
+.careerfy-header-seventeen-social,.careerfy-seventeen-search input[type="submit"],.careerfy-sector-grid span small,.careerfy-howit-works-text p,.copyright-fourteen-social {
 	float: left;
 }
 .pull-left,.careerfy-jobdetail-four-list figure,.careerfy-jobdetail-four-links a,.careerfy-employer-detail2-toparea figure,
@@ -484,48 +479,3 @@ body {
 .careerfy-blog-style14-bottom ul li i 												{ margin-left: 7px; margin-right: 0px; }
 .careerfy-footer-fourteen .footer-widget-title h2:before 							{ left: auto; right: 0px; }
 .careerfy-footer-fourteen .widget_nav_menu ul li a:before 							{ margin-left: 14px; margin-right: 0px; }
-.careerfy-header-twentyone-strip p i 												{ margin-right: 0px; margin-left: 5px; }
-.jobsearch-hdernotifics-listitms 						{ right: auto; left: 0px; }
-.careerfy-header-twentyone-wrapper .navbar-nav > li:last-child 						{ padding-right: 10px; }
-.careerfy-header-twentyone-wrapper .navbar-nav > li:last-child > a:after 			{ display: none; }
-.careerfy-services-twentyone i 														{ right: auto; left: 24px; }
-.careerfy-services-twentyone-style2 img ~ .careerfy-services-twentyone-content 		{ margin-left: 0px; margin-right: 96px; }
-.careerfy-services-twentyone-style2 												{ padding-right: 20px; }
-.careerfy-services-twentyone-style3.careerfy-services ul li 						{ float: left; }
-.careerfy-twentyone-loc-search input[type="submit"] 								{ right: auto; left: 0px; border-radius: 80px 0px 0px 80px; }
-.careerfy-services-twentyone-style4 p:before,.careerfy-footer-title-style18 h2:before { left: auto; right: 0px; }
-.copyright-twentyone p:before,.copyright-twentyone p:after 							{ left: auto; right: 100%; margin: 14px 40px 0 0px; }
-.careerfy-twentyone-loc-search i.careerfy-location 									{ left: 170px; right: auto; }
-.careerfy-twentyone-loc-search i 													{ left: auto; right: 34px; }
-.jobsearch-hdernotifics-listitms:before,
-.jobsearch-hdernotifics-listitms:after 												{ right: auto; left: 13px; }
-.mapboxgl-map 																		{ text-align: right; }
-.careerfy-radius-tooltip:before 													{ right: auto; left: 5px; }
-.careerfy-headerninteen-user > li.jobsearch-usernotifics-menubtn > a 				{ text-align: center; padding-left: 0px; }
-.careerfy-header-nineteen-social 													{ margin-left: 0px; margin-right: 9px; }
-.careerfy-header-nineteen-strip p i 												{ margin-right: 0px; margin-left: 9px; }
-.careerfy-services-nineteen-style3 li img ~ p 										{ padding-left: 0px; padding-right: 20px; }
-.careerfy-twentytwo-loc-search-newsletter i 										{ right: auto; left: 20px; }
-.woocommerce-checkout .woocommerce 													{ text-align: right; }
-.woocommerce-error:before, .woocommerce-info:before, .woocommerce-message:before 	{ left: auto; right: 1.5em; }
-.woocommerce-error, .woocommerce-info, .woocommerce-message 						{ padding-right: 3.5em !important; }
-.select2-container--default[dir=rtl] .select2-selection--single .select2-selection__arrow { left: 20px; }
-.woocommerce table.shop_table.woocommerce-checkout-review-order-table thead tr th, .woocommerce table.shop_table.woocommerce-checkout-review-order-table tr td,
-.woocommerce table.shop_table.woocommerce-checkout-review-order-table tfoot th,#add_payment_method #payment ul.payment_methods li,
-.woocommerce-cart #payment ul.payment_methods li,.woocommerce-checkout #payment ul.payment_methods li { text-align: right; }
-.woocommerce .woocommerce-checkout #payment .payment_method_paypal img 				{ float: left; margin-left: 12px; }
-.woocommerce-checkout .col2-set 													{ float: right; padding-left: 30px; padding-right: 0px; }
-li.wc_payment_method.payment_method_paypal label 									{ padding-right: 15px; }
-
-.jobsearch-quick-apply-box .jobsearch-jobdetail-listthumb ~ figcaption 				{ margin-left: 0px; margin-right: 160px; }
-.jobsearch-quick-apply-box 															{ right: auto; left: -100%; padding-left: 0px; padding-right: 45px; }
-a.jobsearch-quick-apply-close 														{ left: auto; right: -62px; float: right; margin-right: -45px; margin-left: 0px; border-left: none; border-right: 1px solid #efefef; }
-.careerfy-header-twenty-user 														{ margin-left: 0px; margin-right: 25px; }
-.careerfy-twenty-loc-search i 														{ left: 27px; right: auto; }
-.careerfy-twenty-search-tabs .careerfy-radius-tooltip 								{ left: 7px; right: auto; }
-.careerfy-twenty-search-tabs .careerfy-radius-tooltip:before 						{ left: 10px; }
-.careerfy-services-twenty .bottom-icon 												{ left: -45px; right: auto; }
-.careerfy-services-twenty-style2-counter ~ .careerfy-services-twenty-style2-content { padding-left: 0px; padding-right: 129px; }
-.careerfy-services-twenty-style2-content small { left: auto; right: 79px; }
-.careerfy-services-twenty-style3 a:before { right: auto; left: -66px; }
-.careerfy-accordion-style2 .panel-heading a i { right: auto; left: 20px; }

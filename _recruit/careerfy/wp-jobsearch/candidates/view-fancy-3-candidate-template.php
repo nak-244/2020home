@@ -96,10 +96,13 @@ if (class_exists('JobSearch_plugin')) {
     $candidate_per_page = isset($_REQUEST['per-page']) ? $_REQUEST['per-page'] : $candidate_per_page;
     $counter = 1;
     if ($candidate_page >= 2) {
-        $counter = (($candidate_page - 1) * $candidate_per_page) + 1;
+        $counter = (
+                ($candidate_page - 1) *
+                $candidate_per_page) +
+            1;
     }
-
     // end ads script
+
     $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
     $first_btn_color = $first_btn_color != "" ? 'style="background-color: ' . $first_btn_color . '"' : '';
     $second_btn_color = $second_btn_color != "" ? 'style="background-color: ' . $second_btn_color . '"' : '';
@@ -134,7 +137,7 @@ if (class_exists('JobSearch_plugin')) {
                     $jobsearch_candidate_company_name = get_post_meta($candidate_id, 'jobsearch_field_candidate_company_name', true);
                     $jobsearch_candidate_company_url = get_post_meta($candidate_id, 'jobsearch_field_candidate_company_url', true);
                     $jobsearch_candidate_salary = jobsearch_candidate_current_salary($candidate_id);
-                    $jobsearch_candidate_salary_list = $jobsearch_candidate_salary != "" ? '' . $jobsearch_candidate_salary . '' : "";
+                    $jobsearch_candidate_salary_list = $jobsearch_candidate_salary != "" ? '<figcaption>' . $jobsearch_candidate_salary . ' </figcaption>' : "";
                     $user_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
 
                     $jobsearch_loc_country = get_post_meta($candidate_id, 'jobsearch_field_location_location1', true);
@@ -161,38 +164,27 @@ if (class_exists('JobSearch_plugin')) {
                     ?>
                     <li class="col-md-3">
                         <div class="careerfy-featured-candidates-grid-inner">
-
                             <?php
-                            if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id,'cand_listv1');
-                            }
-                            ?>
-                            <?php do_action('jobsearch_add_employer_resume_to_list_btn', array('id' => $candidate_id, 'style' => 'style1')); ?>
-                            <br>
-
-                            <?php
-                            if (function_exists('jobsearch_member_promote_profile_iconlab')) {
-                                echo jobsearch_member_promote_profile_iconlab($candidate_id);
-                            }
-
-                            if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
-                                ?>
-                                <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><img src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
-                            <?php }  ?>
-                            <div class="clearfix"></div>
-                            <h6>
-                                <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><?php echo apply_filters('jobsearch_candidate_listing_item_title', wp_trim_words(get_the_title($candidate_id), $jobsearch_split_map_title_limit), $candidate_id); ?></a>
-                            </h6>
-
-                            <?php
-
                             if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|salary')) {
                                 if ($jobsearch_candidate_salary_list != '') { ?>
                                     <span class="careerfy-featured-candidates-pr"><?php echo trim_salary_type_text($jobsearch_candidate_salary_list, 2) ?></span>
                                     <?php
                                 }
                             }
+                            ?>
+                            <?php do_action('jobsearch_add_employer_resume_to_list_btn', array('id' => $candidate_id, 'style' => 'style1')); ?>
+                            <br>
+                            <?php
+                            if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
+                                ?>
+                                <img src="<?php echo($post_thumbnail_src) ?>" alt="">
+                            <?php } ?>
+                            <div class="clearfix"></div>
 
+                            <h6>
+                                <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><?php echo apply_filters('jobsearch_candidate_listing_item_title', wp_trim_words(get_the_title($candidate_id), $jobsearch_split_map_title_limit), $candidate_id); ?></a>
+                            </h6>
+                            <?php
                             if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title')) {
                                 if ($candidate_company_str != '') { ?>
                                     <span class="careerfy-featured-candidates-min"><?php echo($candidate_company_str) ?></span>
@@ -215,8 +207,8 @@ if (class_exists('JobSearch_plugin')) {
                                     $_avg_rting_perc = ($rev_avg_rating / 5) * 100;
                                 }
                                 ?>
-                                <div class="careerfy-featured-rating">
-                                    <span class="careerfy-featured-rating-box" style="width: <?php echo($_avg_rting_perc) ?>%;"></span>
+                                <div class="careerfy-featured-rating"><span class="careerfy-featured-rating-box"
+                                                                            style="width: <?php echo($_avg_rting_perc) ?>%;"></span>
                                 </div>
                                 <span class="careerfy-featured-rating-text"><?php echo number_format($rev_avg_rating, 1) ?></span>
                             <?php } ?>
