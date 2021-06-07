@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-07 14:17+0900\n"
+"PO-Revision-Date: 2021-06-07 15:01+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -14133,7 +14133,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:811
 #: modules/login-registration/templates/login-registration-template.php:996
 msgid "Username/Email Address"
-msgstr ""
+msgstr "アカウントID or メールアドレス"
 
 #: modules/login-registration/templates/login-registration-template.php:181
 msgid "Login to your account"
