@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-07 10:18+0900\n"
+"PO-Revision-Date: 2021-06-07 14:17+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -5542,7 +5542,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-memb-dashboard.php:55
 #: templates/user-dashboard/employer/user-dashboard-settings.php:649
 msgid "Username"
-msgstr ""
+msgstr "アカウントID"
 
 #: includes/meta-boxes/employer-metabox.php:1293
 #: includes/meta-boxes/employer-metabox.php:1451
@@ -7967,7 +7967,7 @@ msgstr "メールアドレス *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1212
 msgid "Username *"
-msgstr ""
+msgstr "アカウントID *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1244
 msgid "Application Deadline"
