@@ -381,7 +381,7 @@ class Jobsearch_Login_Registration_Template
                             ob_start();
                             if ($flnames_fields_allow == 'on') { ?>
                                 <li>
-                                    <label><?php _e('First Name *', 'wp-jobsearch') ?></label>
+                                    <label>111<?php _e('First Name *', 'wp-jobsearch') ?></label>
                                     <input class="required" name="pt_user_fname" type="text"
                                            placeholder="<?php _e('First Name *', 'wp-jobsearch'); ?>" required>
                                     <i class="jobsearch-icon jobsearch-user"></i>
@@ -729,7 +729,7 @@ class Jobsearch_Login_Registration_Template
                             do_action('jobsearch_signup_custom_fields_load', 0, 'employer', $emp_cfields_dis);
 
                             do_action('jobsearch_registration_extra_fields_end');
-                            
+
                             if ($captcha_switch == 'on' && !is_user_logged_in()) {
                                 wp_enqueue_script('jobsearch_google_recaptcha');
                                 ?>
@@ -1011,7 +1011,7 @@ class Jobsearch_Login_Registration_Template
             <!-- Register form -->
             <div class="pt-register">
                 <?php
-                //if (get_option('users_can_register')) { 
+                //if (get_option('users_can_register')) {
                 ob_start();
                 ?>
                 <h2><?php _e('Sign up now', 'wp-jobsearch'); ?></h2>
@@ -1507,5 +1507,5 @@ class Jobsearch_Login_Registration_Template
 
 }
 
-// class Jobsearch_Login_Registration_Template 
+// class Jobsearch_Login_Registration_Template
 $Jobsearch_Login_Registration_Template_obj = new Jobsearch_Login_Registration_Template();
