@@ -2472,20 +2472,18 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                     $field_name_swich = isset($jobsearch_plugin_options[$field_name_swich_key]) ? $jobsearch_plugin_options[$field_name_swich_key] : '';
                                                     if ($field_sort_key == 'name' && ($field_name_swich == 'on' || $field_name_swich == 'on_req')) {
                                                         ?>
-<!-- 修正 -->
-                                                        <li>
-                                                            <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
-                                                            <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
-                                                                   name="pt_user_lname" type="text"
-                                                                   placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
-                                                        </li>
                                                         <li>
                                                             <label><?php esc_html_e('First Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
                                                             <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
                                                                    name="pt_user_fname" type="text"
                                                                    placeholder="<?php esc_html_e('First Name', 'wp-jobsearch') ?>">
                                                         </li>
-<!-- //修正 -->
+                                                        <li>
+                                                            <label><?php esc_html_e('Last Name:', 'wp-jobsearch') ?><?php echo($field_name_swich == 'on_req' ? ' *' : '') ?></label>
+                                                            <input class="<?php echo($field_name_swich == 'on_req' ? 'required-apply-field' : 'required') ?>"
+                                                                   name="pt_user_lname" type="text"
+                                                                   placeholder="<?php esc_html_e('Last Name', 'wp-jobsearch') ?>">
+                                                        </li>
                                                         <?php
                                                     } else if ($field_sort_key == 'email') {
                                                         ?>
