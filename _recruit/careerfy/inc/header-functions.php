@@ -1881,12 +1881,24 @@ if (!function_exists('careerfy_top_menu_login_links')) {
             ob_start();
             if ($register_link_view === true) {
                 ?>
-                <li><a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-signin-tab"><i
-                                class="careerfy-icon careerfy-login"></i><?php echo esc_html__('Login', 'careerfy'); ?>
-                    </a></li>
-                <li><a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-register-tab"><i
-                                class="careerfy-icon careerfy-password"></i><?php echo esc_html__('Signup', 'careerfy'); ?>
-                    </a></li>
+                <li>
+                  <a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-signin-tab">
+                    <i class="careerfy-icon careerfy-login"></i>
+<!--
+                    <?php echo esc_html__('Login', 'careerfy'); ?>
+-->
+ログイン
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-register-tab">
+                    <i class="careerfy-icon careerfy-password"></i>
+<!--
+                    <?php echo esc_html__('Signup', 'careerfy'); ?>
+-->
+新規登録
+                  </a>
+                </li>
                 <?php
             }
             $links = ob_get_clean();
@@ -2038,4 +2050,3 @@ if (!function_exists('careerfy_header_twelve_top_navigation')) {
 
     add_action('careerfy_header_twelve_top_navigation', 'careerfy_header_twelve_top_navigation', 10);
 }
-
