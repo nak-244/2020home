@@ -1039,6 +1039,7 @@ class Jobsearch_Login_Registration_Template
                             } else {
                                 ob_start();
                                 ?>
+<!--
                                 <div class="jobsearch-roles-container">
                                     <div class="jobsearch-radio-checkbox">
                                         <input id="candidate-role-<?php echo($rand_numb) ?>" type="radio"
@@ -1055,6 +1056,7 @@ class Jobsearch_Login_Registration_Template
                                         </label>
                                     </div>
                                 </div>
+-->  
                                 <?php
                                 $chose_usert_html = ob_get_clean();
                                 echo apply_filters('jobsearch_reg_page_chose_usertype_html', $chose_usert_html, $rand_numb);
