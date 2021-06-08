@@ -1400,7 +1400,10 @@ class Jobsearch_Location
                         if ($loc_optionstype == '0' || $loc_optionstype == '1') {
                             ?>
                             <li class="jobsearch-column-6" data-randid="<?php echo($rand_num) ?>">
+<!--
                                 <label><?php esc_html_e('Country', 'wp-jobsearch') ?><?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
+-->
+                                <label>都道府県<?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
                                 <div id="jobsearch-gdapilocs-contrycon" data-val="<?php echo($loc_location1) ?>"
                                      class="jobsearch-profile-select">
                                     <select name="jobsearch_field_location_location1"
