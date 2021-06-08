@@ -1417,6 +1417,7 @@ class Jobsearch_Location
                             <?php
                         }
                         ?>
+<!--
                         <li class="jobsearch-column-6" data-randid="<?php echo($rand_num) ?>">
                             <label><?php esc_html_e('State', 'wp-jobsearch') ?><?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
                             <?php
@@ -1436,6 +1437,7 @@ class Jobsearch_Location
                                 </select>
                             </div>
                         </li>
+-->
                         <?php
                         if ($loc_optionstype == '1' || $loc_optionstype == '2') {
                             ?>
@@ -1501,7 +1503,7 @@ class Jobsearch_Location
                             <input type="text" id="jobsearch_location_address_<?php echo($rand_num) ?>"
                                    name="jobsearch_field_location_address"
                                    class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
-                                   placeholder="<?php esc_html_e('Enter a location', 'wp-jobsearch') ?>"
+                                   placeholder="住所を入力"
                                    value="<?php echo($loc_address) ?>">
                         <?php } ?>
                         <input id="check_loc_addr_<?php echo($rand_num) ?>" type="hidden"
@@ -1520,7 +1522,7 @@ class Jobsearch_Location
                     $loc_fields_html = ob_get_clean();
                     echo apply_filters('jobsearch_dash_loc_address_simpfields', $loc_fields_html, $id, $allow_full_address, $rand_num);
                     ?>
-
+<!--
                     <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Latitude', 'wp-jobsearch') ?></label>
                         <?php
@@ -1554,6 +1556,7 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
+-->
                     <?php
                     $map_con_style = '';
                     if ($allow_location_map != 'yes') {
