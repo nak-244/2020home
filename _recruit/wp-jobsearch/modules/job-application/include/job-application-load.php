@@ -2128,8 +2128,11 @@ if (!class_exists('Jobsearch_JobApplicationLoad')) {
                                                 } else {
                                                     ?>
                                                     <ul class="user-cvs-list" style="display: none;"></ul>
-                                                    <div class="user-nocvs-found">
+                                                    <div class="user-nocvs-found 1">
+<!--
                                                         <p><?php esc_html_e('No resume uploaded.', 'wp-jobsearch') ?></p>
+-->
+<p>履歴書・職務経歴書がアップロードされていません。</p>
                                                     </div>
                                                     <?php
                                                 }
