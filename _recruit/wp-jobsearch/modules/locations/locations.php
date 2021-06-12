@@ -29,28 +29,28 @@ class Jobsearch_Location
         //
         add_filter('redux/options/jobsearch_plugin_options/sections', array($this, 'jobsearch_location_plugin_option_fields'));
         add_action('init', array($this, 'titles_translation'));
-
+        
         add_action('save_post', array($this, 'location_fields_save'), 9999);
-
+        
         $this->load_files();
     }
-
+    
     public function location_fields_save($post_id) {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-
+        
         if (isset($_POST['jobsearch_field_location_postalcode'])) {
             $postal_code = $_POST['jobsearch_field_location_postalcode'];
             $old_postal_code = isset($_POST['jobsearch_location_old_postalcode']) ? $_POST['jobsearch_location_old_postalcode'] : '';
             $post_addres = get_post_meta($post_id, 'jobsearch_field_location_address', true);
-
+            
             $post_addres_parse = explode(', ', $post_addres);
             $post_addres_end = !empty($post_addres_parse) ? end($post_addres_parse) : '';
             if ($post_addres_end == $old_postal_code) {
                 $post_addres = str_replace(', ' . $old_postal_code, '', $post_addres);
             }
-
+            
             if ($post_addres != '') {
                 if ($postal_code != '' && strpos($post_addres, $postal_code) === false) {
                     $post_addres .= ', ' . $postal_code;
@@ -234,7 +234,7 @@ class Jobsearch_Location
             $marker_image = jobsearch_esc_html($marker_image);
 
             do_action('jobsearch_in_bkloc_sec_before_fields', $id);
-
+            
             ob_start();
             ?>
             <script type="text/javascript">
@@ -546,7 +546,7 @@ class Jobsearch_Location
             $loc_fields_html = ob_get_clean();
             echo apply_filters('jobsearch_admin_loc_address_simpfields', $loc_fields_html, $id, $rand_num);
             ?>
-
+            
             <div class="jobsearch-element-field" <?php echo($allow_postal_code == 'yes' ? '' : 'style="display: none;"') ?>>
                 <div class="elem-label">
                     <label><?php esc_html_e('Postal Code', 'wp-jobsearch') ?></label>
@@ -556,7 +556,7 @@ class Jobsearch_Location
                     <input id="jobsearch_loc_postalcode_<?php echo($rand_num) ?>" type="text" name="jobsearch_field_location_postalcode" value="<?php echo ($loc_postalcode) ?>">
                 </div>
             </div>
-            <?php
+            <?php            
             //
             $autocomplete_adres_type = isset($jobsearch_plugin_options['autocomplete_adres_type']) ? $jobsearch_plugin_options['autocomplete_adres_type'] : '';
             ?>
@@ -677,7 +677,7 @@ class Jobsearch_Location
             <?php
             do_action('jobsearch_in_bkloc_sec_after_fields', $id);
             ?>
-
+            
             <script>
                 <?php
                 if ($location_map_type == 'mapbox') {
@@ -1042,9 +1042,9 @@ class Jobsearch_Location
             $map_styles = isset($jobsearch_plugin_options['jobsearch-location-map-style']) ? $jobsearch_plugin_options['jobsearch-location-map-style'] : '';
 
             $allow_full_address = isset($jobsearch_plugin_options['location-allow-full-address']) ? $jobsearch_plugin_options['location-allow-full-address'] : '';
-
+            
             $allow_postal_code = isset($jobsearch_plugin_options['location_allow_postal_code']) ? $jobsearch_plugin_options['location_allow_postal_code'] : '';
-
+            
             $allow_location_map = isset($jobsearch_plugin_options['location-allow-map']) ? $jobsearch_plugin_options['location-allow-map'] : '';
 
             $def_map_zoom = isset($jobsearch_plugin_options['jobsearch-location-map-zoom']) && $jobsearch_plugin_options['jobsearch-location-map-zoom'] > 0 ? absint($jobsearch_plugin_options['jobsearch-location-map-zoom']) : '12';
@@ -1121,7 +1121,7 @@ class Jobsearch_Location
             $loc_zoom = jobsearch_esc_html($loc_zoom);
             $map_height = jobsearch_esc_html($map_height);
             $marker_image = jobsearch_esc_html($marker_image);
-
+            
             if ($allow_full_address == 'no') {
                 $loc_address = '';
             }
@@ -1182,7 +1182,7 @@ class Jobsearch_Location
                 <?php
                 $loc_title_html = ob_get_clean();
                 echo apply_filters('jobsearch_dash_locfields_title_html', $loc_title_html);
-
+                
                 do_action('jobsearch_in_dashloc_sec_before_fields', $id);
                 ?>
                 <ul class="jobsearch-row jobsearch-employer-profile-form">
@@ -1400,10 +1400,7 @@ class Jobsearch_Location
                         if ($loc_optionstype == '0' || $loc_optionstype == '1') {
                             ?>
                             <li class="jobsearch-column-6" data-randid="<?php echo($rand_num) ?>">
-<!--
                                 <label><?php esc_html_e('Country', 'wp-jobsearch') ?><?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
--->
-                                <label>都道府県<?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
                                 <div id="jobsearch-gdapilocs-contrycon" data-val="<?php echo($loc_location1) ?>"
                                      class="jobsearch-profile-select">
                                     <select name="jobsearch_field_location_location1"
@@ -1417,7 +1414,6 @@ class Jobsearch_Location
                             <?php
                         }
                         ?>
-<!--
                         <li class="jobsearch-column-6" data-randid="<?php echo($rand_num) ?>">
                             <label><?php esc_html_e('State', 'wp-jobsearch') ?><?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
                             <?php
@@ -1437,7 +1433,6 @@ class Jobsearch_Location
                                 </select>
                             </div>
                         </li>
--->
                         <?php
                         if ($loc_optionstype == '1' || $loc_optionstype == '2') {
                             ?>
@@ -1456,15 +1451,13 @@ class Jobsearch_Location
                             <?php
                         }
                     }
-
+                    
                     ?>
-<!--
                     <li class="jobsearch-column-6" <?php echo($allow_postal_code == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Postal Code', 'wp-jobsearch') ?></label>
                         <input type="hidden" name="jobsearch_location_old_postalcode" value="<?php echo ($loc_postalcode) ?>">
                         <input id="jobsearch_loc_postalcode_<?php echo($rand_num) ?>" type="text" name="jobsearch_field_location_postalcode" value="<?php echo ($loc_postalcode) ?>">
                     </li>
--->
                     <?php
 
                     $full_addr_title = esc_html__('Full Address', 'wp-jobsearch');
@@ -1503,7 +1496,7 @@ class Jobsearch_Location
                             <input type="text" id="jobsearch_location_address_<?php echo($rand_num) ?>"
                                    name="jobsearch_field_location_address"
                                    class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
-                                   placeholder="住所を入力"
+                                   placeholder="<?php esc_html_e('Enter a location', 'wp-jobsearch') ?>"
                                    value="<?php echo($loc_address) ?>">
                         <?php } ?>
                         <input id="check_loc_addr_<?php echo($rand_num) ?>" type="hidden"
@@ -1522,7 +1515,7 @@ class Jobsearch_Location
                     $loc_fields_html = ob_get_clean();
                     echo apply_filters('jobsearch_dash_loc_address_simpfields', $loc_fields_html, $id, $allow_full_address, $rand_num);
                     ?>
-<!--
+
                     <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Latitude', 'wp-jobsearch') ?></label>
                         <?php
@@ -1556,7 +1549,6 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
--->
                     <?php
                     $map_con_style = '';
                     if ($allow_location_map != 'yes') {
@@ -2487,6 +2479,6 @@ class Jobsearch_Location
         return $sections;
     }
 }
-// class Jobsearch_Location
+// class Jobsearch_Location 
 global $Jobsearch_Location_obj;
 $Jobsearch_Location_obj = new Jobsearch_Location();

@@ -145,11 +145,10 @@ if ($user_avatar_id > 0) {
             } else {
                 ob_start();
                 ?>
-<!--
                 <div class="jobsearch-employer-cvr-img">
                     <figure>
                         <div class="img-cont-sec" style="display: <?php echo ($user_cover_img_url == '' ? 'none' : 'block') ?>;">
-                            <a href="javascript:void(0);" class="candidate-remove-coverimg"><i class="fa fa-times"></i> <?php esc_html_e('Delete Cover', 'wp-jobsearch') ?></a>
+                            <a href="javascript:void(0);" class="candidate-remove-coverimg"><i class="fa fa-times"></i> <?php esc_html_e('Delete Cover', 'wp-jobsearch') ?></a>    
                             <a id="com-cvrimg-holder" class="employer-dashboard-cvr">
                                 <span<?php echo ($candidate_cover_image_src_style_str) ?>></span>
                             </a>
@@ -163,7 +162,6 @@ if ($user_avatar_id > 0) {
                         </figcaption>
                     </figure>
                 </div>
--->
                 <?php
                 $cphot_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_profile_coverimg_html', $cphot_html, $user_cover_img_url, $candidate_id);
@@ -174,7 +172,7 @@ if ($user_avatar_id > 0) {
                 <?php
                 ob_start();
                 $flnames_fields_allow = isset($jobsearch_plugin_options['signup_user_flname']) ? $jobsearch_plugin_options['signup_user_flname'] : '';
-
+                
                 if ($flnames_fields_allow == 'on') {
                     ?>
                     <li class="jobsearch-column-6">
@@ -203,7 +201,7 @@ if ($user_avatar_id > 0) {
                 <?php
                 $simp_field_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_simpfields_html', $simp_field_html, $candidate_id);
-
+                
                 //
                 $profile_url_switch = isset($jobsearch_plugin_options['cand_profile_url_switch']) ? $jobsearch_plugin_options['cand_profile_url_switch'] : '';
                 if ($profile_url_switch == 'on') {
@@ -262,7 +260,7 @@ if ($user_avatar_id > 0) {
                     echo apply_filters('jobsearch_cand_dash_publicview_html', $publicview_html, $candidate_id);
                 }
                 $cand_dob_switch = isset($jobsearch_plugin_options['cand_dob_switch']) ? $jobsearch_plugin_options['cand_dob_switch'] : 'on';
-
+                
                 if ($cand_dob_switch != 'off') {
                     if ($user_pkg_limits::cand_field_is_locked('profile_fields|date_of_birth')) {
                         ob_start();
@@ -300,7 +298,7 @@ if ($user_avatar_id > 0) {
 
                 $phone_number_switch = isset($jobsearch_plugin_options['cand_phone_switch']) ? $jobsearch_plugin_options['cand_phone_switch'] : '';
                 ob_start();
-
+                
                 if ($phone_number_switch != 'off') {
                     ?>
                     <li class="jobsearch-column-6">
@@ -338,10 +336,7 @@ if ($user_avatar_id > 0) {
                 if ($sectors_enable_switch == 'on') {
                     ?>
                     <li class="jobsearch-column-6">
-<!--
                         <label><?php esc_html_e('Sector *', 'wp-jobsearch') ?></label>
--->
-                        <label>希望職種 *</label>
                         <?php
                         if ($user_pkg_limits::cand_field_is_locked('profile_fields|sector')) {
                             echo ($user_pkg_limits::cand_gen_locked_html());
@@ -440,7 +435,7 @@ if ($user_avatar_id > 0) {
                             <?php
                             $title_html = ob_get_clean();
                             echo apply_filters('jobsearch_candash_profile_salary_label', $title_html);
-
+                            
                             //
                             if (!empty($_salary_types)) {
                                 ?>
@@ -533,7 +528,6 @@ if ($user_avatar_id > 0) {
 
                 ob_start();
                 ?>
-<!--
                 <li class="jobsearch-column-12">
                     <?php
                     ob_start();
@@ -562,7 +556,6 @@ if ($user_avatar_id > 0) {
                     }
                     ?>
                 </li>
--->
                 <?php
                 $desc_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_desc_contnt_html', $desc_html, $candidate_id);
@@ -633,7 +626,7 @@ if ($user_avatar_id > 0) {
                         </li>
                         <?php
                     }
-
+                    
                     if ($cand_alow_linkd_smm == 'on') {
                         ?>
                         <li class="jobsearch-column-6">

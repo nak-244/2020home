@@ -45,7 +45,6 @@ if ($candidate_id > 0) {
     }
 
     $filesize_act = ceil($cvfile_size/1024);
-
     $ca_at_cv_files = get_post_meta($candidate_id, 'candidate_cv_files', true);
 
     $cand_files_types = isset($jobsearch_plugin_options['cand_cv_types']) ? $jobsearch_plugin_options['cand_cv_types'] : '';
