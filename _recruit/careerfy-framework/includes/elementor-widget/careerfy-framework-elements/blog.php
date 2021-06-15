@@ -189,7 +189,7 @@ class Blog extends Widget_Base
                     'no' => __('No', 'careerfy-frame'),
                 ],
                 'condition' => [
-                    'blog_view' => array('view1', 'view2', 'view3', 'view4', 'view9', 'view10', 'view11', 'view12', 'view13')
+                    'blog_view' => array('view1', 'view2', 'view3', 'view4', 'view9', 'view10', 'view12', 'view13')
                 ]
             ]
         );
@@ -211,6 +211,7 @@ class Blog extends Widget_Base
     {
         global $blog_per_page;
         $atts = $this->get_settings_for_display();
+
         $blog_cat = $atts['blog_cat'];
         $blog_view = $atts['blog_view'];
         $blog_excerpt = $atts['blog_excerpt'];
@@ -218,8 +219,11 @@ class Blog extends Widget_Base
         $blog_orderby = $atts['blog_orderby'];
         $blog_pagination = $atts['blog_pagination'];
         $blog_per_page = $atts['blog_per_page'];
+
         $rand_id = rand(100000, 999999);
+
         $html = '';
+
         $blog_per_page = $blog_per_page == '' ? -1 : absint($blog_per_page);
 
         $blog_paged = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
@@ -412,14 +416,18 @@ class Blog extends Widget_Base
                 $lodmore_script = ob_get_clean();
                 echo($lodmore_script);
             }
-            if ($blog_pagination == 'yes' && $total_posts > $blog_per_page && $blog_view != 'view5' && $blog_view != 'view7' && $blog_view != 'view8' && $blog_view != 'view9') {
+            if ($blog_pagination == 'yes' && $total_posts > $blog_per_page && $blog_view != 'view5' && $blog_view != 'view7' && $blog_view != 'view8' && $blog_view != 'view9' && $blog_view != 'view11') {
                 careerfy_pagination($blog_query);
             }
         } else {
             esc_html_e("No post found.", "careerfy-frame");
         }
+
         $html .= ob_get_clean();
+
         echo $html;
+
+
     }
 
     protected function _content_template()

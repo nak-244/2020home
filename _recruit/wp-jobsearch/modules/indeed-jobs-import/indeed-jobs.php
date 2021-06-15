@@ -22,7 +22,8 @@ class JobSearch_Indeed_Jobs {
 
     public function admin_enqueue_scripts() {
 
-        $indeed_jobs_switch = get_option('jobsearch_integration_indeed_jobs');
+        global $jobsearch_plugin_options;
+        $indeed_jobs_switch = isset($jobsearch_plugin_options['indeed_jobs_switch']) ? $jobsearch_plugin_options['indeed_jobs_switch'] : '';
 
         if ($indeed_jobs_switch == 'on') {
             wp_enqueue_style('jobsearch-indeed-jobs', jobsearch_plugin_get_url('modules/indeed-jobs-import/css/indeed-jobs.css'));

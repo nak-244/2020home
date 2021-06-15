@@ -52,6 +52,7 @@ if (!class_exists('DistanceCheck')) {
         function __construct() {
             
         }
+
         // Start function for calculate distance 
         function Calculate($dblLat1, $dblLong1, $dblLat2, $dblLong2) {
             $EARTH_RADIUS_MILES = 3963;
@@ -68,5 +69,7 @@ if (!class_exists('DistanceCheck')) {
             }
             return $dist;
         }
+
     }
+
 }

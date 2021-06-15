@@ -234,9 +234,10 @@ if (!function_exists('jobsearch_add_project_skillfield')) {
         global $jobsearch_form_fields;
         $title = isset($_POST['skill_title']) ? $_POST['skill_title'] : '';
         $skill_percentage = isset($_POST['skill_percentage']) ? $_POST['skill_percentage'] : '';
-        $rand_num = rand(1000000, 99999999);
-        ob_start();
 
+        $rand_num = rand(1000000, 99999999);
+
+        ob_start();
         ?>
         <li id="list-<?php echo absint($rand_num) ?>">
             <div class="multi-list-header" id="list-head-<?php echo absint($rand_num) ?>">

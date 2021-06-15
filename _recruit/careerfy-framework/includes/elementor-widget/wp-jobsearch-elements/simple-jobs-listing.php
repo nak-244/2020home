@@ -1,12 +1,9 @@
 <?php
-
 namespace CareerfyElementor\Widgets;
-
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
 if (!defined('ABSPATH')) exit;
-
 /**
  * @since 1.1.0
  */
@@ -190,8 +187,6 @@ class SimpleJobsListings extends Widget_Base
                     }
                 }
 
-                $job_salary = jobsearch_job_offered_salary($job_id);
-
                 if ($job_list_style == 'style9') { ?>
                     <li class="col-md-12">
                         <div class="careerfy-refejobs-list-inner">
@@ -200,7 +195,7 @@ class SimpleJobsListings extends Widget_Base
                                             src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
                                 <figcaption>
                                     <h2>
-                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo limit_text(get_the_title($job_id), 3) ?></a>
+                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a>
                                     </h2>
                                     <span><?php echo jobsearch_job_get_company_name($job_id) ?></span>
                                 </figcaption>
@@ -209,13 +204,12 @@ class SimpleJobsListings extends Widget_Base
                             if (!empty($sector_str)) {
                                 echo($sector_str);
                             } ?>
-                            <small><i class="careerfy-icon careerfy-pin-line"></i><?php echo jobsearch_esc_html($get_job_location); ?>
-                            </small>
+                            <small><i class="fa fa-map-marker"></i><?php echo esc_html($get_job_location); ?></small>
                             <small><?php if ($jobsearch_job_min_salary != '' && $jobsearch_job_max_salary != '') { ?>
                                     <i class="fa fa-money"></i> <?php echo $jobsearch_job_min_salary . "K" ?>-<?php echo $jobsearch_job_max_salary . "K" ?>
                                 <?php } ?>
                             </small>
-                            <small><i class="fa fa-calendar"></i><?php echo date_i18n($date_format, $job_post_date) ?>
+                            <small><i class="fa fa-calendar"></i><?php echo get_the_date($date_format, $job_id) ?>
                             </small>
                             <a href="<?php echo get_permalink($job_id) ?>"
                                class="careerfy-refejobs-list-btn"><span><?php echo esc_html__('Apply', 'careerfy-frame') ?></span></a>
@@ -229,7 +223,7 @@ class SimpleJobsListings extends Widget_Base
                                             src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
                                 <figcaption>
                                     <h2>
-                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo wp_trim_words(get_the_title($job_id), 3) ?></a>
+                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a>
                                     </h2>
                                     <span><?php echo jobsearch_job_get_company_name($job_id) ?></span>
                                 </figcaption>
@@ -238,10 +232,10 @@ class SimpleJobsListings extends Widget_Base
                             if (!empty($sector_str)) {
                                 echo($sector_str);
                             } ?>
-                            <small><i class="careerfy-icon careerfy-pin-line"></i><?php echo jobsearch_esc_html($get_job_location); ?>
-                            </small>
-                            <?php if ($job_salary != '') { ?>
-                                <small><i class="fa fa-money"></i> <?php echo($job_salary) ?>
+                            <small><i class="fa fa-map-marker"></i><?php echo esc_html($get_job_location); ?></small>
+                            <?php if ($jobsearch_job_min_salary != '' && $jobsearch_job_max_salary != '') { ?>
+                                <small><i class="fa fa-money"></i> <?php echo $jobsearch_job_min_salary . "K" ?>
+                                    -<?php echo $jobsearch_job_max_salary . "K" ?>
                                 </small>
                             <?php } ?>
                             <small><i class="fa fa-calendar"></i><?php echo get_the_date($date_format, $job_id) ?>
@@ -255,8 +249,7 @@ class SimpleJobsListings extends Widget_Base
                     <li class="col-md-12">
                         <div class="careerfy-fifteen-recent-jobs-inner">
                             <?php if ($job_post_date != '') { ?>
-                                <time datetime="<?php echo date_i18n(get_option('date_format') . ' H:i:s', $job_post_date) ?>">
-                                    <i
+                                <time datetime="<?php echo date_i18n('Y-m-d H:i:s', $job_post_date) ?>"><i
                                             class="fa fa-clock-o"></i><?php printf(esc_html__('%s', 'careerfy'), jobsearch_time_elapsed_string($job_post_date, '', '', false)); ?>
                                 </time>
                             <?php } ?>
@@ -266,7 +259,7 @@ class SimpleJobsListings extends Widget_Base
                                             src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
                                 <figcaption>
                                     <h2>
-                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo wp_trim_words(get_the_title($job_id, ''), 2) ?></a>
+                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo limit_text(get_the_title($job_id, ''), 2) ?></a>
                                     </h2>
                                     <span><?php echo jobsearch_job_get_company_name($job_id) ?></span>
                                 </figcaption>
@@ -274,7 +267,7 @@ class SimpleJobsListings extends Widget_Base
                             <?php
                             ob_start();
                             ?>
-                            <small><i class="fa fa-calendar"></i><?php echo date_i18n($date_format, $job_post_date) ?>
+                            <small><i class="fa fa-calendar"></i><?php echo get_the_date($date_format, $job_id) ?>
                             </small>
                             <?php
                             $item_date_time = ob_get_clean();
@@ -284,7 +277,7 @@ class SimpleJobsListings extends Widget_Base
                             <small>
                                 <?php
                                 if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
-                                    <i class="careerfy-icon careerfy-pin-line"></i> <?php echo jobsearch_esc_html($get_job_location); ?>
+                                    <i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?>
                                 <?php } ?>
                             </small>
 
@@ -292,8 +285,8 @@ class SimpleJobsListings extends Widget_Base
                             ob_start();
                             ?>
                             <small>
-                                <?php if (!empty($job_salary) != '') { ?>
-                                    <i class="fa fa-money"></i><?php echo($job_salary) ?>
+                                <?php if ($jobsearch_job_min_salary != '' && $jobsearch_job_max_salary != '') { ?>
+                                    <i class="fa fa-money"></i><?php echo $jobsearch_job_min_salary . "K" ?>-<?php echo $jobsearch_job_max_salary . "K" ?>
                                 <?php } ?>
                             </small>
                             <?php
@@ -319,12 +312,12 @@ class SimpleJobsListings extends Widget_Base
                                     <small><?php echo jobsearch_job_get_company_name($job_id) ?></small>
                                     <?php
                                     if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
-                                        <span><i class="careerfy-icon careerfy-pin-line"></i><?php echo jobsearch_esc_html($get_job_location); ?></span>
+                                        <span><i class="fa fa-map-marker"></i><?php echo esc_html($get_job_location); ?></span>
                                     <?php } ?>
                                 </figcaption>
                             </figure>
                             <div class="careerfy-jobslatest-list-cell">
-                                <small><?php echo date_i18n($date_format, $job_id) ?></small>
+                                <small><?php echo get_the_date($date_format, $job_id) ?></small>
                                 <?php
                                 if ($job_type_str != '' && $job_types_switch == 'on') {
                                     echo($job_type_str);
@@ -359,7 +352,7 @@ class SimpleJobsListings extends Widget_Base
                             if (!empty($get_job_location) && $all_location_allow == 'on') {
                                 ?>
                                 <div class="careerfy-featuredjobs-box careerfy-featuredjobs-loction">
-                                    <small><?php echo jobsearch_esc_html($get_job_location); ?></small>
+                                    <small><?php echo esc_html($get_job_location); ?></small>
                                 </div>
                                 <?php
                             }
@@ -394,11 +387,9 @@ class SimpleJobsListings extends Widget_Base
                                     <a href="<?php echo get_permalink($job_id) ?>"><?php echo substr(get_the_title($job_id), 0, 20) . (strlen(get_the_title($job_id)) > 20 ? '...' : '') ?><?php echo($elaspedtime > $hourz ? '' : '<span class="careerfy-featuredjobs-listnew">' . esc_html__('New', 'careerfy-frame') . '</span>') ?></a>
                                 </h2>
                                 <ul>
-                                    <?php if (!empty($job_deadline)) { ?>
-                                        <li><i class="careerfy-icon careerfy-calendar"></i>
-                                            <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(date_i18n($date_format, $job_deadline), 'careerfy-frame') . "<br>"; ?>
-                                        </li>
-                                    <?php } ?>
+                                    <li><i class="careerfy-icon careerfy-calendar"></i>
+                                        <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(date($date_format, $job_deadline), 'careerfy-frame') . "<br>"; ?>
+                                    </li>
                                     <?php
                                     if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
                                         <li><i class="careerfy-icon careerfy-pin"></i>
@@ -422,13 +413,13 @@ class SimpleJobsListings extends Widget_Base
                                             src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
                                 <figcaption>
                                     <h2>
-                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo wp_trim_words(get_the_title($job_id), 5) ?></a>
+                                        <a href="<?php echo get_permalink($job_id) ?>"><?php echo limit_text(get_the_title($job_id), 5) ?></a>
                                     </h2>
                                     <small><?php echo jobsearch_job_get_company_name($job_id, '') ?><?php echo($elaspedtime > $hourz ? '' : '<span>' . esc_html__('New', 'careerfy-frame') . '</span>') ?></small>
                                 </figcaption>
                             </figure>
                             <div class="careerfy-premium-jobs-text">
-                                <span><?php echo jobsearch_esc_html($get_job_location); ?></span>
+                                <span><?php echo esc_html($get_job_location); ?></span>
                                 <?php
                                 if ($job_type_str != '' && $job_types_switch == 'on') {
                                     echo($job_type_str);
@@ -489,6 +480,7 @@ class SimpleJobsListings extends Widget_Base
 
         }
     }
+
 
 
     protected function _register_controls()
@@ -602,7 +594,7 @@ class SimpleJobsListings extends Widget_Base
                     'city' => __('City', 'careerfy-frame'),
                 ],
                 'multiple' => true,
-                'default' => ['country', 'state'],
+                'default' => ['country','state'],
                 'description' => __("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame"),
             ]
         );
@@ -676,7 +668,7 @@ class SimpleJobsListings extends Widget_Base
                     'no' => __('No', 'careerfy-frame'),
                 ],
                 'condition' => [
-                    'job_list_style' => ['style1', 'style2', 'style7', 'style8', 'style4', 'style5', 'style6', 'style9'],
+                    'job_list_style' => ['style1', 'style2', 'style7', 'style8'],
                 ],
             ]
         );
@@ -711,137 +703,163 @@ class SimpleJobsListings extends Widget_Base
     protected function render()
     {
 
-        global $jobsearch_plugin_options, $sitepress, $rand_num, $jobsearch_shortcode_jobs_frontend;
+        global $jobsearch_plugin_options, $sitepress, $rand_num,$jobsearch_shortcode_jobs_frontend;
         $atts = $this->get_settings_for_display();
 
-        extract(shortcode_atts(array(
-            'job_list_style' => 'style1',
-            'job_list_title' => '',
-            'job_list_description' => '',
-            'job_cat' => '',
-            'featured_only' => 'yes',
-            'job_order' => 'DESC',
-            'job_orderby' => 'date',
-            'job_per_page' => '10',
-            'job_load_more' => 'yes',
-            'job_link_text' => '',
-            'job_link_text_url' => '',
-            'title_img' => '',
-            'job_list_loc_listing' => 'country,city',
-        ), $atts));
+        $job_list_style = $atts['job_list_style'];
+        $job_list_description = $atts['job_list_description'];
+        $job_cat = $atts['job_cat'];
+        $featured_only = $atts['featured_only'];
+        $job_order = $atts['job_order'];
+        $job_orderby = $atts['job_orderby'];
+        $job_per_page = $atts['job_per_page'];
+        $job_load_more = $atts['job_load_more'];
+        $job_link_text = $atts['job_link_text'];
+        $job_link_text_url = $atts['job_link_text_url'];
+        $title_img = $atts['title_img'];
+        $job_list_loc_listing = $atts['job_list_loc_listing'];
+        $job_list_title = $atts['job_list_title'];
 
-        if (class_exists('JobSearch_plugin')) {
-            $jobsearch_jobs_listin_sh = $jobsearch_shortcode_jobs_frontend;
 
-            $rand_num = rand(10000000, 99909999);
-            $jobsearch__options = get_option('jobsearch_plugin_options');
+        $rand_num = rand(10000000, 99909999);
+        $jobsearch__options = get_option('jobsearch_plugin_options');
 
-            $emporler_approval = isset($jobsearch__options['job_listwith_emp_aprov']) ? $jobsearch__options['job_listwith_emp_aprov'] : '';
+        $emporler_approval = isset($jobsearch__options['job_listwith_emp_aprov']) ? $jobsearch__options['job_listwith_emp_aprov'] : '';
 
-            $job_per_page = isset($job_per_page) && !empty($job_per_page) && $job_per_page > 0 ? $job_per_page : 10;
+        $job_per_page = isset($job_per_page) && !empty($job_per_page) && $job_per_page > 0 ? $job_per_page : 10;
 
-            $locations_view_type = isset($atts['job_list_loc_listing']) ? $atts['job_list_loc_listing'] : '';
+        $locations_view_type = isset($atts['job_list_loc_listing']) ? $atts['job_list_loc_listing'] : '';
+        if (is_array($locations_view_type)) {
 
             $loc_types_arr = $locations_view_type;
-            $loc_view_country = $loc_view_state = $loc_view_city = false;
-            if (!empty($loc_types_arr)) {
-                if (is_array($loc_types_arr) && in_array('country', $loc_types_arr)) {
-                    $loc_view_country = true;
-                }
-                if (is_array($loc_types_arr) && in_array('state', $loc_types_arr)) {
-                    $loc_view_state = true;
-                }
-                if (is_array($loc_types_arr) && in_array('city', $loc_types_arr)) {
-                    $loc_view_city = true;
-                }
-            }
-            $post_ids = array();
-            $all_post_ids = array();
-            if (is_object($jobsearch_jobs_listin_sh)) {
-                $all_post_ids = $jobsearch_jobs_listin_sh->job_general_query_filter($post_ids, $atts);
-            }
-            //
 
-            $element_filter_arr = array();
-            $element_filter_arr[] = array(
-                'relation' => 'OR',
+        } else {
+
+            $loc_types_arr = $locations_view_type != '' ? explode(',', $locations_view_type) : '';
+        }
+
+        $loc_view_country = $loc_view_state = $loc_view_city = false;
+        if (!empty($loc_types_arr)) {
+            if (is_array($loc_types_arr) && in_array('country', $loc_types_arr)) {
+                $loc_view_country = true;
+            }
+            if (is_array($loc_types_arr) && in_array('state', $loc_types_arr)) {
+                $loc_view_state = true;
+            }
+            if (is_array($loc_types_arr) && in_array('city', $loc_types_arr)) {
+                $loc_view_city = true;
+            }
+        }
+        $post_ids = array();
+        $all_post_ids = $jobsearch_shortcode_jobs_frontend->job_general_query_filter($post_ids, $atts);
+        //
+
+        $element_filter_arr = array();
+        $element_filter_arr[] = array(
+            'relation' => 'OR',
+            array(
+                'key' => 'jobsearch_field_job_filled',
+                'compare' => 'NOT EXISTS',
+            ),
+            array(
                 array(
                     'key' => 'jobsearch_field_job_filled',
-                    'compare' => 'NOT EXISTS',
-                ),
-                array(
-                    array(
-                        'key' => 'jobsearch_field_job_filled',
-                        'value' => 'on',
-                        'compare' => '!=',
-                    ),
-                ),
-            );
-            //        $element_filter_arr[] = array(
-            //            'key' => 'jobsearch_field_job_publish_date',
-            //            'value' => current_time('timestamp'),
-            //            'compare' => '<=',
-            //        );
-            //
-            //        $element_filter_arr[] = array(
-            //            'key' => 'jobsearch_field_job_expiry_date',
-            //            'value' => current_time('timestamp'),
-            //            'compare' => '>=',
-            //        );
-            //
-            //        $element_filter_arr[] = array(
-            //            'key' => 'jobsearch_field_job_status',
-            //            'value' => 'approved',
-            //            'compare' => '=',
-            //        );
-
-            if ($emporler_approval != 'off') {
-                $element_filter_arr[] = array(
-                    'key' => 'jobsearch_job_employer_status',
-                    'value' => 'approved',
-                    'compare' => '=',
-                );
-            }
-
-            if ($featured_only == 'yes') {
-                $element_filter_arr[] = array(
-                    'key' => 'jobsearch_field_job_featured',
                     'value' => 'on',
-                    'compare' => '=',
-                );
-
-            }
-
-            $args = array(
-                'posts_per_page' => $job_per_page,
-                'post_type' => 'job',
-                'post_status' => 'publish',
-                'order' => $job_order,
-                'orderby' => $job_orderby,
-                'fields' => 'ids', // only load ids
-                'meta_query' => array(
-                    $element_filter_arr,
+                    'compare' => '!=',
                 ),
+            ),
+        );
+//        $element_filter_arr[] = array(
+//            'key' => 'jobsearch_field_job_publish_date',
+//            'value' => current_time('timestamp'),
+//            'compare' => '<=',
+//        );
+//
+//        $element_filter_arr[] = array(
+//            'key' => 'jobsearch_field_job_expiry_date',
+//            'value' => current_time('timestamp'),
+//            'compare' => '>=',
+//        );
+//
+//        $element_filter_arr[] = array(
+//            'key' => 'jobsearch_field_job_status',
+//            'value' => 'approved',
+//            'compare' => '=',
+//        );
+
+        if ($emporler_approval != 'off') {
+            $element_filter_arr[] = array(
+                'key' => 'jobsearch_job_employer_status',
+                'value' => 'approved',
+                'compare' => '=',
             );
-            if ($job_cat != '') {
-                $args['tax_query'][] = array(
-                    'taxonomy' => 'sector',
-                    'field' => 'slug',
-                    'terms' => $job_cat
-                );
+        }
+
+        if ($featured_only == 'yes') {
+            $element_filter_arr[] = array(
+                'key' => 'jobsearch_field_job_featured',
+                'value' => 'on',
+                'compare' => '=',
+            );
+
+        }
+
+        $args = array(
+            'posts_per_page' => $job_per_page,
+            'post_type' => 'job',
+            'post_status' => 'publish',
+            'order' => $job_order,
+            'orderby' => $job_orderby,
+            'fields' => 'ids', // only load ids
+            'meta_query' => array(
+                $element_filter_arr,
+            ),
+        );
+        if ($job_cat != '') {
+            $args['tax_query'][] = array(
+                'taxonomy' => 'sector',
+                'field' => 'slug',
+                'terms' => $job_cat
+            );
+        }
+
+        if (!empty($all_post_ids)) {
+            $args['post__in'] = $all_post_ids;
+        }
+
+        $jobs_query = new \WP_Query($args);
+
+        $totl_found_jobs = $jobs_query->found_posts;
+        $jobs_posts = $jobs_query->posts;
+
+        ob_start();
+        if ($job_list_style == "style5") { ?>
+            <?php if (!empty($jobs_posts)) { ?>
+                <div class="careerfy-jobslatest-list">
+                    <ul class="row">
+                        <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
+                    </ul>
+                </div>
+                <?php
+            } else {
+                echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
             }
-
-            if (!empty($all_post_ids)) {
-                $args['post__in'] = $all_post_ids;
-            }
-
-            $jobs_query = new \WP_Query($args);
-
-            $totl_found_jobs = $jobs_query->found_posts;
-            $jobs_posts = $jobs_query->posts;
-
-            ob_start();
-            if ($job_list_style == "style5" || $job_list_style == "style6" || $job_list_style == "style4" || $job_list_style == "style9") {
+            ?>
+        <?php } else if ($job_list_style == "style1") {
+            if ($job_list_title != '') { ?>
+                <h2 class="careerfy-featured-title"><?php echo($job_list_title) ?></h2>
+            <?php } ?>
+            <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-featuredjobs-list">
+                <?php
+                if (!empty($jobs_posts)) {
+                    ?>
+                    <ul class="row">
+                        <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
+                    </ul>
+                    <?php
+                } else {
+                    echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
+                }
                 ?>
                 <script>
                     jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
@@ -850,11 +868,11 @@ class SimpleJobsListings extends Widget_Base
                             total_pages = _this.attr('data-tpages'),
                             page_num = _this.attr('data-gtopage'),
                             this_html = _this.html(),
-                            appender_con = jQuery('#main-jlists-<?php echo($rand_num) ?> li:last'),
+                            appender_con = jQuery('#main-jlists-<?php echo($rand_num) ?> > ul'),
                             ajax_url = '<?php echo admin_url('admin-ajax.php') ?>';
                         if (!_this.hasClass('ajax-loadin')) {
                             _this.addClass('ajax-loadin');
-                            _this.html(this_html + '<i class="fa fa-refresh fa-spin"></i>');
+                            _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
 
                             total_pages = parseInt(total_pages);
                             page_num = parseInt(page_num);
@@ -868,10 +886,10 @@ class SimpleJobsListings extends Widget_Base
                                     job_order: '<?php echo($job_order) ?>',
                                     job_orderby: '<?php echo($job_orderby) ?>',
                                     job_per_page: '<?php echo($job_per_page) ?>',
+                                    job_list_style: '<?php echo($job_list_style) ?>',
                                     loc_view_country: '<?php echo($loc_view_country) ?>',
                                     loc_view_state: '<?php echo($loc_view_state) ?>',
                                     loc_view_city: '<?php echo($loc_view_city) ?>',
-                                    job_list_style: '<?php echo($job_list_style) ?>',
                                     action: 'jobsearch_load_more_insimple_jobslistin_con',
                                 },
                                 dataType: "json"
@@ -880,13 +898,11 @@ class SimpleJobsListings extends Widget_Base
                             request.done(function (response) {
                                 if ('undefined' !== typeof response.html) {
                                     page_num += 1;
-                                    console.info(response.html);
                                     _this.attr('data-gtopage', page_num)
                                     if (page_num > total_pages) {
                                         _this.parent('div').hide();
                                     }
-
-                                    appender_con.before(response.html);
+                                    appender_con.append(response.html);
                                 }
                                 _this.html(this_html);
                                 _this.removeClass('ajax-loadin');
@@ -900,304 +916,28 @@ class SimpleJobsListings extends Widget_Base
                         return false;
                     });
                 </script>
-                <?php
-            }
-            if ($job_list_style == "style5") {
-                ?>
-                <div id="main-jlists-<?php echo($rand_num) ?>">
-                    <?php if (!empty($jobs_posts)) { ?>
-                        <div class="careerfy-jobslatest-list">
-                            <ul class="row">
-                                <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
-                            </ul>
-                        </div>
-                        <?php
-                    } else {
-                        echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
-                    }
-                    if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                        $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                        <div class="careerfy-loadmore-listingsbtn"><a href="javascript:void(0);"
-                                                                      class="lodmore-jlists-<?php echo($rand_num) ?>"
-                                                                      data-tpages="<?php echo($total_pages) ?>"
-                                                                      data-gtopage="2"><?php esc_html_e('Load More Listings', 'careerfy-frame') ?></a>
-                        </div>
-                        <?php
-                    }
-                    ?>
+            </div>
+            <?php
+            if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
+                $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
+                <div class="careerfy-loadmore-listingsbtn"><a href="javascript:void(0);"
+                                                              class="lodmore-jlists-<?php echo($rand_num) ?>"
+                                                              data-tpages="<?php echo($total_pages) ?>"
+                                                              data-gtopage="2"><?php esc_html_e('Load More Listings', 'careerfy-frame') ?></a>
                 </div>
-            <?php } else if ($job_list_style == "style1") {
-                if ($job_list_title != '') { ?>
-                    <h2 class="careerfy-featured-title"><?php echo($job_list_title) ?></h2>
+            <?php }
+        } else if ($job_list_style == 'style2') { ?>
+            <!-- Main Section -->
+            <div class="careerfy-main-section careerfy-recent-list-full">
+                <!-- Fancy Title Ten -->
+                <?php if ($job_list_title != '') { ?>
+                    <div class="careerfy-fancy-title-ten careerfy-fancy-title-ten-left">
+                        <h2><?php echo($job_list_title) ?></h2>
+                        <span><?php echo $job_list_description ?></span>
+                    </div>
                 <?php } ?>
-                <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-featuredjobs-list">
-                    <?php
-                    if (!empty($jobs_posts)) {
-                        ?>
-                        <ul class="row">
-                            <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
-                        </ul>
-                        <?php
-                    } else {
-                        echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
-                    }
-                    ?>
-                    <script>
-                        jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
-                            e.preventDefault();
-                            var _this = jQuery(this),
-                                total_pages = _this.attr('data-tpages'),
-                                page_num = _this.attr('data-gtopage'),
-                                this_html = _this.html(),
-                                appender_con = jQuery('#main-jlists-<?php echo($rand_num) ?> > ul'),
-                                ajax_url = '<?php echo admin_url('admin-ajax.php') ?>';
-                            if (!_this.hasClass('ajax-loadin')) {
-                                _this.addClass('ajax-loadin');
-                                _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
-
-                                total_pages = parseInt(total_pages);
-                                page_num = parseInt(page_num);
-                                var request = jQuery.ajax({
-                                    url: ajax_url,
-                                    method: "POST",
-                                    data: {
-                                        page_num: page_num,
-                                        job_cat: '<?php echo($job_cat) ?>',
-                                        featured_only: '<?php echo($featured_only) ?>',
-                                        job_order: '<?php echo($job_order) ?>',
-                                        job_orderby: '<?php echo($job_orderby) ?>',
-                                        job_per_page: '<?php echo($job_per_page) ?>',
-                                        loc_view_country: '<?php echo($loc_view_country) ?>',
-                                        loc_view_state: '<?php echo($loc_view_state) ?>',
-                                        loc_view_city: '<?php echo($loc_view_city) ?>',
-                                        job_list_style: '<?php echo($job_list_style) ?>',
-                                        action: 'jobsearch_load_more_insimple_jobslistin_con',
-                                    },
-                                    dataType: "json"
-                                });
-
-                                request.done(function (response) {
-                                    if ('undefined' !== typeof response.html) {
-                                        page_num += 1;
-
-                                        _this.attr('data-gtopage', page_num)
-                                        if (page_num > total_pages) {
-                                            _this.parent('div').hide();
-                                        }
-                                        appender_con.append(response.html);
-                                    }
-                                    _this.html(this_html);
-                                    _this.removeClass('ajax-loadin');
-                                });
-
-                                request.fail(function (jqXHR, textStatus) {
-                                    _this.html(this_html);
-                                    _this.removeClass('ajax-loadin');
-                                });
-                            }
-                            return false;
-                        });
-                    </script>
-                </div>
-                <?php
-                if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                    $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                    <div class="careerfy-loadmore-listingsbtn"><a href="javascript:void(0);"
-                                                                  class="lodmore-jlists-<?php echo($rand_num) ?>"
-                                                                  data-tpages="<?php echo($total_pages) ?>"
-                                                                  data-gtopage="2"><?php esc_html_e('Load More Listings', 'careerfy-frame') ?></a>
-                    </div>
-                <?php }
-            } else if ($job_list_style == 'style2') { ?>
-                <!-- Main Section -->
-                <div class="careerfy-main-section careerfy-recent-list-full">
-                    <!-- Fancy Title Ten -->
-                    <?php if ($job_list_title != '') { ?>
-                        <div class="careerfy-fancy-title-ten careerfy-fancy-title-ten-left">
-                            <h2><?php echo($job_list_title) ?></h2>
-                            <span><?php echo $job_list_description ?></span>
-                        </div>
-                    <?php } ?>
-                    <!-- Recent Listing -->
-                    <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-recent-list">
-                        <?php
-                        if (!empty($jobs_posts)) {
-                            ?>
-                            <ul class="row">
-                                <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
-                            </ul>
-                            <?php
-                        } else {
-                            echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
-                        }
-                        ?>
-                        <script>
-                            jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
-                                e.preventDefault();
-                                var _this = jQuery(this),
-                                    total_pages = _this.attr('data-tpages'),
-                                    page_num = _this.attr('data-gtopage'),
-                                    this_html = _this.html(),
-                                    appender_con = jQuery('#main-jlists-<?php echo($rand_num) ?> > ul'),
-                                    ajax_url = '<?php echo admin_url('admin-ajax.php') ?>';
-                                if (!_this.hasClass('ajax-loadin')) {
-                                    _this.addClass('ajax-loadin');
-                                    _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
-
-                                    total_pages = parseInt(total_pages);
-                                    page_num = parseInt(page_num);
-                                    var request = jQuery.ajax({
-                                        url: ajax_url,
-                                        method: "POST",
-                                        data: {
-                                            page_num: page_num,
-                                            job_cat: '<?php echo($job_cat) ?>',
-                                            featured_only: '<?php echo($featured_only) ?>',
-                                            job_order: '<?php echo($job_order) ?>',
-                                            job_orderby: '<?php echo($job_orderby) ?>',
-                                            job_per_page: '<?php echo($job_per_page) ?>',
-                                            job_list_style: '<?php echo($job_list_style) ?>',
-                                            loc_view_country: '<?php echo($loc_view_country) ?>',
-                                            loc_view_state: '<?php echo($loc_view_state) ?>',
-                                            loc_view_city: '<?php echo($loc_view_city) ?>',
-                                            action: 'jobsearch_load_more_insimple_jobslistin_con',
-                                        },
-                                        dataType: "json"
-                                    });
-
-                                    request.done(function (response) {
-                                        if ('undefined' !== typeof response.html) {
-                                            page_num += 1;
-                                            _this.attr('data-gtopage', page_num)
-                                            if (page_num > total_pages) {
-                                                _this.parent('div').hide();
-                                            }
-                                            appender_con.append(response.html);
-                                        }
-                                        _this.html(this_html);
-                                        _this.removeClass('ajax-loadin');
-                                    });
-
-                                    request.fail(function (jqXHR, textStatus) {
-                                        _this.html(this_html);
-                                        _this.removeClass('ajax-loadin');
-                                    });
-                                }
-
-                                return false;
-                            });
-                        </script>
-                    </div>
-                    <!-- Recent Listing -->
-                    <?php
-                    if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                        $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                        <div class="show-morejobs-btn"><a href="javascript:void(0);"
-                                                          class="lodmore-jlists-<?php echo($rand_num) ?>"
-                                                          data-tpages="<?php echo($total_pages) ?>"
-                                                          data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
-                        </div>
-                    <?php } ?>
-                </div>
-                <!-- Main Section -->
-            <?php } else if ($job_list_style == 'style3') {
-                $view_all_btn_class = isset($job_per_page) && $job_per_page <= 4 ? 'no-slider' : '';
-                echo '
-                <div id="careerfy-slidmaintop-' . ($rand_num) . '" style="position: relative; float: left; width: 100%;">
-                <div id="careerfy-slidloder-' . ($rand_num) . '" class="careerfy-slidloder-section"><div class="ball-scale-multiple"><div></div><div></div><div></div></div></div>';
-                ?>
-                <div class="careerfy-section-premium-wrap">
-                    <div class="careerfy-section-title-style">
-                        <?php if ($job_list_title != '') { ?>
-                            <h2><?php echo $job_list_title ?></h2>
-                        <?php } ?>
-
-                        <?php if ($job_link_text != '') { ?>
-                            <a href="<?php echo $job_link_text_url ?>"
-                               class="careerfy-section-title-btn <?php echo $view_all_btn_class ?>"><?php echo $job_link_text ?></a>
-                        <?php } ?>
-                    </div>
-                    <div class="careerfy-premium-jobs-slider" id="jobs-slider-<?php echo($rand_num) ?>">
-                        <div class="careerfy-premium-jobs-slider-layer">
-                            <div class="careerfy-premium-jobs">
-                                <ul class="row main-layer-jobslists-<?php echo($rand_num) ?>">
-                                    <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Premium Section -->
-                <script type="text/javascript">
-                    //*** Function Top Employers Slider
-                    var $ = jQuery;
-                    $(document).ready(function () {
-                        jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                        jQuery('#main-jobslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
-                        jQuery('#jobs-slider-<?php echo($rand_num) ?>').slick({
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                            autoplay: true,
-                            autoplaySpeed: 5000,
-                            infinite: true,
-                            dots: false,
-                            prevArrow: "<span class='slick-arrow-left'><i class='careerfy-icon careerfy-next'></i></span>",
-                            nextArrow: "<span class='slick-arrow-right'><i class='careerfy-icon careerfy-next'></i></span>",
-                            responsive: [
-                                {
-                                    breakpoint: 1024,
-                                    settings: {
-                                        slidesToShow: 1,
-                                        slidesToScroll: 1,
-                                        infinite: true,
-                                    }
-                                },
-                                {
-                                    breakpoint: 800,
-                                    settings: {
-                                        slidesToShow: 1,
-                                        slidesToScroll: 1
-                                    }
-                                },
-                                {
-                                    breakpoint: 400,
-                                    settings: {
-                                        slidesToShow: 1,
-                                        slidesToScroll: 1
-                                    }
-                                }
-                            ]
-                        });
-                        var remSlidrLodrInt<?php echo($rand_num) ?> = setInterval(function () {
-                            jQuery('#careerfy-slidloder-<?php echo($rand_num) ?>').remove();
-                            clearInterval(remSlidrLodrInt<?php echo($rand_num) ?>);
-                        }, 1500);
-
-                        var slidrHightInt<?php echo($rand_num) ?> = setInterval(function () {
-                            jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                            jQuery('.main-layer-jobslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
-
-                            var slider_act_height_<?php echo($rand_num) ?> = jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').height();
-
-                            var filtr_cname_<?php echo($rand_num) ?> = 'careerfy_topemps_slidr_lheight';
-                            var c_date_<?php echo($rand_num) ?> = new Date();
-                            c_date_<?php echo($rand_num) ?>.setTime(c_date_<?php echo($rand_num) ?>.getTime() + (60 * 60 * 1000));
-                            var c_expires_<?php echo($rand_num) ?> = "; c_expires=" + c_date_<?php echo($rand_num) ?>.toGMTString();
-                            document.cookie = filtr_cname_<?php echo($rand_num) ?> + "=" + slider_act_height_<?php echo($rand_num) ?> + c_expires_<?php echo($rand_num) ?> + "; path=/";
-
-                            clearInterval(slidrHightInt<?php echo($rand_num) ?>);
-                        }, 1700);
-                    })
-                    jQuery('.main-layer-jobslists-<?php echo($rand_num) ?>').css({'display': 'none'});
-
-                    var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
-                    jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
-                </script>
-                <?php
-                echo '</div>';
-            } else if ($job_list_style == 'style7') { ?>
                 <!-- Recent Listing -->
-                <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-fifteen-recent-jobs">
+                <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-recent-list">
                     <?php
                     if (!empty($jobs_posts)) {
                         ?>
@@ -1209,15 +949,6 @@ class SimpleJobsListings extends Widget_Base
                         echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
                     }
                     ?>
-                </div>
-                <?php
-                if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                    $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                    <div class="careerfy-fifteen-browse-btn">
-                        <a href="javascript:void(0);" class="lodmore-jlists-<?php echo($rand_num) ?>"
-                           data-tpages="<?php echo($total_pages) ?>"
-                           data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
-                    </div>
                     <script>
                         jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
                             e.preventDefault();
@@ -1274,40 +1005,137 @@ class SimpleJobsListings extends Widget_Base
                             return false;
                         });
                     </script>
+                </div>
+                <!-- Recent Listing -->
+                <?php
+                if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
+                    $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
+                    <div class="show-morejobs-btn"><a href="javascript:void(0);"
+                                                      class="lodmore-jlists-<?php echo($rand_num) ?>"
+                                                      data-tpages="<?php echo($total_pages) ?>"
+                                                      data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
+                    </div>
                 <?php } ?>
-            <?php } else if ($job_list_style == 'style9') { ?>
-                <div class="careerfy-refejobs-list careerfy-refejobs-list-two"
-                     id="main-jlists-<?php echo($rand_num) ?>">
+            </div>
+            <!-- Main Section -->
+        <?php } else if ($job_list_style == 'style3') {
+            $view_all_btn_class = isset($job_per_page) && $job_per_page <= 4 ? 'no-slider' : '';
+            echo '
+            <div id="careerfy-slidmaintop-' . ($rand_num) . '" style="position: relative; float: left; width: 100%;">
+            <div id="careerfy-slidloder-' . ($rand_num) . '" class="careerfy-slidloder-section"><div class="ball-scale-multiple"><div></div><div></div><div></div></div></div>';
+            ?>
+            <div class="careerfy-section-premium-wrap">
+                <div class="careerfy-section-title-style">
+                    <?php if ($job_list_title != '') { ?>
+                        <h2><?php echo $job_list_title ?></h2>
+                    <?php } ?>
+
+                    <?php if ($job_link_text != '') { ?>
+                        <a href="<?php echo $job_link_text_url ?>"
+                           class="careerfy-section-title-btn <?php echo $view_all_btn_class ?>"><?php echo $job_link_text ?></a>
+                    <?php } ?>
+                </div>
+                <div class="careerfy-premium-jobs-slider" id="jobs-slider-<?php echo($rand_num) ?>">
+                    <div class="careerfy-premium-jobs-slider-layer">
+                        <div class="careerfy-premium-jobs">
+                            <ul class="row main-layer-jobslists-<?php echo($rand_num) ?>">
+                                <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Premium Section -->
+            <script type="text/javascript">
+                //*** Function Top Employers Slider
+                var $ = jQuery;
+                $(document).ready(function () {
+                    jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
+                    jQuery('#main-jobslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                    jQuery('#jobs-slider-<?php echo($rand_num) ?>').slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        autoplay: true,
+                        autoplaySpeed: 5000,
+                        infinite: true,
+                        dots: false,
+                        prevArrow: "<span class='slick-arrow-left'><i class='careerfy-icon careerfy-next'></i></span>",
+                        nextArrow: "<span class='slick-arrow-right'><i class='careerfy-icon careerfy-next'></i></span>",
+                        responsive: [
+                            {
+                                breakpoint: 1024,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1,
+                                    infinite: true,
+                                }
+                            },
+                            {
+                                breakpoint: 800,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            },
+                            {
+                                breakpoint: 400,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            }
+                        ]
+                    });
+                    var remSlidrLodrInt<?php echo($rand_num) ?> = setInterval(function () {
+                        jQuery('#careerfy-slidloder-<?php echo($rand_num) ?>').remove();
+                        clearInterval(remSlidrLodrInt<?php echo($rand_num) ?>);
+                    }, 1500);
+
+                    var slidrHightInt<?php echo($rand_num) ?> = setInterval(function () {
+                        jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
+                        jQuery('.main-layer-jobslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+
+                        var slider_act_height_<?php echo($rand_num) ?> = jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').height();
+
+                        var filtr_cname_<?php echo($rand_num) ?> = 'careerfy_topemps_slidr_lheight';
+                        var c_date_<?php echo($rand_num) ?> = new Date();
+                        c_date_<?php echo($rand_num) ?>.setTime(c_date_<?php echo($rand_num) ?>.getTime() + (60 * 60 * 1000));
+                        var c_expires_<?php echo($rand_num) ?> = "; c_expires=" + c_date_<?php echo($rand_num) ?>.toGMTString();
+                        document.cookie = filtr_cname_<?php echo($rand_num) ?> + "=" + slider_act_height_<?php echo($rand_num) ?> + c_expires_<?php echo($rand_num) ?> + "; path=/";
+
+                        clearInterval(slidrHightInt<?php echo($rand_num) ?>);
+                    }, 1700);
+                })
+                jQuery('.main-layer-jobslists-<?php echo($rand_num) ?>').css({'display': 'none'});
+
+                var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
+                jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
+            </script>
+            <?php
+            echo '</div>';
+        } else if ($job_list_style == 'style7') { ?>
+            <!-- Recent Listing -->
+            <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-fifteen-recent-jobs">
+                <?php
+                if (!empty($jobs_posts)) {
+                    ?>
                     <ul class="row">
                         <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
                     </ul>
                     <?php
-                    if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                        $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                        <div class="careerfy-loadmore-listingsbtn"><a href="javascript:void(0);"
-                                                                      class="lodmore-jlists-<?php echo($rand_num) ?>"
-                                                                      data-tpages="<?php echo($total_pages) ?>"
-                                                                      data-gtopage="2"><?php esc_html_e('Load More Listings', 'careerfy-frame') ?></a>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                } else {
+                    echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
+                }
+                ?>
+            </div>
+            <?php
+            if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
+                $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
+                <div class="careerfy-fifteen-browse-btn">
+                    <a href="javascript:void(0);" class="lodmore-jlists-<?php echo($rand_num) ?>"
+                       data-tpages="<?php echo($total_pages) ?>"
+                       data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
                 </div>
-            <?php } else if ($job_list_style == 'style8') { ?>
-                <div class="careerfy-refejobs-list" id="main-jlists-<?php echo($rand_num) ?>">
-                    <ul class="row">
-                        <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
-                    </ul>
-                </div>
-                <?php
-                if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                    $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                    <div class="careerfy-refejobs-loadmore-btn">
-                        <a href="javascript:void(0);" class="lodmore-jlists-<?php echo($rand_num) ?>"
-                           data-tpages="<?php echo($total_pages) ?>"
-                           data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
-                    </div>
-                <?php } ?>
                 <script>
                     jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
                         e.preventDefault();
@@ -1364,43 +1192,111 @@ class SimpleJobsListings extends Widget_Base
                         return false;
                     });
                 </script>
-            <?php } else { ?>
-                <div id="main-jlists-<?php echo($rand_num) ?>" class="careerfy-recentjobs-list">
-                    <div class="careerfy-fancy-title-eleven careerfy-fancy-title-eleven-left">
-                        <?php if ($title_img != '') { ?>
-                            <img src="<?php echo $title_img ?>" alt="">
-                        <?php } ?>
-                        <?php if ($job_list_title != '') { ?>
-                            <h2><?php echo($job_list_title) ?></h2>
-                        <?php } ?>
-                        <span><?php echo $job_list_description ?></span>
-                    </div>
-                    <?php
-                    if (!empty($jobs_posts)) { ?>
-                        <ul class="row">
-                            <?php
-                            self::load_more_jobs_posts($jobs_posts, $job_list_style, '', $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city);
-                            ?>
-                        </ul>
-                        <?php
-                    } else {
-                        echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
-                    }
-                    if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
-                        $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
-                        <div class="careerfy-loadmore-listingsbtn"><a href="javascript:void(0);"
-                                                                      class="lodmore-jlists-<?php echo($rand_num) ?>"
-                                                                      data-tpages="<?php echo($total_pages) ?>"
-                                                                      data-gtopage="2"><?php esc_html_e('Load More Listings', 'careerfy-frame') ?></a>
-                        </div>
-                        <?php
-                    }
-                    ?>
+            <?php } ?>
+        <?php } else if ($job_list_style == 'style9') { ?>
+            <div class="careerfy-refejobs-list careerfy-refejobs-list-two" id="main-jlists-<?php echo($rand_num) ?>">
+                <ul class="row">
+                    <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
+                </ul>
+            </div>
+        <?php } else if ($job_list_style == 'style8') { ?>
+            <div class="careerfy-refejobs-list" id="main-jlists-<?php echo($rand_num) ?>">
+                <ul class="row">
+                    <?php self::load_more_jobs_posts($jobs_posts, $job_list_style, $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city); ?>
+                </ul>
+            </div>
+            <?php
+            if ($job_load_more == 'yes' && $totl_found_jobs > $job_per_page) {
+                $total_pages = ceil($totl_found_jobs / $job_per_page); ?>
+                <div class="careerfy-refejobs-loadmore-btn">
+                    <a href="javascript:void(0);" class="lodmore-jlists-<?php echo($rand_num) ?>"
+                       data-tpages="<?php echo($total_pages) ?>"
+                       data-gtopage="2"><?php esc_html_e('Show More Jobs', 'careerfy-frame') ?></a>
                 </div>
-            <?php }
-            $html = ob_get_clean();
-            echo $html;
-        }
+            <?php } ?>
+            <script>
+                jQuery(document).on('click', '.lodmore-jlists-<?php echo($rand_num) ?>', function (e) {
+                    e.preventDefault();
+                    var _this = jQuery(this),
+                        total_pages = _this.attr('data-tpages'),
+                        page_num = _this.attr('data-gtopage'),
+                        this_html = _this.html(),
+                        appender_con = jQuery('#main-jlists-<?php echo($rand_num) ?> > ul'),
+                        ajax_url = '<?php echo admin_url('admin-ajax.php') ?>';
+                    if (!_this.hasClass('ajax-loadin')) {
+                        _this.addClass('ajax-loadin');
+                        _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
+
+                        total_pages = parseInt(total_pages);
+                        page_num = parseInt(page_num);
+                        var request = jQuery.ajax({
+                            url: ajax_url,
+                            method: "POST",
+                            data: {
+                                page_num: page_num,
+                                job_cat: '<?php echo($job_cat) ?>',
+                                featured_only: '<?php echo($featured_only) ?>',
+                                job_order: '<?php echo($job_order) ?>',
+                                job_orderby: '<?php echo($job_orderby) ?>',
+                                job_per_page: '<?php echo($job_per_page) ?>',
+                                job_list_style: '<?php echo($job_list_style) ?>',
+                                loc_view_country: '<?php echo($loc_view_country) ?>',
+                                loc_view_state: '<?php echo($loc_view_state) ?>',
+                                loc_view_city: '<?php echo($loc_view_city) ?>',
+                                action: 'jobsearch_load_more_insimple_jobslistin_con',
+                            },
+                            dataType: "json"
+                        });
+
+                        request.done(function (response) {
+                            if ('undefined' !== typeof response.html) {
+                                page_num += 1;
+                                _this.attr('data-gtopage', page_num)
+                                if (page_num > total_pages) {
+                                    _this.parent('div').hide();
+                                }
+                                appender_con.append(response.html);
+                            }
+                            _this.html(this_html);
+                            _this.removeClass('ajax-loadin');
+                        });
+
+                        request.fail(function (jqXHR, textStatus) {
+                            _this.html(this_html);
+                            _this.removeClass('ajax-loadin');
+                        });
+                    }
+
+                    return false;
+                });
+            </script>
+        <?php } else { ?>
+            <div class="careerfy-recentjobs-list">
+                <div class="careerfy-fancy-title-eleven careerfy-fancy-title-eleven-left">
+                    <?php if ($title_img != '') { ?>
+                        <img src="<?php echo $title_img ?>" alt="">
+                    <?php } ?>
+                    <?php if ($job_list_title != '') { ?>
+                        <h2><?php echo($job_list_title) ?></h2>
+                    <?php } ?>
+                    <span><?php echo $job_list_description ?></span>
+                </div>
+                <?php
+                if (!empty($jobs_posts)) { ?>
+                    <ul class="row">
+                        <?php
+                        self::load_more_jobs_posts($jobs_posts, $job_list_style, '', $job_per_page, $loc_view_country, $loc_view_state, $loc_view_city);
+                        ?>
+                    </ul>
+                    <?php
+                } else {
+                    echo '<p>' . esc_html__('No job found.', 'careerfy-frame') . '</p>';
+                }
+                ?>
+            </div>
+        <?php }
+        $html = ob_get_clean();
+        echo $html;
     }
 
     protected function _content_template()

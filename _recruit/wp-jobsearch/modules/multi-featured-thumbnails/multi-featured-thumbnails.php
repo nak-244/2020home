@@ -23,6 +23,7 @@
  * }
  */
 
+
 if (!class_exists('JobSearchMultiPostThumbnails')) {
 
     class JobSearchMultiPostThumbnails {
@@ -141,7 +142,7 @@ if (!class_exists('JobSearchMultiPostThumbnails')) {
 
         public function admin_header_scripts() {
             $post_id = get_the_ID();
-            echo "<script type='text/javascript'>var post_id = $post_id;</script>";
+            echo "<script>var post_id = $post_id;</script>";
         }
 
         public function action_delete_attachment($post_id) {
@@ -362,4 +363,5 @@ if (!class_exists('JobSearchMultiPostThumbnails')) {
         }
 
     }
+
 }

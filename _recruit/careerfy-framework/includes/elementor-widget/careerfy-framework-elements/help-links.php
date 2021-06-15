@@ -97,7 +97,7 @@ class HelpLinks extends Widget_Base
         $repeater->add_control(
             'help_icon', [
                 'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICONS,
+                'type' => Controls_Manager::ICON,
                 'label_block' => true,
             ]
         );
@@ -145,14 +145,14 @@ class HelpLinks extends Widget_Base
             'btn_txt' => '',
             'btn_url' => '',
         ), $atts));
-
         foreach ($atts['careerfy_help_links_item'] as $info) { ?>
             <li class="col-md-4">
                 <h2><?php echo($info['help_title']) ?></h2>
-                <i class="<?php echo($info['help_icon']['value']) ?>"></i>
+                <i class="<?php echo($info['help_icon']) ?>"></i>
                 <a href="<?php echo($info['btn_url']) ?>"><?php echo($info['btn_txt']) ?></a>
             </li>
         <?php } ?>
+
     <?php }
 
     protected function render()

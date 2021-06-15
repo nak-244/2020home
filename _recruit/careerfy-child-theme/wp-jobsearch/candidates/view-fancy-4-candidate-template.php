@@ -268,7 +268,6 @@ if (class_exists('JobSearch_plugin')) {
 
                                     <?php
 
-
                                     do_action('jobsearch_candidate_listing_custom_fields', $atts, $candidate_id, $candidate_arg['custom_fields']); ?>
 
                                     <a class="careerfy-candidate-style8-detail"><?php echo esc_html__('More Detail', 'wp-jobsearch') ?>

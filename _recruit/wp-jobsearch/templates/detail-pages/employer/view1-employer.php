@@ -1,4 +1,5 @@
 <?php
+
 global $post, $jobsearch_plugin_options;
 $employer_id = $post->ID;
 
@@ -36,7 +37,9 @@ if ($plugin_default_view == 'boxed') {
 }
 
 $reviews_switch = isset($jobsearch_plugin_options['reviews_switch']) ? $jobsearch_plugin_options['reviews_switch'] : '';
+
 $employer_views_count = get_post_meta($employer_id, "jobsearch_employer_views_count", true);
+
 //
 $user_facebook_url = get_post_meta($employer_id, 'jobsearch_field_user_facebook_url', true);
 $user_twitter_url = get_post_meta($employer_id, 'jobsearch_field_user_twitter_url', true);
@@ -57,15 +60,15 @@ $employer_obj = get_post($employer_id);
 $employer_content = $employer_obj->post_content;
 
 $employer_content = apply_filters('the_content', $employer_content);
+
 $employer_join_date = isset($employer_obj->post_date) ? $employer_obj->post_date : '';
+
 $employer_address = get_post_meta($employer_id, 'jobsearch_field_location_address', true);
 
 if (function_exists('jobsearch_post_city_contry_txtstr')) {
     $employer_address = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city, $emp_det_full_address_switch);
 }
 
-$locations_lat = get_post_meta($employer_id, 'jobsearch_field_location_lat', true);
-$locations_lng = get_post_meta($employer_id, 'jobsearch_field_location_lng', true);
 
 $employer_phone = get_post_meta($employer_id, 'jobsearch_field_user_phone', true);
 $user_id = jobsearch_get_employer_user_id($employer_id);
@@ -89,23 +92,24 @@ if ($employer_id != '') {
     if (class_exists('JobSearchMultiPostThumbnails')) {
         $employer_cover_image_src = JobSearchMultiPostThumbnails::get_post_thumbnail_url('employer', 'cover-image', $employer_id);
         if ($employer_cover_image_src != '') {
-            $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($employer_cover_image_src) . ') center/cover no-repeat"';
+            $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($employer_cover_image_src) . ')"';
         }
     }
 }
 if ($employer_cover_image_src_style_str == '') {
     $emp_def_cvrimg = isset($jobsearch_plugin_options['emp_default_coverimg']['url']) && $jobsearch_plugin_options['emp_default_coverimg']['url'] != '' ? $jobsearch_plugin_options['emp_default_coverimg']['url'] : '';
-    $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($emp_def_cvrimg) . '); center/cover no-repeat "';
+    $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($emp_def_cvrimg) . '); background-size:cover; "';
 }
 $subheader_employer_bg_color = isset($jobsearch_plugin_options['careerfy-emp-img-overlay-bg-color']) ? $jobsearch_plugin_options['careerfy-emp-img-overlay-bg-color'] : '';
 if (isset($subheader_employer_bg_color['rgba'])) {
     $subheader_bg_color = $subheader_employer_bg_color['rgba'];
 }
+
 ob_start();
 ?>
+
     <div class="jobsearch-job-subheader"<?php echo($employer_cover_image_src_style_str); ?>>
-        <span class="jobsearch-banner-transparent"
-              style="background: <?php echo !empty($subheader_bg_color) ? $subheader_bg_color : 'rgb(48, 56, 68, 0.50)' ?>"></span>
+        <span class="jobsearch-banner-transparent" style="background: <?php echo $subheader_bg_color ?>"></span>
         <div class="jobsearch-plugin-default-container">
             <div class="jobsearch-row">
                 <div class="jobsearch-column-12">
@@ -115,6 +119,7 @@ ob_start();
     </div>
 
     <div class="jobsearch-main-content">
+
         <!-- Main Section -->
         <div class="jobsearch-main-section">
             <div class="jobsearch-plugin-default-container" <?php echo($plugin_default_view_with_str); ?>>
@@ -124,7 +129,7 @@ ob_start();
                         <figure class="jobsearch-jobdetail-list">
                         <span class="jobsearch-jobdetail-listthumb">
                             <?php echo jobsearch_member_promote_profile_iconlab($employer_id, 'employer_detv1'); ?>
-                            <img src="<?php echo jobsearch_esc_html($user_def_avatar_url) ?>" alt="">
+                            <img src="<?php echo($user_def_avatar_url) ?>" alt="">
                         </span>
                             <figcaption>
                                 <?php
@@ -143,21 +148,12 @@ ob_start();
                                 ?>
                                 <ul class="jobsearch-jobdetail-options">
                                     <?php
-                                    if ((!empty($employer_address) || ($locations_lat != '' && $locations_lng != '')) && $all_location_allow == 'on') {
-                                        $view_map_loc = urlencode($employer_address);
-                                        if ($locations_lat != '' && $locations_lng != '') {
-                                            $view_map_loc = urlencode($locations_lat . ',' . $locations_lng);
-                                        }
-                                        $google_mapurl = 'https://www.google.com/maps/search/' . $view_map_loc;
+                                    if (!empty($employer_address) && $all_location_allow == 'on') {
+                                        $google_mapurl = 'https://www.google.com/maps/search/' . str_replace(' ', '+', $employer_address);
                                         ?>
-                                        <li>
-                                            <?php
-                                            if (!empty($employer_address)) { ?>
-                                                <i class="fa fa-map-marker"></i> <?php echo jobsearch_esc_html($employer_address) ?>
-                                                <a href="<?php echo jobsearch_esc_html($google_mapurl) ?>"
-                                                   target="_blank"
-                                                   class="jobsearch-jobdetail-view"><?php esc_html_e('View on Map', 'wp-jobsearch') ?></a>
-                                            <?php } ?>
+                                        <li><i class="fa fa-map-marker"></i> <?php echo($employer_address) ?> <a
+                                                    href="<?php echo($google_mapurl) ?>" target="_blank"
+                                                    class="jobsearch-jobdetail-view"><?php esc_html_e('View on Map', 'wp-jobsearch') ?></a>
                                         </li>
                                         <?php
                                     }
@@ -167,7 +163,7 @@ ob_start();
                                         ?>
                                         <li><i class="jobsearch-icon jobsearch-internet"></i> <a
                                                     href="<?php echo esc_url($user_url) ?>"
-                                                    target="_blank"><?php echo jobsearch_esc_html(esc_url($user_url)) ?></a>
+                                                    target="_blank"><?php echo esc_url($user_url) ?></a>
                                         </li>
                                         <?php
                                         $website_html = ob_get_clean();
@@ -184,7 +180,6 @@ ob_start();
                                     }
                                     if ($employer_phone != '' && $emp_phone_switch == 'on' && jobsearch_employer_info_div_visible('phone')) {
                                         $user_phone = apply_filters('jobsearch_employer_info_encoding', $employer_phone, 'phone');
-                                        $user_phone = jobsearch_esc_html($user_phone);
                                         ob_start();
                                         ?>
                                         <li>
@@ -227,21 +222,21 @@ ob_start();
                                         <?php echo social_link_heading($user_facebook_url, $emp_alow_fb_smm, $user_twitter_url, $emp_alow_twt_smm, $user_linkedin_url, $emp_alow_gplus_smm, $user_google_plus_url, $emp_alow_linkd_smm, $user_dribbble_url, $emp_alow_dribbb_smm); ?>
                                         <?php
                                         if ($user_facebook_url != '' && $emp_alow_fb_smm == 'on') { ?>
-                                            <li><a href="<?php echo esc_url($user_facebook_url) ?>" target="_blank"
+                                            <li><a href="<?php echo($user_facebook_url) ?>" target="_blank"
                                                    data-original-title="facebook"
                                                    class="jobsearch-icon jobsearch-facebook-logo"></a></li>
                                             <?php
                                         }
                                         if ($user_twitter_url != '' && $emp_alow_twt_smm == 'on') {
                                             ?>
-                                            <li><a href="<?php echo esc_url($user_twitter_url) ?>" target="_blank"
+                                            <li><a href="<?php echo($user_twitter_url) ?>" target="_blank"
                                                    data-original-title="twitter"
                                                    class="jobsearch-icon jobsearch-twitter-logo"></a></li>
                                             <?php
                                         }
                                         if ($user_linkedin_url != '' && $emp_alow_linkd_smm == 'on') {
                                             ?>
-                                            <li><a href="<?php echo esc_url($user_linkedin_url) ?>" target="_blank"
+                                            <li><a href="<?php echo($user_linkedin_url) ?>" target="_blank"
                                                    data-original-title="linkedin"
                                                    class=""><i class="jobsearch-icon jobsearch-linkedin-button"></i></a>
                                             </li>
@@ -249,14 +244,14 @@ ob_start();
                                         }
                                         if ($user_google_plus_url != '' && $emp_alow_gplus_smm == 'on') {
                                             ?>
-                                            <li><a href="<?php echo esc_url($user_google_plus_url) ?>" target="_blank"
+                                            <li><a href="<?php echo($user_google_plus_url) ?>" target="_blank"
                                                    data-original-title="google-plus"
                                                    class="jobsearch-icon jobsearch-google-plus-logo-button"></a></li>
                                             <?php
                                         }
                                         if ($user_dribbble_url != '' && $emp_alow_dribbb_smm == 'on') {
                                             ?>
-                                            <li><a href="<?php echo esc_url($user_dribbble_url) ?>" target="_blank"
+                                            <li><a href="<?php echo($user_dribbble_url) ?>" target="_blank"
                                                    data-original-title="dribbble"
                                                    class="jobsearch-icon jobsearch-dribbble-logo"></a></li>
                                             <?php
@@ -284,7 +279,7 @@ ob_start();
                                                     if ($field_title_val != '' && $emp_dynm_social != '') {
                                                         ?>
                                                         <li>
-                                                            <a href="<?php echo esc_url($emp_dynm_social) ?>"
+                                                            <a href="<?php echo($emp_dynm_social) ?>"
                                                                target="_blank" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
                                                                class="<?php echo($field_icon) ?>"></a></li>
                                                         <?php
@@ -309,23 +304,23 @@ ob_start();
                     <div class="jobsearch-column-8 jobsearch-typo-wrap">
                         <?php
                         $custom_all_fields = get_option('jobsearch_custom_field_employer');
-                        if (!empty($custom_all_fields) || $employer_content != '') { ?>
+                        if (!empty($custom_all_fields) || $employer_content != '') {
+                            ?>
                             <div class="jobsearch-jobdetail-content jobsearch-employerdetail-content">
                                 <?php
                                 ob_start();
                                 if ($sectors_enable_switch == 'on') {
                                     $sector_str = jobsearch_employer_get_all_sectors($employer_id, '', '', '', '<small>', '</small>');
                                     $sector_str = apply_filters('jobsearch_gew_wout_anchr_sector_str_html', $sector_str, $employer_id, '<small>', '</small>');
-                                    if ($sector_str != '') {
-                                        ?>
-                                        <li class="jobsearch-column-4">
-                                            <i class="jobsearch-icon jobsearch-folder"></i>
-                                            <div class="jobsearch-services-text"><?php esc_html_e('Sectors', 'wp-jobsearch') ?><?php echo wp_kses($sector_str, array('small' => array())) ?></div>
-                                        </li>
-                                        <?php
-                                    }
+                                    ?>
+                                    <li class="jobsearch-column-4">
+                                        <i class="jobsearch-icon jobsearch-folder"></i>
+                                        <div class="jobsearch-services-text"><?php esc_html_e('Sectors', 'wp-jobsearch') ?><?php echo wp_kses($sector_str, array('small' => array())) ?></div>
+                                    </li>
+                                    <?php
                                 }
-                                if ($tjobs_posted_switch == 'on') { ?>
+                                if ($tjobs_posted_switch == 'on') {
+                                    ?>
                                     <li class="jobsearch-column-4">
                                         <i class="jobsearch-icon jobsearch-briefcase"></i>
                                         <div class="jobsearch-services-text"><?php esc_html_e('Posted Jobs', 'wp-jobsearch') ?>
@@ -419,14 +414,14 @@ ob_start();
                                         foreach ($exfield_list as $exfield) {
                                             $rand_num = rand(1000000, 99999999);
 
-                                            $exfield_val = isset($exfield_list_val[$exfield_counter]) ? jobsearch_esc_html($exfield_list_val[$exfield_counter]) : '';
-                                            $team_designationfield_val = isset($team_designationfield_list[$exfield_counter]) ? jobsearch_esc_html($team_designationfield_list[$exfield_counter]) : '';
-                                            $team_experiencefield_val = isset($team_experiencefield_list[$exfield_counter]) ? jobsearch_esc_html($team_experiencefield_list[$exfield_counter]) : '';
-                                            $team_imagefield_val = isset($team_imagefield_list[$exfield_counter]) ? jobsearch_esc_html($team_imagefield_list[$exfield_counter]) : '';
-                                            $team_facebookfield_val = isset($team_facebookfield_list[$exfield_counter]) ? jobsearch_esc_html($team_facebookfield_list[$exfield_counter]) : '';
-                                            $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? jobsearch_esc_html($team_googlefield_list[$exfield_counter]) : '';
-                                            $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? jobsearch_esc_html($team_twitterfield_list[$exfield_counter]) : '';
-                                            $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? jobsearch_esc_html($team_linkedinfield_list[$exfield_counter]) : '';
+                                            $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
+                                            $team_designationfield_val = isset($team_designationfield_list[$exfield_counter]) ? $team_designationfield_list[$exfield_counter] : '';
+                                            $team_experiencefield_val = isset($team_experiencefield_list[$exfield_counter]) ? $team_experiencefield_list[$exfield_counter] : '';
+                                            $team_imagefield_val = isset($team_imagefield_list[$exfield_counter]) ? $team_imagefield_list[$exfield_counter] : '';
+                                            $team_facebookfield_val = isset($team_facebookfield_list[$exfield_counter]) ? $team_facebookfield_list[$exfield_counter] : '';
+                                            $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? $team_googlefield_list[$exfield_counter] : '';
+                                            $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? $team_twitterfield_list[$exfield_counter] : '';
+                                            $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? $team_linkedinfield_list[$exfield_counter] : '';
                                             $team_imagefield_imgid = jobsearch_get_attachment_id_from_url($team_imagefield_val);
 
                                             ?>
@@ -445,17 +440,21 @@ ob_start();
                                                     });
                                                 </script>
                                                 <figure>
-                                                    <?php if ($team_imagefield_imgid > 0) { ?>
+                                                    <?php
+                                                    if ($team_imagefield_imgid > 0) {
+                                                        ?>
                                                         <a id="fancybox_notes<?php echo($rand_num) ?>"
                                                            href="#notes<?php echo($rand_num) ?>"
-                                                           class="jobsearch-candidate-grid-thumb">
-                                                            <img src="<?php echo($team_imagefield_val) ?>" alt="">
-                                                            <span class="jobsearch-candidate-grid-status"></span>
-                                                        </a>
-                                                    <?php } ?>
+                                                           class="jobsearch-candidate-grid-thumb"><img
+                                                                    src="<?php echo($team_imagefield_val) ?>" alt="">
+                                                            <span
+                                                                    class="jobsearch-candidate-grid-status"></span></a>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                     <figcaption>
                                                         <h2><a id="fancybox_notes_txt<?php echo($rand_num) ?>"
-                                                               href="#notes<?php echo($rand_num) ?>"><?php echo jobsearch_esc_html($exfield) ?></a>
+                                                               href="#notes<?php echo($rand_num) ?>"><?php echo($exfield) ?></a>
                                                         </h2>
                                                         <p><?php echo($team_designationfield_val) ?></p>
                                                         <?php
@@ -472,14 +471,17 @@ ob_start();
                                                 if ($team_facebookfield_val != '' || $team_googlefield_val != '' || $team_twitterfield_val != '' || $team_linkedinfield_val != '') {
                                                     ?>
                                                     <ul class="jobsearch-social-icons">
-                                                        <?php if ($team_facebookfield_val != '') { ?>
+                                                        <?php
+                                                        if ($team_facebookfield_val != '') {
+                                                            ?>
                                                             <li><a href="<?php echo($team_facebookfield_val) ?>"
                                                                    data-original-title="facebook"
                                                                    class="jobsearch-icon jobsearch-facebook-logo"></a>
                                                             </li>
                                                             <?php
                                                         }
-                                                        if ($team_googlefield_val != '') { ?>
+                                                        if ($team_googlefield_val != '') {
+                                                            ?>
                                                             <li><a href="<?php echo($team_googlefield_val) ?>"
                                                                    data-original-title="google-plus"
                                                                    class="jobsearch-icon jobsearch-google-plus-logo-button"></a>
@@ -529,7 +531,9 @@ ob_start();
                                            data-pages="<?php echo($total_pages) ?>"
                                            data-page="1"><?php esc_html_e('Load More', 'wp-jobsearch') ?></a>
                                     </div>
-                                <?php } ?>
+                                    <?php
+                                }
+                                ?>
                             </div>
                             <?php
                         }
@@ -564,7 +568,8 @@ ob_start();
                                     }
                                 }
 
-                                if ($_gal_img_counter > 0) { ?>
+                                if ($_gal_img_counter > 0) {
+                                    ?>
                                     <div class="jobsearch-employer-wrap-section">
                                         <div class="jobsearch-content-title jobsearch-addmore-space">
                                             <h2><?php esc_html_e('Office Photos', 'wp-jobsearch') ?></h2>
@@ -601,7 +606,8 @@ ob_start();
                                                     $gal_full_image = wp_get_attachment_image_src($company_gal_img, 'full');
                                                     $gal_full_image_src = isset($gal_full_image[0]) && esc_url($gal_full_image[0]) != '' ? $gal_full_image[0] : '';
 
-                                                    if ($company_gal_img > 0) { ?>
+                                                    if ($company_gal_img > 0) {
+                                                        ?>
                                                         <li class="grid-item <?php echo($profile_gal_counter == 2 ? 'jobsearch-column-6' : 'jobsearch-column-3') ?>">
                                                             <figure>
                                                                 <span class="grid-item-thumb"><small
@@ -735,9 +741,7 @@ ob_start();
                         <?php
                         echo jobsearch_employer_profile_awards($employer_id);
                         echo jobsearch_employer_profile_affiliations($employer_id);
-                        //
-                        $emp_chat_args = array('employer_id' => $employer_id);
-                        echo do_action('jobsearch_chat_with_employer', $emp_chat_args);
+
                         $ad_args = array(
                             'post_type' => 'employer',
                             'view' => 'view1',
@@ -749,30 +753,13 @@ ob_start();
 
                         //
                         $emp_det_contact_form = isset($jobsearch_plugin_options['emp_det_contact_form']) ? $jobsearch_plugin_options['emp_det_contact_form'] : '';
-                        if ($emp_det_contact_form != 'off') {
+                        if ($emp_det_contact_form == 'on') {
                             ob_start();
                             ?>
 
                             <div class="jobsearch_side_box jobsearch_box_contact_form">
                                 <?php
                                 $cnt_counter = rand(1000000, 9999999);
-                                
-                                $cur_user_name = '';
-                                $cur_user_email = '';
-                                $field_readonly = false;
-                                if (is_user_logged_in()) {
-                                    if ($emp_det_contact_form == 'cand_login') {
-                                        $field_readonly = true;
-                                    }
-                                    $cur_user_id = get_current_user_id();
-                                    $cur_user_obj = wp_get_current_user();
-                                    $cur_user_name = isset($cur_user_obj->display_name) ? $cur_user_obj->display_name : '';
-                                    $cur_user_email = isset($cur_user_obj->user_email) ? $cur_user_obj->user_email : '';
-                                    if (jobsearch_user_is_candidate($cur_user_id)) {
-                                        $cnt_cand_id = jobsearch_get_user_candidate_id($cur_user_id);
-                                        $cur_user_name = get_the_title($cnt_cand_id);
-                                    }
-                                }
                                 ?>
                                 <div class="jobsearch-wdg-box-title">
                                     <h2><?php esc_html_e('Contact Form', 'wp-jobsearch') ?></h2></div>
@@ -783,14 +770,14 @@ ob_start();
                                             <label><?php esc_html_e('User Name:', 'wp-jobsearch') ?></label>
                                             <input name="u_name"
                                                    placeholder="<?php esc_html_e('Enter Your Name', 'wp-jobsearch') ?>"
-                                                   type="text" <?php echo ($field_readonly ? 'readonly' : '') ?> value="<?php echo ($cur_user_name) ?>">
+                                                   type="text">
                                             <i class="jobsearch-icon jobsearch-user"></i>
                                         </li>
                                         <li>
                                             <label><?php esc_html_e('Email Address:', 'wp-jobsearch') ?></label>
                                             <input name="u_email"
                                                    placeholder="<?php esc_html_e('Enter Your Email Address', 'wp-jobsearch') ?>"
-                                                   type="text" <?php echo ($field_readonly ? 'readonly' : '') ?> value="<?php echo ($cur_user_email) ?>">
+                                                   type="text">
                                             <i class="jobsearch-icon jobsearch-mail"></i>
                                         </li>
                                         <li>
@@ -838,7 +825,8 @@ ob_start();
                                                    data-id="<?php echo absint($cnt_counter) ?>"
                                                    value="<?php esc_html_e('Send now', 'wp-jobsearch') ?>">
                                             <?php
-                                            if (!is_user_logged_in() && $emp_det_contact_form != 'on') {
+                                            $cnt__emp_wout_log = isset($jobsearch_plugin_options['emp_cntct_wout_login']) ? $jobsearch_plugin_options['emp_cntct_wout_login'] : '';
+                                            if (!is_user_logged_in() && $cnt__emp_wout_log != 'on') {
                                                 ?>
                                                 <a class="jobsearch-open-signin-tab"
                                                    style="display: none;"><?php esc_html_e('login', 'wp-jobsearch') ?></a>

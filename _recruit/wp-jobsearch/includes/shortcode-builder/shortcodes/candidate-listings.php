@@ -12,14 +12,6 @@ if (is_array($categories) && sizeof($categories) > 0) {
     }
 }
 
-$jobsearch_cand_cus_fields = get_option("jobsearch_custom_field_candidate");
-$cand_cus_field_arr = array();
-if (isset($jobsearch_cand_cus_fields) && !empty($jobsearch_cand_cus_fields) && sizeof($jobsearch_cand_cus_fields) > 0) {
-    foreach ($jobsearch_cand_cus_fields as $key => $value) {
-        $cand_cus_field_arr[$key] = $value['label'];
-    }
-}
-
 $jobsearch_builder_shortcodes['candidate_listings'] = array(
     'title' => esc_html__('Candidate Listing', 'wp-jobsearch'),
     'id' => 'jobsearch-candidate-listings-shortcode',
@@ -66,18 +58,6 @@ $jobsearch_builder_shortcodes['candidate_listings'] = array(
             'options' => array(
                 'no' => esc_html__('No', 'wp-jobsearch'),
                 'yes' => esc_html__('Yes', 'wp-jobsearch'),
-            )
-        ),
-        'candidate_filters_sortby' => array(
-            'type' => 'select',
-            'label' => esc_html__('Filters Sort by', 'wp-jobsearch'),
-            'desc' => esc_html__('Set filters sorting.', 'wp-jobsearch'),
-            'options' => array(
-                'default' => esc_html__('Default', 'wp-jobsearch'),
-                'asc' => esc_html__('Ascending', 'wp-jobsearch'),
-                'desc' => esc_html__('Descending', 'wp-jobsearch'),
-                'alpha' => esc_html__('Alphabetical', 'wp-jobsearch'),
-                'count' => esc_html__('Highest Count', 'wp-jobsearch'),
             )
         ),
         'candidate_filters_date' => array(
@@ -191,21 +171,6 @@ $jobsearch_builder_shortcodes['candidate_listings'] = array(
                 'yes' => esc_html__('Yes', 'wp-jobsearch'),
                 'no' => esc_html__('No', 'wp-jobsearch'),
             )
-        ),
-        'candidate_custom_fields_switch' => array(
-            'type' => 'select',
-            'label' => esc_html__('Custom Fields', 'wp-jobsearch'),
-            'desc' => esc_html__('Show Custom Fields in every list.', 'wp-jobsearch'),
-            'options' => array(
-                'no' => esc_html__('No', 'wp-jobsearch'),
-                'yes' => esc_html__('Yes', 'wp-jobsearch'),
-            )
-        ),
-        'candidate_elem_custom_fields' => array(
-            'type' => 'multi_checkbox',
-            'label' => esc_html__('Select Custom Fields', 'wp-jobsearch'),
-            'desc' => '',
-            'options' => $cand_cus_field_arr
         ),
         'candidate_sort_by' => array(
             'type' => 'select',

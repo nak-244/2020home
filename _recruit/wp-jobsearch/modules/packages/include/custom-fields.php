@@ -49,8 +49,6 @@ class Jobsearch_Package_Custom_Fields {
             'feat_job_credits',
             'fjob_expiry_time',
             'fjob_expiry_time_unit',
-            'fcred_expiry_time',
-            'fcred_expiry_time_unit',
         );
         
         return apply_filters('jobsearch_add_featured_jobs_package_fields_list', $fields);
@@ -64,8 +62,6 @@ class Jobsearch_Package_Custom_Fields {
             'allin_num_fjobs',
             'allinjob_expiry_time',
             'allinjob_expiry_time_unit',
-            'fall_cred_expiry_time',
-            'fall_cred_expiry_time_unit',
             'allin_num_cvs',
             'allinview_consume_cvs',
         );
@@ -134,17 +130,6 @@ class Jobsearch_Package_Custom_Fields {
         $fields = array(
             'package_expiry_time',
             'package_expiry_time_unit',
-            'emprof_num_jobs',
-            'emprof_num_fjobs',
-            'emprofjob_expiry_time',
-            'emprofjob_expiry_time_unit',
-            'emprof_fcred_expiry_time',
-            'emprof_fcred_expiry_time_unit',
-            'emprof_num_cvs',
-            'emprofview_consume_cvs',
-            'emprof_promote_profile',
-            'emprof_promote_expiry_time',
-            'emprof_promote_expiry_time_unit',
         );
         
         return apply_filters('jobsearch_add_emp_profpkg_fields_list', $fields);

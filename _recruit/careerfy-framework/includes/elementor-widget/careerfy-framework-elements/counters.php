@@ -90,7 +90,7 @@ class Counters extends Widget_Base
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Counters Settings', 'careerfy-frame'),
+                'label' => __('About Info Settings', 'careerfy-frame'),
                 'tab' => Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -139,7 +139,7 @@ class Counters extends Widget_Base
         $repeater->add_control(
             'count_icon', [
                 'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICONS,
+                'type' => Controls_Manager::ICON,
                 'label_block' => true,
             ]
         );
@@ -186,9 +186,9 @@ class Counters extends Widget_Base
             $counter_class = 'col-md-3';
         }
         foreach ($atts['careerfy_counters_item'] as $info) {
-            $count_icon = isset($info['count_icon']) && !empty($info['count_icon']['value']) ? $info['count_icon']['value'] : '';
-            $count_number = isset($info['count_number']) && !empty($info['count_number']) ? $info['count_number'] : '';
-            $count_title = isset($info['count_title']) && !empty($info['count_title']) ? $info['count_title'] : '';
+            $count_icon = $info['count_icon'];
+            $count_number = $info['count_number'];
+            $count_title = $info['count_title'];
 
             if ($view == 'view-7') {
 

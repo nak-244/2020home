@@ -13,9 +13,11 @@ if (!defined('ABSPATH')) {
 // main plugin class
 class Jobsearch_CustomFieldLoad
 {
+
 // hook things up
     public function __construct()
     {
+
         // Save custom fields
         add_action('jobsearch_custom_fields_load', array($this, 'jobsearch_custom_fields_load_callback'), 1, 2);
         add_filter('jobsearch_custom_field_text_load', array($this, 'jobsearch_custom_field_text_load_callback'), 1, 4);
@@ -49,23 +51,23 @@ class Jobsearch_CustomFieldLoad
         add_filter('jobsearch_dashboard_custom_field_range_load', array($this, 'jobsearch_dashboard_custom_field_range_load_callback'), 1, 5);
         //
         // For simple form custom fields
-        add_action('jobsearch_form_custom_fields_load', array($this, 'jobsearch_form_custom_fields_load_callback'), 1, 3);
+        add_action('jobsearch_form_custom_fields_load', array($this, 'jobsearch_form_custom_fields_load_callback'), 1, 2);
         add_action('jobsearch_signup_custom_fields_load', array($this, 'jobsearch_signup_custom_fields_load_callback'), 1, 3);
         add_action('jobsearch_register_custom_fields_error', array($this, 'register_custom_fields_error'), 10, 2);
 
-        add_filter('jobsearch_form_custom_field_text_load', array($this, 'jobsearch_form_custom_field_text_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_video_load', array($this, 'jobsearch_form_custom_field_video_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_linkurl_load', array($this, 'jobsearch_form_custom_field_linkurl_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_upload_file_load', array($this, 'jobsearch_form_custom_field_upload_file_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_checkbox_load', array($this, 'jobsearch_form_custom_field_checkbox_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_dropdown_load', array($this, 'jobsearch_form_custom_field_dropdown_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_dependent_dropdown_load', array($this, 'jobsearch_form_custom_field_dependent_dropdown_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_heading_load', array($this, 'jobsearch_form_custom_field_heading_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_textarea_load', array($this, 'jobsearch_form_custom_field_textarea_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_email_load', array($this, 'jobsearch_form_custom_field_email_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_number_load', array($this, 'jobsearch_form_custom_field_number_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_date_load', array($this, 'jobsearch_form_custom_field_date_load_callback'), 1, 7);
-        add_filter('jobsearch_form_custom_field_range_load', array($this, 'jobsearch_form_custom_field_range_load_callback'), 1, 7);
+        add_filter('jobsearch_form_custom_field_text_load', array($this, 'jobsearch_form_custom_field_text_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_video_load', array($this, 'jobsearch_form_custom_field_video_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_linkurl_load', array($this, 'jobsearch_form_custom_field_linkurl_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_upload_file_load', array($this, 'jobsearch_form_custom_field_upload_file_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_checkbox_load', array($this, 'jobsearch_form_custom_field_checkbox_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_dropdown_load', array($this, 'jobsearch_form_custom_field_dropdown_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_dependent_dropdown_load', array($this, 'jobsearch_form_custom_field_dependent_dropdown_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_heading_load', array($this, 'jobsearch_form_custom_field_heading_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_textarea_load', array($this, 'jobsearch_form_custom_field_textarea_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_email_load', array($this, 'jobsearch_form_custom_field_email_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_number_load', array($this, 'jobsearch_form_custom_field_number_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_date_load', array($this, 'jobsearch_form_custom_field_date_load_callback'), 1, 6);
+        add_filter('jobsearch_form_custom_field_range_load', array($this, 'jobsearch_form_custom_field_range_load_callback'), 1, 6);
         //
         // For translate custom fields
         add_action('init', array($this, 'custom_fields_translation'), 10);
@@ -79,8 +81,7 @@ class Jobsearch_CustomFieldLoad
         add_action('jobsearch_custom_field_number_translate', array($this, 'jobsearch_custom_field_number_translate'), 10, 1);
         add_action('jobsearch_custom_field_range_translate', array($this, 'jobsearch_custom_field_range_translate'), 10, 1);
         add_action('jobsearch_custom_field_dropdown_translate', array($this, 'jobsearch_custom_field_dropdown_translate'), 10, 1);
-        add_action('jobsearch_custom_field_dependent_dropdown_translate', array($this, 'jobsearch_custom_field_dependent_dropdown_translate'), 10, 1);
-        add_action('jobsearch_custom_field_salary_translate', array($this, 'jobsearch_custom_field_salary_translate'), 10, 1);
+        add_action('jobsearch_custom_field_salary_translate', array($this, 'jobsearch_custom_field_dropdown_translate'), 10, 1);
         //
         // Save custom fields values to duplicate post
         add_action('jobsearch_dashboard_pass_values_to_duplicate_post', array($this, 'pass_values_to_duplicate_post'), 10, 3);
@@ -88,12 +89,10 @@ class Jobsearch_CustomFieldLoad
         // Save cus fields upload files
         add_action('jobsearch_custom_field_upload_files_save', array($this, 'cus_fields_upload_files_save'), 10, 2);
 
-        add_filter('jobsearch_custom_fields_list', array($this, 'jobsearch_custom_fields_list_callback'), 11, 12);
-        add_filter('jobsearch_custom_fields_filter_box_html', array($this, 'jobsearch_custom_fields_filter_box_html_callback'), 1, 7);
-        add_filter('jobsearch_custom_fields_filter_box_quick_detail_html', array($this, 'jobsearch_custom_fields_filter_box_quick_apply_html_callback'), 1, 6);
-        add_filter('jobsearch_custom_fields_filter_box_quick_detail_html_mob', array($this, 'jobsearch_custom_fields_filter_box_quick_apply_mob_html_callback'), 1, 6);
+        add_filter('jobsearch_custom_fields_list', array($this, 'jobsearch_custom_fields_list_callback'), 11, 11);
+        add_filter('jobsearch_custom_fields_filter_box_html', array($this, 'jobsearch_custom_fields_filter_box_html_callback'), 1, 6);
         add_filter('jobsearch_custom_fields_top_filters_html', array($this, 'custom_fields_top_filter_box_html_callback'), 1, 4);
-        add_filter('jobsearch_custom_fields_load_filter_array_html', array($this, 'jobsearch_custom_fields_load_filter_array_html_callback'), 1, 4);
+        add_filter('jobsearch_custom_fields_load_filter_array_html', array($this, 'jobsearch_custom_fields_load_filter_array_html_callback'), 1, 3);
         add_filter('jobsearch_custom_fields_load_precentage_array', array($this, 'jobsearch_custom_fields_load_precentage_array_callback'), 1, 2);
 
         // Save custom fields values in signup form
@@ -113,14 +112,7 @@ class Jobsearch_CustomFieldLoad
 
                 $field_name = isset($custom_field_saved_data['name']) ? $custom_field_saved_data['name'] : '';
                 if ($field_name != '' && isset($_POST[$field_name])) {
-                    if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == 'dependent_field') {
-                        foreach ($_POST as $post_key => $post_value) {
-                            if (strstr($post_key, $field_name)) {
-                                update_post_meta($post_id, $post_key, $post_value);
-                            }
-                        }
-                        update_post_meta($post_id, $field_name, $_POST[$field_name]);
-                    } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == 'date') {
+                    if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == 'date') {
                         $date_value = $_POST[$field_name];
                         $date_value = $date_value != '' ? strtotime($date_value) : '';
                         update_post_meta($post_id, $field_name, $date_value);
@@ -139,7 +131,9 @@ class Jobsearch_CustomFieldLoad
         $custom_all_fields_saved_data = get_option($field_db_slug);
 
         if (is_array($custom_all_fields_saved_data) && sizeof($custom_all_fields_saved_data) > 0) {
+
             foreach ($custom_all_fields_saved_data as $f_key => $custom_field_saved_data) {
+
                 $field_type = isset($custom_field_saved_data['type']) ? $custom_field_saved_data['type'] : '';
 
                 if ($field_type == 'upload_file') {
@@ -233,8 +227,6 @@ class Jobsearch_CustomFieldLoad
                         do_action('jobsearch_custom_field_range_translate', $custom_field_saved_data);
                     } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dropdown") {
                         do_action('jobsearch_custom_field_dropdown_translate', $custom_field_saved_data);
-                    } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_dropdown") {
-                        do_action('jobsearch_custom_field_dependent_dropdown_translate', $custom_field_saved_data);
                     } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "salary") {
                         do_action('jobsearch_custom_field_salary_translate', $custom_field_saved_data);
                     }
@@ -364,10 +356,13 @@ class Jobsearch_CustomFieldLoad
 
     public function jobsearch_custom_field_dropdown_translate($custom_field_saved_data)
     {
+
         global $sitepress;
+
         $dropdown_field_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
         $dropdown_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
         $dropdown_field_options = isset($custom_field_saved_data['options']) ? $custom_field_saved_data['options'] : '';
+
         if (isset($dropdown_field_options['value']) && count($dropdown_field_options['value']) > 0) {
             $option_counter = 0;
             foreach ($dropdown_field_options['value'] as $option) {
@@ -392,41 +387,6 @@ class Jobsearch_CustomFieldLoad
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
-        do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $dropdown_field_label);
-        do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Placeholder - ' . $dropdown_field_placeholder, $dropdown_field_placeholder);
-    }
-
-    public function jobsearch_custom_field_dependent_dropdown_translate($custom_field_saved_data)
-    {
-        $dropdown_field_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
-        $dropdown_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
-        $dropdown_field_options = isset($custom_field_saved_data['options_list']) ? $custom_field_saved_data['options_list'] : '';
-        $dropdown_cont_optsid = isset($custom_field_saved_data['options_list_id']) && $custom_field_saved_data['options_list_id'] != '' ? $custom_field_saved_data['options_list_id'] : 0;
-
-        if (isset($dropdown_field_options[0]['label']) && !empty($dropdown_field_options[0]['label']) && is_array($dropdown_field_options[0]['label']) && sizeof($dropdown_field_options[0]['label']) > 0) {
-
-            $field_count = 0;
-            foreach ($dropdown_field_options as $opt_field_key => $opt_field_list) {
-                $field_group_label = isset($opt_field_list['group_label']) ? $opt_field_list['group_label'] : '';
-                $field_labels = isset($opt_field_list['label']) ? $opt_field_list['label'] : '';
-
-                do_action('wpml_register_single_string', 'Custom Fields', 'Dependent Dropdown Field Group Label - ' . $field_group_label, $field_group_label);
-
-                if (!empty($field_labels) && is_array($field_labels)) {
-                    $sin_field_count = 0;
-                    foreach ($field_labels as $sin_field_label) {
-
-                        do_action('wpml_register_single_string', 'Custom Fields', 'Dependent Dropdown Field Label - ' . $sin_field_label, $sin_field_label);
-
-                        $sin_field_count++;
-                    }
-                }
-
-                $field_count++;
-            }
-
-        }
-
         do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $dropdown_field_label);
         do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Placeholder - ' . $dropdown_field_placeholder, $dropdown_field_placeholder);
     }
@@ -463,9 +423,6 @@ class Jobsearch_CustomFieldLoad
 
     static function jobsearch_custom_fields_load_callback($post_id, $custom_field_entity)
     {
-        global $custom_field_posttype;
-
-        $custom_field_posttype = $custom_field_entity;
         // load all saved fields
         $field_db_slug = "jobsearch_custom_field_" . $custom_field_entity;
         $custom_all_fields_saved_data = get_option($field_db_slug);
@@ -503,8 +460,6 @@ class Jobsearch_CustomFieldLoad
                     $output .= apply_filters('jobsearch_custom_field_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_dropdown") {
                     $output .= apply_filters('jobsearch_custom_field_dependent_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
-                } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_fields") {
-                    $output .= apply_filters('jobsearch_custom_field_dependent_fields_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $f_key, 'admin');
                 }
             }
             $output .= apply_filters('jobsearch_custom_fields_load_after', '', $post_id, $custom_field_entity);
@@ -528,17 +483,16 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $text_field_name_db_val = get_post_meta($post_id, $text_field_name, true);
-        $text_field_name_db_val = jobsearch_esc_html($text_field_name_db_val);
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($text_field_label) ?></label>
+                <label><?php echo esc_html($text_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="text" name="<?php echo jobsearch_esc_html($text_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($text_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($text_field_placeholder) ?>" <?php echo force_balance_tags($text_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($text_field_name_db_val) ?>"/>
+                <input type="text" name="<?php echo esc_html($text_field_name) ?>"
+                       class="<?php echo esc_html($text_field_classes) ?>"
+                       placeholder="<?php echo esc_html($text_field_placeholder) ?>" <?php echo force_balance_tags($text_field_required_str) ?>
+                       value="<?php echo esc_html($text_field_name_db_val) ?>"/>
             </div>
         </div>
         <?php
@@ -569,17 +523,16 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $video_field_name_db_val = get_post_meta($post_id, $video_field_name, true);
-        $video_field_name_db_val = jobsearch_esc_html($video_field_name_db_val);
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($video_field_label) ?></label>
+                <label><?php echo esc_html($video_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="text" name="<?php echo jobsearch_esc_html($video_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($video_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($video_field_placeholder) ?>" <?php echo force_balance_tags($video_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($video_field_name_db_val) ?>"/>
+                <input type="text" name="<?php echo esc_html($video_field_name) ?>"
+                       class="<?php echo esc_html($video_field_classes) ?>"
+                       placeholder="<?php echo esc_html($video_field_placeholder) ?>" <?php echo force_balance_tags($video_field_required_str) ?>
+                       value="<?php echo esc_html($video_field_name_db_val) ?>"/>
             </div>
         </div>
         <?php
@@ -610,17 +563,16 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $linkurl_field_name_db_val = get_post_meta($post_id, $linkurl_field_name, true);
-        $linkurl_field_name_db_val = jobsearch_esc_html($linkurl_field_name_db_val);
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($linkurl_field_label) ?></label>
+                <label><?php echo esc_html($linkurl_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="text" name="<?php echo jobsearch_esc_html($linkurl_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($linkurl_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($linkurl_field_placeholder) ?>" <?php echo force_balance_tags($linkurl_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($linkurl_field_name_db_val) ?>"/>
+                <input type="text" name="<?php echo esc_html($linkurl_field_name) ?>"
+                       class="<?php echo esc_html($linkurl_field_classes) ?>"
+                       placeholder="<?php echo esc_html($linkurl_field_placeholder) ?>" <?php echo force_balance_tags($linkurl_field_required_str) ?>
+                       value="<?php echo esc_html($linkurl_field_name_db_val) ?>"/>
             </div>
         </div>
         <?php
@@ -676,7 +628,7 @@ class Jobsearch_CustomFieldLoad
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($upload_file_field_label) ?></label>
+                <label><?php echo esc_html($upload_file_field_label) ?></label>
             </div>
             <div class="elem-field">
                 <div class="jobsearch-fileUpload">
@@ -720,16 +672,6 @@ class Jobsearch_CustomFieldLoad
                                                onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};"
                                                download="<?php echo($attach_name) ?>"><i
                                                         class="<?php echo($file_icon) ?>"></i> <?php echo($attach_name) ?>
-                                                <?php
-                                                if ($_attach_mime == 'image/png' || $_attach_mime == 'image/jpeg') {
-                                                    $attach_file_url = str_replace(ABSPATH, get_site_url() . '/', $_attach_guide);
-                                                    ?>
-                                                    <br>
-                                                    <img src="<?php echo($attach_file_url) ?>" alt=""
-                                                         style="max-width: 100%;">
-                                                    <?php
-                                                }
-                                                ?>
                                             </a>
                                         </div>
                                         <input type="hidden" name="<?php echo($post_files_name) ?>[]"
@@ -745,7 +687,7 @@ class Jobsearch_CustomFieldLoad
                     ?>
                 </div>
             </div>
-            <script type="text/javascript">
+            <script>
                 jQuery('#att-upload-files-<?php echo($rand_num) ?>').click(function (e) { // job attachment
                     e.preventDefault();
                     mediaUploader = wp.media.frames.file_frame = wp.media({
@@ -754,32 +696,33 @@ class Jobsearch_CustomFieldLoad
                             text: 'Choose File'
                         }, multiple: true
                     });
-                    mediaUploader.on('select', function () {
-                        var attachment = mediaUploader.state().get('selection').toJSON();
-                        attachment.map(function (attachment) {
-                            var file_icon = 'fa fa-file-text-o';
-                            if (attachment.type == 'image/png' || attachment.type == 'image/jpeg') {
-                                file_icon = 'fa fa-file-image-o';
-                            } else if (attachment.type == 'application/msword' || attachment.subtype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                                file_icon = 'fa fa-file-word-o';
-                            } else if (attachment.type == 'application/vnd.ms-excel' || attachment.subtype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                                file_icon = 'fa fa-file-excel-o';
-                            } else if (attachment.type == 'application/pdf') {
-                                file_icon = 'fa fa-file-pdf-o';
-                            }
-                            var ihtml = '\
-                                    <div class="jobsearch-column-3">\
-                                        <a href="javascript:void(0);" class="fa fa-remove el-remove elback-remove-<?php echo($rand_num) ?>"></a>\
-                                        <div class="file-container">\
-                                            <a><i class="' + file_icon + '"></i> ' + attachment.filename + '</a>\
-                                        </div>\
-                                        <input type="hidden" name="<?php echo($post_files_name) ?>[]" value="' + attachment.url + '">\
-                                    </div>';
-                            jQuery('#field-files-holder-<?php echo($rand_num) ?>').append(ihtml);
-                        });
+                    mediaUploader.on('select', function ()
+                    var attachment = mediaUploader.state().get('selection').toJSON();
+                    attachment.map(function (attachment) {
+                        var file_icon = 'fa fa-file-text-o';
+                        if (attachment.type == 'image/png' || attachment.type == 'image/jpeg') {
+                            file_icon = 'fa fa-file-image-o';
+                        } else if (attachment.type == 'application/msword' || attachment.subtype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                            file_icon = 'fa fa-file-word-o';
+                        } else if (attachment.type == 'application/vnd.ms-excel' || attachment.subtype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                            file_icon = 'fa fa-file-excel-o';
+                        } else if (attachment.type == 'application/pdf') {
+                            file_icon = 'fa fa-file-pdf-o';
+                        }
+                        var ihtml = '\
+                                <div class="jobsearch-column-3">\
+                                    <a href="javascript:void(0);" class="fa fa-remove el-remove elback-remove-<?php echo($rand_num) ?>"></a>\
+                                    <div class="file-container">\
+                                        <a><i class="' + file_icon + '"></i> ' + attachment.filename + '</a>\
+                                    </div>\
+                                    <input type="hidden" name="<?php echo($post_files_name) ?>[]" value="' + attachment.url + '">\
+                                </div>';
+                        jQuery('#field-files-holder-<?php echo($rand_num) ?>').append(ihtml);
                     });
-                    mediaUploader.open();
                 });
+                mediaUploader.open();
+                })
+                ;
                 //
                 jQuery(document).on('click', '.elback-remove-<?php echo($rand_num) ?>', function () {
                     if (jQuery(this).parent('div').length > 0) {
@@ -818,17 +761,16 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $email_field_name_db_val = get_post_meta($post_id, $email_field_name, true);
-        $email_field_name_db_val = jobsearch_esc_html($email_field_name_db_val);
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($email_field_label) ?></label>
+                <label><?php echo esc_html($email_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="email" name="<?php echo jobsearch_esc_html($email_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($email_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($email_field_placeholder) ?>" <?php echo force_balance_tags($email_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($email_field_name_db_val) ?>"/>
+                <input type="email" name="<?php echo esc_html($email_field_name) ?>"
+                       class="<?php echo esc_html($email_field_classes) ?>"
+                       placeholder="<?php echo esc_html($email_field_placeholder) ?>" <?php echo force_balance_tags($email_field_required_str) ?>
+                       value="<?php echo esc_html($email_field_name_db_val) ?>"/>
             </div>
         </div>
         <?php
@@ -858,17 +800,16 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $number_field_name_db_val = get_post_meta($post_id, $number_field_name, true);
-        $number_field_name_db_val = jobsearch_esc_html($number_field_name_db_val);
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($number_field_label) ?></label>
+                <label><?php echo esc_html($number_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="number" name="<?php echo jobsearch_esc_html($number_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($number_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($number_field_placeholder) ?>" <?php echo force_balance_tags($number_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($number_field_name_db_val) ?>"/>
+                <input type="number" name="<?php echo esc_html($number_field_name) ?>"
+                       class="<?php echo esc_html($number_field_classes) ?>"
+                       placeholder="<?php echo esc_html($number_field_placeholder) ?>" <?php echo force_balance_tags($number_field_required_str) ?>
+                       value="<?php echo esc_html($number_field_name_db_val) ?>"/>
             </div>
         </div>
         <?php
@@ -900,27 +841,26 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $date_field_name_db_val = get_post_meta($post_id, $date_field_name, true);
-        $date_field_name_db_val = jobsearch_esc_html($date_field_name_db_val);
         if ($date_field_name_db_val != '') {
             $date_field_name_db_val = date($date_field_date_format, $date_field_name_db_val);
         }
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($date_field_label) ?></label>
+                <label><?php echo esc_html($date_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="text" id="<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>"
-                       name="<?php echo jobsearch_esc_html($date_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($date_field_classes) ?>"
-                       placeholder="<?php echo jobsearch_esc_html($date_field_placeholder) ?>" <?php echo force_balance_tags($date_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($date_field_name_db_val) ?>"/>
+                <input type="text" id="<?php echo esc_html($date_field_name . $field_rand_id) ?>"
+                       name="<?php echo esc_html($date_field_name) ?>"
+                       class="<?php echo esc_html($date_field_classes) ?>"
+                       placeholder="<?php echo esc_html($date_field_placeholder) ?>" <?php echo force_balance_tags($date_field_required_str) ?>
+                       value="<?php echo esc_html($date_field_name_db_val) ?>"/>
             </div>
         </div>
-        <script type="text/javascript">
+        <script>
             jQuery(document).ready(function () {
-                jQuery('#<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
-                    format: '<?php echo jobsearch_esc_html($date_field_date_format) ?>'
+                jQuery('#<?php echo esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
+                    format: '<?php echo esc_html($date_field_date_format) ?>'
                 });
             });
         </script>
@@ -947,7 +887,6 @@ class Jobsearch_CustomFieldLoad
         $range_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
         $range_field_min = isset($custom_field_saved_data['min']) ? $custom_field_saved_data['min'] : '0';
         $range_field_laps = isset($custom_field_saved_data['laps']) ? $custom_field_saved_data['laps'] : '20';
-        $range_field_laps = $range_field_laps > 200 ? 200 : $range_field_laps;
         $range_field_interval = isset($custom_field_saved_data['interval']) ? $custom_field_saved_data['interval'] : '10000';
         $rand_id = rand(123, 123467);
         $range_field_required_str = '';
@@ -956,8 +895,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $range_field_name_db_val = get_post_meta($post_id, $range_field_name, true);
-        $range_field_name_db_val = jobsearch_esc_html($range_field_name_db_val);
-
         wp_enqueue_style('jquery-ui');
         wp_enqueue_script('jquery-ui');
         $range_field_max = $range_field_min;
@@ -967,29 +904,29 @@ class Jobsearch_CustomFieldLoad
             $i++;
         }
         ?>
-        <script type="text/javascript">
+        <script>
             jQuery(document).ready(function () {
-                jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider({
+                jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider({
                     range: "max",
                     min: <?php echo absint($range_field_min); ?>,
                     max: <?php echo absint($range_field_max); ?>,
                     value: <?php echo absint($range_field_name_db_val); ?>,
                     slide: function (event, ui) {
-                        jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(ui.value);
+                        jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(ui.value);
                     }
                 });
-                jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider("value"));
+                jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider("value"));
             });
         </script>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($range_field_label) ?></label>
+                <label><?php echo esc_html($range_field_label) ?></label>
             </div>
             <div class="elem-field">
-                <input type="text" id="<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"
-                       name="<?php echo jobsearch_esc_html($range_field_name) ?>" value="" readonly
+                <input type="text" id="<?php echo esc_html($range_field_name . $rand_id) ?>"
+                       name="<?php echo esc_html($range_field_name) ?>" value="" readonly
                        style="border:0; color:#f6931f; font-weight:bold;"/>
-                <div id="slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"></div>
+                <div id="slider-range<?php echo esc_html($range_field_name . $rand_id) ?>"></div>
             </div>
         </div>
         <?php
@@ -1025,7 +962,7 @@ class Jobsearch_CustomFieldLoad
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($checkbox_field_label) ?></label>
+                <label><?php echo esc_html($checkbox_field_label) ?></label>
             </div>
 
             <div class="elem-field">
@@ -1033,7 +970,7 @@ class Jobsearch_CustomFieldLoad
                 if (isset($checkbox_field_options['value']) && count($checkbox_field_options['value']) > 0) {
                     $option_counter = 0;
                     ?>
-                    <div class="jobsearch-cusfield-checkbox <?php echo jobsearch_esc_html($checkbox_field_classes) ?>">
+                    <div class="jobsearch-cusfield-checkbox <?php echo esc_html($checkbox_field_classes) ?>">
                         <?php
                         foreach ($checkbox_field_options['value'] as $option) {
                             if ($option != '') {
@@ -1079,7 +1016,7 @@ class Jobsearch_CustomFieldLoad
                     <?php
                 } else {
                     ?>
-                    <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                    <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                     <?php
                 }
                 ?>
@@ -1139,7 +1076,7 @@ class Jobsearch_CustomFieldLoad
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($dropdown_field_label) ?></label>
+                <label><?php echo esc_html($dropdown_field_label) ?></label>
             </div>
 
             <div class="elem-field">
@@ -1147,9 +1084,9 @@ class Jobsearch_CustomFieldLoad
                 if ($dropdown_field_options_str != '') {
                     ?>
                     <select
-                        <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo jobsearch_esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>"
-                        class="<?php echo jobsearch_esc_html($dropdown_field_classes) ?>"
-                        placeholder="<?php echo jobsearch_esc_html($dropdown_field_placeholder) ?>" <?php echo force_balance_tags($dropdown_field_required_str) ?>>
+                        <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>"
+                        class="<?php echo esc_html($dropdown_field_classes) ?>"
+                        placeholder="<?php echo esc_html($dropdown_field_placeholder) ?>" <?php echo force_balance_tags($dropdown_field_required_str) ?>>
                         <?php
                         if ($dropdown_field_placeholder != '') {
                             echo '<option value="">' . $dropdown_field_placeholder . '</option>';
@@ -1160,7 +1097,7 @@ class Jobsearch_CustomFieldLoad
                     <?php
                 } else {
                     ?>
-                    <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                    <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                     <?php
                 }
                 ?>
@@ -1199,7 +1136,7 @@ class Jobsearch_CustomFieldLoad
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($dropdown_field_label) ?></label>
+                <label><?php echo esc_html($dropdown_field_label) ?></label>
             </div>
 
             <div class="elem-field">
@@ -1232,7 +1169,6 @@ class Jobsearch_CustomFieldLoad
         $textarea_field_classes = isset($custom_field_saved_data['classes']) ? $custom_field_saved_data['classes'] : '';
         $textarea_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
         $textarea_field_media_btns = isset($custom_field_saved_data['media_buttons']) ? $custom_field_saved_data['media_buttons'] : '';
-        $textarea_field_rich_editor = isset($custom_field_saved_data['rich_editor']) ? $custom_field_saved_data['rich_editor'] : '';
         $textarea_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
         $textarea_field_required_str = '';
         if ($textarea_field_required == 'yes') {
@@ -1240,36 +1176,24 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $textarea_field_name_db_val = get_post_meta($post_id, $textarea_field_name, true);
-        if ($textarea_field_rich_editor == 'no') {
-            $textarea_field_name_db_val = jobsearch_esc_html($textarea_field_name_db_val);
-        } else {
-            $textarea_field_name_db_val = jobsearch_esc_wp_editor($textarea_field_name_db_val);
-        }
         ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
-                <label><?php echo jobsearch_esc_html($textarea_field_label) ?></label>
+                <label><?php echo esc_html($textarea_field_label) ?></label>
             </div>
             <div class="elem-field">
                 <?php
-                if ($textarea_field_rich_editor == 'no') {
-                    ?>
-                    <textarea
-                            name="<?php echo($textarea_field_name) ?>"<?php echo($textarea_field_classes != '' ? ' class="' . $textarea_field_classes . '"' : '') ?><?php echo($textarea_field_placeholder != '' ? ' placeholder="' . $textarea_field_placeholder . '"' : '') ?>><?php echo($textarea_field_name_db_val) ?></textarea>
-                    <?php
-                } else {
-                    $wped_settings = array(
-                        'media_buttons' => ($textarea_field_media_btns == 'yes' ? true : false),
-                        'editor_class' => $textarea_field_classes,
-                        'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
-                        'tinymce' => array(
-                            'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
-                            'toolbar2' => '',
-                            'toolbar3' => '',
-                        ),
-                    );
-                    wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
-                }
+                $wped_settings = array(
+                    'media_buttons' => ($textarea_field_media_btns == 'yes' ? true : false),
+                    'editor_class' => $textarea_field_classes,
+                    'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
+                    'tinymce' => array(
+                        'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
+                        'toolbar2' => '',
+                        'toolbar3' => '',
+                    ),
+                );
+                wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
                 ?>
             </div>
         </div>
@@ -1292,7 +1216,7 @@ class Jobsearch_CustomFieldLoad
         $heading_field_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
         ?>
         <div class="jobsearch-elem-heading">
-            <h2><?php echo jobsearch_esc_html($heading_field_label) ?></h2>
+            <h2><?php echo esc_html($heading_field_label) ?></h2>
         </div>
         <?php
         $html .= ob_get_clean();
@@ -1350,10 +1274,7 @@ class Jobsearch_CustomFieldLoad
                     $output .= apply_filters('jobsearch_dashboard_custom_field_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_dropdown") {
                     $output .= apply_filters('jobsearch_dashboard_custom_field_dependent_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
-                } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_fields") {
-                    $output .= apply_filters('jobsearch_dashboard_custom_field_dependent_fields_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $f_key);
                 }
-                $output .= apply_filters('jobsearch_dash_cust_fields_after_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
             }
 
             $output .= '
@@ -1383,27 +1304,24 @@ class Jobsearch_CustomFieldLoad
         $text_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
         $text_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
         $text_field_required_str = '';
-
-        $field_label_reqstar = '';
         if (isset($ffield_attr['required'])) {
             if ($ffield_attr['required'] == 'yes') {
                 $text_field_classes .= ' jobsearch-req-field';
-                $field_label_reqstar = ' *';
+                $text_field_label = $text_field_label . ' *';
             }
         } else if ($text_field_required == 'yes') {
             $text_field_required_str = 'required="required"';
-            $field_label_reqstar = ' *';
+            $text_field_label = $text_field_label . ' *';
         }
         // get db value if saved
         $text_field_name_db_val = get_post_meta($post_id, $text_field_name, true);
-        $text_field_name_db_val = jobsearch_esc_html($text_field_name_db_val);
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         ?>
         <li class="jobsearch-column-6">
-            <label><?php echo apply_filters('wpml_translate_single_string', $text_field_label, 'Custom Fields', 'Text Field Label - ' . $text_field_label, $lang_code) ?><?php echo($field_label_reqstar) ?></label>
+            <label><?php echo apply_filters('wpml_translate_single_string', $text_field_label, 'Custom Fields', 'Text Field Label - ' . $text_field_label, $lang_code) ?></label>
             <?php
             if ($custom_field_posttype == 'candidate' && $user_is_candidate && $user_pkg_limits::cand_field_is_locked('cusfields|' . $text_field_name)) {
                 echo($user_pkg_limits::cand_gen_locked_html());
@@ -1411,10 +1329,10 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <input type="text" name="<?php echo jobsearch_esc_html($text_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($text_field_classes) ?>"
+                <input type="text" name="<?php echo esc_html($text_field_name) ?>"
+                       class="<?php echo esc_html($text_field_classes) ?>"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $text_field_placeholder, 'Custom Fields', 'Text Field Placeholder - ' . $text_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($text_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($text_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($text_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -1461,7 +1379,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $video_field_name_db_val = get_post_meta($post_id, $video_field_name, true);
-        $video_field_name_db_val = jobsearch_esc_html($video_field_name_db_val);
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
@@ -1476,10 +1393,10 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <input type="text" name="<?php echo jobsearch_esc_html($video_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($video_field_classes) ?>"
+                <input type="text" name="<?php echo esc_html($video_field_name) ?>"
+                       class="<?php echo esc_html($video_field_classes) ?>"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $video_field_placeholder, 'Custom Fields', 'Text Field Placeholder - ' . $video_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($video_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($video_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($video_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -1526,7 +1443,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $linkurl_field_name_db_val = get_post_meta($post_id, $linkurl_field_name, true);
-        $linkurl_field_name_db_val = jobsearch_esc_html($linkurl_field_name_db_val);
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
@@ -1541,10 +1457,10 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <input type="text" name="<?php echo jobsearch_esc_html($linkurl_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($linkurl_field_classes) ?>"
+                <input type="text" name="<?php echo esc_html($linkurl_field_name) ?>"
+                       class="<?php echo esc_html($linkurl_field_classes) ?>"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $linkurl_field_placeholder, 'Custom Fields', 'Text Field Placeholder - ' . $linkurl_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($linkurl_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($linkurl_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($linkurl_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -1625,7 +1541,7 @@ class Jobsearch_CustomFieldLoad
                 ?>
                 <div class="jobsearch-fileUpload">
                     <span><i class="jobsearch-icon jobsearch-upload"></i> <?php echo($upload_field_numof_files > 1 ? esc_html__('Upload Files', 'wp-jobsearch') : esc_html__('Upload File', 'wp-jobsearch')); ?></span>
-                    <input name="<?php echo jobsearch_esc_html($upload_file_field_name) ?>[]" type="file"
+                    <input name="<?php echo esc_html($upload_file_field_name) ?>[]" type="file"
                            class="upload jobsearch-upload jobsearch-uploadfile-field <?php echo($upload_file_field_required == 'yes' && empty($all_attach_files) ? 'jobsearch-cusfieldatt-req' : '') ?>"
                            multiple="multiple"
                            onchange="jobsearch_job_attach_files_url_<?php echo($rand_num) ?>(event)"/>
@@ -1674,8 +1590,8 @@ class Jobsearch_CustomFieldLoad
                                                         class="<?php echo($file_icon) ?>"></i> <?php echo($attach_name) ?>
                                             </a>
                                         </div>
-                                        <input type="hidden" name="<?php echo jobsearch_esc_html($post_files_name) ?>[]"
-                                               value="<?php echo jobsearch_esc_html($_attach_file) ?>">
+                                        <input type="hidden" name="<?php echo($post_files_name) ?>[]"
+                                               value="<?php echo($_attach_file) ?>">
                                     </li>
                                     <?php
                                 }
@@ -1686,7 +1602,7 @@ class Jobsearch_CustomFieldLoad
                     }
                     ?>
                 </div>
-                <script type="text/javascript">
+                <script>
                     jQuery(document).on('click', '.uplodfield-files-holder .el-remove', function () {
                         var e_target = jQuery(this).parent('li');
                         e_target.fadeOut('slow', function () {
@@ -1800,7 +1716,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $email_field_name_db_val = get_post_meta($post_id, $email_field_name, true);
-        $email_field_name_db_val = jobsearch_esc_html($email_field_name_db_val);
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -1816,10 +1731,10 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <input type="email" name="<?php echo jobsearch_esc_html($email_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($email_field_classes) ?>"
+                <input type="email" name="<?php echo esc_html($email_field_name) ?>"
+                       class="<?php echo esc_html($email_field_classes) ?>"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $email_field_placeholder, 'Custom Fields', 'Email Field Placeholder - ' . $email_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($email_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($email_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($email_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -1866,7 +1781,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $number_field_name_db_val = get_post_meta($post_id, $number_field_name, true);
-        $number_field_name_db_val = jobsearch_esc_html($number_field_name_db_val);
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -1882,10 +1796,10 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <input type="number" name="<?php echo jobsearch_esc_html($number_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($number_field_classes) ?>" min="0"
+                <input type="number" name="<?php echo esc_html($number_field_name) ?>"
+                       class="<?php echo esc_html($number_field_classes) ?>" min="0"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $number_field_placeholder, 'Custom Fields', 'Number Field Placeholder - ' . $number_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($number_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($number_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($number_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -1934,7 +1848,6 @@ class Jobsearch_CustomFieldLoad
         }
         // get db value if saved
         $date_field_name_db_val = get_post_meta($post_id, $date_field_name, true);
-        $date_field_name_db_val = jobsearch_esc_html($date_field_name_db_val);
         //var_dump($date_field_name_db_val);
         if ($date_field_name_db_val != '') {
             $date_field_name_db_val = date($date_field_date_format, ($date_field_name_db_val));
@@ -1954,18 +1867,18 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 ?>
-                <script type="text/javascript">
+                <script>
                     jQuery(document).ready(function () {
-                        jQuery('#<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
-                            format: '<?php echo jobsearch_esc_html($date_field_date_format) ?>'
+                        jQuery('#<?php echo esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
+                            format: '<?php echo esc_html($date_field_date_format) ?>'
                         });
                     });
                 </script>
-                <input type="text" id="<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>"
-                       name="<?php echo jobsearch_esc_html($date_field_name) ?>"
-                       class="<?php echo jobsearch_esc_html($date_field_classes) ?>"
+                <input type="text" id="<?php echo esc_html($date_field_name . $field_rand_id) ?>"
+                       name="<?php echo esc_html($date_field_name) ?>"
+                       class="<?php echo esc_html($date_field_classes) ?>"
                        placeholder="<?php echo apply_filters('wpml_translate_single_string', $date_field_placeholder, 'Custom Fields', 'Date Field Placeholder - ' . $date_field_placeholder, $lang_code) ?>" <?php echo force_balance_tags($date_field_required_str) ?>
-                       value="<?php echo jobsearch_esc_html($date_field_name_db_val) ?>"/>
+                       value="<?php echo esc_html($date_field_name_db_val) ?>"/>
                 <?php
             }
             ?>
@@ -2005,20 +1918,17 @@ class Jobsearch_CustomFieldLoad
         $range_field_interval = isset($custom_field_saved_data['interval']) ? $custom_field_saved_data['interval'] : '1000';
         $rand_id = rand(123, 123467);
         $range_field_required_str = '';
-
-        $field_label_reqstar = '';
         if (isset($ffield_attr['required'])) {
             if ($ffield_attr['required'] == 'yes') {
                 $textarea_field_classes .= ' jobsearch-req-field';
-                $field_label_reqstar = ' *';
+                $range_field_label = $range_field_label . ' *';
             }
         } else if ($range_field_required == 'yes') {
             $range_field_classes = 'required="required"';
-            $field_label_reqstar = ' *';
+            $range_field_label = $range_field_label . ' *';
         }
         // get db value if saved
         $range_field_name_db_val = get_post_meta($post_id, $range_field_name, true);
-        $range_field_name_db_val = jobsearch_esc_html($range_field_name_db_val);
 
         $range_field_max = $range_field_min;
 
@@ -2039,7 +1949,7 @@ class Jobsearch_CustomFieldLoad
                 $lang_code = $sitepress->get_current_language();
             }
             ?>
-            <label><?php echo apply_filters('wpml_translate_single_string', $range_field_label, 'Custom Fields', 'Range Field Label - ' . $range_field_label, $lang_code) ?><?php echo($field_label_reqstar) ?></label>
+            <label><?php echo apply_filters('wpml_translate_single_string', $range_field_label, 'Custom Fields', 'Range Field Label - ' . $range_field_label, $lang_code) ?></label>
             <?php
             if ($custom_field_posttype == 'candidate' && $user_is_candidate && $user_pkg_limits::cand_field_is_locked('cusfields|' . $range_field_name)) {
                 echo($user_pkg_limits::cand_gen_locked_html());
@@ -2050,30 +1960,30 @@ class Jobsearch_CustomFieldLoad
                 if ($range_field_style == 'slider') {
                     ?>
                     <div class="range-field-container">
-                        <input type="text" id="<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"
-                               name="<?php echo jobsearch_esc_html($range_field_name) ?>" value="" readonly
+                        <input type="text" id="<?php echo esc_html($range_field_name . $rand_id) ?>"
+                               name="<?php echo esc_html($range_field_name) ?>" value="" readonly
                                style="border:0; color:#f6931f; font-weight:bold;"/>
-                        <div id="slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"></div>
+                        <div id="slider-range<?php echo esc_html($range_field_name . $rand_id) ?>"></div>
                     </div>
-                    <script type="text/javascript">
+                    <script>
                         //jQuery(document).ready(function () {
-                        jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider({
+                        jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider({
                             range: "max",
                             min: <?php echo absint($range_field_min); ?>,
                             max: <?php echo absint($range_field_max); ?>,
                             value: <?php echo absint($range_field_name_db_val); ?>,
                             slide: function (event, ui) {
-                                jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(ui.value);
+                                jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(ui.value);
                             }
                         });
-                        jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider("value"));
+                        jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider("value"));
                         //});
                     </script>
                 <?php
                 } else {
                 ?>
                     <div class="jobsearch-profile-select">
-                        <select name="<?php echo jobsearch_esc_html($range_field_name) ?>"
+                        <select name="<?php echo esc_html($range_field_name) ?>"
                                 class="<?php echo($range_field_classes) ?> selectize-select" <?php echo($range_field_placeholder != '' ? 'placeholder="' . $range_field_placeholder . '"' : '') ?> <?php echo($range_field_required == 'yes' ? 'required="required"' : '') ?>>
                             <?php
                             echo($range_field_placeholder != '' ? '<option value="">' . $range_field_placeholder . '</option>' : '');
@@ -2125,15 +2035,14 @@ class Jobsearch_CustomFieldLoad
         $checkbox_field_options = isset($custom_field_saved_data['options']) ? $custom_field_saved_data['options'] : '';
         $checkbox_field_required_str = '';
 
-        $field_label_reqstar = '';
         if (isset($ffield_attr['required'])) {
             if ($ffield_attr['required'] == 'yes') {
-                $checkbox_field_classes .= ' cusfield-checkbox-required';
-                $field_label_reqstar = ' *';
+                $checkbox_field_classes .= ' jobsearch-req-field';
+                $checkbox_field_label = $checkbox_field_label . ' *';
             }
         } else if ($checkbox_field_required == 'yes') {
             $checkbox_field_required_str = 'required="required"';
-            $field_label_reqstar = ' *';
+            $checkbox_field_label = $checkbox_field_label . ' *';
         }
         // get db value if saved
         $checkbox_field_name_db_val = get_post_meta($post_id, $checkbox_field_name, true);
@@ -2145,7 +2054,7 @@ class Jobsearch_CustomFieldLoad
         }
         ?>
         <li class="jobsearch-column-12">
-            <label><?php echo apply_filters('wpml_translate_single_string', $checkbox_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $checkbox_field_label, $lang_code) ?><?php echo($field_label_reqstar) ?></label>
+            <label><?php echo apply_filters('wpml_translate_single_string', $checkbox_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $checkbox_field_label, $lang_code) ?></label>
             <?php
             if ($custom_field_posttype == 'candidate' && $user_is_candidate && $user_pkg_limits::cand_field_is_locked('cusfields|' . $checkbox_field_name)) {
                 echo($user_pkg_limits::cand_gen_locked_html());
@@ -2155,7 +2064,7 @@ class Jobsearch_CustomFieldLoad
                 if (isset($checkbox_field_options['value']) && count($checkbox_field_options['value']) > 0) {
                     $option_counter = 0;
                     ?>
-                    <div class="jobsearch-cusfield-checkbox <?php echo jobsearch_esc_html($checkbox_field_classes) ?><?php echo($checkbox_field_required == 'yes' ? ' cusfield-checkbox-required' : '') ?>">
+                    <div class="jobsearch-cusfield-checkbox <?php echo esc_html($checkbox_field_classes) ?>">
                         <?php
                         foreach ($checkbox_field_options['value'] as $option) {
                             if ($option != '') {
@@ -2169,7 +2078,8 @@ class Jobsearch_CustomFieldLoad
                                     } else {
                                         $option_selected = $checkbox_field_name_db_val == $option_val ? ' checked="checked"' : '';
                                     }
-                                    if ($field_post_multi == 'yes') { ?>
+                                    if ($field_post_multi == 'yes') {
+                                        ?>
                                         <div class="cusfield-checkbox-radioitm jobsearch-checkbox">
                                             <input id="opt-<?php echo($checkbox_field_name . '-' . $option_counter) ?>"
                                                    type="checkbox" name="<?php echo($checkbox_field_name) ?>[]"
@@ -2178,7 +2088,9 @@ class Jobsearch_CustomFieldLoad
                                                 <span></span> <?php echo($option_label) ?>
                                             </label>
                                         </div>
-                                    <?php } else { ?>
+                                        <?php
+                                    } else {
+                                        ?>
                                         <div class="cusfield-checkbox-radioitm jobsearch-checkbox">
                                             <input id="opt-<?php echo($checkbox_field_name . '-' . $option_counter) ?>"
                                                    type="radio" name="<?php echo($checkbox_field_name) ?>"
@@ -2198,7 +2110,7 @@ class Jobsearch_CustomFieldLoad
                     <?php
                 } else {
                     ?>
-                    <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                    <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                     <?php
                 }
             }
@@ -2243,15 +2155,14 @@ class Jobsearch_CustomFieldLoad
         $dropdown_field_options = isset($custom_field_saved_data['options']) ? $custom_field_saved_data['options'] : '';
         $dropdown_field_required_str = '';
 
-        $field_label_reqstar = '';
         if (isset($ffield_attr['required'])) {
             if ($ffield_attr['required'] == 'yes') {
                 $dropdown_field_classes .= ' jobsearch-req-field';
-                $field_label_reqstar = ' *';
+                $dropdown_field_label = $dropdown_field_label . ' *';
             }
         } else if ($dropdown_field_required == 'yes') {
             $dropdown_field_required_str = 'required="required"';
-            $field_label_reqstar = ' *';
+            $dropdown_field_label = $dropdown_field_label . ' *';
         }
         // get db value if saved
         $dropdown_field_name_db_val = get_post_meta($post_id, $dropdown_field_name, true);
@@ -2286,7 +2197,7 @@ class Jobsearch_CustomFieldLoad
         }
         ?>
         <li class="jobsearch-column-6">
-            <label><?php echo apply_filters('wpml_translate_single_string', $dropdown_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $lang_code) ?><?php echo($field_label_reqstar) ?></label>
+            <label><?php echo apply_filters('wpml_translate_single_string', $dropdown_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $lang_code) ?></label>
             <?php
             if ($custom_field_posttype == 'candidate' && $user_is_candidate && $user_pkg_limits::cand_field_is_locked('cusfields|' . $dropdown_field_name)) {
                 echo($user_pkg_limits::cand_gen_locked_html());
@@ -2298,9 +2209,9 @@ class Jobsearch_CustomFieldLoad
                     ?>
                     <div class="jobsearch-profile-select">
                         <select
-                            <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo jobsearch_esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>"
+                            <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>"
                             placeholder="<?php echo apply_filters('wpml_translate_single_string', $dropdown_field_placeholder, 'Custom Fields', 'Dropdown Field Placeholder - ' . $dropdown_field_placeholder, $lang_code) ?>"
-                            class="<?php echo jobsearch_esc_html($dropdown_field_classes) ?> selectize-select" <?php echo force_balance_tags($dropdown_field_required_str) ?>>
+                            class="<?php echo esc_html($dropdown_field_classes) ?> selectize-select" <?php echo force_balance_tags($dropdown_field_required_str) ?>>
                             <?php
                             echo($dropdown_field_options_str);
                             ?>
@@ -2319,7 +2230,7 @@ class Jobsearch_CustomFieldLoad
                     echo apply_filters('jobsearch_custm_field_dropdown_dash', $drpdown_html, $drpdwn_args);
                 } else {
                     ?>
-                    <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                    <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                     <?php
                 }
             }
@@ -2342,11 +2253,6 @@ class Jobsearch_CustomFieldLoad
 
         global $sitepress, $custom_field_posttype;
 
-        $lang_code = '';
-        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-            $lang_code = $sitepress->get_current_language();
-        }
-
         $user_pkg_limits = new Package_Limits;
 
         $user_id = get_current_user_id();
@@ -2362,8 +2268,6 @@ class Jobsearch_CustomFieldLoad
         $dropdown_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
         $dropdown_field_options = isset($custom_field_saved_data['options_list']) ? $custom_field_saved_data['options_list'] : '';
         $dropdown_cont_optsid = isset($custom_field_saved_data['options_list_id']) && $custom_field_saved_data['options_list_id'] != '' ? $custom_field_saved_data['options_list_id'] : 0;
-
-        $dropdown_field_label = apply_filters('wpml_translate_single_string', $dropdown_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $lang_code);
 
         $dropdown_field_required_str = '';
         if (isset($ffield_attr['required'])) {
@@ -2430,33 +2334,19 @@ class Jobsearch_CustomFieldLoad
         $textarea_field_classes = isset($custom_field_saved_data['classes']) ? $custom_field_saved_data['classes'] : '';
         $textarea_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
         $textarea_field_media_btns = isset($custom_field_saved_data['media_buttons']) ? $custom_field_saved_data['media_buttons'] : '';
-        $textarea_field_rich_editor = isset($custom_field_saved_data['rich_editor']) ? $custom_field_saved_data['rich_editor'] : '';
         $textarea_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
-
+        $textarea_field_required_str = '';
         if (isset($ffield_attr['required'])) {
             if ($ffield_attr['required'] == 'yes') {
-                if ($textarea_field_rich_editor == 'no') {
-                    $textarea_field_classes .= ' jobsearch-req-field';
-                } else {
-                    $textarea_field_classes .= ' jobsearch-req-field jobsearch-reqtext-editor';
-                }
+                $textarea_field_classes .= ' jobsearch-req-field';
                 $textarea_field_label = $textarea_field_label . ' *';
             }
         } else if ($textarea_field_required == 'yes') {
-            if ($textarea_field_rich_editor == 'no') {
-                $textarea_field_classes .= ' jobsearch-req-field';
-            } else {
-                $textarea_field_classes .= ' jobsearch-req-field jobsearch-reqtext-editor';
-            }
+            $textarea_field_required_str = 'required="required"';
             $textarea_field_label = $textarea_field_label . ' *';
         }
         // get db value if saved
         $textarea_field_name_db_val = get_post_meta($post_id, $textarea_field_name, true);
-        if ($textarea_field_rich_editor == 'no') {
-            $textarea_field_name_db_val = jobsearch_esc_html($textarea_field_name_db_val);
-        } else {
-            $textarea_field_name_db_val = jobsearch_esc_wp_editor($textarea_field_name_db_val);
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -2472,24 +2362,17 @@ class Jobsearch_CustomFieldLoad
                 echo($user_pkg_limits::emp_gen_locked_html());
             } else {
                 //
-                if ($textarea_field_rich_editor == 'no') {
-                    ?>
-                    <textarea
-                            name="<?php echo($textarea_field_name) ?>"<?php echo($textarea_field_required == 'yes' ? ' required' : '') ?><?php echo($textarea_field_classes != '' ? ' class="' . $textarea_field_classes . '"' : '') ?><?php echo($textarea_field_placeholder != '' ? ' placeholder="' . $textarea_field_placeholder . '"' : '') ?>><?php echo($textarea_field_name_db_val) ?></textarea>
-                    <?php
-                } else {
-                    $wped_settings = array(
-                        'media_buttons' => ($textarea_field_media_btns == 'yes' ? true : false),
-                        'editor_class' => $textarea_field_classes,
-                        'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
-                        'tinymce' => array(
-                            'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
-                            'toolbar2' => '',
-                            'toolbar3' => '',
-                        ),
-                    );
-                    wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
-                }
+                $wped_settings = array(
+                    'media_buttons' => ($textarea_field_media_btns == 'yes' ? true : false),
+                    'editor_class' => $textarea_field_classes,
+                    'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
+                    'tinymce' => array(
+                        'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
+                        'toolbar2' => '',
+                        'toolbar3' => '',
+                    ),
+                );
+                wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
             }
             ?>
         </li>
@@ -2542,11 +2425,9 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_fields_load_callback($post_id, $custom_field_entity, $self_vals = array())
+    static function jobsearch_form_custom_fields_load_callback($post_id, $custom_field_entity)
     {
-        global $custom_field_posttype;
         // load all saved fields
-        $custom_field_posttype = $custom_field_entity;
         $field_db_slug = "jobsearch_custom_field_" . $custom_field_entity;
         $custom_all_fields_saved_data = get_option($field_db_slug);
         $count_node = time();
@@ -2558,33 +2439,31 @@ class Jobsearch_CustomFieldLoad
             foreach ($custom_all_fields_saved_data as $f_key => $custom_field_saved_data) {
 
                 if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "heading") {
-                    $output .= apply_filters('jobsearch_form_custom_field_heading_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_heading_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "text") {
-                    $output .= apply_filters('jobsearch_form_custom_field_text_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_text_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "video") {
-                    $output .= apply_filters('jobsearch_form_custom_field_video_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_video_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "linkurl") {
-                    $output .= apply_filters('jobsearch_form_custom_field_linkurl_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_linkurl_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "upload_file") {
-                    $output .= apply_filters('jobsearch_form_custom_field_upload_file_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_upload_file_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "email") {
-                    $output .= apply_filters('jobsearch_form_custom_field_email_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_email_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "textarea") {
-                    $output .= apply_filters('jobsearch_form_custom_field_textarea_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_textarea_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "date") {
-                    $output .= apply_filters('jobsearch_form_custom_field_date_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_date_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "number") {
-                    $output .= apply_filters('jobsearch_form_custom_field_number_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_number_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "range") {
-                    $output .= apply_filters('jobsearch_form_custom_field_range_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_range_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "checkbox") {
-                    $output .= apply_filters('jobsearch_form_custom_field_checkbox_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_checkbox_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dropdown") {
-                    $output .= apply_filters('jobsearch_form_custom_field_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_dropdown") {
-                    $output .= apply_filters('jobsearch_form_custom_field_dependent_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix, '', '', $self_vals);
-                } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_fields") {
-                    $output .= apply_filters('jobsearch_form_custom_field_dependent_fields_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $f_key, 'simp_form', $self_vals);
+                    $output .= apply_filters('jobsearch_form_custom_field_dependent_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix);
                 }
             }
 
@@ -2592,15 +2471,13 @@ class Jobsearch_CustomFieldLoad
         }
     }
 
-    public function jobsearch_signup_custom_fields_load_callback($post_id, $custom_field_entity, $f_display = 'block')
+    static function jobsearch_signup_custom_fields_load_callback($post_id, $custom_field_entity, $f_display = 'block')
     {
-        global $jobsearch_plugin_options, $custom_field_posttype;
+        global $jobsearch_plugin_options;
 
         $reg_custom_fields = isset($jobsearch_plugin_options['signup_custom_fields']) ? $jobsearch_plugin_options['signup_custom_fields'] : '';
 
         if ($reg_custom_fields == 'on') {
-
-            $custom_field_posttype = $custom_field_entity;
 
             if ($custom_field_entity == 'employer') {
                 $selected_fields = isset($jobsearch_plugin_options['employer_custom_fields']) ? $jobsearch_plugin_options['employer_custom_fields'] : '';
@@ -2621,7 +2498,7 @@ class Jobsearch_CustomFieldLoad
                 $output = '';
                 foreach ($custom_all_fields_saved_data as $f_key => $custom_field_saved_data) {
                     $field_name = isset($custom_field_saved_data['name']) ? $custom_field_saved_data['name'] : '';
-                    if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "heading" && (in_array($field_name, $selected_fields))) {
+                    if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "heading" && ($field_name != '' && in_array($field_name, $selected_fields))) {
                         $output .= apply_filters('jobsearch_form_custom_field_heading_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $con_class, $f_display);
                     } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "text" && ($field_name != '' && in_array($field_name, $selected_fields))) {
                         $output .= apply_filters('jobsearch_form_custom_field_text_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $con_class, $f_display);
@@ -2647,8 +2524,6 @@ class Jobsearch_CustomFieldLoad
                         $output .= apply_filters('jobsearch_form_custom_field_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $con_class, $f_display);
                     } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_dropdown" && ($field_name != '' && in_array($field_name, $selected_fields))) {
                         $output .= apply_filters('jobsearch_form_custom_field_dependent_dropdown_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $con_class, $f_display);
-                    } else if (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_fields" && ($field_name != '' && in_array($field_name, $selected_fields))) {
-                        $output .= apply_filters('jobsearch_form_custom_field_dependent_fields_load', '', $post_id, $custom_field_saved_data, $fields_prefix, $f_key, 'signup', '', $con_class, $f_display);
                     }
                 }
 
@@ -2686,25 +2561,11 @@ class Jobsearch_CustomFieldLoad
                     $field_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
                     $field_name = isset($custom_field_saved_data['name']) ? $custom_field_saved_data['name'] : '';
                     $field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
-                    $field_type = isset($custom_field_saved_data['type']) ? $custom_field_saved_data['type'] : '';
 
                     if ($field_name != '' && in_array($field_name, $selected_fields)) {
-                        if ($field_required == 'yes') {
-                            if ($field_type == 'checkbox' && (!isset($_POST[$field_name]) || (isset($_POST[$field_name]) && $_POST[$field_name] == ''))) {
-                                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . sprintf(__('%s value should not be blank.', 'wp-jobsearch'), $field_label) . '</div>'));
-                                die();
-                            } else if ($field_type == 'upload_file' && isset($_FILES[$field_name])) {
-                                $uploding_attach_files = $_FILES[$field_name];
-                                if (isset($uploding_attach_files['name'][0]) && $uploding_attach_files['name'][0] == '') {
-                                    echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . sprintf(__('%s value should not be blank.', 'wp-jobsearch'), $field_label) . '</div>'));
-                                    die();
-                                }
-                            } else {
-                                if (isset($_POST[$field_name]) && empty($_POST[$field_name])) {
-                                    echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . sprintf(__('%s value should not be blank.', 'wp-jobsearch'), $field_label) . '</div>'));
-                                    die();
-                                }
-                            }
+                        if ($field_required == 'yes' && isset($_POST[$field_name]) && $_POST[$field_name] == '') {
+                            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . sprintf(__('%s value should not be blank.', 'wp-jobsearch'), $field_label) . '</div>'));
+                            die();
                         }
                     }
                 }
@@ -2712,7 +2573,7 @@ class Jobsearch_CustomFieldLoad
         }
     }
 
-    static function jobsearch_form_custom_field_text_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_text_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -2741,24 +2602,19 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $text_field_name_db_val = get_post_meta($post_id, $text_field_name, true);
-        if (isset($self_vals[$text_field_name])) {
-            $text_field_name_db_val = $self_vals[$text_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Text Field Label - ' . $text_field_label, $text_field_label);
-
-        $text_field_placeholder = apply_filters('wpml_translate_single_string', $text_field_placeholder, 'Custom Fields', 'Text Field Placeholder - ' . $text_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $text_field_label, 'Custom Fields', 'Text Field Label - ' . $text_field_label, $lang_code) ?><?php echo($text_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="text" name="<?php echo jobsearch_esc_html($text_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($text_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($text_field_placeholder) ?>" <?php echo force_balance_tags($text_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($text_field_name_db_val) ?>"/>
+            <input type="text" name="<?php echo esc_html($text_field_name) ?>"
+                   class="<?php echo esc_html($text_field_classes) ?>"
+                   placeholder="<?php echo esc_html($text_field_placeholder) ?>" <?php echo force_balance_tags($text_field_required_str) ?>
+                   value="<?php echo esc_html($text_field_name_db_val) ?>"/>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -2772,7 +2628,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_video_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_video_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -2801,24 +2657,19 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $video_field_name_db_val = get_post_meta($post_id, $video_field_name, true);
-        if (isset($self_vals[$video_field_name])) {
-            $video_field_name_db_val = $self_vals[$video_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Text Field Label - ' . $video_field_label, $video_field_label);
-
-        $video_field_placeholder = apply_filters('wpml_translate_single_string', $video_field_placeholder, 'Custom Fields', 'Video Field Placeholder - ' . $video_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
-            <label><?php echo apply_filters('wpml_translate_single_string', $video_field_label, 'Custom Fields', 'Video Field Label - ' . $video_field_label, $lang_code) ?><?php echo($video_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="text" name="<?php echo jobsearch_esc_html($video_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($video_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($video_field_placeholder) ?>" <?php echo force_balance_tags($video_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($video_field_name_db_val) ?>"/>
+            <label><?php echo apply_filters('wpml_translate_single_string', $video_field_label, 'Custom Fields', 'Text Field Label - ' . $video_field_label, $lang_code) ?><?php echo($video_field_required == 'yes' ? '*' : '') ?></label>
+            <input type="text" name="<?php echo esc_html($video_field_name) ?>"
+                   class="<?php echo esc_html($video_field_classes) ?>"
+                   placeholder="<?php echo esc_html($video_field_placeholder) ?>" <?php echo force_balance_tags($video_field_required_str) ?>
+                   value="<?php echo esc_html($video_field_name_db_val) ?>"/>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -2832,7 +2683,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_linkurl_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_linkurl_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -2861,23 +2712,19 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $linkurl_field_name_db_val = get_post_meta($post_id, $linkurl_field_name, true);
-        if (isset($self_vals[$linkurl_field_name])) {
-            $linkurl_field_name_db_val = $self_vals[$linkurl_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Text Field Label - ' . $linkurl_field_label, $linkurl_field_label);
-        $linkurl_field_placeholder = apply_filters('wpml_translate_single_string', $linkurl_field_placeholder, 'Custom Fields', 'URL Field Placeholder - ' . $linkurl_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
-            <label><?php echo apply_filters('wpml_translate_single_string', $linkurl_field_label, 'Custom Fields', 'URL Field Label - ' . $linkurl_field_label, $lang_code) ?><?php echo($linkurl_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="text" name="<?php echo jobsearch_esc_html($linkurl_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($linkurl_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($linkurl_field_placeholder) ?>" <?php echo force_balance_tags($linkurl_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($linkurl_field_name_db_val) ?>"/>
+            <label><?php echo apply_filters('wpml_translate_single_string', $linkurl_field_label, 'Custom Fields', 'Text Field Label - ' . $linkurl_field_label, $lang_code) ?><?php echo($linkurl_field_required == 'yes' ? '*' : '') ?></label>
+            <input type="text" name="<?php echo esc_html($linkurl_field_name) ?>"
+                   class="<?php echo esc_html($linkurl_field_classes) ?>"
+                   placeholder="<?php echo esc_html($linkurl_field_placeholder) ?>" <?php echo force_balance_tags($linkurl_field_required_str) ?>
+                   value="<?php echo esc_html($linkurl_field_name_db_val) ?>"/>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -2891,7 +2738,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_upload_file_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_upload_file_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -2930,9 +2777,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $upload_file_field_name_db_val = get_post_meta($post_id, $upload_file_field_name, true);
-        if (isset($self_vals[$upload_file_field_name])) {
-            $upload_file_field_name_db_val = $self_vals[$upload_file_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -2949,10 +2793,10 @@ class Jobsearch_CustomFieldLoad
         $uplod_file_size = $uplod_file_size_num * 1024;
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
-            <label><?php echo apply_filters('wpml_translate_single_string', $upload_file_field_label, 'Custom Fields', 'Text Field Label - ' . $upload_file_field_label, $lang_code) ?><?php echo($upload_file_field_required == 'yes' ? ' *' : '') ?></label>
+            <label><?php echo apply_filters('wpml_translate_single_string', $upload_file_field_label, 'Custom Fields', 'Text Field Label - ' . $upload_file_field_label, $lang_code) ?></label>
             <div class="jobsearch-fileUpload">
                 <span><i class="jobsearch-icon jobsearch-upload"></i> <?php echo($upload_field_numof_files > 1 ? esc_html__('Upload Files', 'wp-jobsearch') : esc_html__('Upload File', 'wp-jobsearch')); ?></span>
-                <input name="<?php echo jobsearch_esc_html($upload_file_field_name) ?>[]" type="file"
+                <input name="<?php echo esc_html($upload_file_field_name) ?>[]" type="file"
                        class="upload jobsearch-upload jobsearch-uploadfile-field" multiple="multiple"
                        onchange="jobsearch_job_attach_files_url_<?php echo($rand_num) ?>(event)"/>
                 <?php if ($upload_field_numof_files > 1) { ?>
@@ -2962,7 +2806,7 @@ class Jobsearch_CustomFieldLoad
                 <?php } ?>
             </div>
             <div id="field-files-holder-<?php echo($rand_num) ?>" class="uplodfield-files-holder"></div>
-            <script type="text/javascript">
+            <script>
                 function jobsearch_job_attach_files_url_<?php echo($rand_num) ?>(event) {
 
                     if (window.File && window.FileList && window.FileReader) {
@@ -3036,7 +2880,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_email_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_email_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3065,23 +2909,19 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $email_field_name_db_val = get_post_meta($post_id, $email_field_name, true);
-        if (isset($self_vals[$email_field_name])) {
-            $email_field_name_db_val = $self_vals[$email_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Email Field Label - ' . $email_field_label, $email_field_label);
-        $email_field_placeholder = apply_filters('wpml_translate_single_string', $email_field_placeholder, 'Custom Fields', 'Email Field Placeholder - ' . $email_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $email_field_label, 'Custom Fields', 'Email Field Label - ' . $email_field_label, $lang_code) ?><?php echo($email_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="email" name="<?php echo jobsearch_esc_html($email_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($email_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($email_field_placeholder) ?>" <?php echo force_balance_tags($email_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($email_field_name_db_val) ?>"/>
+            <input type="email" name="<?php echo esc_html($email_field_name) ?>"
+                   class="<?php echo esc_html($email_field_classes) ?>"
+                   placeholder="<?php echo esc_html($email_field_placeholder) ?>" <?php echo force_balance_tags($email_field_required_str) ?>
+                   value="<?php echo esc_html($email_field_name_db_val) ?>"/>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -3095,7 +2935,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_number_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_number_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3124,23 +2964,19 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $number_field_name_db_val = get_post_meta($post_id, $number_field_name, true);
-        if (isset($self_vals[$number_field_name])) {
-            $number_field_name_db_val = $self_vals[$number_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Number Field Label - ' . $number_field_label, $number_field_label);
-        $number_field_placeholder = apply_filters('wpml_translate_single_string', $number_field_placeholder, 'Custom Fields', 'Number Field Placeholder - ' . $number_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $number_field_label, 'Custom Fields', 'Number Field Label - ' . $number_field_label, $lang_code) ?><?php echo($number_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="number" name="<?php echo jobsearch_esc_html($number_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($number_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($number_field_placeholder) ?>" <?php echo force_balance_tags($number_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($number_field_name_db_val) ?>"/>
+            <input type="number" name="<?php echo esc_html($number_field_name) ?>"
+                   class="<?php echo esc_html($number_field_classes) ?>"
+                   placeholder="<?php echo esc_html($number_field_placeholder) ?>" <?php echo force_balance_tags($number_field_required_str) ?>
+                   value="<?php echo esc_html($number_field_name_db_val) ?>"/>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -3154,7 +2990,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_date_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_date_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3185,9 +3021,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $date_field_name_db_val = get_post_meta($post_id, $date_field_name, true);
-        if (isset($self_vals[$date_field_name])) {
-            $date_field_name_db_val = $self_vals[$date_field_name];
-        }
         if ($date_field_name_db_val != '') {
             $date_field_name_db_val = date($date_field_date_format, $date_field_name_db_val);
         }
@@ -3197,20 +3030,18 @@ class Jobsearch_CustomFieldLoad
             $lang_code = $sitepress->get_current_language();
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Date Field Label - ' . $date_field_label, $date_field_label);
-        $date_field_placeholder = apply_filters('wpml_translate_single_string', $date_field_placeholder, 'Custom Fields', 'Date Field Placeholder - ' . $date_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $date_field_label, 'Custom Fields', 'Date Field Label - ' . $date_field_label, $lang_code) ?><?php echo($date_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="text" id="<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>"
-                   name="<?php echo jobsearch_esc_html($date_field_name) ?>"
-                   class="<?php echo jobsearch_esc_html($date_field_classes) ?>"
-                   placeholder="<?php echo jobsearch_esc_html($date_field_placeholder) ?>" <?php echo force_balance_tags($date_field_required_str) ?>
-                   value="<?php echo jobsearch_esc_html($date_field_name_db_val) ?>"/>
+            <input type="text" id="<?php echo esc_html($date_field_name . $field_rand_id) ?>"
+                   name="<?php echo esc_html($date_field_name) ?>" class="<?php echo esc_html($date_field_classes) ?>"
+                   placeholder="<?php echo esc_html($date_field_placeholder) ?>" <?php echo force_balance_tags($date_field_required_str) ?>
+                   value="<?php echo esc_html($date_field_name_db_val) ?>"/>
         </li>
-        <script type="text/javascript">
+        <script>
             jQuery(document).ready(function () {
-                jQuery('#<?php echo jobsearch_esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
-                    format: '<?php echo jobsearch_esc_html($date_field_date_format) ?>'
+                jQuery('#<?php echo esc_html($date_field_name . $field_rand_id) ?>').datetimepicker({
+                    format: '<?php echo esc_html($date_field_date_format) ?>'
                 });
             });
         </script>
@@ -3226,7 +3057,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_range_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_range_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
         global $sitepress;
 
@@ -3258,10 +3089,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $range_field_name_db_val = get_post_meta($post_id, $range_field_name, true);
-        if (isset($self_vals[$range_field_name])) {
-            $range_field_name_db_val = $self_vals[$range_field_name];
-        }
-
         wp_enqueue_style('jquery-ui');
         wp_enqueue_script('jquery-ui');
         $range_field_max = $range_field_min;
@@ -3278,25 +3105,25 @@ class Jobsearch_CustomFieldLoad
         do_action('wpml_register_single_string', 'Custom Fields', 'Range Field Label - ' . $range_field_label, $range_field_label);
         ?>
         <li class="range-in-user-form <?php echo($con_clas_attr) ?>"<?php echo($con_f_style) ?>>
-            <script type="text/javascript">
+            <script>
                 jQuery(document).ready(function () {
-                    jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider({
+                    jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider({
                         range: "max",
                         min: <?php echo absint($range_field_min); ?>,
                         max: <?php echo absint($range_field_max); ?>,
                         value: <?php echo absint($range_field_name_db_val); ?>,
                         slide: function (event, ui) {
-                            jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(ui.value);
+                            jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(ui.value);
                         }
                     });
-                    jQuery("#<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>").slider("value"));
+                    jQuery("#<?php echo esc_html($range_field_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo esc_html($range_field_name . $rand_id) ?>").slider("value"));
                 });
             </script>
             <label><?php echo apply_filters('wpml_translate_single_string', $range_field_label, 'Custom Fields', 'Range Field Label - ' . $range_field_label, $lang_code) ?><?php echo($range_field_required == 'yes' ? '*' : '') ?></label>
-            <input type="text" id="<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"
-                   name="<?php echo jobsearch_esc_html($range_field_name) ?>" value="" readonly
+            <input type="text" id="<?php echo esc_html($range_field_name . $rand_id) ?>"
+                   name="<?php echo esc_html($range_field_name) ?>" value="" readonly
                    style="border:0; color:#f6931f; font-weight:bold;"/>
-            <div id="slider-range<?php echo jobsearch_esc_html($range_field_name . $rand_id) ?>"></div>
+            <div id="slider-range<?php echo esc_html($range_field_name . $rand_id) ?>"></div>
         </li>
         <?php
         $html .= ob_get_clean();
@@ -3310,7 +3137,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    public function jobsearch_form_custom_field_checkbox_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_checkbox_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3329,12 +3156,10 @@ class Jobsearch_CustomFieldLoad
             $checkbox_field_required_str = 'class="required-cussel-field"';
         }
 
-        $con_clases = 'jobsearch-user-form-coltwo-full';
+        $con_clas_attr = '';
         if ($con_class != '') {
-            $con_clases .= ' ' . $con_class;
+            $con_clas_attr = ' class="' . $con_class . '"';
         }
-
-        $con_clas_attr = 'class="' . $con_clases . '"';
 
         $con_f_style = '';
         if ($f_display != '') {
@@ -3343,9 +3168,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $checkbox_field_name_db_val = get_post_meta($post_id, $checkbox_field_name, true);
-        if (isset($self_vals[$checkbox_field_name])) {
-            $checkbox_field_name_db_val = $self_vals[$checkbox_field_name];
-        }
         // creat options string
 
         $lang_code = '';
@@ -3354,13 +3176,13 @@ class Jobsearch_CustomFieldLoad
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Label - ' . $checkbox_field_label, $checkbox_field_label);
         ?>
-        <li <?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
+        <li class="jobsearch-user-form-coltwo-full"<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $checkbox_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $checkbox_field_label, $lang_code) ?><?php echo($checkbox_field_required == 'yes' ? '*' : '') ?></label>
             <?php
             if (isset($checkbox_field_options['value']) && count($checkbox_field_options['value']) > 0) {
                 $option_counter = 0;
                 ?>
-                <div class="jobsearch-cusfield-checkbox <?php echo jobsearch_esc_html($checkbox_field_classes) ?>">
+                <div class="jobsearch-cusfield-checkbox <?php echo esc_html($checkbox_field_classes) ?>">
                     <?php
                     foreach ($checkbox_field_options['value'] as $option) {
                         if ($option != '') {
@@ -3406,7 +3228,7 @@ class Jobsearch_CustomFieldLoad
                 <?php
             } else {
                 ?>
-                <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                 <?php
             }
             ?>
@@ -3423,7 +3245,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_dropdown_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_dropdown_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3460,10 +3282,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $dropdown_field_name_db_val = get_post_meta($post_id, $dropdown_field_name, true);
-        if (isset($self_vals[$dropdown_field_name])) {
-            $dropdown_field_name_db_val = $self_vals[$dropdown_field_name];
-        }
-
         // creat options string
         $dropdown_field_options_str = '';
         if ($dropdown_field_placeholder != '') {
@@ -3489,7 +3307,6 @@ class Jobsearch_CustomFieldLoad
             }
         }
         do_action('wpml_register_single_string', 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $dropdown_field_label);
-        $dropdown_field_placeholder = apply_filters('wpml_translate_single_string', $dropdown_field_placeholder, 'Custom Fields', 'Dropdown Field Placeholder - ' . $dropdown_field_placeholder, $lang_code);
         ?>
         <li<?php echo($con_clas_attr) ?><?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $dropdown_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $lang_code) ?><?php echo($dropdown_field_required == 'yes' ? '*' : '') ?></label>
@@ -3498,8 +3315,8 @@ class Jobsearch_CustomFieldLoad
                 ?>
                 <div class="jobsearch-profile-select">
                     <select
-                        <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo jobsearch_esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>" <?php echo($dropdown_field_placeholder != '' ? 'placeholder="' . $dropdown_field_placeholder . '"' : '') ?>
-                        class="<?php echo jobsearch_esc_html($dropdown_field_classes) ?> selectize-select <?php echo($dropdown_field_required_str) ?>">
+                        <?php echo($field_post_multi == 'yes' ? 'multiple="multiple" ' : '') ?>name="<?php echo esc_html($dropdown_field_name) ?><?php echo($field_post_multi == 'yes' ? '[]' : '') ?>" <?php echo($dropdown_field_placeholder != '' ? 'placeholder="' . $dropdown_field_placeholder . '"' : '') ?>
+                        class="<?php echo esc_html($dropdown_field_classes) ?> selectize-select <?php echo($dropdown_field_required_str) ?>">
                         <?php
                         echo force_balance_tags($dropdown_field_options_str);
                         ?>
@@ -3508,7 +3325,7 @@ class Jobsearch_CustomFieldLoad
                 <?php
             } else {
                 ?>
-                <span><?php echo jobsearch_esc_html('Field did not configure properly', 'wp-jobsearch'); ?></span>
+                <span><?php echo esc_html__('Field did not configure properly', 'wp-jobsearch'); ?></span>
                 <?php
             }
             ?>
@@ -3525,14 +3342,10 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_dependent_dropdown_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_dependent_dropdown_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
-        global $sitepress;
 
-        $lang_code = '';
-        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-            $lang_code = $sitepress->get_current_language();
-        }
+        global $sitepress;
 
         ob_start();
         $field_for_wuser = isset($custom_field_saved_data['non_reg_user']) ? $custom_field_saved_data['non_reg_user'] : '';
@@ -3544,8 +3357,6 @@ class Jobsearch_CustomFieldLoad
         $dropdown_field_options = isset($custom_field_saved_data['options_list']) ? $custom_field_saved_data['options_list'] : '';
         $dropdown_cont_optsid = isset($custom_field_saved_data['options_list_id']) && $custom_field_saved_data['options_list_id'] != '' ? $custom_field_saved_data['options_list_id'] : 0;
 
-        $dropdown_field_label = apply_filters('wpml_translate_single_string', $dropdown_field_label, 'Custom Fields', 'Dropdown Field Label - ' . $dropdown_field_label, $lang_code);
-
         $dropdown_field_required_str = '';
         if ($dropdown_field_required == 'yes') {
             $dropdown_field_required_str = 'required="required"';
@@ -3553,7 +3364,7 @@ class Jobsearch_CustomFieldLoad
 
         $con_clas_attr = '';
         if ($con_class != '') {
-            $con_clas_attr = $con_class;
+            $con_clas_attr = ' class="' . $con_class . '"';
         }
 
         $con_f_style = '';
@@ -3563,12 +3374,8 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $dropdown_field_name_db_val = get_post_meta($post_id, $dropdown_field_name, true);
-        if (isset($self_vals[$dropdown_field_name])) {
-            $dropdown_field_name_db_val = $self_vals[$dropdown_field_name];
-        }
-
         ?>
-        <li class="jobsearch-user-form-coltwo-full jobsearch-depdrpdwn-fields <?php echo($dropdown_field_classes) ?><?php echo($con_clas_attr) ?>"<?php echo($con_f_style) ?>>
+        <li class="jobsearch-user-form-coltwo-full jobsearch-depdrpdwn-fields <?php echo($dropdown_field_classes) ?>"<?php echo($con_f_style) ?>>
             <ul class="jobsearch-row">
                 <?php
                 $depdrpdwn_fields = jobsearch_dependent_dropdown_list_html($dropdown_field_options, $dropdown_cont_optsid, $custom_field_saved_data, $dropdown_field_name_db_val, 0, 'dashboard', $dropdown_field_label);
@@ -3588,7 +3395,7 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_textarea_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_textarea_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
 
         global $sitepress;
@@ -3599,12 +3406,10 @@ class Jobsearch_CustomFieldLoad
         $textarea_field_name = isset($custom_field_saved_data['name']) ? $fields_prefix . $custom_field_saved_data['name'] : '';
         $textarea_field_classes = isset($custom_field_saved_data['classes']) ? $custom_field_saved_data['classes'] : '';
         $textarea_field_placeholder = isset($custom_field_saved_data['placeholder']) ? $custom_field_saved_data['placeholder'] : '';
-        $textarea_field_rich_editor = isset($custom_field_saved_data['rich_editor']) ? $custom_field_saved_data['rich_editor'] : '';
         $textarea_field_required = isset($custom_field_saved_data['required']) ? $custom_field_saved_data['required'] : '';
         $textarea_field_required_str = '';
         if ($textarea_field_required == 'yes') {
             $textarea_field_required_str = 'required="required"';
-            $textarea_field_classes .= ' required-cussel-field';
         }
 
         $con_clas_attr = '';
@@ -3619,9 +3424,6 @@ class Jobsearch_CustomFieldLoad
 
         // get db value if saved
         $textarea_field_name_db_val = get_post_meta($post_id, $textarea_field_name, true);
-        if (isset($self_vals[$textarea_field_name])) {
-            $textarea_field_name_db_val = $self_vals[$textarea_field_name];
-        }
 
         $lang_code = '';
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -3632,24 +3434,17 @@ class Jobsearch_CustomFieldLoad
         <li class="jobsearch-user-form-coltwo-full form-textarea <?php echo($con_clas_attr) ?>"<?php echo($con_f_style) ?>>
             <label><?php echo apply_filters('wpml_translate_single_string', $textarea_field_label, 'Custom Fields', 'Textarea Field Label - ' . $textarea_field_label, $lang_code) ?><?php echo($textarea_field_required == 'yes' ? '*' : '') ?></label>
             <?php
-            if ($textarea_field_rich_editor == 'no') {
-                ?>
-                <textarea
-                        name="<?php echo($textarea_field_name) ?>" <?php echo($textarea_field_required_str) ?><?php echo($textarea_field_classes != '' ? ' class="' . $textarea_field_classes . '"' : '') ?><?php echo($textarea_field_placeholder != '' ? ' placeholder="' . $textarea_field_placeholder . '"' : '') ?>><?php echo($textarea_field_name_db_val) ?></textarea>
-                <?php
-            } else {
-                $wped_settings = array(
-                    'media_buttons' => false,
-                    'editor_class' => $textarea_field_classes,
-                    'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
-                    'tinymce' => array(
-                        'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
-                        'toolbar2' => '',
-                        'toolbar3' => '',
-                    ),
-                );
-                wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
-            }
+            $wped_settings = array(
+                'media_buttons' => false,
+                'editor_class' => $textarea_field_classes,
+                'quicktags' => array('buttons' => 'strong,em,del,ul,ol,li,close'),
+                'tinymce' => array(
+                    'toolbar1' => 'bold,bullist,numlist,italic,underline,alignleft,aligncenter,alignright,separator,link,unlink,undo,redo',
+                    'toolbar2' => '',
+                    'toolbar3' => '',
+                ),
+            );
+            wp_editor($textarea_field_name_db_val, $textarea_field_name, $wped_settings);
             ?>
         </li>
         <?php
@@ -3664,9 +3459,11 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_form_custom_field_heading_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '', $self_vals = array())
+    static function jobsearch_form_custom_field_heading_load_callback($html, $post_id, $custom_field_saved_data, $fields_prefix, $con_class = '', $f_display = '')
     {
+
         global $sitepress;
+
         ob_start();
         $field_for_wuser = isset($custom_field_saved_data['non_reg_user']) ? $custom_field_saved_data['non_reg_user'] : '';
         $heading_field_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
@@ -3702,16 +3499,16 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_custom_fields_list_callback($custom_field_entity = '', $post_id = '', $custom_fields = array(), $before_html = '<li>', $after_html = '</li>', $fields_number = '', $field_label = true, $field_icon = true, $custom_value_position = true, $prefix = 'jobsearch', $selected_fields = array(), $fields_cus_vals = array())
+    static function jobsearch_custom_fields_list_callback($custom_field_entity = '', $post_id = '', $custom_fields = array(), $before_html = '<li>', $after_html = '</li>', $fields_number = '', $field_label = true, $field_icon = true, $custom_value_position = true, $prefix = 'jobsearch', $selected_fields = array())
     {
-        global $post, $jobsearch_post_post_types, $sitepress, $jobsearch_cusfdepfields_rendring;
+        global $post, $jobsearch_post_post_types, $sitepress;
+
         $candidate_list = isset($custom_fields['candidate_list']) && $custom_fields['candidate_list'] == true ? 'on' : '';
-        $dependent_drop_col = isset($custom_fields['dependent_col']) ? $custom_fields['dependent_col'] : 'jobsearch-column-4';
+
 
         if ($post_id == '') {
             $post_id = $post->ID;
         }
-
         $fields_prefix = ''; // 'jobsearch_field_' . $custom_field_entity . '_';
         $content = '';
 
@@ -3721,47 +3518,41 @@ class Jobsearch_CustomFieldLoad
         }
 
         $orig_before_html = $before_html;
-        if ((($fields_number != '' && $fields_number > 0) || $fields_number == '') && $custom_field_entity != '') {
+
+        if ($post_id != '' && (($fields_number != '' && $fields_number > 0) || $fields_number == '') && $custom_field_entity != '') {
 
             $jobsearch_post_type_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
+
+
             if (isset($selected_fields) && !empty($selected_fields) && is_array($selected_fields) && sizeof($selected_fields) > 0) {
                 $jobsearch_post_type_cus_fields = $selected_fields;
             }
 
             if (is_array($jobsearch_post_type_cus_fields) && isset($jobsearch_post_type_cus_fields) && !empty($jobsearch_post_type_cus_fields)) {
+
                 ob_start();
                 $custom_field_flag = 1;
                 foreach ($jobsearch_post_type_cus_fields as $cus_fieldvar => $cus_field) {
+
+
                     $field_vtype = isset($cus_field['non_reg_user']) ? $cus_field['non_reg_user'] : '';
                     if ($field_vtype == 'admin_view_only') {
                         continue;
                     }
 
                     $type = isset($cus_field['type']) ? $cus_field['type'] : '';
+
                     $cus_field_label_arr = isset($cus_field['label']) ? $cus_field['label'] : '';
                     if (isset($cus_field['name']) && $cus_field['name'] <> '') {
                         $field_name = $fields_prefix . $cus_field['name'];
                         $is_field_visible = isset($cus_field['public_visible']) ? $cus_field['public_visible'] : '';
-                        if (!empty($fields_cus_vals)) {
-                            $cus_field_value_arr = isset($fields_cus_vals[$field_name]) ? $fields_cus_vals[$field_name] : '';
-                        } else {
-                            $cus_field_value_arr = get_post_meta($post_id, $field_name, true);
-                        }
+                        $cus_field_value_arr = get_post_meta($post_id, $field_name, true);
                         //
                         if ($type == 'dependent_dropdown') {
                             $dep_drpdwns_options = isset($cus_field['options_list']) ? $cus_field['options_list'] : '';
-                            $dep_drpdwn_valle = jobsearch_dependent_dropdown_showval_html($dep_drpdwns_options, $cus_field, $cus_field_value_arr, '0', 'careerfy', $dependent_drop_col);
+                            $dep_drpdwn_valle = jobsearch_dependent_dropdown_showval_html($dep_drpdwns_options, $cus_field, $cus_field_value_arr, '0', $prefix);
                             if ($dep_drpdwn_valle != '') {
                                 $cus_field_value_arr = $dep_drpdwn_valle;
-                            } else {
-                                $cus_field_value_arr = '';
-                            }
-                        }
-
-                        if ($type == 'dependent_fields') {
-                            $depnt_fields_valle = $jobsearch_cusfdepfields_rendring->dependent_fields_showval_html($post_id, $cus_field, $cus_fieldvar, $field_name, $cus_field_value_arr, $orig_before_html, $after_html, $prefix);
-                            if ($depnt_fields_valle != '') {
-                                $cus_field_value_arr = $depnt_fields_valle;
                             } else {
                                 $cus_field_value_arr = '';
                             }
@@ -3790,6 +3581,7 @@ class Jobsearch_CustomFieldLoad
                             $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Textarea Field Label - ' . $cus_field_label_arr, $lang_code);
                         }
 
+
                         if (($type == 'textarea' || $type == 'video' || $type == 'dependent_dropdown')) {
                             if (strpos($before_html, $prefix . '-column-4') !== false) {
                                 $before_html = str_replace(array($prefix . '-column-4'), array($prefix . '-column-12'), $before_html);
@@ -3797,8 +3589,6 @@ class Jobsearch_CustomFieldLoad
                                 $before_html = str_replace(array('jobsearch-column-4'), array('jobsearch-column-12'), $before_html);
                             } else if (strpos($before_html, 'careerfy-column-4') !== false) {
                                 $before_html = str_replace(array('careerfy-column-4'), array('careerfy-column-12'), $before_html);
-                            } else if (strpos($before_html, $prefix . '-column-6') !== false) {
-                                $before_html = str_replace(array($prefix . '-column-6'), array($prefix . '-column-12'), $before_html);
                             }
                         } else {
                             $before_html = $orig_before_html;
@@ -3808,10 +3598,12 @@ class Jobsearch_CustomFieldLoad
                             $drop_down_arr = array();
                             $cut_field_flag = 0;
                             foreach ($cus_field['options']['value'] as $key => $cus_field_options_value) {
+
                                 $drop_down_arr[$cus_field_options_value] = (apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code));
                                 $cut_field_flag++;
                             }
                         }
+
 
                         if ($type == 'checkbox') {
                             $drop_down_arr = array();
@@ -3825,11 +3617,7 @@ class Jobsearch_CustomFieldLoad
 
                         if ($type == 'upload_file' && $is_field_visible != 'no') {
                             $fielad_name = 'jobsearch_cfupfiles_' . $field_name;
-                            if (!empty($fields_cus_vals)) {
-                                $cusupf_field_value = isset($fields_cus_vals[$field_name]) ? $fields_cus_vals[$field_name] : '';
-                            } else {
-                                $cusupf_field_value = get_post_meta($post_id, $fielad_name, true);
-                            }
+                            $cusupf_field_value = get_post_meta($post_id, $fielad_name, true);
                             if (!empty($cusupf_field_value)) {
                                 foreach ($cusupf_field_value as $cusupf_file) {
                                     echo $before_html;
@@ -3854,11 +3642,7 @@ class Jobsearch_CustomFieldLoad
                                     echo '<i class="' . $file_icon . '"></i>';
                                     echo '<div class="jobsearch-services-text">';
                                     echo '<small>';
-                                    if ($_attach_mime == 'image/png' || $_attach_mime == 'image/jpeg') {
-                                        echo '<a href="' . $cusupf_file . '" download="' . $attach_name . '"><img src="' . $_attach_guide . '" alt=""></a>';
-                                    } else {
-                                        echo '<a href="' . $cusupf_file . '" download="' . $attach_name . '">' . esc_html($attach_name) . '</a>';
-                                    }
+                                    echo '<span><a href="' . $cusupf_file . '" download="' . $attach_name . '">' . esc_html($attach_name) . '</a></span>';
                                     echo '</small>';
                                     echo '</div>';
                                     echo $after_html;
@@ -3876,7 +3660,7 @@ class Jobsearch_CustomFieldLoad
                             if (isset($cus_field_icon_arr) && $cus_field_icon_arr <> '' && $field_icon == true) {
                                 $no_icon_class = '';
                                 ?>
-                                <i class="<?php echo jobsearch_esc_html($cus_field_icon_arr) ?>"></i>
+                                <i class="<?php echo esc_html($cus_field_icon_arr) ?>"></i>
                                 <?php
                             }
 
@@ -3891,10 +3675,9 @@ class Jobsearch_CustomFieldLoad
                                 if (is_array($cus_field_value_arr)) {
 
                                     if (isset($cus_field_label_arr) && $cus_field_label_arr <> '') {
-                                        echo jobsearch_esc_html($cus_field_label_arr) . ' ';
+                                        echo esc_html($cus_field_label_arr) . ' ';
                                     }
                                     foreach ($cus_field_value_arr as $key => $single_value) {
-                                        $single_value = jobsearch_esc_html($single_value);
                                         if ($single_value != '') {
                                             if (isset($cus_format) && $cus_format != '') {
                                                 echo '<small>';
@@ -3902,24 +3685,24 @@ class Jobsearch_CustomFieldLoad
                                                 echo '</small>';
                                             } else if (($type == 'dropdown' || $type == 'checkbox') && isset($drop_down_arr[$single_value]) && $drop_down_arr[$single_value] != '') {
                                                 echo '<small>';
-                                                echo jobsearch_esc_html($drop_down_arr[$single_value]);
+                                                echo '<span>' . esc_html($drop_down_arr[$single_value]) . '</span>';
                                                 echo '</small>';
                                             } else {
                                                 echo '<small>';
-                                                echo jobsearch_esc_html(ucwords(str_replace("-", " ", $single_value)));
+                                                echo '<span>' . esc_html(ucwords(str_replace("-", " ", $single_value))) . '</span>';
                                                 echo '</small>';
                                             }
                                         }
                                     }
                                     if (isset($cus_field_label_arr) && $cus_field_label_arr <> '' && ($type != 'dropdown' && $type != 'checkbox') && $type != 'date') {
-                                        echo '<span>' . jobsearch_esc_html($cus_field_label_arr) . ' </span>';
+                                        echo '<span>' . esc_html($cus_field_label_arr) . ' </span>';
                                     }
                                 } else {
 
                                     if (isset($cus_field_label_arr) && $cus_field_label_arr <> '') {
                                         if ($custom_value_position) {
                                             if ($field_label == true) {
-                                                echo jobsearch_esc_html(stripslashes($cus_field_label_arr)) . ' ';
+                                                echo esc_html(stripslashes($cus_field_label_arr)) . ' ';
                                             }
                                         }
                                     }
@@ -3930,32 +3713,32 @@ class Jobsearch_CustomFieldLoad
                                         echo '</small>';
                                     } else if (($type == 'dropdown' || $type == 'checkbox') && isset($drop_down_arr[$cus_field_value_arr]) && $drop_down_arr[$cus_field_value_arr] != '') {
                                         echo '<small>';
-                                        echo(stripslashes(jobsearch_esc_html($drop_down_arr[$cus_field_value_arr])));
+                                        echo esc_html(stripslashes($drop_down_arr[$cus_field_value_arr]));
                                         echo '</small>';
                                     } else if ($type == 'textarea') {
                                         echo '<div class="text-content">';
-                                        echo jobsearch_esc_wp_editor($cus_field_value_arr);
+                                        echo($cus_field_value_arr);
                                         echo '</div>';
                                     } else if ($type == 'video') {
                                         if ($cus_field_value_arr != '') {
                                             echo '<div class="custom-video-contner">';
-                                            echo wp_oembed_get(($cus_field_value_arr));
+                                            echo wp_oembed_get($cus_field_value_arr);
                                             echo '</div>';
                                         }
                                     } else if ($type == 'linkurl') {
                                         if ($cus_field_value_arr != '') {
                                             $cus_field_link_target = isset($cus_field['link_target']) ? $cus_field['link_target'] : '';
                                             echo '<div class="custom-url-contner">';
-                                            echo '<a href="' . jobsearch_esc_html(esc_url($cus_field_value_arr)) . '" target="' . $cus_field_link_target . '">' . jobsearch_esc_html($cus_field_value_arr) . '</a>';
+                                            echo '<a href="' . esc_url($cus_field_value_arr) . '" target="' . $cus_field_link_target . '">' . ($cus_field_value_arr) . '</a>';
                                             echo '</div>';
                                         }
                                     } else {
                                         if ($custom_value_position) {
                                             if ($candidate_list == 'on') {
-                                                echo(ucwords(str_replace("-", " ", jobsearch_esc_html($cus_field_value_arr))));
+                                                echo(ucwords(str_replace("-", " ", $cus_field_value_arr)));
                                             } else {
                                                 echo '<small>';
-                                                echo(ucwords(str_replace("-", " ", jobsearch_esc_html($cus_field_value_arr))));
+                                                echo(ucwords(str_replace("-", " ", $cus_field_value_arr)));
                                                 echo '</small>';
                                             }
                                         }
@@ -3988,11 +3771,12 @@ class Jobsearch_CustomFieldLoad
             }
         }
 
+
         $custom_fields['content'] = $content;
         return $custom_fields;
     }
 
-    static function jobsearch_custom_fields_filter_box_quick_apply_mob_html_callback($html, $custom_field_entity = '', $global_rand_id, $args_count, $left_filter_count_switch, $submit_js_function)
+    static function jobsearch_custom_fields_filter_box_html_callback($html, $custom_field_entity = '', $global_rand_id, $args_count, $left_filter_count_switch, $submit_js_function)
     {
         global $jobsearch_form_fields, $jobsearch_plugin_options, $sitepress;
 
@@ -4010,6 +3794,7 @@ class Jobsearch_CustomFieldLoad
         if ($custom_field_entity == 'candidate') {
             $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check
         }
+
         $job_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
         ob_start();
         $custom_field_flag = 11;
@@ -4030,7 +3815,10 @@ class Jobsearch_CustomFieldLoad
                 if ($cus_field['type'] == 'salary') {
                     $cus_field['enable-search'] = 'yes';
                 }
+
                 if (isset($cus_field['enable-search']) && $cus_field['enable-search'] == 'yes' && ($all_item_empty == 0)) {
+
+
                     if ($cus_field['type'] == 'salary') {
                         $query_str_var_name = 'jobsearch_field_job_salary';
                         $str_salary_type_name = 'job_salary_type';
@@ -4070,177 +3858,59 @@ class Jobsearch_CustomFieldLoad
                     } else if ($type == 'salary') {
                         $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Salary Label - ' . $cus_field_label_arr, $lang_code);
                     }
+
                     $cus_field_label_arr = stripslashes($cus_field_label_arr);
-                    $mobile_toggle = wp_is_mobile() ? 'jobsearch-filter-' . $query_str_var_name : '';
+
                     if ($cus_field['type'] == 'heading' && $cus_field_label_arr != '') { ?>
                         <div class="jobsearch-sfiltrs-heding"><h2><?php echo($cus_field_label_arr) ?></h2></div>
-                    <?php } else { ?>
-                        <div class="jobsearch-filter-responsive-wrap jobsearch-sub-filters <?php echo($mobile_toggle) ?>">
-                            <div class="jobsearch-search-filter-wrap">
-                                <div class="jobsearch-fltbox-title"></div>
-                                <div class="jobsearch-checkbox-toggle">
+                        <?php
+                    } else {
+                        $filter_collapse_cval = 'open';
+                        if ($collapse_condition == 'yes') {
+                            $filter_collapse_cval = 'close';
+                        }
+
+                        $filter_collapse_cname = isset($cus_field['name']) ? sanitize_title($cus_field['name']) . '_csec_collapse' : '';
+                        if (isset($_COOKIE[$filter_collapse_cname]) && $_COOKIE[$filter_collapse_cname] != '') {
+                            $filter_collapse_cval = $_COOKIE[$filter_collapse_cname];
+                            if ($_COOKIE[$filter_collapse_cname] == 'open') {
+                                $collapse_condition = 'no';
+                            } else {
+                                $collapse_condition = 'yes';
+                            }
+                        }
+                        ?>
+                        <div class="jobsearch-filter-responsive-wrap">
+                            <div class="jobsearch-search-filter-wrap <?php echo($collapse_condition == 'yes' ? 'jobsearch-search-filter-toggle jobsearch-remove-padding' : 'jobsearch-search-filter-toggle') ?>">
+                                <div class="jobsearch-fltbox-title">
+                                    <a href="javascript:void(0);" data-cname="<?php echo($filter_collapse_cname) ?>"
+                                       data-cval="<?php echo($filter_collapse_cval) ?>" class="jobsearch-click-btn">
+                                        <?php echo esc_html(stripslashes($cus_field_label_arr)); ?>
+                                    </a>
+                                </div>
+                                <div class="jobsearch-checkbox-toggle" <?php echo($collapse_condition == 'yes' ? 'style="display: none;"' : '') ?>>
                                     <?php
                                     if ($cus_field['type'] == 'dropdown') {
                                         $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
                                         $request_val_arr = explode(",", $request_val);
                                         ?>
-                                    <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                           name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-
-                                    <?php
-                                    if ($query_str_var_name != '') {
-                                    ?>
-                                        <script type="text/javascript">
+                                    <input type="hidden" value="<?php echo esc_html($request_val); ?>"
+                                           name="<?php echo esc_html($query_str_var_name); ?>"
+                                           id="hidden_input-<?php echo esc_html($query_str_var_name); ?>"
+                                           class="<?php echo esc_html($query_str_var_name); ?>"/>
+                                        <script>
                                             jQuery(function () {
                                                 'use strict'
-                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
+                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo esc_html($query_str_var_name); ?>");
                                                 $checkboxes.on('change', function () {
                                                     var ids = $checkboxes.filter(':checked').map(function () {
                                                         return this.value;
                                                     }).get().join(',');
-                                                    jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
+                                                    jQuery('#hidden_input-<?php echo esc_html($query_str_var_name); ?>').val(ids);
                                                     <?php echo($submit_js_function_str); ?>
                                                 });
                                             });
                                         </script>
-                                    <?php
-                                    }
-                                    ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <?php
-                                            $number_option_flag = 1;
-                                            $cut_field_flag = 0;
-                                            if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
-                                                foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-                                                    if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
-                                                        $cut_field_flag++;
-                                                        continue;
-                                                    }
-                                                    // get count of each item
-                                                    // extra condidation
-                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => ($cus_field_options_value),
-                                                                'compare' => 'Like',
-                                                            )
-                                                        );
-                                                    } else {
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $cus_field_options_value,
-                                                                'compare' => '=',
-                                                            )
-                                                        );
-                                                    }
-                                                    // main query array $args_count
-                                                    if ($cus_field_options_value != '') {
-                                                        if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                                            $checked = '';
-                                                            if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
-                                                                $checked = ' checked="checked"';
-                                                            }
-                                                            ?>
-
-<!-- number_option_flag の数字変更 -->
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-
-                                                                <input type="checkbox"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                       class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
-                                                                <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php if ($left_filter_count_switch == 'yes') {
-                                                                    $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                                    ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                <?php } ?>
-                                                            </li>
-                                                            <?php
-                                                            //
-                                                        } else {
-                                                            //get count for this itration
-                                                            $dropdown_arr = array();
-                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => serialize($cus_field_options_value),
-                                                                    'compare' => 'Like',
-                                                                );
-                                                            } else {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => $cus_field_options_value,
-                                                                    'compare' => '=',
-                                                                );
-                                                            }
-
-                                                            $custom_dropdown_selected = '';
-                                                            if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
-                                                                $custom_dropdown_selected = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                <input type="radio"
-                                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php if ($left_filter_count_switch == 'yes') {
-                                                                    $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                                    ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    $number_option_flag++;
-                                                    $cut_field_flag++;
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    <?php
-                                    if ($number_option_flag > 60) {
-                                        echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                    }
-                                    //
-                                    } else if ($cus_field['type'] == 'checkbox') {
-                                    $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                    $request_val_arr = explode(",", $request_val);
-                                    ?>
-                                    <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                           name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-                                    <?php if ($query_str_var_name != '') { ?>
-                                        <script type="text/javascript">
-                                            jQuery(function () {
-                                                'use strict'
-                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
-                                                $checkboxes.on('change', function () {
-                                                    var ids = $checkboxes.filter(':checked').map(function () {
-                                                        return this.value;
-                                                    }).get().join(',');
-                                                    jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
-                                                    <?php echo($submit_js_function_str); ?>
-                                                });
-                                            });
-                                        </script>
-                                    <?php } ?>
                                         <ul class="jobsearch-checkbox">
                                             <?php
                                             $number_option_flag = 1;
@@ -4274,6 +3944,7 @@ class Jobsearch_CustomFieldLoad
                                                     // main query array $args_count
 
                                                     $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
+
                                                     if ($cus_field_options_value != '') {
                                                         if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
                                                             $checked = '';
@@ -4281,11 +3952,12 @@ class Jobsearch_CustomFieldLoad
                                                                 $checked = ' checked="checked"';
                                                             }
                                                             ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                            <li class="<?php echo($number_option_flag > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+
                                                                 <input type="checkbox"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                       class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
+                                                                       id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
+                                                                       value="<?php echo esc_html($cus_field_options_value); ?>"
+                                                                       class="<?php echo esc_html($query_str_var_name); ?>" <?php echo esc_html($checked); ?> />
                                                                 <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
                                                                     <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
                                                                 </label>
@@ -4319,11 +3991,138 @@ class Jobsearch_CustomFieldLoad
                                                             ?>
                                                             <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                                 <input type="radio"
-                                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
+                                                                       name="<?php echo esc_html($query_str_var_name); ?>"
+                                                                       id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
+                                                                       value="<?php echo esc_html($cus_field_options_value); ?>" <?php echo esc_html($custom_dropdown_selected); ?>
                                                                        onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
+                                                                <label for="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
+                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
+                                                                </label>
+                                                                <?php if ($left_filter_count_switch == 'yes') { ?>
+                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
+                                                                    <?php
+                                                                }
+                                                                ?>
+                                                            </li>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    $number_option_flag++;
+                                                    $cut_field_flag++;
+                                                }
+                                            }
+                                            ?>
+                                        </ul>
+                                    <?php
+                                    if ($number_option_flag > 60) {
+                                        echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
+                                    }
+                                    //
+                                    } else if ($cus_field['type'] == 'checkbox') {
+                                    $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
+                                    $request_val_arr = explode(",", $request_val);
+                                    ?>
+                                    <input type="hidden" value="<?php echo esc_html($request_val); ?>"
+                                           name="<?php echo esc_html($query_str_var_name); ?>"
+                                           id="hidden_input-<?php echo esc_html($query_str_var_name); ?>"
+                                           class="<?php echo esc_html($query_str_var_name); ?>"/>
+                                        <script>
+                                            jQuery(function () {
+                                                'use strict'
+                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo esc_html($query_str_var_name); ?>");
+                                                $checkboxes.on('change', function () {
+                                                    var ids = $checkboxes.filter(':checked').map(function () {
+                                                        return this.value;
+                                                    }).get().join(',');
+                                                    jQuery('#hidden_input-<?php echo esc_html($query_str_var_name); ?>').val(ids);
+                                                    <?php echo($submit_js_function_str); ?>
+                                                });
+                                            });
+                                        </script>
+                                        <ul class="jobsearch-checkbox">
+                                            <?php
+                                            $number_option_flag = 1;
+                                            $cut_field_flag = 0;
+                                            if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
+                                                foreach ($cus_field['options']['value'] as $cus_field_options_value) {
+                                                    if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
+                                                        $cut_field_flag++;
+                                                        continue;
+                                                    }
+                                                    // get count of each item
+                                                    // extra condidation
+                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
+
+                                                        $dropdown_count_arr = array(
+                                                            array(
+                                                                'key' => $query_str_var_name,
+                                                                'value' => ($cus_field_options_value),
+                                                                'compare' => 'Like',
+                                                            )
+                                                        );
+                                                    } else {
+                                                        $dropdown_count_arr = array(
+                                                            array(
+                                                                'key' => $query_str_var_name,
+                                                                'value' => $cus_field_options_value,
+                                                                'compare' => '=',
+                                                            )
+                                                        );
+                                                    }
+                                                    // main query array $args_count
+
+                                                    $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
+
+                                                    if ($cus_field_options_value != '') {
+                                                        if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
+                                                            $checked = '';
+                                                            if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
+                                                                $checked = ' checked="checked"';
+                                                            }
+                                                            ?>
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                <input type="checkbox"
+                                                                       id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
+                                                                       value="<?php echo esc_html($cus_field_options_value); ?>"
+                                                                       class="<?php echo esc_html($query_str_var_name); ?>" <?php echo esc_html($checked); ?> />
+                                                                <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
+                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
+                                                                </label>
+                                                                <?php if ($left_filter_count_switch == 'yes') { ?>
+                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
+                                                                <?php } ?>
+                                                            </li>
+                                                            <?php
+                                                            //
+                                                        } else {
+                                                            //get count for this itration
+                                                            $dropdown_arr = array();
+                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
+                                                                $dropdown_arr = array(
+                                                                    'key' => $query_str_var_name,
+                                                                    'value' => serialize($cus_field_options_value),
+                                                                    'compare' => 'Like',
+                                                                );
+                                                            } else {
+                                                                $dropdown_arr = array(
+                                                                    'key' => $query_str_var_name,
+                                                                    'value' => $cus_field_options_value,
+                                                                    'compare' => '=',
+                                                                );
+                                                            }
+
+                                                            $custom_dropdown_selected = '';
+                                                            if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
+                                                                $custom_dropdown_selected = ' checked="checked"';
+                                                            }
+                                                            ?>
+                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+                                                                <input type="radio"
+                                                                       name="<?php echo esc_html($query_str_var_name); ?>"
+                                                                       id="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
+                                                                       value="<?php echo esc_html($cus_field_options_value); ?>" <?php echo esc_html($custom_dropdown_selected); ?>
+                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
+                                                                <label for="<?php echo esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
                                                                     <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
                                                                 </label>
                                                                 <?php if ($left_filter_count_switch == 'yes') { ?>
@@ -4366,10 +4165,9 @@ class Jobsearch_CustomFieldLoad
                                         ?>
                                         <ul class="jobsearch-checkbox">
                                             <li>
-                                                <input type="text"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       value="<?php echo jobsearch_esc_html($text_field_req_val); ?>"
+                                                <input type="text" name="<?php echo esc_html($query_str_var_name); ?>"
+                                                       id="<?php echo esc_html($query_str_var_name); ?>"
+                                                       value="<?php echo esc_html($text_field_req_val); ?>"
                                                        onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
                                             </li>
                                         </ul>
@@ -4379,10 +4177,9 @@ class Jobsearch_CustomFieldLoad
                                         ?>
                                         <ul class="jobsearch-checkbox">
                                             <li>
-                                                <input type="number"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       value="<?php echo jobsearch_esc_html($number_field_req_val); ?>"
+                                                <input type="number" name="<?php echo esc_html($query_str_var_name); ?>"
+                                                       id="<?php echo esc_html($query_str_var_name); ?>"
+                                                       value="<?php echo esc_html($number_field_req_val); ?>"
                                                        onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
                                             </li>
                                         </ul>
@@ -4399,31 +4196,31 @@ class Jobsearch_CustomFieldLoad
                                         <ul class="jobsearch-checkbox">
                                             <li>
                                                 <div class="filter-datewise-con">
-                                                    <script type="text/javascript">
+                                                    <script>
                                                         jQuery(document).ready(function () {
-                                                            jQuery("#from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
+                                                            jQuery("#from<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
+                                                                format: "<?php echo esc_html($cus_field_date_formate_arr[0]); ?>",
                                                                 timepicker: false
                                                             });
-                                                            jQuery("#to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
+                                                            jQuery("#to<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
+                                                                format: "<?php echo esc_html($cus_field_date_formate_arr[0]); ?>",
                                                                 timepicker: false
                                                             });
                                                         });
                                                     </script>
-                                                    <label for="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
+                                                    <label for="from<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>">
                                                         <input type="text"
-                                                               name="from-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                               value="<?php echo jobsearch_esc_html($fromdate_field_req_val); ?>"
+                                                               name="from-<?php echo esc_html($query_str_var_name); ?>"
+                                                               id="from<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>"
+                                                               value="<?php echo esc_html($fromdate_field_req_val); ?>"
                                                                placeholder="<?php esc_html_e('Date From', 'wp-jobsearch') ?>"
                                                                onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
                                                     </label>
-                                                    <label for="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
+                                                    <label for="to<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>">
                                                         <input type="text"
-                                                               name="to-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                               value="<?php echo jobsearch_esc_html($todate_field_req_val); ?>"
+                                                               name="to-<?php echo esc_html($query_str_var_name); ?>"
+                                                               id="to<?php echo esc_html($query_str_var_name) . $global_rand_id; ?>"
+                                                               value="<?php echo esc_html($todate_field_req_val); ?>"
                                                                placeholder="<?php esc_html_e('Date To', 'wp-jobsearch') ?>"
                                                                onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
                                                     </label>
@@ -4435,7 +4232,6 @@ class Jobsearch_CustomFieldLoad
 
                                         $range_min = $cus_field['min'];
                                         $range_laps = $cus_field['laps'];
-                                        $range_laps = $range_laps > 100 ? 100 : $range_laps;
                                         $range_interval = $cus_field['interval'];
                                         $range_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
 
@@ -4452,7 +4248,8 @@ class Jobsearch_CustomFieldLoad
                                         <ul class="jobsearch-checkbox">
                                             <?php
                                             $loop_flag = 1;
-                                            while ($loop_flag <= $range_laps) { ?>
+                                            while ($loop_flag <= $range_laps) {
+                                                ?>
                                             <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                 <?php
                                                 // main query array $args_count
@@ -4478,12 +4275,11 @@ class Jobsearch_CustomFieldLoad
                                                     $custom_slider_selected = ' checked="checked"';
                                                 }
                                                 ?>
-                                                <input type="radio"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                       value="<?php echo jobsearch_esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo jobsearch_esc_html($custom_slider_selected); ?>
+                                                <input type="radio" name="<?php echo esc_html($query_str_var_name); ?>"
+                                                       id="<?php echo esc_html($query_str_var_name . $loop_flag); ?>"
+                                                       value="<?php echo esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo esc_html($custom_slider_selected); ?>
                                                        onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?>
+                                                <label for="<?php echo esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?>
                                                 </label>
                                                 <?php if ($left_filter_count_switch == 'yes') { ?>
                                                     <span class="filter-post-count"><?php echo absint($range_totnum); ?></span>
@@ -4523,31 +4319,29 @@ class Jobsearch_CustomFieldLoad
                                         ?>
                                         <ul class="jobsearch-checkbox">
                                             <li>
-                                                <input type="text"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                       value="<?php echo jobsearch_esc_html($range_complete_str); ?>"
-                                                       readonly
+                                                <input type="text" name="<?php echo esc_html($query_str_var_name) ?>"
+                                                       id="<?php echo esc_html($query_str_var_name . $rand_id) ?>"
+                                                       value="<?php echo esc_html($range_complete_str); ?>" readonly
                                                        style="border:0; color:#f6931f; font-weight:bold;"/>
-                                                <div id="slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                <script type="text/javascript">
+                                                <div id="slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>"></div>
+                                                <script>
                                                     jQuery(document).ready(function () {
 
 
-                                                        jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
+                                                        jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider({
                                                             range: true,
                                                             min: <?php echo absint($range_min); ?>,
                                                             max: <?php echo absint($range_field_max); ?>,
                                                             values: [<?php echo absint($range_complete_str_first); ?>, <?php echo absint($range_complete_str_second); ?>],
                                                             slide: function (event, ui) {
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
+                                                                jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
                                                             },
                                                             stop: function (event, ui) {
                                                                 <?php echo force_balance_tags($submit_js_function_str); ?>;
                                                             }
                                                         });
-                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                            "-" + jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
+                                                        jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
+                                                            "-" + jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
                                                     });
                                                 </script>
                                             </li>
@@ -4556,13 +4350,12 @@ class Jobsearch_CustomFieldLoad
                                     }
                                         $range_flag++;
                                     }
-                                    } elseif ($cus_field['type'] == 'salary' && $salary_onoff_switch != 'off') {
+                                    } elseif ($cus_field['type'] == 'salary' && $salary_onoff_switch == 'on') {
 
                                         $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
 
                                         $salary_min = $cus_field['min'];
                                         $salary_laps = $cus_field['laps'];
-                                        $salary_laps = $salary_laps > 200 ? 200 : $salary_laps;
                                         $salary_interval = $cus_field['interval'];
                                         $salary_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
 
@@ -4618,7 +4411,9 @@ class Jobsearch_CustomFieldLoad
                                             $loop_flag = 1;
                                             while ($loop_flag <= $salary_laps) {
                                                 ?>
-                                            <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
+
+<!-- ここから -->
+                                            <li class="<?php echo($filter_more_counter > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
                                                 <?php
                                                 // main query array $args_count
                                                 $salary_first = $salary_min + 1;
@@ -4643,21 +4438,23 @@ class Jobsearch_CustomFieldLoad
                                                     $custom_slider_selected = ' checked="checked"';
                                                 }
                                                 ?>
-                                                <input type="radio"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                       value="<?php echo jobsearch_esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo($custom_slider_selected); ?>
+                                                <input type="radio" name="<?php echo esc_html($query_str_var_name); ?>"
+                                                       id="<?php echo esc_html($query_str_var_name . $loop_flag); ?>"
+                                                       value="<?php echo esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo esc_html($custom_slider_selected); ?>
                                                        onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
                                                 <?php
                                                 $salary_from = ($salary_min + 1);
                                                 $salary_upto = ($salary_min + $salary_interval);
                                                 ?>
-                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo((($salary_from) . " - " . ($salary_upto))); ?>
+                                                <label for="<?php echo esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo((($salary_from) . " - " . ($salary_upto))); ?>
                                                 </label>
                                                 <?php if ($left_filter_count_switch == 'yes') { ?>
                                                     <span class="filter-post-count"><?php echo absint($salary_totnum); ?></span>
                                                 <?php } ?>
-                                                </li><?php
+                                                </li>
+
+<!-- ここまで -->   
+                                                <?php
                                                 $salary_min = $salary_min + $salary_interval;
                                                 $loop_flag++;
                                                 $filter_more_counter++;
@@ -4665,7 +4462,7 @@ class Jobsearch_CustomFieldLoad
                                             ?>
                                         </ul>
                                         <?php
-                                        if ($filter_more_counter > 6) {
+                                        if ($filter_more_counter > 60) {
                                             echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                         }
                                     } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style
@@ -4694,1727 +4491,29 @@ class Jobsearch_CustomFieldLoad
                                             <li class="salary-filter-slider">
                                                 <div class="filter-slider-range">
                                                     <input type="text"
-                                                           name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                           id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                           value="<?php echo jobsearch_esc_html($salary_complete_str); ?>"
-                                                           readonly
-                                                           style="border:0; color:#f6931f; font-weight:bold;"/>
-                                                </div>
-                                                <div id="slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                <script type="text/javascript">
-                                                    jQuery(document).ready(function () {
-
-                                                        jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
-                                                            salary: true,
-                                                            min: <?php echo absint($salary_min); ?>,
-                                                            max: <?php echo absint($salary_field_max); ?>,
-                                                            values: [<?php echo absint($salary_complete_str_first); ?>, <?php echo absint($salary_complete_str_second); ?>],
-                                                            slide: function (event, ui) {
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
-                                                            },
-                                                            stop: function (event, ui) {
-                                                                <?php echo force_balance_tags($submit_js_function_str); ?>;
-                                                            }
-                                                        });
-                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                            "-" + jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
-                                                    });
-                                                </script>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    }
-                                        $salary_flag++;
-                                    }
-                                    }
-                                    ?>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php
-                    }
-                }
-            }
-        }
-        $html .= ob_get_clean();
-        return $html;
-    }
-
-    static function jobsearch_custom_fields_filter_box_quick_apply_html_callback($html, $custom_field_entity = '', $global_rand_id, $args_count, $left_filter_count_switch, $submit_js_function)
-    {
-        global $jobsearch_form_fields, $jobsearch_plugin_options, $sitepress;
-
-        $lang_code = '';
-        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-            $lang_code = $sitepress->get_current_language();
-        }
-
-        $submit_js_function_str = '';
-        if ($submit_js_function != '') {
-            $submit_js_function_str = $submit_js_function . '(' . $global_rand_id . ')';
-        }
-
-        $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : ''; // for job salary check
-        if ($custom_field_entity == 'candidate') {
-            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check
-        }
-
-        $job_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
-
-
-        ob_start();
-        $custom_field_flag = 11;
-        if (!empty($job_cus_fields)) {
-            foreach ($job_cus_fields as $cus_fieldvar => $cus_field) {
-                $all_item_empty = 0;
-                if (isset($cus_field['options']['value']) && is_array($cus_field['options']['value'])) {
-                    foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-
-                        if ($cus_field_options_value != '') {
-                            $all_item_empty = 0;
-                            break;
-                        } else {
-                            $all_item_empty = 1;
-                        }
-                    }
-                }
-                if ($cus_field['type'] == 'salary') {
-                    $cus_field['enable-search'] = 'yes';
-                }
-
-                if (isset($cus_field['enable-search']) && $cus_field['enable-search'] == 'yes' && ($all_item_empty == 0)) {
-
-                    if ($cus_field['type'] == 'salary') {
-                        $query_str_var_name = 'jobsearch_field_job_salary';
-                        $str_salary_type_name = 'job_salary_type';
-                        if ($custom_field_entity == 'candidate') {
-                            $query_str_var_name = 'jobsearch_field_candidate_salary';
-                            $str_salary_type_name = 'candidate_salary_type';
-                        }
-                    } else {
-                        $query_str_var_name = isset($cus_field['name']) ? $cus_field['name'] : '';
-                    }
-                    $collapse_condition = 'no';
-                    if (isset($cus_field['collapse-search'])) {
-                        $collapse_condition = $cus_field['collapse-search'];
-                    }
-
-                    $cus_field_label_arr = isset($cus_field['label']) ? $cus_field['label'] : '';
-                    $type = isset($cus_field['type']) ? $cus_field['type'] : '';
-
-                    if ($type == 'text') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Text Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'email') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Email Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'number') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Number Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'date') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Date Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'checkbox') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Checkbox Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'dropdown') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Dropdown Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'range') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Range Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'textarea') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Textarea Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'heading') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Heading Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'salary') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Salary Label - ' . $cus_field_label_arr, $lang_code);
-                    }
-
-                    $cus_field_label_arr = stripslashes($cus_field_label_arr);
-                    $mobile_view = wp_is_mobile() ? 'data-quick-detail-toggle="jobsearch-filter-' . $query_str_var_name . ' "' : '';
-                    if ($cus_field['type'] == 'heading' && $cus_field_label_arr != '') { ?>
-                        <div class="jobsearch-sfiltrs-heding"><h2><?php echo($cus_field_label_arr) ?></h2></div>
-                    <?php } else { ?>
-
-                        <li><a href="javascript:void(0)"
-                               class="addon-quick-detail-toggle" <?php echo($mobile_view); ?>
-                            ><?php echo jobsearch_esc_html(stripslashes($cus_field_label_arr)); ?>
-                                <i class="careerfy-icon careerfy-down-arrow"></i></a>
-                            <?php if (!wp_is_mobile()) { ?>
-                                <div class="jobsearch-filter-responsive-wrap jobsearch-sub-filters">
-                                    <div class="jobsearch-search-filter-wrap">
-                                        <div class="jobsearch-fltbox-title"></div>
-                                        <div class="jobsearch-checkbox-toggle">
-                                            <?php
-                                            if ($cus_field['type'] == 'dropdown') {
-                                                $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                                $request_val_arr = explode(",", $request_val);
-                                                ?>
-                                            <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                                   name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                   id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                   class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-                                            <?php
-                                            if ($query_str_var_name != '') {
-                                            ?>
-                                                <script type="text/javascript">
-                                                    jQuery(function () {
-                                                        'use strict'
-                                                        var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
-                                                        $checkboxes.on('change', function () {
-                                                            var ids = $checkboxes.filter(':checked').map(function () {
-                                                                return this.value;
-                                                            }).get().join(',');
-                                                            jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
-                                                            <?php echo($submit_js_function_str); ?>
-                                                        });
-                                                    });
-                                                </script>
-                                            <?php
-                                            }
-                                            ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <?php
-                                                    $number_option_flag = 1;
-                                                    $cut_field_flag = 0;
-                                                    if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
-                                                        foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-                                                            if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
-                                                                $cut_field_flag++;
-                                                                continue;
-                                                            }
-                                                            // get count of each item
-                                                            // extra condidation
-                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-
-                                                                $dropdown_count_arr = array(
-                                                                    array(
-                                                                        'key' => $query_str_var_name,
-                                                                        'value' => ($cus_field_options_value),
-                                                                        'compare' => 'Like',
-                                                                    )
-                                                                );
-                                                            } else {
-                                                                $dropdown_count_arr = array(
-                                                                    array(
-                                                                        'key' => $query_str_var_name,
-                                                                        'value' => $cus_field_options_value,
-                                                                        'compare' => '=',
-                                                                    )
-                                                                );
-                                                            }
-                                                            // main query array $args_count
-                                                            if ($cus_field_options_value != '') {
-                                                                if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                                                    $checked = '';
-                                                                    if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
-                                                                        $checked = ' checked="checked"';
-                                                                    }
-                                                                    ?>
-                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-
-                                                                        <input type="checkbox"
-                                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                               value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                               class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
-                                                                        <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
-                                                                            <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                        </label>
-                                                                        <?php if ($left_filter_count_switch == 'yes') {
-                                                                            $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                                            ?>
-                                                                            <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                        <?php } ?>
-                                                                    </li>
-                                                                    <?php
-                                                                    //
-                                                                } else {
-                                                                    //get count for this itration
-                                                                    $dropdown_arr = array();
-                                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-                                                                        $dropdown_arr = array(
-                                                                            'key' => $query_str_var_name,
-                                                                            'value' => serialize($cus_field_options_value),
-                                                                            'compare' => 'Like',
-                                                                        );
-                                                                    } else {
-                                                                        $dropdown_arr = array(
-                                                                            'key' => $query_str_var_name,
-                                                                            'value' => $cus_field_options_value,
-                                                                            'compare' => '=',
-                                                                        );
-                                                                    }
-
-                                                                    $custom_dropdown_selected = '';
-                                                                    if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
-                                                                        $custom_dropdown_selected = ' checked="checked"';
-                                                                    }
-                                                                    ?>
-                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                        <input type="radio"
-                                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                               value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
-                                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                        <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
-                                                                            <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                        </label>
-                                                                        <?php if ($left_filter_count_switch == 'yes') {
-                                                                            $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                                            ?>
-                                                                            <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                            <?php
-                                                                        }
-                                                                        ?>
-                                                                    </li>
-                                                                    <?php
-                                                                }
-                                                            }
-                                                            $number_option_flag++;
-                                                            $cut_field_flag++;
-                                                        }
-                                                    }
-                                                    ?>
-                                                </ul>
-                                            <?php
-                                            if ($number_option_flag > 60) {
-                                                echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                            }
-                                            //
-                                            } else if ($cus_field['type'] == 'checkbox') {
-                                            $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                            $request_val_arr = explode(",", $request_val);
-                                            ?>
-                                            <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                                   name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                   id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                   class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-                                            <?php
-                                            if ($query_str_var_name != '') {
-                                            ?>
-                                                <script type="text/javascript">
-                                                    jQuery(function () {
-                                                        'use strict'
-                                                        var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
-                                                        $checkboxes.on('change', function () {
-                                                            var ids = $checkboxes.filter(':checked').map(function () {
-                                                                return this.value;
-                                                            }).get().join(',');
-                                                            jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
-                                                            <?php echo($submit_js_function_str); ?>
-                                                        });
-                                                    });
-                                                </script>
-                                            <?php
-                                            }
-                                            ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <?php
-                                                    $number_option_flag = 1;
-                                                    $cut_field_flag = 0;
-                                                    if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
-                                                        foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-                                                            if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
-                                                                $cut_field_flag++;
-                                                                continue;
-                                                            }
-                                                            // get count of each item
-                                                            // extra condidation
-                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-
-                                                                $dropdown_count_arr = array(
-                                                                    array(
-                                                                        'key' => $query_str_var_name,
-                                                                        'value' => ($cus_field_options_value),
-                                                                        'compare' => 'Like',
-                                                                    )
-                                                                );
-                                                            } else {
-                                                                $dropdown_count_arr = array(
-                                                                    array(
-                                                                        'key' => $query_str_var_name,
-                                                                        'value' => $cus_field_options_value,
-                                                                        'compare' => '=',
-                                                                    )
-                                                                );
-                                                            }
-                                                            // main query array $args_count
-
-                                                            $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                            if ($cus_field_options_value != '') {
-                                                                if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                                                    $checked = '';
-                                                                    if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
-                                                                        $checked = ' checked="checked"';
-                                                                    }
-                                                                    ?>
-                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                        <input type="checkbox"
-                                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                               value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                               class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
-                                                                        <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
-                                                                            <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                        </label>
-                                                                        <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                                            <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                        <?php } ?>
-                                                                    </li>
-                                                                    <?php
-                                                                    //
-                                                                } else {
-                                                                    //get count for this itration
-                                                                    $dropdown_arr = array();
-                                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-                                                                        $dropdown_arr = array(
-                                                                            'key' => $query_str_var_name,
-                                                                            'value' => serialize($cus_field_options_value),
-                                                                            'compare' => 'Like',
-                                                                        );
-                                                                    } else {
-                                                                        $dropdown_arr = array(
-                                                                            'key' => $query_str_var_name,
-                                                                            'value' => $cus_field_options_value,
-                                                                            'compare' => '=',
-                                                                        );
-                                                                    }
-
-                                                                    $custom_dropdown_selected = '';
-                                                                    if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
-                                                                        $custom_dropdown_selected = ' checked="checked"';
-                                                                    }
-                                                                    ?>
-                                                                    <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                        <input type="radio"
-                                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                               value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
-                                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                        <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
-                                                                            <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                        </label>
-                                                                        <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                                            <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                            <?php
-                                                                        }
-                                                                        ?>
-                                                                    </li>
-                                                                    <?php
-                                                                }
-                                                            }
-                                                            $number_option_flag++;
-                                                            $cut_field_flag++;
-                                                        }
-                                                    }
-                                                    ?>
-                                                </ul>
-                                            <?php
-                                            if ($number_option_flag > 60) {
-                                                echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                            }
-                                            //
-                                            } else if ($cus_field['type'] == 'dependent_dropdown') {
-                                            $depdrpdwn_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                            $depdrpdwn_field_options = isset($cus_field['options_list']) ? $cus_field['options_list'] : '';
-                                            $depdrpdwn_cont_optsid = isset($cus_field['options_list_id']) && $cus_field['options_list_id'] != '' ? $cus_field['options_list_id'] : 0;
-                                            ?>
-                                                <div class="jobsearch-depdrpdwn-fields">
-                                                    <?php
-                                                    $depdrpdwn_fields = jobsearch_dependent_dropdown_list_html($depdrpdwn_field_options, $depdrpdwn_cont_optsid, $cus_field, $depdrpdwn_field_req_val);
-                                                    echo($depdrpdwn_fields);
-                                                    ?>
-                                                    <a href="javascript:void(0);"
-                                                       class="depdrpdwn-form-submitbtn jobsearch-bgcolor btn"
-                                                       onclick="<?php echo($submit_js_function_str); ?>"><?php esc_html_e('Submit', 'wp-jobsearch') ?></a>
-                                                </div>
-                                            <?php } else if ($cus_field['type'] == 'text' || $cus_field['type'] == 'textarea' || $cus_field['type'] == 'email') {
-                                                $text_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <li>
-                                                        <input type="text"
-                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               value="<?php echo jobsearch_esc_html($text_field_req_val); ?>"
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                    </li>
-                                                </ul>
-                                                <?php
-                                            } else if ($cus_field['type'] == 'number') {
-                                                $number_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <li>
-                                                        <input type="number"
-                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               value="<?php echo jobsearch_esc_html($number_field_req_val); ?>"
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                    </li>
-                                                </ul>
-                                                <?php
-                                            } else if ($cus_field['type'] == 'date') {
-                                                $fromdate_field_req_val = isset($_REQUEST['from-' . $query_str_var_name]) ? $_REQUEST['from-' . $query_str_var_name] : '';
-                                                $todate_field_req_val = isset($_REQUEST['to-' . $query_str_var_name]) ? $_REQUEST['to-' . $query_str_var_name] : '';
-                                                wp_enqueue_style('datetimepicker-style');
-                                                wp_enqueue_script('datetimepicker-script');
-                                                wp_enqueue_script('jquery-ui');
-                                                $cus_field_date_formate_arr = explode(" ", $cus_field['date-format']);
-                                                ?>
-
-                                                <ul class="jobsearch-checkbox">
-                                                    <li>
-                                                        <div class="filter-datewise-con">
-                                                            <script type="text/javascript">
-                                                                jQuery(document).ready(function () {
-                                                                    jQuery("#from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                        format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
-                                                                        timepicker: false
-                                                                    });
-                                                                    jQuery("#to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                        format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
-                                                                        timepicker: false
-                                                                    });
-                                                                });
-                                                            </script>
-                                                            <label for="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
-                                                                <input type="text"
-                                                                       name="from-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                                       value="<?php echo jobsearch_esc_html($fromdate_field_req_val); ?>"
-                                                                       placeholder="<?php esc_html_e('Date From', 'wp-jobsearch') ?>"
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                            </label>
-                                                            <label for="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
-                                                                <input type="text"
-                                                                       name="to-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                                       value="<?php echo jobsearch_esc_html($todate_field_req_val); ?>"
-                                                                       placeholder="<?php esc_html_e('Date To', 'wp-jobsearch') ?>"
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                                <?php
-                                            } elseif ($cus_field['type'] == 'range') {
-
-                                                $range_min = $cus_field['min'];
-                                                $range_laps = $cus_field['laps'];
-                                                $range_laps = $range_laps > 100 ? 100 : $range_laps;
-                                                $range_interval = $cus_field['interval'];
-                                                $range_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
-
-                                                if (strpos($range_field_type, '-') !== FALSE) {
-                                                    $range_field_type_arr = explode("_", $range_field_type);
-                                                } else {
-                                                    $range_field_type_arr[0] = $range_field_type;
-                                                }
-                                                $range_flag = 0;
-                                            while (count($range_field_type_arr) > $range_flag) {
-                                            if ($range_field_type_arr[$range_flag] == 'simple') { // if input style
-                                                $filter_more_counter = 1;
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <?php
-                                                    $loop_flag = 1;
-                                                    while ($loop_flag <= $range_laps) { ?>
-                                                    <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                        <?php
-                                                        // main query array $args_count
-                                                        $range_first = $range_min + 1;
-                                                        $range_seond = $range_min + $range_interval;
-                                                        $range_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $range_first,
-                                                                'compare' => '>=',
-                                                                'type' => 'numeric'
-                                                            ),
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $range_seond,
-                                                                'compare' => '<=',
-                                                                'type' => 'numeric'
-                                                            )
-                                                        );
-                                                        $range_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $range_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                        $custom_slider_selected = '';
-                                                        if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == (($range_min + 1) . "-" . ($range_min + $range_interval))) {
-                                                            $custom_slider_selected = ' checked="checked"';
-                                                        }
-                                                        ?>
-                                                        <input type="radio"
-                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                               value="<?php echo jobsearch_esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo jobsearch_esc_html($custom_slider_selected); ?>
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                        <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?>
-                                                        </label>
-                                                        <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                            <span class="filter-post-count"><?php echo absint($range_totnum); ?></span>
-                                                        <?php } ?>
-                                                        </li><?php
-                                                        $range_min = $range_min + $range_interval;
-                                                        $loop_flag++;
-                                                        $filter_more_counter++;
-                                                    }
-                                                    ?>
-                                                </ul>
-                                                <?php
-                                                if ($filter_more_counter > 6) {
-                                                    echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                                }
-                                            } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style
-                                                wp_enqueue_style('jquery-ui');
-                                                wp_enqueue_script('jquery-ui');
-                                                $rand_id = rand(123, 1231231);
-                                                $range_field_max = $range_min;
-                                                $i = 0;
-                                                while ($range_laps > $i) {
-                                                    $range_field_max = $range_field_max + $range_interval;
-                                                    $i++;
-                                                }
-                                                $range_complete_str_first = "";
-                                                $range_complete_str_second = "";
-                                                $range_complete_str = '';
-                                                $range_complete_str_first = $range_min;
-                                                $range_complete_str_second = $range_field_max;
-                                                if (isset($_REQUEST[$query_str_var_name])) {
-                                                    $range_complete_str = $_REQUEST[$query_str_var_name];
-                                                    $range_complete_str_arr = explode("-", $range_complete_str);
-                                                    $range_complete_str_first = isset($range_complete_str_arr[0]) ? $range_complete_str_arr[0] : '';
-                                                    $range_complete_str_second = isset($range_complete_str_arr[1]) ? $range_complete_str_arr[1] : '';
-                                                }
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <li>
-                                                        <input type="text"
-                                                               name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                               value="<?php echo jobsearch_esc_html($range_complete_str); ?>"
-                                                               readonly
-                                                               style="border:0; color:#f6931f; font-weight:bold;"/>
-                                                        <div id="slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                        <script type="text/javascript">
-                                                            jQuery(document).ready(function () {
-
-
-                                                                jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
-                                                                    range: true,
-                                                                    min: <?php echo absint($range_min); ?>,
-                                                                    max: <?php echo absint($range_field_max); ?>,
-                                                                    values: [<?php echo absint($range_complete_str_first); ?>, <?php echo absint($range_complete_str_second); ?>],
-                                                                    slide: function (event, ui) {
-                                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
-                                                                    },
-                                                                    stop: function (event, ui) {
-                                                                        <?php echo force_balance_tags($submit_js_function_str); ?>;
-                                                                    }
-                                                                });
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                                    "-" + jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
-                                                            });
-                                                        </script>
-                                                    </li>
-                                                </ul>
-                                                <?php
-                                            }
-                                                $range_flag++;
-                                            }
-                                            } elseif ($cus_field['type'] == 'salary' && $salary_onoff_switch != 'off') {
-
-                                                $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
-
-                                                $salary_min = $cus_field['min'];
-                                                $salary_laps = $cus_field['laps'];
-                                                $salary_laps = $salary_laps > 200 ? 200 : $salary_laps;
-                                                $salary_interval = $cus_field['interval'];
-                                                $salary_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
-
-                                                if (strpos($salary_field_type, '-') !== FALSE) {
-                                                    $salary_field_type_arr = explode("_", $salary_field_type);
-                                                } else {
-                                                    $salary_field_type_arr[0] = $salary_field_type;
-                                                }
-
-                                                // Salary Types
-                                            if (!empty($job_salary_types)) {
-                                                $slar_type_count = 1;
-                                                ?>
-                                                <div class="jobsearch-salary-types-filter">
-                                                    <ul>
-                                                        <?php
-                                                        foreach ($job_salary_types as $job_salary_type) {
-                                                            $job_salary_type = apply_filters('wpml_translate_single_string', $job_salary_type, 'JobSearch Options', 'Salary Type - ' . $job_salary_type, $lang_code);
-                                                            $slalary_type_selected = '';
-                                                            if (isset($_REQUEST[$str_salary_type_name]) && $_REQUEST[$str_salary_type_name] == 'type_' . $slar_type_count) {
-                                                                $slalary_type_selected = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="salary-type-radio">
-                                                                <input type="radio"
-                                                                       id="salary_type_<?php echo($slar_type_count) ?>"
-                                                                       name="<?php echo($str_salary_type_name) ?>"
-                                                                       class="job_salary_type"<?php echo($slalary_type_selected) ?>
-                                                                       value="type_<?php echo($slar_type_count) ?>"
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>">
-                                                                <label for="salary_type_<?php echo($slar_type_count) ?>">
-                                                                    <span></span>
-                                                                    <small><?php echo($job_salary_type) ?></small>
-                                                                </label>
-                                                            </li>
-                                                            <?php
-                                                            $slar_type_count++;
-                                                        }
-                                                        ?>
-                                                    </ul>
-                                                </div>
-                                                <?php
-                                            }
-                                                //
-
-                                                $salary_flag = 0;
-                                            while (count($salary_field_type_arr) > $salary_flag) {
-                                            if ($salary_field_type_arr[$salary_flag] == 'simple') { // if input style
-                                                $filter_more_counter = 1;
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <?php
-                                                    $loop_flag = 1;
-                                                    while ($loop_flag <= $salary_laps) {
-                                                        ?>
-                                                    <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                        <?php
-                                                        // main query array $args_count
-                                                        $salary_first = $salary_min + 1;
-                                                        $salary_seond = $salary_min + $salary_interval;
-                                                        $salary_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $salary_first,
-                                                                'compare' => '>=',
-                                                                'type' => 'numeric'
-                                                            ),
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $salary_seond,
-                                                                'compare' => '<=',
-                                                                'type' => 'numeric'
-                                                            )
-                                                        );
-                                                        $salary_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $salary_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                        $custom_slider_selected = '';
-                                                        if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == (($salary_min + 1) . "-" . ($salary_min + $salary_interval))) {
-                                                            $custom_slider_selected = ' checked="checked"';
-                                                        }
-                                                        ?>
-                                                        <input type="radio"
-                                                               name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                               value="<?php echo jobsearch_esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo jobsearch_esc_html($custom_slider_selected); ?>
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                        <?php
-                                                        $salary_from = ($salary_min + 1);
-                                                        $salary_upto = ($salary_min + $salary_interval);
-                                                        ?>
-                                                        <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo((($salary_from) . " - " . ($salary_upto))); ?>
-                                                        </label>
-                                                        <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                            <span class="filter-post-count"><?php echo absint($salary_totnum); ?></span>
-                                                        <?php } ?>
-                                                        </li><?php
-                                                        $salary_min = $salary_min + $salary_interval;
-                                                        $loop_flag++;
-                                                        $filter_more_counter++;
-                                                    }
-                                                    ?>
-                                                </ul>
-                                                <?php
-                                                if ($filter_more_counter > 6) {
-                                                    echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                                }
-                                            } elseif ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style
-                                                wp_enqueue_style('jquery-ui');
-                                                wp_enqueue_script('jquery-ui');
-                                                $rand_id = rand(1231110, 9231231);
-                                                $salary_field_max = $salary_min;
-                                                $i = 0;
-                                                while ($salary_laps > $i) {
-                                                    $salary_field_max = $salary_field_max + $salary_interval;
-                                                    $i++;
-                                                }
-                                                $salary_complete_str_first = "";
-                                                $salary_complete_str_second = "";
-                                                $salary_complete_str = '';
-                                                $salary_complete_str_first = $salary_min;
-                                                $salary_complete_str_second = $salary_field_max;
-                                                if (isset($_REQUEST[$query_str_var_name])) {
-                                                    $salary_complete_str = $_REQUEST[$query_str_var_name];
-                                                    $salary_complete_str_arr = explode("-", $salary_complete_str);
-                                                    $salary_complete_str_first = isset($salary_complete_str_arr[0]) ? $salary_complete_str_arr[0] : '';
-                                                    $salary_complete_str_second = isset($salary_complete_str_arr[1]) ? $salary_complete_str_arr[1] : '';
-                                                }
-                                                ?>
-                                                <ul class="jobsearch-checkbox">
-                                                    <li class="salary-filter-slider">
-                                                        <div class="filter-slider-range">
-                                                            <input type="text"
-                                                                   name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                                   id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                                   value="<?php echo jobsearch_esc_html($salary_complete_str); ?>"
-                                                                   readonly
-                                                                   style="border:0; color:#f6931f; font-weight:bold;"/>
-                                                        </div>
-                                                        <div id="slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                        <script type="text/javascript">
-                                                            jQuery(document).ready(function () {
-
-                                                                jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
-                                                                    salary: true,
-                                                                    min: <?php echo absint($salary_min); ?>,
-                                                                    max: <?php echo absint($salary_field_max); ?>,
-                                                                    values: [<?php echo absint($salary_complete_str_first); ?>, <?php echo absint($salary_complete_str_second); ?>],
-                                                                    slide: function (event, ui) {
-                                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
-                                                                    },
-                                                                    stop: function (event, ui) {
-                                                                        <?php echo force_balance_tags($submit_js_function_str); ?>;
-                                                                    }
-                                                                });
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                                    "-" + jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
-                                                            });
-                                                        </script>
-                                                    </li>
-                                                </ul>
-                                                <?php
-                                            }
-                                                $salary_flag++;
-                                            }
-                                            }
-                                            ?>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </li>
-                        <?php
-                    }
-                }
-            }
-        }
-        $html .= ob_get_clean();
-        return $html;
-    }
-
-    static function jobsearch_custom_fields_filter_box_html_callback($html, $custom_field_entity = '', $global_rand_id, $args_count, $left_filter_count_switch, $submit_js_function, $filter_sort_by = 'default')
-    {
-        global $jobsearch_form_fields, $jobsearch_plugin_options, $sitepress;
-
-        $lang_code = '';
-        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-            $lang_code = $sitepress->get_current_language();
-        }
-
-        $submit_js_function_str = '';
-        if ($submit_js_function != '') {
-            $submit_js_function_str = $submit_js_function . '(' . $global_rand_id . ')';
-        }
-
-        $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : ''; // for job salary check
-        if ($custom_field_entity == 'candidate') {
-            $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on'; // for candidate salry check
-        }
-
-        $job_cus_fields = get_option("jobsearch_custom_field_" . $custom_field_entity);
-        ob_start();
-        $custom_field_flag = 11;
-        if (!empty($job_cus_fields)) {
-            foreach ($job_cus_fields as $cus_fieldvar => $cus_field) {
-                $all_item_empty = 0;
-                if (isset($cus_field['options']['value']) && is_array($cus_field['options']['value'])) {
-                    foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-
-                        if ($cus_field_options_value != '') {
-                            $all_item_empty = 0;
-                            break;
-                        } else {
-                            $all_item_empty = 1;
-                        }
-                    }
-                }
-                if ($cus_field['type'] == 'salary') {
-                    $cus_field['enable-search'] = 'yes';
-                }
-
-                if (isset($cus_field['enable-search']) && ($cus_field['enable-search'] == 'yes' || $cus_field['enable-search'] == 'on') && ($all_item_empty == 0)) {
-
-                    if ($cus_field['type'] == 'salary') {
-                        $query_str_var_name = 'jobsearch_field_job_salary';
-                        $str_salary_type_name = 'job_salary_type';
-                        if ($custom_field_entity == 'candidate') {
-                            $query_str_var_name = 'jobsearch_field_candidate_salary';
-                            $str_salary_type_name = 'candidate_salary_type';
-                        }
-                    } else {
-                        $query_str_var_name = isset($cus_field['name']) ? $cus_field['name'] : '';
-                    }
-                    $collapse_condition = 'no';
-                    if (isset($cus_field['collapse-search'])) {
-                        $collapse_condition = $cus_field['collapse-search'];
-                    }
-
-                    $cus_field_label_arr = isset($cus_field['label']) ? $cus_field['label'] : '';
-                    $type = isset($cus_field['type']) ? $cus_field['type'] : '';
-
-                    if ($type == 'text') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Text Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'email') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Email Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'number') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Number Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'date') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Date Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'checkbox') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Checkbox Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'dropdown' || $type == 'dependent_dropdown') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Dropdown Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'range') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Range Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'textarea') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Textarea Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'heading') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Heading Field Label - ' . $cus_field_label_arr, $lang_code);
-                    } else if ($type == 'salary') {
-                        $cus_field_label_arr = apply_filters('wpml_translate_single_string', $cus_field_label_arr, 'Custom Fields', 'Salary Label - ' . $cus_field_label_arr, $lang_code);
-                    }
-
-                    $cus_field_label_arr = stripslashes($cus_field_label_arr);
-
-                    if ($cus_field['type'] == 'heading' && $cus_field_label_arr != '') { ?>
-                        <div class="jobsearch-sfiltrs-heding"><h2><?php echo($cus_field_label_arr) ?></h2></div>
-                        <?php
-                    } else {
-                        $filter_collapse_cval = 'open';
-                        if ($collapse_condition == 'yes') {
-                            $filter_collapse_cval = 'close';
-                        }
-                        $filter_collapse_cname = isset($cus_field['name']) ? sanitize_title($cus_field['name']) . '_csec_collapse' : '';
-                        if (isset($_COOKIE[$filter_collapse_cname]) && $_COOKIE[$filter_collapse_cname] != '') {
-                            $filter_collapse_cval = $_COOKIE[$filter_collapse_cname];
-                            if ($_COOKIE[$filter_collapse_cname] == 'open') {
-                                $collapse_condition = 'no';
-                            } else {
-                                $collapse_condition = 'yes';
-                            }
-                        }
-                        ?>
-                        <div class="jobsearch-filter-responsive-wrap">
-                            <div class="jobsearch-search-filter-wrap <?php echo($collapse_condition == 'yes' ? 'jobsearch-search-filter-toggle jobsearch-remove-padding' : 'jobsearch-search-filter-toggle') ?>">
-                                <div class="jobsearch-fltbox-title">
-                                    <a href="javascript:void(0);" data-cname="<?php echo($filter_collapse_cname) ?>"
-                                       data-cval="<?php echo($filter_collapse_cval) ?>" class="jobsearch-click-btn">
-                                        <?php echo jobsearch_esc_html(stripslashes($cus_field_label_arr)); ?>
-                                    </a>
-                                </div>
-                                <div class="jobsearch-checkbox-toggle" <?php echo($collapse_condition == 'yes' ? 'style="display: none;"' : '') ?>>
-                                    <?php
-                                    $filter_args = array(
-                                        'custom_field_entity' => $custom_field_entity,
-                                        'global_rand_id' => $global_rand_id,
-                                        'args_count' => $args_count,
-                                        'left_filter_count_switch' => $left_filter_count_switch,
-                                        'submit_js_function' => $submit_js_function,
-                                        'cus_field' => $cus_field,
-                                        'cus_fieldvar' => $cus_fieldvar,
-                                    );
-                                    echo apply_filters('jobsearch_cusfields_left_filters_before_dropdwn', '', $filter_args);
-                                    if ($cus_field['type'] == 'dropdown') {
-                                        $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                        $request_val_arr = explode(",", $request_val);
-                                        ?>
-                                    <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                           name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-                                    <?php
-                                    if ($query_str_var_name != '') {
-                                    ?>
-                                        <script type="text/javascript">
-                                            jQuery(function () {
-                                                'use strict'
-                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
-                                                $checkboxes.on('change', function () {
-                                                    var ids = $checkboxes.filter(':checked').map(function () {
-                                                        return this.value;
-                                                    }).get().join(',');
-                                                    jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
-                                                    <?php echo($submit_js_function_str); ?>
-                                                });
-                                            });
-                                        </script>
-                                    <?php
-                                    }
-                                    ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <?php
-                                            $number_option_flag = 1;
-                                            $cut_field_flag = 0;
-                                            $filter_html_arr = array();
-                                            if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
-                                                foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-                                                    if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
-                                                        $cut_field_flag++;
-                                                        continue;
-                                                    }
-                                                    // get count of each item
-                                                    // extra condidation
-                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => ($cus_field_options_value),
-                                                                'compare' => 'Like',
-                                                            )
-                                                        );
-                                                    } else {
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $cus_field_options_value,
-                                                                'compare' => '=',
-                                                            )
-                                                        );
-                                                    }
-                                                    // main query array $args_count
-
-                                                    if ($cus_field_options_value != '') {
-                                                        ob_start();
-                                                        if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                                            $checked = '';
-                                                            if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
-                                                                $checked = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-
-                                                                <input type="checkbox"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                       class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
-                                                                <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php
-                                                                $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-
-                                                                if ($left_filter_count_switch == 'yes') {
-                                                                    ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                <?php } ?>
-                                                            </li>
-                                                            <?php
-                                                            //
-                                                        } else {
-                                                            //get count for this itration
-                                                            $dropdown_arr = array();
-                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => serialize($cus_field_options_value),
-                                                                    'compare' => 'Like',
-                                                                );
-                                                            } else {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => $cus_field_options_value,
-                                                                    'compare' => '=',
-                                                                );
-                                                            }
-
-                                                            $custom_dropdown_selected = '';
-                                                            if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
-                                                                $custom_dropdown_selected = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                <input type="radio"
-                                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php
-                                                                $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-
-                                                                if ($left_filter_count_switch == 'yes') {
-                                                                    ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                        $filter_itm_html = ob_get_clean();
-                                                        $filter_html_arr[] = array(
-                                                            'title' => $cus_field['options']['label'][$cut_field_flag],
-                                                            'count' => $dropdown_totnum,
-                                                            'html' => $filter_itm_html
-                                                        );
-                                                    }
-                                                    $number_option_flag++;
-                                                    $cut_field_flag++;
-                                                }
-
-                                                if (!empty($filter_html_arr)) {
-                                                    if ($filter_sort_by == 'desc') {
-                                                        krsort($filter_html_arr);
-                                                    } else if ($filter_sort_by == 'alpha') {
-                                                        usort($filter_html_arr, function ($a, $b) {
-                                                            return strcmp($a["title"], $b["title"]);
-                                                        });
-                                                    } else if ($filter_sort_by == 'count') {
-                                                        usort($filter_html_arr, function ($a, $b) {
-                                                            if ($a['count'] == $b['count']) {
-                                                                $ret_val = 0;
-                                                            }
-                                                            $ret_val = ($b['count'] < $a['count']) ? -1 : 1;
-                                                            return $ret_val;
-                                                        });
-                                                    }
-                                                    foreach ($filter_html_arr as $filtr_item_html) {
-                                                        echo ($filtr_item_html['html']);
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    <?php
-                                    if ($number_option_flag > 60) {
-                                        echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                    }
-                                    //
-                                    } else if ($cus_field['type'] == 'checkbox') {
-                                    $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                    $request_val_arr = explode(",", $request_val);
-                                    ?>
-                                    <input type="hidden" value="<?php echo jobsearch_esc_html($request_val); ?>"
-                                           name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           class="<?php echo jobsearch_esc_html($query_str_var_name); ?>"/>
-                                    <?php
-                                    if ($query_str_var_name != '') {
-                                    ?>
-                                        <script type="text/javascript">
-                                            jQuery(function () {
-                                                'use strict'
-                                                var $checkboxes = jQuery("input[type=checkbox].<?php echo jobsearch_esc_html($query_str_var_name); ?>");
-                                                $checkboxes.on('change', function () {
-                                                    var ids = $checkboxes.filter(':checked').map(function () {
-                                                        return this.value;
-                                                    }).get().join(',');
-                                                    jQuery('#hidden_input-<?php echo jobsearch_esc_html($query_str_var_name); ?>').val(ids);
-                                                    <?php echo($submit_js_function_str); ?>
-                                                });
-                                            });
-                                        </script>
-                                    <?php
-                                    }
-                                    ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <?php
-                                            $number_option_flag = 1;
-                                            $cut_field_flag = 0;
-                                            $filter_html_arr = array();
-                                            if (isset($cus_field['options']['value']) && !empty($cus_field['options']['value'])) {
-                                                foreach ($cus_field['options']['value'] as $cus_field_options_value) {
-                                                    if ($cus_field['options']['value'][$cut_field_flag] == '' || $cus_field['options']['label'][$cut_field_flag] == '') {
-                                                        $cut_field_flag++;
-                                                        continue;
-                                                    }
-                                                    // get count of each item
-                                                    // extra condidation
-                                                    if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => ($cus_field_options_value),
-                                                                'compare' => 'Like',
-                                                            )
-                                                        );
-                                                    } else {
-                                                        $dropdown_count_arr = array(
-                                                            array(
-                                                                'key' => $query_str_var_name,
-                                                                'value' => $cus_field_options_value,
-                                                                'compare' => '=',
-                                                            )
-                                                        );
-                                                    }
-                                                    // main query array $args_count
-
-                                                    $dropdown_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $dropdown_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                    if ($cus_field_options_value != '') {
-                                                        ob_start();
-                                                        if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                                            $checked = '';
-                                                            if (!empty($request_val_arr) && in_array($cus_field_options_value, $request_val_arr)) {
-                                                                $checked = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-
-                                                                <input type="checkbox"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>"
-                                                                       class="<?php echo jobsearch_esc_html($query_str_var_name); ?>" <?php echo($checked); ?> />
-                                                                <label for="<?php echo force_balance_tags($query_str_var_name . '_' . $number_option_flag) ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                <?php } ?>
-                                                            </li>
-                                                            <?php
-                                                            //
-                                                        } else {
-                                                            //get count for this itration
-                                                            $dropdown_arr = array();
-                                                            if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => serialize($cus_field_options_value),
-                                                                    'compare' => 'Like',
-                                                                );
-                                                            } else {
-                                                                $dropdown_arr = array(
-                                                                    'key' => $query_str_var_name,
-                                                                    'value' => $cus_field_options_value,
-                                                                    'compare' => '=',
-                                                                );
-                                                            }
-
-                                                            $custom_dropdown_selected = '';
-                                                            if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
-                                                                $custom_dropdown_selected = ' checked="checked"';
-                                                            }
-                                                            ?>
-                                                            <li class="<?php echo($number_option_flag > 60 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                                <input type="radio"
-                                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>"
-                                                                       value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected); ?>
-                                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . '_' . $number_option_flag); ?>">
-                                                                    <span></span><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?>
-                                                                </label>
-                                                                <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                                    <span class="filter-post-count"><?php echo absint($dropdown_totnum); ?></span>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                        $filter_itm_html = ob_get_clean();
-                                                        $filter_html_arr[] = array(
-                                                            'title' => $cus_field['options']['label'][$cut_field_flag],
-                                                            'count' => $dropdown_totnum,
-                                                            'html' => $filter_itm_html
-                                                        );
-                                                    }
-                                                    $number_option_flag++;
-                                                    $cut_field_flag++;
-                                                }
-                                                if (!empty($filter_html_arr)) {
-                                                    if ($filter_sort_by == 'desc') {
-                                                        krsort($filter_html_arr);
-                                                    } else if ($filter_sort_by == 'alpha') {
-                                                        usort($filter_html_arr, function ($a, $b) {
-                                                            return strcmp($a["title"], $b["title"]);
-                                                        });
-                                                    } else if ($filter_sort_by == 'count') {
-                                                        usort($filter_html_arr, function ($a, $b) {
-                                                            if ($a['count'] == $b['count']) {
-                                                                $ret_val = 0;
-                                                            }
-                                                            $ret_val = ($b['count'] < $a['count']) ? -1 : 1;
-                                                            return $ret_val;
-                                                        });
-                                                    }
-                                                    foreach ($filter_html_arr as $filtr_item_html) {
-                                                        echo ($filtr_item_html['html']);
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    <?php
-                                    if ($number_option_flag > 60) {
-                                        echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                    }
-                                    //
-                                    } else if ($cus_field['type'] == 'dependent_dropdown') {
-                                    $depdrpdwn_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                    $depdrpdwn_field_options = isset($cus_field['options_list']) ? $cus_field['options_list'] : '';
-                                    $depdrpdwn_cont_optsid = isset($cus_field['options_list_id']) && $cus_field['options_list_id'] != '' ? $cus_field['options_list_id'] : 0;
-                                    ?>
-                                        <div class="jobsearch-depdrpdwn-fields">
-                                            <?php
-                                            $depdrpdwn_fields = jobsearch_dependent_dropdown_list_html($depdrpdwn_field_options, $depdrpdwn_cont_optsid, $cus_field, $depdrpdwn_field_req_val);
-                                            echo($depdrpdwn_fields);
-                                            ?>
-                                            <a href="javascript:void(0);"
-                                               class="depdrpdwn-form-submitbtn jobsearch-bgcolor btn"
-                                               onclick="<?php echo($submit_js_function_str); ?>"><?php esc_html_e('Submit', 'wp-jobsearch') ?></a>
-                                        </div>
-                                    <?php } else if ($cus_field['type'] == 'text' || $cus_field['type'] == 'textarea' || $cus_field['type'] == 'email') {
-                                        $text_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <li>
-                                                <input type="text"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       value="<?php echo jobsearch_esc_html($text_field_req_val); ?>"
-                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    } else if ($cus_field['type'] == 'number') {
-                                        $number_field_req_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <li>
-                                                <input type="number"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       value="<?php echo jobsearch_esc_html($number_field_req_val); ?>"
-                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    } else if ($cus_field['type'] == 'date') {
-                                        $fromdate_field_req_val = isset($_REQUEST['from-' . $query_str_var_name]) ? $_REQUEST['from-' . $query_str_var_name] : '';
-                                        $todate_field_req_val = isset($_REQUEST['to-' . $query_str_var_name]) ? $_REQUEST['to-' . $query_str_var_name] : '';
-                                        wp_enqueue_style('datetimepicker-style');
-                                        wp_enqueue_script('datetimepicker-script');
-                                        wp_enqueue_script('jquery-ui');
-                                        $cus_field_date_formate_arr = explode(" ", $cus_field['date-format']);
-                                        ?>
-
-                                        <ul class="jobsearch-checkbox">
-                                            <li>
-                                                <div class="filter-datewise-con">
-                                                    <script type="text/javascript">
-                                                        jQuery(document).ready(function () {
-                                                            jQuery("#from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
-                                                                timepicker: false
-                                                            });
-                                                            jQuery("#to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>").datetimepicker({
-                                                                format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
-                                                                timepicker: false
-                                                            });
-                                                        });
-                                                    </script>
-                                                    <label for="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
-                                                        <input type="text"
-                                                               name="from-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="from<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                               value="<?php echo jobsearch_esc_html($fromdate_field_req_val); ?>"
-                                                               placeholder="<?php esc_html_e('Date From', 'wp-jobsearch') ?>"
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                    </label>
-                                                    <label for="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>">
-                                                        <input type="text"
-                                                               name="to-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                               id="to<?php echo jobsearch_esc_html($query_str_var_name) . $global_rand_id; ?>"
-                                                               value="<?php echo jobsearch_esc_html($todate_field_req_val); ?>"
-                                                               placeholder="<?php esc_html_e('Date To', 'wp-jobsearch') ?>"
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    } elseif ($cus_field['type'] == 'range') {
-
-                                        $range_min = $cus_field['min'];
-                                        $range_laps = $cus_field['laps'];
-                                        $range_laps = $range_laps > 100 ? 100 : $range_laps;
-                                        $range_interval = $cus_field['interval'];
-                                        $range_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
-
-                                        if (strpos($range_field_type, '-') !== FALSE) {
-                                            $range_field_type_arr = explode("_", $range_field_type);
-                                        } else {
-                                            $range_field_type_arr[0] = $range_field_type;
-                                        }
-                                        $range_flag = 0;
-                                    while (count($range_field_type_arr) > $range_flag) {
-                                    if ($range_field_type_arr[$range_flag] == 'simple') { // if input style
-                                        $filter_more_counter = 1;
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <?php
-                                            $loop_flag = 1;
-                                            while ($loop_flag <= $range_laps) {
-                                                ?>
-                                            <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                <?php
-                                                // main query array $args_count
-                                                $range_first = $range_min + 1;
-                                                $range_seond = $range_min + $range_interval;
-                                                $range_count_arr = array(
-                                                    array(
-                                                        'key' => $query_str_var_name,
-                                                        'value' => $range_first,
-                                                        'compare' => '>=',
-                                                        'type' => 'numeric'
-                                                    ),
-                                                    array(
-                                                        'key' => $query_str_var_name,
-                                                        'value' => $range_seond,
-                                                        'compare' => '<=',
-                                                        'type' => 'numeric'
-                                                    )
-                                                );
-                                                $range_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $range_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                $custom_slider_selected = '';
-                                                if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == (($range_min + 1) . "-" . ($range_min + $range_interval))) {
-                                                    $custom_slider_selected = ' checked="checked"';
-                                                }
-                                                ?>
-                                                <input type="radio"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                       value="<?php echo jobsearch_esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo($custom_slider_selected); ?>
-                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?>
-                                                </label>
-                                                <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                    <span class="filter-post-count"><?php echo absint($range_totnum); ?></span>
-                                                <?php } ?>
-                                                </li><?php
-                                                $range_min = $range_min + $range_interval;
-                                                $loop_flag++;
-                                                $filter_more_counter++;
-                                            }
-                                            ?>
-                                        </ul>
-                                        <?php
-                                        if ($filter_more_counter > 6) {
-                                            echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                        }
-                                    } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style
-                                        wp_enqueue_style('jquery-ui');
-                                        wp_enqueue_script('jquery-ui');
-                                        $rand_id = rand(123, 1231231);
-                                        $range_field_max = $range_min;
-                                        $i = 0;
-                                        while ($range_laps > $i) {
-                                            $range_field_max = $range_field_max + $range_interval;
-                                            $i++;
-                                        }
-                                        $range_complete_str_first = "";
-                                        $range_complete_str_second = "";
-                                        $range_complete_str = '';
-                                        $range_complete_str_first = $range_min;
-                                        $range_complete_str_second = $range_field_max;
-                                        if (isset($_REQUEST[$query_str_var_name])) {
-                                            $range_complete_str = $_REQUEST[$query_str_var_name];
-                                            $range_complete_str_arr = explode("-", $range_complete_str);
-                                            $range_complete_str_first = isset($range_complete_str_arr[0]) ? $range_complete_str_arr[0] : '';
-                                            $range_complete_str_second = isset($range_complete_str_arr[1]) ? $range_complete_str_arr[1] : '';
-                                        }
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <li>
-                                                <input type="text"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                       value="<?php echo jobsearch_esc_html($range_complete_str); ?>"
-                                                       readonly
-                                                       style="border:0; color:#f6931f; font-weight:bold;"/>
-                                                <div id="slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                <script type="text/javascript">
-                                                    jQuery(document).ready(function () {
-
-
-                                                        jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
-                                                            range: true,
-                                                            min: <?php echo absint($range_min); ?>,
-                                                            max: <?php echo absint($range_field_max); ?>,
-                                                            values: [<?php echo absint($range_complete_str_first); ?>, <?php echo absint($range_complete_str_second); ?>],
-                                                            slide: function (event, ui) {
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
-                                                            },
-                                                            stop: function (event, ui) {
-                                                                <?php echo force_balance_tags($submit_js_function_str); ?>;
-                                                            }
-                                                        });
-                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                            "-" + jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
-                                                    });
-                                                </script>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    }
-                                        $range_flag++;
-                                    }
-                                    } elseif ($cus_field['type'] == 'salary' && $salary_onoff_switch != 'off') {
-
-                                        $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
-
-                                        $post_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
-
-                                        $salary_min = isset($cus_field['min']) ? $cus_field['min'] : '';
-                                        $salary_laps = isset($cus_field['laps']) ? $cus_field['laps'] : '';
-                                        $salary_laps = $salary_laps > 200 ? 200 : $salary_laps;
-                                        $salary_interval = isset($cus_field['interval']) ? $cus_field['interval'] : '';
-
-                                        $salary_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
-
-                                        if (strpos($salary_field_type, '-') !== FALSE) {
-                                            $salary_field_type_arr = explode("_", $salary_field_type);
-                                        } else {
-                                            $salary_field_type_arr[0] = $salary_field_type;
-                                        }
-
-                                        // Salary Types
-                                    if (!empty($job_salary_types)) {
-                                        $slar_type_count = 1;
-                                        ?>
-                                        <div class="jobsearch-salary-types-filter">
-                                            <ul>
-                                                <?php
-                                                foreach ($job_salary_types as $job_salary_type) {
-                                                    $job_salary_type = apply_filters('wpml_translate_single_string', $job_salary_type, 'JobSearch Options', 'Salary Type - ' . $job_salary_type, $lang_code);
-                                                    $slalary_type_selected = '';
-                                                    if (isset($_REQUEST[$str_salary_type_name]) && $_REQUEST[$str_salary_type_name] == 'type_' . $slar_type_count) {
-                                                        $slalary_type_selected = ' checked="checked"';
-                                                    }
-                                                    ?>
-                                                    <li class="salary-type-radio">
-                                                        <input type="radio"
-                                                               id="salary_type_<?php echo($slar_type_count) ?>"
-                                                               name="<?php echo($str_salary_type_name) ?>"
-                                                               class="job_salary_type"<?php echo($slalary_type_selected) ?>
-                                                               value="type_<?php echo($slar_type_count) ?>"
-                                                               onchange="<?php echo force_balance_tags($submit_js_function_str); ?>">
-                                                        <label for="salary_type_<?php echo($slar_type_count) ?>">
-                                                            <span></span>
-                                                            <small><?php echo($job_salary_type) ?></small>
-                                                        </label>
-                                                    </li>
-                                                    <?php
-                                                    $slar_type_count++;
-                                                }
-                                                ?>
-                                            </ul>
-                                        </div>
-                                        <?php
-                                    }
-                                        //
-                                        $salary_flag = 0;
-                                    while (count($salary_field_type_arr) > $salary_flag) {
-                                    if ($salary_field_type_arr[$salary_flag] == 'simple') { // if input style
-
-                                    if (!empty($post_salary_types)) {
-                                        $get_the_salary_type = isset($_REQUEST[$str_salary_type_name]) ? $_REQUEST[$str_salary_type_name] : '';
-                                        $slar_type_count = 1;
-                                    foreach ($post_salary_types as $post_salary_typ) {
-
-                                        $salary_min = isset($cus_field['min' . $slar_type_count]) ? $cus_field['min' . $slar_type_count] : '';
-                                        $salary_interval = isset($cus_field['interval' . $slar_type_count]) ? $cus_field['interval' . $slar_type_count] : '';
-                                        $salary_laps = isset($cus_field['laps' . $slar_type_count]) ? $cus_field['laps' . $slar_type_count] : '';
-                                        $salary_laps = $salary_laps > 200 ? 200 : $salary_laps;
-
-                                        $style_tag = ' style="display: none;"';
-                                        if ($get_the_salary_type == '' && $slar_type_count == 1) {
-                                            $style_tag = '';
-                                        } else if ($get_the_salary_type != '' && $get_the_salary_type == 'type_' . $slar_type_count) {
-                                            $style_tag = '';
-                                        }
-
-                                        $filter_more_counter = 1;
-                                        ?>
-                                        <div class="salarytypes-rangelist-con salarytypes-rangeitm-<?php echo($slar_type_count) ?>"<?php echo($style_tag) ?>>
-                                            <ul class="jobsearch-checkbox">
-                                                <?php
-                                                $loop_flag = 1;
-                                                while ($loop_flag <= $salary_laps) { ?>
-                                                <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                    <?php
-                                                    // main query array $args_count
-                                                    $salary_first = $salary_min + 1;
-                                                    $salary_seond = $salary_min + $salary_interval;
-                                                    $salary_count_arr = array(
-                                                        array(
-                                                            'key' => $query_str_var_name,
-                                                            'value' => $salary_first,
-                                                            'compare' => '>=',
-                                                            'type' => 'numeric'
-                                                        ),
-                                                        array(
-                                                            'key' => $query_str_var_name,
-                                                            'value' => $salary_seond,
-                                                            'compare' => '<=',
-                                                            'type' => 'numeric'
-                                                        )
-                                                    );
-                                                    $salary_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $salary_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                    $custom_slider_selected = '';
-                                                    if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == (($salary_min + 1) . "-" . ($salary_min + $salary_interval))) {
-                                                        $custom_slider_selected = ' checked="checked"';
-                                                    }
-                                                    ?>
-                                                    <input type="radio"
-                                                           name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                           id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                           value="<?php echo jobsearch_esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo($custom_slider_selected); ?>
-                                                           onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                    <?php
-                                                    $salary_from = ($salary_min + 1);
-                                                    $salary_upto = ($salary_min + $salary_interval);
-                                                    ?>
-                                                    <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo((jobsearch_get_price_format($salary_from) . " - " . jobsearch_get_price_format($salary_upto))); ?>
-                                                    </label>
-                                                    <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                        <span class="filter-post-count"><?php echo absint($salary_totnum); ?></span>
-                                                    <?php } ?>
-                                                    </li><?php
-                                                    $salary_min = $salary_min + $salary_interval;
-                                                    $loop_flag++;
-                                                    $filter_more_counter++;
-                                                }
-                                                ?>
-                                            </ul>
-                                            <?php
-                                            if ($filter_more_counter > 6) {
-                                                echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                            }
-                                            ?>
-                                        </div>
-                                        <?php
-
-                                        $slar_type_count++;
-                                    }
-                                    } else {
-
-                                        $filter_more_counter = 1;
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <?php
-                                            $loop_flag = 1;
-                                            while ($loop_flag <= $salary_laps) { ?>
-                                            <li class="<?php echo($filter_more_counter > 6 ? 'filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
-                                                <?php
-                                                // main query array $args_count
-                                                $salary_first = $salary_min + 1;
-                                                $salary_seond = $salary_min + $salary_interval;
-                                                $salary_count_arr = array(
-                                                    array(
-                                                        'key' => $query_str_var_name,
-                                                        'value' => $salary_first,
-                                                        'compare' => '>=',
-                                                        'type' => 'numeric'
-                                                    ),
-                                                    array(
-                                                        'key' => $query_str_var_name,
-                                                        'value' => $salary_seond,
-                                                        'compare' => '<=',
-                                                        'type' => 'numeric'
-                                                    )
-                                                );
-                                                $salary_totnum = jobsearch_get_item_count($left_filter_count_switch, $args_count, $salary_count_arr, $global_rand_id, $query_str_var_name, $custom_field_entity);
-                                                $custom_slider_selected = '';
-                                                if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == (($salary_min + 1) . "-" . ($salary_min + $salary_interval))) {
-                                                    $custom_slider_selected = ' checked="checked"';
-                                                }
-                                                ?>
-                                                <input type="radio"
-                                                       name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                                       id="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"
-                                                       value="<?php echo jobsearch_esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo($custom_slider_selected); ?>
-                                                       onchange="<?php echo force_balance_tags($submit_js_function_str); ?>"/>
-                                                <?php
-                                                $salary_from = ($salary_min + 1);
-                                                $salary_upto = ($salary_min + $salary_interval);
-                                                ?>
-                                                <label for="<?php echo jobsearch_esc_html($query_str_var_name . $loop_flag); ?>"><span></span><?php echo((jobsearch_get_price_format($salary_from) . " - " . jobsearch_get_price_format($salary_upto))); ?>
-                                                </label>
-                                                <?php if ($left_filter_count_switch == 'yes') { ?>
-                                                    <span class="filter-post-count"><?php echo absint($salary_totnum); ?></span>
-                                                <?php } ?>
-                                                </li><?php
-                                                $salary_min = $salary_min + $salary_interval;
-                                                $loop_flag++;
-                                                $filter_more_counter++;
-                                            }
-                                            ?>
-                                        </ul>
-                                        <?php
-                                        if ($filter_more_counter > 6) {
-                                            echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
-                                        }
-                                    }
-                                    } else if ($salary_field_type_arr[$salary_flag] == 'slider') { // if slider style
-                                        wp_enqueue_style('jquery-ui');
-                                        wp_enqueue_script('jquery-ui');
-                                        $rand_id = rand(1231110, 9231231);
-                                        $salary_field_max = absint($salary_min);
-                                        $i = 0;
-                                        while ($salary_laps > $i) {
-                                            $salary_field_max = $salary_field_max + $salary_interval;
-                                            $i++;
-                                        }
-                                        $salary_complete_str_first = "";
-                                        $salary_complete_str_second = "";
-                                        $salary_complete_str = '';
-                                        $salary_complete_str_first = $salary_min;
-                                        $salary_complete_str_second = $salary_field_max;
-                                        if (isset($_REQUEST[$query_str_var_name])) {
-                                            $salary_complete_str = $_REQUEST[$query_str_var_name];
-                                            $salary_complete_str_arr = explode("-", $salary_complete_str);
-                                            $salary_complete_str_first = isset($salary_complete_str_arr[0]) ? $salary_complete_str_arr[0] : '';
-                                            $salary_complete_str_second = isset($salary_complete_str_arr[1]) ? $salary_complete_str_arr[1] : '';
-                                        }
-                                        ?>
-                                        <ul class="jobsearch-checkbox">
-                                            <li class="salary-filter-slider">
-                                                <div class="filter-slider-range">
-                                                    <input type="text"
-                                                           name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                                           id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                           value="<?php echo jobsearch_esc_html($salary_complete_str); ?>"
+                                                           name="<?php echo esc_html($query_str_var_name) ?>"
+                                                           id="<?php echo esc_html($query_str_var_name . $rand_id) ?>"
+                                                           value="<?php echo esc_html($salary_complete_str); ?>"
                                                            readonly style="border:0; color:#f6931f; font-weight:bold;"/>
                                                 </div>
-                                                <div id="slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                                <script type="text/javascript">
+                                                <div id="slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>"></div>
+                                                <script>
                                                     jQuery(document).ready(function () {
 
-                                                        jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
+                                                        jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider({
                                                             salary: true,
                                                             min: <?php echo absint($salary_min); ?>,
                                                             max: <?php echo absint($salary_field_max); ?>,
                                                             values: [<?php echo absint($salary_complete_str_first); ?>, <?php echo absint($salary_complete_str_second); ?>],
                                                             slide: function (event, ui) {
-                                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
+                                                                jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
                                                             },
                                                             stop: function (event, ui) {
                                                                 <?php echo force_balance_tags($submit_js_function_str); ?>;
                                                             }
                                                         });
-                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                            "-" + jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
+                                                        jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
+                                                            "-" + jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
                                                     });
                                                 </script>
                                             </li>
@@ -6446,8 +4545,6 @@ class Jobsearch_CustomFieldLoad
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
-
-        $submit_js_function_str = '';
 
         //
         $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : '';
@@ -6500,10 +4597,10 @@ class Jobsearch_CustomFieldLoad
                 $dropdown_main_class = 'jobsearch-select-style';
                 $field_label_html = '';
                 $enable_this_fields = false;
-                if (isset($cus_field['enable-advsrch']) && ($cus_field['enable-advsrch'] == 'yes' || $cus_field['enable-advsrch'] == 'on')) {
+                if (isset($cus_field['enable-advsrch']) && $cus_field['enable-advsrch'] == 'yes') {
                     $enable_this_fields = true;
                 }
-                if ($allow_type == 'enable_search' && isset($cus_field['enable-search']) && ($cus_field['enable-search'] == 'yes' || $cus_field['enable-search'] == 'on')) {
+                if ($allow_type == 'enable_search' && isset($cus_field['enable-search']) && $cus_field['enable-search'] == 'yes') {
                     $enable_this_fields = true;
                     $dropdown_main_class = 'jobsearch-profile-select';
                     $field_label_html = '<label>' . $cus_field_label_arr . '</label>';
@@ -6532,15 +4629,6 @@ class Jobsearch_CustomFieldLoad
                         <?php
                     }
 
-                    $filter_args = array(
-                        'custom_field_entity' => $custom_field_entity,
-                        'global_rand_id' => $global_rand_id,
-                        'allow_type' => $allow_type,
-                        'cus_field' => $cus_field,
-                        'cus_fieldvar' => $cus_fieldvar,
-                    );
-                    echo apply_filters('jobsearch_cusfields_top_filters_before_dropdwn', '', $filter_args);
-
                     if ($cus_field['type'] == 'dropdown') {
                         $request_val = isset($_REQUEST[$query_str_var_name]) ? $_REQUEST[$query_str_var_name] : '';
                         $request_val_arr = explode(",", $request_val);
@@ -6559,8 +4647,8 @@ class Jobsearch_CustomFieldLoad
                         <li>
                             <?php echo($field_label_html) ?>
                             <div class="<?php echo($dropdown_main_class) ?> <?php echo $select_class ?>">
-                                <select name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                        class="selectize-select"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_dropdwn_exatts', '', $global_rand_id, array(), $custom_field_entity) ?> <?php echo($select_param) ?>
+                                <select name="<?php echo esc_html($query_str_var_name); ?>"
+                                        class="selectize-select" <?php echo($select_param) ?>
                                         placeholder="<?php echo($cus_field_label_arr); ?>">
                                     <?php
 
@@ -6580,9 +4668,11 @@ class Jobsearch_CustomFieldLoad
                                                 }
 
                                                 ?>
-                                                <option value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($checked) ?>><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?></option>
+                                                <option value="<?php echo esc_html($cus_field_options_value); ?>" <?php echo($checked) ?>><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?></option>
                                             <?php } else {
-                                                if ($cutsf_field_flag == 1) { ?>
+
+                                                if ($cutsf_field_flag == 1) {
+                                                    ?>
                                                     <option value=""><?php echo($cus_field_label_arr); ?></option>
                                                     <?php
                                                 }
@@ -6590,7 +4680,7 @@ class Jobsearch_CustomFieldLoad
                                                 if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == $cus_field_options_value) {
                                                     $custom_dropdown_selected = ' selected="selected"';
                                                 } ?>
-                                                <option value="<?php echo jobsearch_esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected) ?>><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?></option>
+                                                <option value="<?php echo esc_html($cus_field_options_value); ?>" <?php echo($custom_dropdown_selected) ?>><?php echo(apply_filters('wpml_translate_single_string', $cus_field['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field['options']['label'][$cut_field_flag], $lang_code)); ?></option>
                                                 <?php
                                                 $cutsf_field_flag++;
                                             }
@@ -6608,10 +4698,10 @@ class Jobsearch_CustomFieldLoad
                         ?>
                         <li>
                             <?php echo($field_label_html) ?>
-                            <input type="text" name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                   id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_txt_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                            <input type="text" name="<?php echo esc_html($query_str_var_name); ?>"
+                                   id="<?php echo esc_html($query_str_var_name); ?>"
                                    placeholder="<?php echo($cus_field_label_arr) ?>"
-                                   value="<?php echo jobsearch_esc_html($text_field_req_val); ?>"/>
+                                   value="<?php echo esc_html($text_field_req_val); ?>"/>
                         </li>
                         <?php
                     } else if ($cus_field['type'] == 'textarea') {
@@ -6619,9 +4709,9 @@ class Jobsearch_CustomFieldLoad
                         ?>
                         <li>
                             <?php echo($field_label_html) ?>
-                            <textarea name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                      id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_txtarea_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
-                                      placeholder="<?php echo($cus_field_label_arr) ?>"><?php echo jobsearch_esc_html($text_field_req_val); ?></textarea>
+                            <textarea name="<?php echo esc_html($query_str_var_name); ?>"
+                                      id="<?php echo esc_html($query_str_var_name); ?>"
+                                      placeholder="<?php echo($cus_field_label_arr) ?>"><?php echo esc_html($text_field_req_val); ?></textarea>
                         </li>
                         <?php
                     } else if ($cus_field['type'] == 'number') {
@@ -6629,10 +4719,10 @@ class Jobsearch_CustomFieldLoad
                         ?>
                         <li>
                             <?php echo($field_label_html) ?>
-                            <input type="number" name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                   id="<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_num_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                            <input type="number" name="<?php echo esc_html($query_str_var_name); ?>"
+                                   id="<?php echo esc_html($query_str_var_name); ?>"
                                    placeholder="<?php echo($cus_field_label_arr) ?>"
-                                   value="<?php echo jobsearch_esc_html($number_field_req_val); ?>"/>
+                                   value="<?php echo esc_html($number_field_req_val); ?>"/>
                         </li>
                         <?php
                     } else if ($cus_field['type'] == 'date') {
@@ -6646,30 +4736,29 @@ class Jobsearch_CustomFieldLoad
                         <li>
                             <?php echo($field_label_html) ?>
                             <div class="filter-datewise-con">
-                                <script type="text/javascript">
+                                <script>
                                     jQuery(document).ready(function () {
-                                        jQuery("#from<?php echo jobsearch_esc_html($query_str_var_name); ?>").datetimepicker({
-                                            format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
+                                        jQuery("#from<?php echo esc_html($query_str_var_name); ?>").datetimepicker({
+                                            format: "<?php echo esc_html($cus_field_date_formate_arr[0]); ?>",
                                             timepicker: false
                                         });
-                                        jQuery("#to<?php echo jobsearch_esc_html($query_str_var_name); ?>").datetimepicker({
-                                            format: "<?php echo jobsearch_esc_html($cus_field_date_formate_arr[0]); ?>",
+                                        jQuery("#to<?php echo esc_html($query_str_var_name); ?>").datetimepicker({
+                                            format: "<?php echo esc_html($cus_field_date_formate_arr[0]); ?>",
                                             timepicker: false
                                         });
                                     });
                                 </script>
-                                <label for="from<?php echo jobsearch_esc_html($query_str_var_name); ?>">
-                                    <input type="text"
-                                           name="from-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="from<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_datefrm_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                                <label for="from<?php echo esc_html($query_str_var_name); ?>">
+                                    <input type="text" name="from-<?php echo esc_html($query_str_var_name); ?>"
+                                           id="from<?php echo esc_html($query_str_var_name); ?>"
                                            placeholder="<?php esc_html_e('Date From', 'wp-jobsearch') ?>"
-                                           value="<?php echo jobsearch_esc_html($fromdate_field_req_val); ?>"/>
+                                           value="<?php echo esc_html($fromdate_field_req_val); ?>"/>
                                 </label>
-                                <label for="to<?php echo jobsearch_esc_html($query_str_var_name); ?>">
-                                    <input type="text" name="to-<?php echo jobsearch_esc_html($query_str_var_name); ?>"
-                                           id="to<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_dateto_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                                <label for="to<?php echo esc_html($query_str_var_name); ?>">
+                                    <input type="text" name="to-<?php echo esc_html($query_str_var_name); ?>"
+                                           id="to<?php echo esc_html($query_str_var_name); ?>"
                                            placeholder="<?php esc_html_e('To From', 'wp-jobsearch') ?>"
-                                           value="<?php echo jobsearch_esc_html($todate_field_req_val); ?>"/>
+                                           value="<?php echo esc_html($todate_field_req_val); ?>"/>
                                 </label>
                             </div>
                         </li>
@@ -6695,7 +4784,7 @@ class Jobsearch_CustomFieldLoad
                                 <li>
                                     <?php echo($field_label_html) ?>
                                     <div class="<?php echo($dropdown_main_class) ?>">
-                                        <select name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_range_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                                        <select name="<?php echo esc_html($query_str_var_name); ?>"
                                                 class="selectize-select"
                                                 placeholder="<?php echo($cus_field_label_arr); ?>">
                                             <?php
@@ -6715,7 +4804,7 @@ class Jobsearch_CustomFieldLoad
                                                     <?php
                                                 }
                                                 ?>
-                                                <option value="<?php echo jobsearch_esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo($custom_slider_selected) ?>><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?></option>
+                                                <option value="<?php echo esc_html((($range_min + 1) . "-" . ($range_min + $range_interval))); ?>" <?php echo($custom_slider_selected) ?>><?php echo force_balance_tags((($range_min + 1) . " - " . ($range_min + $range_interval))); ?></option>
                                                 <?php
                                                 $range_min = $range_min + $range_interval;
                                                 $loop_flag++;
@@ -6727,7 +4816,7 @@ class Jobsearch_CustomFieldLoad
                                 </li>
                                 <?php
                                 if ($filter_more_counter > 6) {
-                                    //echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
+                                    echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                                 }
                             } elseif ($range_field_type_arr[$range_flag] == 'slider') { // if slider style
                                 wp_enqueue_style('jquery-ui');
@@ -6753,27 +4842,27 @@ class Jobsearch_CustomFieldLoad
                                 ?>
                                 <li>
                                     <?php echo($field_label_html) ?>
-                                    <input type="text" name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"
-                                           id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_range_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
-                                           value="<?php echo jobsearch_esc_html($range_complete_str); ?>" readonly
+                                    <input type="text" name="<?php echo esc_html($query_str_var_name) ?>"
+                                           id="<?php echo esc_html($query_str_var_name . $rand_id) ?>"
+                                           value="<?php echo esc_html($range_complete_str); ?>" readonly
                                            style="border:0; color:#f6931f; font-weight:bold;"/>
-                                    <div id="slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                    <script type="text/javascript">
+                                    <div id="slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>"></div>
+                                    <script>
                                         jQuery(document).ready(function () {
-                                            jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
+                                            jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider({
                                                 range: true,
                                                 min: <?php echo absint($range_min); ?>,
                                                 max: <?php echo absint($range_field_max); ?>,
                                                 values: [<?php echo absint($range_complete_str_first); ?>, <?php echo absint($range_complete_str_second); ?>],
                                                 slide: function (event, ui) {
-                                                    jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
+                                                    jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
                                                 },
                                                 stop: function (event, ui) {
-                                                    <?php //echo force_balance_tags($submit_js_function_str); ?>;
+                                                    <?php echo force_balance_tags($submit_js_function_str); ?>;
                                                 }
                                             });
-                                            jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                "-" + jQuery("#slider-range<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
+                                            jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
+                                                "-" + jQuery("#slider-range<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
                                         });
                                     </script>
                                 </li>
@@ -6781,13 +4870,12 @@ class Jobsearch_CustomFieldLoad
                             }
                             $range_flag++;
                         }
-                    } else if ($cus_field['type'] == 'salary' && $salary_onoff_switch != 'off') {
+                    } else if ($cus_field['type'] == 'salary' && $salary_onoff_switch == 'on') {
 
                         $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
 
                         $salary_min = $cus_field['min'];
                         $salary_laps = $cus_field['laps'];
-                        $salary_laps = $salary_laps > 200 ? 200 : $salary_laps;
                         $salary_interval = $cus_field['interval'];
                         $salary_field_type = isset($cus_field['field-style']) ? $cus_field['field-style'] : 'simple'; //input, slider, input_slider
 
@@ -6800,15 +4888,14 @@ class Jobsearch_CustomFieldLoad
                         // Salary Types
                         if (!empty($job_salary_types)) {
                             $slar_type_count = 1;
-                            ob_start();
                             ?>
                             <li>
                                 <?php echo($field_label_html) ?>
                                 <div class="<?php echo($dropdown_main_class) ?>">
-                                    <select name="<?php echo jobsearch_esc_html($str_salary_type_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_salrytype_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                                    <select name="<?php echo esc_html($str_salary_type_name); ?>"
                                             class="selectize-select"
-                                            placeholder="<?php esc_html_e('Salary Type', 'wp-jobsearch') ?>">
-                                        <option value=""><?php esc_html_e('Salary Type', 'wp-jobsearch') ?></option>
+                                            placeholder="<?php esc_html_e('Salary Type', 'wp-josearch') ?>">
+                                        <option value=""><?php esc_html_e('Salary Type', 'wp-josearch') ?></option>
                                         <?php
                                         foreach ($job_salary_types as $job_salary_type) {
                                             $job_salary_type = apply_filters('wpml_translate_single_string', $job_salary_type, 'JobSearch Options', 'Salary Type - ' . $job_salary_type, $lang_code);
@@ -6826,8 +4913,6 @@ class Jobsearch_CustomFieldLoad
                                 </div>
                             </li>
                             <?php
-                            $advsrch_slrytype_html = ob_get_clean();
-                            echo apply_filters('jobsearch_joblistn_advsrch_salrytype_html', $advsrch_slrytype_html);
                         }
                         //
                         ?>
@@ -6840,7 +4925,7 @@ class Jobsearch_CustomFieldLoad
                                     $filter_more_counter = 1;
                                     ?>
                                     <div class="<?php echo($dropdown_main_class) ?>">
-                                        <select name="<?php echo jobsearch_esc_html($query_str_var_name); ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_salry_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
+                                        <select name="<?php echo esc_html($query_str_var_name); ?>"
                                                 class="selectize-select"
                                                 placeholder="<?php echo($cus_field_label_arr); ?>">
                                             <?php
@@ -6861,7 +4946,7 @@ class Jobsearch_CustomFieldLoad
                                                     <?php
                                                 }
                                                 ?>
-                                                <option value="<?php echo jobsearch_esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo($custom_slider_selected) ?>><?php echo force_balance_tags((jobsearch_get_price_format($salary_min + 1) . " - " . jobsearch_get_price_format($salary_min + $salary_interval))); ?></option>
+                                                <option value="<?php echo esc_html((($salary_min + 1) . "-" . ($salary_min + $salary_interval))); ?>" <?php echo($custom_slider_selected) ?>><?php echo force_balance_tags((($salary_min + 1) . " - " . ($salary_min + $salary_interval))); ?></option>
                                                 <?php
                                                 $salary_min = $salary_min + $salary_interval;
                                                 $loop_flag++;
@@ -6895,31 +4980,29 @@ class Jobsearch_CustomFieldLoad
                                     ?>
                                     <div class="salary-filter-slider">
                                         <div class="filter-slider-range">
-                                            <input type="text"
-                                                   name="<?php echo jobsearch_esc_html($query_str_var_name) ?>"<?php echo apply_filters('jobsearch_listin_top_filtcusfield_salry_exatts', '', $global_rand_id, array(), $custom_field_entity) ?>
-                                                   id="<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"
-                                                   value="<?php echo jobsearch_esc_html($salary_complete_str); ?>"
-                                                   readonly
+                                            <input type="text" name="<?php echo esc_html($query_str_var_name) ?>"
+                                                   id="<?php echo esc_html($query_str_var_name . $rand_id) ?>"
+                                                   value="<?php echo esc_html($salary_complete_str); ?>" readonly
                                                    style="border:0; color:#f6931f; font-weight:bold;"/>
                                         </div>
-                                        <div id="slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>"></div>
-                                        <script type="text/javascript">
+                                        <div id="slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>"></div>
+                                        <script>
                                             jQuery(document).ready(function () {
 
-                                                jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider({
+                                                jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider({
                                                     salary: true,
                                                     min: <?php echo absint($salary_min); ?>,
                                                     max: <?php echo absint($salary_field_max); ?>,
                                                     values: [<?php echo absint($salary_complete_str_first); ?>, <?php echo absint($salary_complete_str_second); ?>],
                                                     slide: function (event, ui) {
-                                                        jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
+                                                        jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(ui.values[0] + "-" + ui.values[1]);
                                                     },
                                                     stop: function (event, ui) {
-                                                        <?php //echo force_balance_tags($submit_js_function_str); ?>;
+                                                        <?php echo force_balance_tags($submit_js_function_str); ?>;
                                                     }
                                                 });
-                                                jQuery("#<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
-                                                    "-" + jQuery("#slider-salary<?php echo jobsearch_esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
+                                                jQuery("#<?php echo esc_html($query_str_var_name . $rand_id) ?>").val(jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 0) +
+                                                    "-" + jQuery("#slider-salary<?php echo esc_html($query_str_var_name . $rand_id) ?>").slider("values", 1));
                                             });
                                         </script>
                                     </div>
@@ -6938,15 +5021,9 @@ class Jobsearch_CustomFieldLoad
         return $html;
     }
 
-    static function jobsearch_custom_fields_load_filter_array_html_callback($custom_field_entity = '', $filter_arr, $exclude_meta_key, $cust_request_arr = '')
+    static function jobsearch_custom_fields_load_filter_array_html_callback($custom_field_entity = '', $filter_arr, $exclude_meta_key)
     {
         $field_db_slug = "jobsearch_custom_field_" . $custom_field_entity;
-
-        if (!empty($cust_request_arr)) {
-            $_request_arr = $cust_request_arr;
-        } else {
-            $_request_arr = $_REQUEST;
-        }
 
         $jobsearch_post_cus_fields = get_option($field_db_slug);
         if (is_array($jobsearch_post_cus_fields) && sizeof($jobsearch_post_cus_fields) > 0) {
@@ -6960,10 +5037,10 @@ class Jobsearch_CustomFieldLoad
                     if ($cus_field['type'] == 'salary') {
                         $query_str_var_name = 'jobsearch_field_job_salary';
                         $str_salary_type_name = 'job_salary_type';
-                        if (isset($_request_arr['jobsearch_field_candidate_salary'])) {
+                        if (isset($_REQUEST['jobsearch_field_candidate_salary'])) {
                             $query_str_var_name = 'jobsearch_field_candidate_salary';
                         }
-                        if (isset($_request_arr['candidate_salary_type'])) {
+                        if (isset($_REQUEST['candidate_salary_type'])) {
                             $str_salary_type_name = 'candidate_salary_type';
                         }
                     } else {
@@ -6978,26 +5055,26 @@ class Jobsearch_CustomFieldLoad
 
                                 $from_date = 'from-' . $query_str_var_name;
                                 $to_date = 'to-' . $query_str_var_name;
-                                if (isset($_request_arr[$from_date]) && $_request_arr[$from_date] != '') {
+                                if (isset($_REQUEST[$from_date]) && $_REQUEST[$from_date] != '') {
                                     $filter_arr[] = array(
                                         'key' => $query_str_var_name,
-                                        'value' => strtotime($_request_arr[$from_date]),
+                                        'value' => strtotime($_REQUEST[$from_date]),
                                         'compare' => '>=',
                                     );
                                 }
-                                if (isset($_request_arr[$to_date]) && $_request_arr[$to_date] != '') {
+                                if (isset($_REQUEST[$to_date]) && $_REQUEST[$to_date] != '') {
                                     $filter_arr[] = array(
                                         'key' => $query_str_var_name,
-                                        'value' => strtotime($_request_arr[$to_date]),
+                                        'value' => strtotime($_REQUEST[$to_date]),
                                         'compare' => '<=',
                                     );
                                 }
                             }
-                        } else if (isset($_request_arr[$query_str_var_name]) && $_request_arr[$query_str_var_name] != '') {
+                        } else if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] != '') {
 
                             if ($cus_field['type'] == 'dropdown' || $cus_field['type'] == 'checkbox') {
                                 if (isset($cus_field['multi']) && $cus_field['multi'] == 'yes') {
-                                    $dropdown_query_str_var_name = explode(",", $_request_arr[$query_str_var_name]);
+                                    $dropdown_query_str_var_name = explode(",", $_REQUEST[$query_str_var_name]);
                                     if (isset($dropdown_query_str_var_name[0]) && $dropdown_query_str_var_name[0] !== 'null') {
                                         $filter_multi_arr = array();
                                         $filter_multi_arr ['relation'] = 'OR';
@@ -7025,51 +5102,51 @@ class Jobsearch_CustomFieldLoad
                                         );
                                     }
                                 } else {
-                                    if (isset($_request_arr[$query_str_var_name]) && $_request_arr[$query_str_var_name] == 'null') {
-                                        $_request_arr[$query_str_var_name] = '';
+                                    if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] == 'null') {
+                                        $_REQUEST[$query_str_var_name] = '';
                                     }
                                     if (isset($cus_field['post-multi']) && $cus_field['post-multi'] == 'yes') {
 
                                         $filter_arr[] = array(
                                             'key' => $query_str_var_name,
-                                            'value' => ($_request_arr[$query_str_var_name]),
+                                            'value' => ($_REQUEST[$query_str_var_name]),
                                             'compare' => 'LIKE',
                                         );
                                     } else {
                                         $filter_arr[] = array(
                                             'key' => $query_str_var_name,
-                                            'value' => $_request_arr[$query_str_var_name],
+                                            'value' => $_REQUEST[$query_str_var_name],
                                             'compare' => '=',
                                         );
                                     }
                                 }
                             } elseif ($cus_field['type'] == 'dependent_dropdown') {
-                                if ($_request_arr[$query_str_var_name] != '') {
+                                if ($_REQUEST[$query_str_var_name] != '') {
                                     $filter_arr[] = array(
                                         'key' => $query_str_var_name,
-                                        'value' => $_request_arr[$query_str_var_name],
+                                        'value' => $_REQUEST[$query_str_var_name],
                                         'compare' => 'LIKE',
                                     );
                                 }
                             } elseif ($cus_field['type'] == 'text' || $cus_field['type'] == 'email') {
-                                if ($_request_arr[$query_str_var_name] != '') {
+                                if ($_REQUEST[$query_str_var_name] != '') {
                                     $filter_arr[] = array(
                                         'key' => $query_str_var_name,
-                                        'value' => $_request_arr[$query_str_var_name],
+                                        'value' => $_REQUEST[$query_str_var_name],
                                         'compare' => 'LIKE',
                                     );
                                 }
                             } elseif ($cus_field['type'] == 'number') {
-                                if ($_request_arr[$query_str_var_name] != 0 && $_request_arr[$query_str_var_name] != '') {
+                                if ($_REQUEST[$query_str_var_name] != 0 && $_REQUEST[$query_str_var_name] != '') {
                                     $filter_arr[] = array(
                                         'key' => $query_str_var_name,
-                                        'value' => $_request_arr[$query_str_var_name],
+                                        'value' => $_REQUEST[$query_str_var_name],
                                         'compare' => '>=',
                                         'type' => 'numeric'
                                     );
                                 }
                             } elseif ($cus_field['type'] == 'range') {
-                                $ranges_str_arr = explode("-", $_request_arr[$query_str_var_name]);
+                                $ranges_str_arr = explode("-", $_REQUEST[$query_str_var_name]);
                                 if (!isset($ranges_str_arr[1])) {
                                     $ranges_str_arr = explode("-", $ranges_str_arr[0]);
                                 }
@@ -7091,8 +5168,8 @@ class Jobsearch_CustomFieldLoad
                         }
                         if ($cus_field['type'] == 'salary') {
 
-                            if (isset($_request_arr[$query_str_var_name]) && $_request_arr[$query_str_var_name] != '') {
-                                $salarys_str_arr = explode("-", $_request_arr[$query_str_var_name]);
+                            if (isset($_REQUEST[$query_str_var_name]) && $_REQUEST[$query_str_var_name] != '') {
+                                $salarys_str_arr = explode("-", $_REQUEST[$query_str_var_name]);
                                 if (!isset($salarys_str_arr[1])) {
                                     $salarys_str_arr = explode("-", $salarys_str_arr[0]);
                                 }
@@ -7112,7 +5189,7 @@ class Jobsearch_CustomFieldLoad
                                 );
                             }
 
-                            $salary_type_str = isset($_request_arr[$str_salary_type_name]) ? $_request_arr[$str_salary_type_name] : '';
+                            $salary_type_str = isset($_REQUEST[$str_salary_type_name]) ? $_REQUEST[$str_salary_type_name] : '';
                             if ($salary_type_str != '') {
                                 $filter_arr[] = array(
                                     'key' => 'jobsearch_field_' . $str_salary_type_name,
@@ -7127,12 +5204,10 @@ class Jobsearch_CustomFieldLoad
                 $custom_field_flag++;
             }
         }
-        $filtr_args = array(
-            'custom_field_entity' => $custom_field_entity,
-            'exclude_meta_key' => $exclude_meta_key,
-            'cust_request_arr' => $cust_request_arr,
-        );
-        return apply_filters('jobsearch_listing_filters_cusf_query_arr', $filter_arr, $filtr_args);
+        //echo '<pre>';
+        //var_dump($filter_arr);
+        //echo '</pre>';
+        return $filter_arr;
     }
 
     static function jobsearch_custom_fields_load_precentage_array_callback($custom_field_entity = '', $skills_array = array())

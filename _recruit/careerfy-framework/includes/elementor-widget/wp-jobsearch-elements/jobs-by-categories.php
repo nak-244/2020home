@@ -151,18 +151,6 @@ class JobsByCategories extends Widget_Base
             ]
         );
         $this->add_control(
-            'sector_job_counts',
-            [
-                'label' => __('Show Jobs Counts', 'careerfy-frame'),
-                'type' => Controls_Manager::SELECT2,
-                'default' => 'yes',
-                'options' => [
-                    'yes' => __('Yes', 'careerfy-frame'),
-                    'no' => __('No', 'careerfy-frame'),
-                ],
-            ]
-        );
-        $this->add_control(
             'cat_title',
             [
                 'label' => __('Title', 'careerfy-frame'),
@@ -191,16 +179,12 @@ class JobsByCategories extends Widget_Base
     {
         $atts = $this->get_settings_for_display();
         $rand_num = rand(10000000, 99909999);
-        extract(shortcode_atts(array(
-            'cats_view' => '',
-            'num_cats' => '-1',
-            'cat_title' => '',
-            'result_page' => '',
-            'sector_job_counts' => '',
-            'cat_link_text' => '',
-            'cat_link_text_url' => '',
-            'order_by' => 'jobs_count',
-        ), $atts));
+        $num_cats = $atts['num_cats'];
+        $cat_title = $atts['cat_title'];
+        $result_page = $atts['result_page'];
+        $cat_link_text = $atts['cat_link_text'];
+        $cat_link_text_url = $atts['cat_link_text_url'];
+        $order_by = $atts['order_by'];
         ob_start();
 
         if (class_exists('JobSearch_plugin')) { ?>
@@ -246,11 +230,7 @@ class JobsByCategories extends Widget_Base
 
                                 ob_start(); ?>
                                 <li>
-                                    <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php
-                                        if ($sector_job_counts == 'yes') {
-                                            printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs);
-                                        }
-                                        ?></a>
+                                    <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs) ?></a>
                                 </li>
                                 <?php
                                 $catitem_html = ob_get_clean();
@@ -292,7 +272,6 @@ class JobsByCategories extends Widget_Base
                             url: ajax_url,
                             method: "POST",
                             data: {
-                                sector_job_counts: '<?php echo ($sector_job_counts) ?>',
                                 post_per_page: <?php echo $num_cats ?>,
                                 action: job_filter_action
                             },

@@ -6,11 +6,7 @@
  *
  * @package JobSearch
  */
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 global $jobsearch_plugin_options;
 $maintenance_mode_text_small_title = isset($jobsearch_plugin_options['maintenance-mode-text-small-title']) ? $jobsearch_plugin_options['maintenance-mode-text-small-title'] : '';
 $maintenance_mode_text_large_title = isset($jobsearch_plugin_options['maintenance-mode-text-large-title']) ? $jobsearch_plugin_options['maintenance-mode-text-large-title'] : '';

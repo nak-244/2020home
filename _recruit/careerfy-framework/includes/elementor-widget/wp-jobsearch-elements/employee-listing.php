@@ -92,7 +92,6 @@ class EmployeeListings extends Widget_Base
     {
         global $jobsearch_plugin_options, $jobsearch_gdapi_allocation;
         $all_locations_type = isset($jobsearch_plugin_options['all_locations_type']) ? $jobsearch_plugin_options['all_locations_type'] : '';
-        $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
 
         $ads_management_switch = isset($jobsearch_plugin_options['ads_management_switch']) ? $jobsearch_plugin_options['ads_management_switch'] : '';
@@ -163,7 +162,7 @@ class EmployeeListings extends Widget_Base
                     'city' => __('City', 'careerfy-frame'),
                 ],
                 'multiple' => true,
-                'default' => ['country', 'state'],
+                'default' => ['country','state'],
                 'description' => __("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame"),
             ]
         );
@@ -528,19 +527,6 @@ class EmployeeListings extends Widget_Base
             ]
         );
         $this->add_control(
-            'emp_top_search_radius',
-            [
-                'label' => __('Employer Search Radius', 'careerfy-frame'),
-                'type' => Controls_Manager::SELECT2,
-                'default' => 'simple',
-                'description' => __("Enable/Disable top search radius.", "careerfy-frame"),
-                'options' => [
-                    'simple' => __('Simple', 'careerfy-frame'),
-                    'advance' => __('Advance Search', 'careerfy-frame'),
-                ],
-            ]
-        );
-        $this->add_control(
             'emp_top_search_title',
             [
                 'label' => __('Employer Title, Keywords, or Phrase', 'careerfy-frame'),
@@ -566,21 +552,19 @@ class EmployeeListings extends Widget_Base
                 ],
             ]
         );
-        if ($sectors_enable_switch == 'on') {
-            $this->add_control(
-                'emp_top_search_sector',
-                [
-                    'label' => __('Sector', 'careerfy-frame'),
-                    'type' => Controls_Manager::SELECT2,
-                    'default' => 'yes',
-                    'description' => __("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
-                    'options' => [
-                        'yes' => __('Yes', 'careerfy-frame'),
-                        'no' => __('No', 'careerfy-frame'),
-                    ],
-                ]
-            );
-        }
+        $this->add_control(
+            'emp_top_search_sector',
+            [
+                'label' => __('Sector', 'careerfy-frame'),
+                'type' => Controls_Manager::SELECT2,
+                'default' => 'yes',
+                'description' => __("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
+                'options' => [
+                    'yes' => __('Yes', 'careerfy-frame'),
+                    'no' => __('No', 'careerfy-frame'),
+                ],
+            ]
+        );
         $this->add_control(
             'top_search_autofill',
             [
@@ -877,9 +861,9 @@ class EmployeeListings extends Widget_Base
                     <?php
                     echo absint($employer_totnum) . '&nbsp;';
                     if ($employer_totnum > 1) {
-                        echo esc_html__('Employers Found', 'wp-jobsearch');
+                        echo esc_html__('Employers Found', 'careerfy-frame');
                     } else {
-                        echo esc_html__('Employer Found', 'wp-jobsearch');
+                        echo esc_html__('Employer Found', 'careerfy-frame');
                     }
                     do_action('jobsearch_emp_listin_sh_after_jobs_found', $employer_totnum, $employer_short_counter, $atts);
                     ?>
@@ -897,9 +881,9 @@ class EmployeeListings extends Widget_Base
                         <div class="jobsearch-filterable-select">
                             <?php
                             $sortby_option = array(
-                                'recent' => esc_html__('Most Recent', 'wp-jobsearch'),
-                                'alphabetical' => esc_html__('Alphabet Order', 'wp-jobsearch'),
-                                'most_viewed' => esc_html__('Most Viewed', 'wp-jobsearch')
+                                'recent' => esc_html__('Most Recent', 'careerfy-frame'),
+                                'alphabetical' => esc_html__('Alphabet Order', 'careerfy-frame'),
+                                'most_viewed' => esc_html__('Most Viewed', 'careerfy-frame')
                             );
                             $sortby_option = apply_filters('employer_hunt_employers_sort_options', $sortby_option);
                             $cs_opt_array = array(
@@ -908,7 +892,7 @@ class EmployeeListings extends Widget_Base
                                 'force_std' => $employer_sort_by,
                                 'desc' => '',
                                 'classes' => 'selectize-select',
-                                'ext_attr' => ' onchange="jobsearch_employer_content_load(\'' . esc_js($employer_short_counter) . '\')" placeholder="' . esc_html__('Most Recent', 'wp-jobsearch') . '"',
+                                'ext_attr' => ' onchange="jobsearch_employer_content_load(\'' . esc_js($employer_short_counter) . '\')" placeholder="' . esc_html__('Most Recent', 'careerfy-frame') . '"',
                                 'options' => $sortby_option,
                             );
                             $jobsearch_form_fields->select_field($cs_opt_array);
@@ -920,21 +904,21 @@ class EmployeeListings extends Widget_Base
                         <div class="jobsearch-filterable-select">
                             <?php
                             $paging_options = array();
-                            $paging_options[""] = '' . esc_html__("Records Per Page", "wp-jobsearch");
-                            $paging_options["10"] = '10 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["20"] = '20 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["30"] = '30 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["50"] = '50 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["70"] = '70 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["100"] = '100 ' . esc_html__("Per Page", "wp-jobsearch");
-                            $paging_options["200"] = '200 ' . esc_html__("Per Page", "wp-jobsearch");
+                            $paging_options[""] = '' . esc_html__("Records Per Page", "careerfy-frame");
+                            $paging_options["10"] = '10 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["20"] = '20 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["30"] = '30 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["50"] = '50 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["70"] = '70 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["100"] = '100 ' . esc_html__("Per Page", "careerfy-frame");
+                            $paging_options["200"] = '200 ' . esc_html__("Per Page", "careerfy-frame");
                             $cs_opt_array = array(
                                 'cus_id' => '',
                                 'cus_name' => 'per-page',
                                 'force_std' => $employer_per_page,
                                 'desc' => '',
                                 'classes' => 'sort-records-per-page',
-                                'ext_attr' => ' onchange="jobsearch_employer_content_load(\'' . esc_js($employer_short_counter) . '\')" placeholder="' . esc_html__('Records Per Page', 'wp-jobsearch') . '"',
+                                'ext_attr' => ' onchange="jobsearch_employer_content_load(\'' . esc_js($employer_short_counter) . '\')" placeholder="' . esc_html__('Records Per Page', 'careerfy-frame') . '"',
                                 'options' => apply_filters('jobsearch_emplistin_topsort_paginum_options', $paging_options),
                             );
 
@@ -983,9 +967,6 @@ class EmployeeListings extends Widget_Base
 
         $radius = isset($_REQUEST['loc_radius']) ? $_REQUEST['loc_radius'] : '';
         $search_type = isset($_REQUEST['location_location1']) ? $_REQUEST['location_location1'] : '';
-
-        $jobsearch__options = get_option('jobsearch_plugin_options');
-        $all_locations_type = isset($jobsearch__options['all_locations_type']) ? $jobsearch__options['all_locations_type'] : '';
 
         $location_rslt = $all_post_ids;
 
@@ -1075,7 +1056,7 @@ class EmployeeListings extends Widget_Base
                         }
                     }
 
-                    $location_query = new WP_Query($args_count);
+                    $location_query = new \WP_Query($args_count);
                     wp_reset_postdata();
                     $location_rslt = $location_query->posts;
 
@@ -1148,7 +1129,7 @@ class EmployeeListings extends Widget_Base
                     $sitepress_curr_lang = $sitepress->get_current_language();
                     $sitepress->switch_lang($sitepress_def_lang, true);
 
-                    $location_query = new WP_Query($args_count);
+                    $location_query = new \WP_Query($args_count);
                     wp_reset_postdata();
                     $location_rslt = $location_query->posts;
 
@@ -1234,8 +1215,7 @@ class EmployeeListings extends Widget_Base
     public function jobsearch_employers_content($employer_arg = '')
     {
 
-        global $wpdb, $post, $jobsearch_form_fields, $jobsearch_search_fields, $pagenow, $jobsearch_plugin_options, $sitepress;
-        $page_id = isset($post->ID) ? $post->ID : '';
+        global $wpdb, $jobsearch_form_fields, $jobsearch_search_fields, $pagenow, $jobsearch_plugin_options, $sitepress;
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
         }
@@ -1354,7 +1334,7 @@ class EmployeeListings extends Widget_Base
                 if ($def_radius_unit != 'miles') {
                     $radius = $radius / 1.60934; // 1.60934 == 1 Mile
                 }
-                $radiusCheck = new \RadiusCheck($lat, $lng, $radius);
+                $radiusCheck = new RadiusCheck($lat, $lng, $radius);
                 $minLat = $radiusCheck->MinLatitude();
                 $maxLat = $radiusCheck->MaxLatitude();
                 $minLong = $radiusCheck->MinLongitude();
@@ -1403,7 +1383,6 @@ class EmployeeListings extends Widget_Base
                 $element_filter_arr,
             ),
         );
-
         if (isset($_REQUEST['sector_cat']) && $_REQUEST['sector_cat'] != '') {
 
             $args_count['tax_query'][] = array(
@@ -1489,14 +1468,33 @@ class EmployeeListings extends Widget_Base
             $all_post_ids = $this->employer_polygon_filter($loc_polygon_path, $all_post_ids, $element_filter_arr);
         }
 
+        if (isset($search_title) && $search_title != '') {
+
+//                $search_query = "SELECT ID FROM $wpdb->posts AS posts";
+//                $search_query .= " WHERE posts.post_type=%s AND posts.post_status='publish' AND (posts.post_title LIKE %s OR posts.post_content LIKE '%$search_title%')";
+//                if (!empty($all_post_ids)) {
+//                    $_post_ids = implode(',', $all_post_ids);
+//                    $search_query .= " AND posts.ID IN ($_post_ids)";
+//                }
+//                $search_query .= " ORDER BY ID DESC";
+//                $_job_ids = $wpdb->get_col($wpdb->prepare($search_query, 'employer', "%$search_title%"));
+//                if (!empty($_job_ids)) {
+//                    $all_post_ids = $_job_ids;
+//                } else {
+//                    $all_post_ids = array(0);
+//                }
+        }
+
         // recent employer query end
+
         if (!empty($all_post_ids)) {
             $args_count['post__in'] = $all_post_ids;
             $args['post__in'] = $all_post_ids;
         }
 
-        $args = apply_filters('jobsearch_emp_listing_query_args_array', $args, $atts);
-        $args_count = apply_filters('jobsearch_emp_listing_query_argscount_array', $args_count, $atts);
+        //echo '<pre>';
+        //print_r($args);
+        //echo '</pre>';
 
         add_filter('posts_where', 'jobsearch_search_query_results_filter', 10, 2);
         $employer_loop_obj = jobsearch_get_cached_obj('employer_result_cached_loop_obj1', $args, 12, false, 'wp_query');
@@ -1516,8 +1514,6 @@ class EmployeeListings extends Widget_Base
         }
         remove_filter('posts_join_paged', array($this, 'edit_join'), 999, 2);
         remove_filter('posts_orderby', array($this, 'edit_orderby'), 999, 2);
-
-        $page_container_view = get_post_meta($page_id, 'careerfy_field_page_view', true);
         ?>
         <form id="jobsearch_employer_frm_<?php echo absint($employer_short_counter); ?>">
             <?php
@@ -1529,14 +1525,9 @@ class EmployeeListings extends Widget_Base
             $listing_top_map_zoom = isset($atts['emp_top_map_zoom']) && $atts['emp_top_map_zoom'] > 0 ? $atts['emp_top_map_zoom'] : 8;
             $listing_top_map_height = isset($atts['emp_top_map_height']) && $atts['emp_top_map_height'] > 0 ? $atts['emp_top_map_height'] : 450;
             if ($listing_top_map == 'yes') {
-                $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-                if ($location_map_type == 'mapbox') {
-                    wp_enqueue_script('jobsearch-mapbox');
-                } else {
-                    wp_enqueue_script('jobsearch-google-map');
-                    wp_enqueue_script('jobsearch-map-infobox');
-                    wp_enqueue_script('jobsearch-map-markerclusterer');
-                }
+                wp_enqueue_script('jobsearch-google-map');
+                wp_enqueue_script('jobsearch-map-infobox');
+                wp_enqueue_script('jobsearch-map-markerclusterer');
                 wp_enqueue_script('jobsearch-employer-lists-map');
                 $map_style = isset($jobsearch_plugin_options['jobsearch-location-map-style']) ? $jobsearch_plugin_options['jobsearch-location-map-style'] : '';
                 $map_zoom = $listing_top_map_zoom;
@@ -1545,23 +1536,16 @@ class EmployeeListings extends Widget_Base
                 $map_latitude = '51.2';
                 $map_longitude = '0.2';
 
-                if ($loc_def_adres != '' && !(isset($_GET['location']))) {
+                if ($loc_def_adres != '') {
                     $adre_to_cords = jobsearch_address_to_cords($loc_def_adres);
                     $map_latitude = isset($adre_to_cords['lat']) && $adre_to_cords['lat'] != '' ? $adre_to_cords['lat'] : $map_latitude;
                     $map_longitude = isset($adre_to_cords['lng']) && $adre_to_cords['lng'] != '' ? $adre_to_cords['lng'] : $map_longitude;
                 }
-                if (isset($_GET['location']) && $_GET['location'] != '') {
-                    $url_get_loc = $_GET['location'];
-                    $adre_to_cords = jobsearch_address_to_cords($url_get_loc);
-                    $map_latitude = isset($adre_to_cords['lat']) && $adre_to_cords['lat'] != '' ? $adre_to_cords['lat'] : $map_latitude;
-                    $map_longitude = isset($adre_to_cords['lng']) && $adre_to_cords['lng'] != '' ? $adre_to_cords['lng'] : $map_longitude;
-                }
-
-                $map_marker_icon = isset($jobsearch_plugin_options['elistin_map_marker_img']['url']) ? $jobsearch_plugin_options['elistin_map_marker_img']['url'] : '';
+                $map_marker_icon = isset($jobsearch_plugin_options['listin_map_marker_img']['url']) ? $jobsearch_plugin_options['listin_map_marker_img']['url'] : '';
                 if ($map_marker_icon == '') {
                     $map_marker_icon = jobsearch_plugin_get_url('images/employer_map_marker.png');
                 }
-                $map_cluster_icon = isset($jobsearch_plugin_options['elistin_map_cluster_img']['url']) ? $jobsearch_plugin_options['elistin_map_cluster_img']['url'] : '';
+                $map_cluster_icon = isset($jobsearch_plugin_options['listin_map_cluster_img']['url']) ? $jobsearch_plugin_options['listin_map_cluster_img']['url'] : '';
                 if ($map_cluster_icon == '') {
                     $map_cluster_icon = jobsearch_plugin_get_url('images/map_cluster.png');
                 }
@@ -1578,10 +1562,12 @@ class EmployeeListings extends Widget_Base
                         $get_pos_sectrs = wp_get_post_terms($employer_post, 'sector');
                         $map_pos_sectrs_html = '';
                         if (!empty($get_pos_sectrs)) {
-                            $map_secresult_page = get_permalink();
-                            $map_pos_sectrs_html .= ' ' . esc_html__('in', 'wp-jobsearch') . ' ';
+                            $map_secpage_id = isset($jobsearch_plugin_options['jobsearch_search_list_page']) ? $jobsearch_plugin_options['jobsearch_search_list_page'] : '';
+                            $map_secpage_id = jobsearch__get_post_id($map_secpage_id, 'page');
+                            $map_secresult_page = get_permalink($map_secpage_id);
+                            $map_pos_sectrs_html .= ' ' . esc_html__('in', 'careerfy-frame') . ' ';
                             foreach ($get_pos_sectrs as $get_pos_sectr) {
-                                $map_pos_sectrs_html .= '<a href="' . add_query_arg(array('sector_cat' => $get_pos_sectr->slug, 'ajax_filter' => 'true'), $map_secresult_page) . '">' . $get_pos_sectr->name . '</a> ';
+                                $map_pos_sectrs_html .= '<a href="' . add_query_arg(array('sector_cat' => $get_pos_sectr->slug), $map_secresult_page) . '">' . $get_pos_sectr->name . '</a> ';
                             }
                         }
                         //logo img
@@ -1596,36 +1582,17 @@ class EmployeeListings extends Widget_Base
                             $map_posadres = '<div class="map-info-adres"><i class="jobsearch-icon jobsearch-maps-and-flags"></i> ' . $map_posadres . '</div>';
                         }
 
-                        if ($location_map_type == 'mapbox') {
-                            $map_list_arr[] = array(
-                                'type' => 'Feature',
-                                'geometry' => array(
-                                    'type' => 'Point',
-                                    'coordinates' => array($listing_longitude, $listing_latitude)
-                                ),
-                                'properties' => array(
-                                    'id' => $employer_post,
-                                    'title' => wp_trim_words(get_the_title($employer_post), 5),
-                                    'link' => get_permalink($employer_post),
-                                    'logo_img_url' => $map_pos_thumb_src,
-                                    'address' => $map_posadres,
-                                    'sector' => $map_pos_sectrs_html,
-                                    'marker' => $map_marker_icon,
-                                )
-                            );
-                        } else {
-                            $map_list_arr[] = array(
-                                'lat' => $listing_latitude,
-                                'long' => $listing_longitude,
-                                'id' => $employer_post,
-                                'title' => wp_trim_words(get_the_title($employer_post), 5),
-                                'link' => get_permalink($employer_post),
-                                'logo_img_url' => $map_pos_thumb_src,
-                                'address' => $map_posadres,
-                                'sector' => $map_pos_sectrs_html,
-                                'marker' => $map_marker_icon,
-                            );
-                        }
+                        $map_list_arr[] = array(
+                            'lat' => $listing_latitude,
+                            'long' => $listing_longitude,
+                            'id' => $employer_post,
+                            'title' => wp_trim_words(get_the_title($employer_post), 5),
+                            'link' => get_permalink($employer_post),
+                            'logo_img_url' => $map_pos_thumb_src,
+                            'address' => $map_posadres,
+                            'sector' => $map_pos_sectrs_html,
+                            'marker' => $map_marker_icon,
+                        );
                     }
                 }
                 //
@@ -1638,12 +1605,6 @@ class EmployeeListings extends Widget_Base
                     'cluster_icon' => $map_cluster_icon,
                     'cords_list' => $map_list_arr,
                 );
-                if ($location_map_type == 'mapbox') {
-                    $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
-                    $mapbox_style_url = isset($jobsearch_plugin_options['mapbox_style_url']) ? $jobsearch_plugin_options['mapbox_style_url'] : '';
-                    $listn_map_arr['access_token'] = $mapbox_access_token;
-                    $listn_map_arr['map_style'] = $mapbox_style_url;
-                }
                 $listn_map_obj = json_encode($listn_map_arr);
 
                 ob_start();
@@ -1654,7 +1615,7 @@ class EmployeeListings extends Widget_Base
                     var markerClusterers;
                     var jobsearch_listing_dataobj = jQuery.parseJSON('<?php echo addslashes($listn_map_obj) ?>');
                     <?php
-                    if (isset($_REQUEST['ajax_filter']) && $_REQUEST['ajax_filter'] == 'true' && isset($_REQUEST['action']) && $_REQUEST['action'] == 'jobsearch_employers_content') {
+                    if (isset($_REQUEST['ajax_filter']) && $_REQUEST['ajax_filter'] == 'true' && isset($_REQUEST['action']) && $_REQUEST['action'] == 'jobsearch_jobs_content') {
                     ?>
                     jobsearch_listing_top_map(jobsearch_listing_dataobj, 'true');
                     <?php
@@ -1672,10 +1633,7 @@ class EmployeeListings extends Widget_Base
                 <?php
                 $map_html = ob_get_clean();
                 echo apply_filters('jobsearch_emps_listin_topmap_html', $map_html, $listn_map_obj, $employer_short_counter, $listing_top_map_height, $atts);
-
-                if ($page_container_view == 'wide') {
-                    echo '<div class="container">';
-                }
+                echo '<div class="container">';
             }
             ?>
             <div style="display:none" id='employer_arg<?php echo absint($employer_short_counter); ?>'>
@@ -1686,15 +1644,7 @@ class EmployeeListings extends Widget_Base
             <?php
             if ($emp_top_search == 'yes') {
 
-                $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-                if ($location_map_type == 'mapbox') {
-                    wp_enqueue_script('jobsearch-mapbox');
-                    wp_enqueue_script('jobsearch-mapbox-geocoder');
-                    wp_enqueue_script('mapbox-geocoder-polyfill');
-                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                } else {
-                    wp_enqueue_script('jobsearch-google-map');
-                }
+                wp_enqueue_script('jobsearch-google-map');
                 wp_enqueue_script('jobsearch-location-autocomplete');
 
                 //
@@ -1705,16 +1655,11 @@ class EmployeeListings extends Widget_Base
                 $top_search_title = isset($atts['emp_top_search_title']) && !empty($atts['emp_top_search_title']) ? $atts['emp_top_search_title'] : 'yes';
                 $top_search_location = isset($atts['emp_top_search_location']) && !empty($atts['emp_top_search_location']) ? $atts['emp_top_search_location'] : 'yes';
                 $top_search_sector = isset($atts['emp_top_search_sector']) && !empty($atts['emp_top_search_sector']) ? $atts['emp_top_search_sector'] : 'yes';
-                $vc_top_search_radius = isset($atts['emp_top_search_radius']) && !empty($atts['emp_top_search_radius']) ? $atts['emp_top_search_radius'] : 'yes';
                 $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
 
                 $search_title_val = isset($_REQUEST['search_title']) ? $_REQUEST['search_title'] : '';
-                $location_val = isset($_REQUEST['location']) ? ($_REQUEST['location']) : '';
+                $location_val = isset($_REQUEST['location']) ? $_REQUEST['location'] : '';
                 $cat_sector_val = isset($_REQUEST['sector_cat']) ? urldecode($_REQUEST['sector_cat']) : '';
-
-                $search_title_val = jobsearch_esc_html($search_title_val);
-                $location_val = jobsearch_esc_html($location_val);
-                $cat_sector_val = jobsearch_esc_html($cat_sector_val);
 
                 $search_main_class = '';
                 if ($top_serch_style == 'advance') {
@@ -1727,7 +1672,7 @@ class EmployeeListings extends Widget_Base
                 }
 
                 $without_sectr_class = 'search-cat-off';
-                if (($top_search_sector == 'yes' && $sectors_enable_switch == 'on') || ($top_search_sector == 'no' && $sectors_enable_switch == 'no')) {
+                if (($top_search_sector == 'yes' && $sectors_enable_switch == 'on') || ($sectors_enable_switch == 'on' && $top_search_sector == 'no')) {
                     $without_sectr_class = '';
                 }
                 $without_loc_class = 'search-loc-off';
@@ -1739,9 +1684,6 @@ class EmployeeListings extends Widget_Base
                 $job_filters_loc = isset($atts['job_filters_loc']) ? $atts['job_filters_loc'] : '';
                 $top_search_locsugg = isset($jobsearch_plugin_options['top_search_locsugg']) ? $jobsearch_plugin_options['top_search_locsugg'] : '';
                 $top_search_geoloc = isset($jobsearch_plugin_options['top_search_geoloc']) ? $jobsearch_plugin_options['top_search_geoloc'] : '';
-                $top_search_radius = isset($jobsearch_plugin_options['top_search_radius']) ? $jobsearch_plugin_options['top_search_radius'] : '';
-                $top_search_def_radius = isset($jobsearch_plugin_options['top_search_def_radius']) ? $jobsearch_plugin_options['top_search_def_radius'] : 50;
-                $top_search_max_radius = isset($jobsearch_plugin_options['top_search_max_radius']) ? $jobsearch_plugin_options['top_search_max_radius'] : 500;
                 ?>
                 <div class="jobsearch-top-searchbar jobsearch-typo-wrap <?php echo($search_main_class) ?> <?php echo $adv_search_on ?>">
                     <!-- Sub Header Form -->
@@ -1751,7 +1693,7 @@ class EmployeeListings extends Widget_Base
                                 <?php if ($top_search_title == 'yes') { ?>
                                     <li>
                                         <div class="<?php echo($top_search_autofill != 'no' ? 'jobsearch-sugges-search' : '') ?>">
-                                            <input placeholder="<?php esc_html_e('Title, Keywords, or Phrase', 'wp-jobsearch') ?>"
+                                            <input placeholder="<?php esc_html_e('Title, Keywords, or Phrase', 'careerfy-frame') ?>"
                                                    name="search_title" value="<?php echo($search_title_val) ?>"
                                                    data-type="employer" type="text">
                                             <span class="sugg-search-loader"></span>
@@ -1763,29 +1705,26 @@ class EmployeeListings extends Widget_Base
                                         <div class="jobsearch_searchloc_div">
                                             <span class="loc-loader"></span>
                                             <?php
-                                            if ($top_search_locsugg == 'no') { ?>
-                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'wp-jobsearch') ?>"
+                                            if ($top_search_locsugg == 'no') {
+                                                ?>
+                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        class="<?php echo($top_search_geoloc != 'no' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location"
                                                        value="<?php echo urldecode($location_val) ?>" type="text">
-                                            <?php } else { ?>
-                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'wp-jobsearch') ?>"
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        autocomplete="off" class="jobsearch_search_location_field"
                                                        value="<?php echo urldecode($location_val) ?>" type="text">
                                                 <input type="hidden"
                                                        class="loc_search_keyword <?php echo($top_search_geoloc != 'no' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location"
                                                        value="<?php echo urldecode($location_val) ?>">
-                                            <?php }
-                                            if ($top_search_radius == 'yes' && $vc_top_search_radius == 'yes' && $top_serch_style != 'advance') { ?>
-                                                <div class="careerfy-radius-tooltip">
-                                                    <label><?php echo esc_html__('Radius', 'careerfy-frame') ?>
-                                                        ( <?php echo esc_html__($def_radius_unit, 'careerfy-frame') ?>
-                                                        )</label><input
-                                                            type="number" name="loc_radius"
-                                                            value="<?php echo($top_search_def_radius) ?>"
-                                                            max="<?php echo($top_search_max_radius) ?>"></div>
-                                            <?php } ?>
+                                                <?php
+                                            }
+
+                                            ?>
                                         </div>
                                         <?php
                                         if ($top_search_geoloc != 'no') {
@@ -1811,8 +1750,8 @@ class EmployeeListings extends Widget_Base
                                         <li>
                                             <div class="jobsearch-select-style">
                                                 <select name="sector_cat" class="selectize-select"
-                                                        placeholder="<?php esc_html_e('Select Sector', 'wp-jobsearch') ?>">
-                                                    <option value=""><?php esc_html_e('Select Sector', 'wp-jobsearch') ?></option>
+                                                        placeholder="<?php esc_html_e('Select Sector', 'careerfy-frame') ?>">
+                                                    <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
                                                     <?php
                                                     if (!empty($all_sectors)) {
                                                         echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, $cat_sector_val);
@@ -1825,13 +1764,14 @@ class EmployeeListings extends Widget_Base
                                     }
                                 }
 
-                                if ($top_serch_style == 'advance') { ?>
-                                    <li class="adv-srch-toggler">
-                                        <a href="javascript:void(0);" class="adv-srch-toggle-btn">
-                                            <span>+</span> <?php esc_html_e('Advance Search', 'wp-jobsearch') ?>
-                                        </a>
-                                    </li>
-                                <?php } ?>
+                                if ($top_serch_style == 'advance') {
+                                    ?>
+                                    <li class="adv-srch-toggler"><a href="javascript:void(0);"
+                                                                    class="adv-srch-toggle-btn"><span>+</span> <?php esc_html_e('Advance Search', 'careerfy-frame') ?>
+                                        </a></li>
+                                    <?php
+                                }
+                                ?>
                                 <li class="jobsearch-banner-submit">
                                     <input type="hidden" name="ajax_filter" value="true">
                                     <input type="submit" value=""> <i class="jobsearch-icon jobsearch-search"></i>
@@ -1872,48 +1812,31 @@ class EmployeeListings extends Widget_Base
                                                     $tpsrch_complete_str = absint($top_search_def_radius);
                                                     $tpsrch_complete_str_first = absint($top_search_def_radius);
                                                 }
-                                                $to_radius_unit = esc_html__('Km', 'wp-jobsearch');
+                                                $to_radius_unit = esc_html__('Km', 'careerfy-frame');
                                                 if ($def_radius_unit == 'miles') {
-                                                    $to_radius_unit = esc_html__('Miles', 'wp-jobsearch');
+                                                    $to_radius_unit = esc_html__('Miles', 'careerfy-frame');
                                                 }
                                                 ?>
                                                 <div class="filter-slider-range">
-                                                    <span class="radius-txt"><?php esc_html_e('Radius:', 'wp-jobsearch') ?></span>
+                                                    <span class="radius-txt"><?php esc_html_e('Radius:', 'careerfy-frame') ?></span>
                                                     <span id="radius-num-<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"
                                                           class="radius-numvr-holdr"><?php echo esc_html($tpsrch_complete_str); ?></span>
                                                     <span class="radius-punit"><?php echo($to_radius_unit) ?></span>
-                                                    <input type="hidden" id="loc-def-radiusval"
-                                                           value="<?php echo esc_html($tpsrch_complete_str) ?>">
                                                     <input type="hidden" name="loc_radius"
                                                            id="<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"
-                                                           value="">
+                                                           value="<?php echo esc_html($tpsrch_complete_str); ?>"/>
                                                 </div>
 
                                                 <div id="slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"></div>
                                                 <script>
                                                     jQuery(document).ready(function () {
-                                                        var toSetRadiusVal = setInterval(function () {
-                                                            jQuery('input#<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>').val('');
-                                                            <?php
-                                                            if ($tpsrch_complete_str > 0 && $tpsrch_field_max > $tpsrch_complete_str) {
-                                                            ?>
-                                                            var initSlideWidthPerc = (<?php echo($tpsrch_complete_str) ?>/<?php echo absint($tpsrch_field_max); ?>)*100;
-                                                            jQuery("#slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").find('.ui-slider-range').css({width: initSlideWidthPerc + '%'});
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                            clearInterval(toSetRadiusVal);
-                                                        }, 1000);
 
                                                         jQuery("#slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").slider({
                                                             tpsrch: true,
-                                                            range: "min",
                                                             min: <?php echo absint($tpsrch_min); ?>,
                                                             max: <?php echo absint($tpsrch_field_max); ?>,
                                                             values: [<?php echo absint($tpsrch_complete_str_first); ?>],
                                                             slide: function (event, ui) {
-                                                                var slideWidthPerc = ((ui.values[0]) /<?php echo absint($tpsrch_field_max); ?>) * 100;
-                                                                jQuery("#slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").find('.ui-slider-range').css({width: slideWidthPerc + '%'});
                                                                 jQuery("#<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").val(ui.values[0]);
                                                                 jQuery("#radius-num-<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").html(ui.values[0]);
                                                             },
@@ -1954,6 +1877,7 @@ class EmployeeListings extends Widget_Base
                     set_query_var('page_url', $page_url);
                     set_query_var('employer_loop_obj', $employer_loop_obj);
                     set_query_var('global_rand_id', $employer_short_counter);
+
                     jobsearch_get_template_part('filters', 'employer-template', 'employers');
 
                     $content_columns = 'jobsearch-column-9 jobsearch-typo-wrap';
@@ -1988,7 +1912,8 @@ class EmployeeListings extends Widget_Base
                                     <div class="element-title <?php echo($employers_title_alignment); ?>">
                                         <?php
                                         if ($employers_title != '' || $employers_subtitle != '') {
-                                            if ($employers_title != '') { ?>
+                                            if ($employers_title != '') {
+                                                ?>
                                                 <h2<?php echo force_balance_tags($element_title_color); ?>><?php echo esc_html($employers_title); ?></h2>
                                                 <?php
                                             }
@@ -2022,7 +1947,6 @@ class EmployeeListings extends Widget_Base
 
                         jobsearch_get_template_part($employer_view, 'employer-template', 'employers');
 
-                        echo apply_filters('jobsearch_emps_list_template_after', '', $employer_short_counter, $atts);
                         wp_reset_postdata();
                         ?>
                     </div>
@@ -2059,26 +1983,22 @@ class EmployeeListings extends Widget_Base
                     'std' => $employer_short_counter,
                 )
             );
-
-            if ($listing_top_map == 'yes') {
-                if ($page_container_view == 'wide') {
-                    echo '</div>';
-                }
-            }
             ?>
+
+
         </form>
         <?php
-// only for ajax request
-        if (isset($_GET['action']) && $_GET['action'] != 'elementor') {
+        // only for ajax request
+        if(isset($_GET['action']) && $_GET['action'] !='elementor') {
             if (isset($_REQUEST['action']) && $pagenow != 'post.php') {
                 die();
             }
         }
     }
 
-    public function get_filter_arg($employer_short_counter = '', $exclude_meta_key = '')
+    public function get_filter_arg($job_short_counter = '', $exclude_meta_key = '')
     {
-        global $jobsearch_post_employer_types;
+        global $jobsearch_post_job_types;
         $filter_arr = array();
         $posted = '';
         $default_date_time_formate = 'd-m-Y H:i:s';
@@ -2107,14 +2027,14 @@ class EmployeeListings extends Widget_Base
             }
             if ($lastdate != '' && $now != '') {
                 $filter_arr[] = array(
-                    'key' => 'post_date',
+                    'key' => 'jobsearch_field_job_publish_date',
                     'value' => strtotime($lastdate),
                     'compare' => '>=',
                 );
             }
         }
-// custom field array for filteration from custom field module
-        $filter_arr = apply_filters('jobsearch_custom_fields_load_filter_array_html', 'employer', $filter_arr, $exclude_meta_key);
+        // custom field array for filteration from custom field module
+        $filter_arr = apply_filters('jobsearch_custom_fields_load_filter_array_html', 'job', $filter_arr, $exclude_meta_key);
         return $filter_arr;
     }
 

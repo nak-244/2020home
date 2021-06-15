@@ -66,7 +66,7 @@ class Jobsearch_Reviews_Dashboard {
                 ?>
                 <li<?php echo ($get_tab == 'reviews' ? ' class="active"' : '') ?>>
                     <?php
-                    if ($user_pkg_limits::emp_field_is_locked('dashtab_fields|reviews')) {
+                    if ($user_pkg_limits::cand_field_is_locked('dashtab_fields|reviews')) {
                         echo ($user_pkg_limits::dashtab_locked_html('reviews', 'fa fa-star-o', esc_html__('Reviews', 'wp-jobsearch')));
                     } else {
                         ?>
@@ -116,7 +116,6 @@ class Jobsearch_Reviews_Dashboard {
         
         if ($reviews_switch == 'on') {
             $dashmenu_links_cand = isset($jobsearch__options['cand_dashbord_menu']) ? $jobsearch__options['cand_dashbord_menu'] : '';
-            $dashmenu_links_cand = apply_filters('jobsearch_cand_dashbord_menu_items_arr', $dashmenu_links_cand);
             ob_start();
             $link_item_switch = isset($dashmenu_links_cand['reviews']) ? $dashmenu_links_cand['reviews'] : '';
             if ($cand_menu_item == 'reviews' && $link_item_switch == '1') {
@@ -162,20 +161,8 @@ class Jobsearch_Reviews_Dashboard {
         } else {
             $reviews_switch = isset($jobsearch__options['candidate_reviews_switch']) ? $jobsearch__options['candidate_reviews_switch'] : '';
         }
-        
-        $dashmenu_links_cand = isset($jobsearch__options['cand_dashbord_menu']) ? $jobsearch__options['cand_dashbord_menu'] : '';
-        $dashmenu_links_cand = apply_filters('jobsearch_cand_dashbord_menu_items_arr', $dashmenu_links_cand);
-        
-        $dashmenu_links_emp = isset($jobsearch__options['emp_dashbord_menu']) ? $jobsearch__options['emp_dashbord_menu'] : '';
-        
-        $dash_menuactive = false;
-        if ($is_candidate && isset($dashmenu_links_cand['reviews']) && $dashmenu_links_cand['reviews'] == '1') {
-            $dash_menuactive = true;
-        } else if ($is_employer && isset($dashmenu_links_emp['reviews']) && $dashmenu_links_emp['reviews'] == '1') {
-            $dash_menuactive = true;
-        }
 
-        if ($reviews_switch == 'on' && $get_tab == 'reviews' && ($is_employer || $is_candidate) && $dash_menuactive === true) {
+        if ($reviews_switch == 'on' && $get_tab == 'reviews' && ($is_employer || $is_candidate)) {
             ob_start();
 
             $lang_code = '';
@@ -370,7 +357,7 @@ class Jobsearch_Reviews_Dashboard {
                                             <?php
                                             if ($comment_date != '') {
                                                 ?>
-                                                <time datetime="<?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($comment_date)) ?>"><?php echo date_i18n(get_option('date_format'), strtotime($comment_date)) ?></time>
+                                                <time datetime="<?php echo date_i18n('Y-m-d H:i:s', strtotime($comment_date)) ?>"><?php echo date_i18n(get_option('date_format'), strtotime($comment_date)) ?></time>
                                                 <?php
                                             }
                                             if ($com_replied === false) {

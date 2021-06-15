@@ -24,9 +24,6 @@ $user_stats_switch = isset($jobsearch_plugin_options['user_stats_switch']) ? $jo
 $page_num = isset($_GET['page_num']) ? $_GET['page_num'] : 1;
 
 if ($candidate_id > 0) {
-    
-    wp_enqueue_script('jobsearch-morris');
-    wp_enqueue_script('jobsearch-raphael');
 
     $cand_pkgbase_profile = isset($jobsearch_plugin_options['cand_pkg_base_profile']) ? $jobsearch_plugin_options['cand_pkg_base_profile'] : '';
 
@@ -46,7 +43,7 @@ if ($candidate_id > 0) {
     }
 
     $user_applied_jobs_count = empty($user_applied_jobs_list) ? 0 : count($user_applied_jobs_list);
-    
+
     $email_apps_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts AS posts"
     . " LEFT JOIN $wpdb->postmeta AS postmeta ON(posts.ID = postmeta.post_id) "
     . " WHERE post_type=%s AND (postmeta.meta_key = 'jobsearch_app_user_email' AND postmeta.meta_value = '{$user_email_adr}')", 'email_apps'));
@@ -576,6 +573,11 @@ if ($candidate_id > 0) {
                                             <span class="modal-close"><i class="fa fa-times"></i></span>
                                         </div>
                                         <div class="profpckg-detail-pcon">
+                                            <?php
+                                            //echo '<pre>';
+                                            //var_dump($p_order_detail);
+                                            //echo '</pre>';
+                                            ?>
                                             <div class="profpkg-det-item">
                                                 <div class="detitem-label"><?php esc_html_e('Dashboard Sections:', 'wp-jobsearch') ?></div>
                                                 <div class="detitem-val"><?php echo($show_dash_tabs) ?></div>
@@ -709,7 +711,7 @@ if ($candidate_id > 0) {
                                 </tr>
                                 </tbody>
                             </table>
-                            <script type="text/javascript">
+                            <script>
                                 jQuery(document).on('click', '.modelprofpkg-btn-<?php echo($profpkg_rand) ?>', function () {
                                     jobsearch_modal_popup_open('JobSearchModalProfPckg<?php echo($profpkg_rand) ?>');
                                 });
@@ -761,33 +763,35 @@ if ($candidate_id > 0) {
                         ?>
                         <ul>
                             <li>
-                                <div class="jobsearch-stats-list-wrap dark-blue">
+                                <div class="jobsearch-stats-list-wrap">
                                     <h6><?php esc_html_e('Applied jobs', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($user_applied_jobs_count) ?></span>
                                     <small><?php esc_html_e('to find a career', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
                             <li>
-                                <div class="jobsearch-stats-list-wrap light-blue">
+                                <div class="jobsearch-stats-list-wrap green">
                                     <h6><?php esc_html_e('Favorite Jobs', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($fav_jobs_list_count) ?></span>
                                     <small><?php esc_html_e('against opportunities', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
                             <li>
-                                <div class="jobsearch-stats-list-wrap green">
+                                <div class="jobsearch-stats-list-wrap light-blue">
                                     <h6><?php esc_html_e('Job Alerts', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($total_alerts) ?></span>
                                     <small><?php esc_html_e('to get the latest updates', 'wp-jobsearch') ?></small>
                                 </div>
                             </li>
-                            <li>
-                                <div class="jobsearch-stats-list-wrap">
+
+                            <!-- <li>
+                                <div class="jobsearch-stats-list-wrap dark-blue">
                                     <h6><?php esc_html_e('Packages', 'wp-jobsearch') ?></h6>
                                     <span><?php echo absint($total_pkgs) ?></span>
                                     <small><?php esc_html_e('to apply jobs', 'wp-jobsearch') ?></small>
                                 </div>
-                            </li>
+                            </li> -->
+
                         </ul>
                         <?php
                         $tapp_html = ob_get_clean();
@@ -851,7 +855,6 @@ if ($candidate_id > 0) {
             </div>
             <?php
         }
-        echo apply_filters('jobsearch_cand_dash_stats_before_recent_applies', '', $candidate_id);
         ?>
         <div class="jobsearch-employer-box-section">
 
@@ -866,7 +869,7 @@ if ($candidate_id > 0) {
             if (!empty($all_apps)) {
                 foreach ($all_apps as $app_id) {
                     $_job_id = get_post_meta($app_id, 'jobsearch_app_job_id', true);
-                    
+
                     $job_applicants_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts AS posts"
                     . " LEFT JOIN $wpdb->postmeta AS postmeta ON(posts.ID = postmeta.post_id) "
                     . " WHERE post_type=%s AND (postmeta.meta_key = 'jobsearch_app_job_id' AND postmeta.meta_value={$_job_id})", 'email_apps'));
@@ -887,8 +890,7 @@ if ($candidate_id > 0) {
                     <div class="jobsearch-recent-applicants-nav">
                         <ul>
                             <?php ob_start(); ?>
-                            <li>
-                                <span><?php echo absint($job_applicants_count) ?></span>
+                            <li><span><?php echo absint($job_applicants_count) ?></span>
                                 <small><?php esc_html_e('Total applicants', 'wp-jobsearch') ?></small>
                             </li>
                             <?php
@@ -896,9 +898,9 @@ if ($candidate_id > 0) {
                             echo apply_filters('jobsearch_cand_dash_stats_appjobs_tapps', $tapp_html, $app_id);
                             if ($job_salary != '') {
                                 ?>
-                                <li>
+                                <!-- <li>
                                     <small><?php echo($job_salary) ?><?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small>
-                                </li>
+                                </li> -->
                                 <?php
                             }
                             ?>
@@ -909,7 +911,7 @@ if ($candidate_id > 0) {
                             ob_start();
                             ?>
                             <li>
-                                <small><?php printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), date_i18n(get_option('date_format'), $job_expiry_date)) ?></small>
+                                <small><?php printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), date_i18n('M d, Y', $job_expiry_date)) ?></small>
                             </li>
                             <?php
                             $tapp_html = ob_get_clean();
@@ -974,7 +976,7 @@ if ($candidate_id > 0) {
                                             <ul>
                                                 <?php if ($job_post_date != '') { ?>
                                                     <li>
-                                                        <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n(get_option('date_format'), $job_post_date); ?>
+                                                        <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date); ?>
                                                     </li>
                                                     <?php
                                                 }
@@ -1030,7 +1032,7 @@ if ($candidate_id > 0) {
                         arsort($job_applicants_list);
                         $job_views_count = get_post_meta($_job_id, 'jobsearch_job_views_count', true);
                         $job_expiry_date = get_post_meta($_job_id, 'jobsearch_field_job_expiry_date', true);
-                        $job_expiry_date = $job_expiry_date == '' ? strtotime(current_time('Y-m-d '.get_option('time_format'))) : $job_expiry_date;
+                        $job_expiry_date = $job_expiry_date == '' ? strtotime(current_time('Y-m-d H:i:s')) : $job_expiry_date;
                         $job_salary = jobsearch_job_offered_salary($_job_id);
 
                         ob_start();
@@ -1046,9 +1048,9 @@ if ($candidate_id > 0) {
                                 echo apply_filters('jobsearch_cand_dash_stats_appjobs_tapps', $tapp_html, $_job_apply);
                                 if ($job_salary != '') {
                                     ?>
-                                    <li>
+                                    <!-- <li>
                                         <small><?php echo($job_salary) ?><?php esc_html_e('Job Salary', 'wp-jobsearch') ?></small>
-                                    </li>
+                                    </li> -->
                                     <?php
                                 }
                                 ?>
@@ -1059,7 +1061,7 @@ if ($candidate_id > 0) {
                                 ob_start();
                                 ?>
                                 <li>
-                                    <small><?php printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), date_i18n(get_option('date_format'), $job_expiry_date)) ?></small>
+                                    <small><?php printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), date_i18n('M d, Y', $job_expiry_date)) ?></small>
                                 </li>
                                 <?php
                                 $tapp_html = ob_get_clean();
@@ -1110,7 +1112,8 @@ if ($candidate_id > 0) {
                                         <?php if ($user_def_avatar_url != '') { ?>
                                             <figure>
                                                 <a href="<?php the_permalink($_job_id); ?>">
-                                                    <img src="<?php echo esc_url($user_def_avatar_url) ?>" alt="">
+                                                    <!-- <img src="<?php echo esc_url($user_def_avatar_url) ?>" alt=""> -->
+                                                    <img src="<?php the_field('cfimg',$_job_id); ?>" alt="">
                                                 </a>
                                             </figure>
                                         <?php } ?>
@@ -1118,13 +1121,13 @@ if ($candidate_id > 0) {
                                             <div class="jobsearch-candidate-default-left">
                                                 <h2 class="jobsearch-pst-title">
                                                     <a href="<?php echo esc_url(get_permalink($_job_id)); ?>">
-                                                        <?php echo esc_html(wp_trim_words(get_the_title($_job_id), 5)); ?>
+                                                        <?php echo esc_html(wp_trim_words(get_the_title($_job_id), 50)); ?>
                                                     </a>
                                                 </h2>
                                                 <ul>
                                                     <?php if ($job_post_date != '') { ?>
                                                         <li>
-                                                            <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n(get_option('date_format'), $job_post_date); ?>
+                                                            <i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('d M, Y', $job_post_date); ?>
                                                         </li>
                                                         <?php
                                                     }
@@ -1177,4 +1180,4 @@ if ($candidate_id > 0) {
         ?>
     </div>
     <?php
-}    
+}

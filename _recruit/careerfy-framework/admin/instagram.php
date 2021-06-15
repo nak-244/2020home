@@ -108,10 +108,10 @@ if (isset($_GET['redirect_from']) && $_GET['redirect_from'] == 'instagram_code' 
         $instagram_result = curl_exec($ch);
         $instagram_result = json_decode($instagram_result, true);
         if (isset($instagram_result['access_token']) && $instagram_result['access_token'] != '') {
-            //$CareerfyFrameReduxFramework->ReduxFramework->set('instagram-access-token', $instagram_result['access_token']);
+            $CareerfyFrameReduxFramework->ReduxFramework->set('instagram-access-token', $instagram_result['access_token']);
         }
         if (isset($instagram_result['user']['id']) && $instagram_result['user']['id'] != '') {
-            //$CareerfyFrameReduxFramework->ReduxFramework->set('instagram-user-id', $instagram_result['user']['id']);
+            $CareerfyFrameReduxFramework->ReduxFramework->set('instagram-user-id', $instagram_result['user']['id']);
         }
     }
 

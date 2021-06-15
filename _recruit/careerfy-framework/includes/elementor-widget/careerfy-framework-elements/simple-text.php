@@ -171,8 +171,8 @@ class SimpleText extends Widget_Base
         $btn2_txt = $atts['btn2_txt'];
         $btn2_url = $atts['btn2_url'];
         $content = $atts['content'];
-        ob_start();
 
+        ob_start();
         ?>
         <div class="careerfy-parallax-text-box">
             <h2 <?php echo($title_color != '' ? ' style="color: ' . $title_color . ';"' : '') ?>><?php echo($title) ?></h2>

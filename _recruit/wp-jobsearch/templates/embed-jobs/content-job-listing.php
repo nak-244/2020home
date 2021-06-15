@@ -14,18 +14,20 @@ if (!defined('ABSPATH')) {
         <div class="jobsearch-list-txtcon">
             <div class="jobsearch-list-option">
                 <h2 class="jobsearch-pst-title">
-                    <a href="<?php echo esc_url(get_permalink($job_id)) ?>"
-                       target="_blank"><?php echo esc_html(get_the_title($job_id)); ?></a>
+                    <a href="<?php echo esc_url(get_permalink($job_id)) ?>" target="_blank"><?php echo esc_html(get_the_title($job_id)); ?></a>
                     <?php
-                    if ($jobsearch_job_featured == 'on') { ?>
+                    if ($jobsearch_job_featured == 'on') {
+                        ?>
                         <span><?php esc_html_e('Featured', 'wp-jobsearch'); ?></span>
-                    <?php } ?>
+                        <?php
+                    }
+                    ?>
                 </h2>
                 <ul>
                     <?php
                     if ($company_name != '') {
                         ?>
-                        <li class="job-company-name"><?php echo($company_name); ?></li>
+                        <li class="job-company-name"><?php echo ($company_name); ?></li>
                         <?php
                     }
                     if ($job_location != '') {
@@ -51,7 +53,7 @@ if (!defined('ABSPATH')) {
             <div class="jobsearch-job-typemain">
                 <?php
                 if ($job_type_str != '') {
-                    echo($job_type_str);
+                    echo ($job_type_str);
                 }
                 ?>
             </div>

@@ -65,7 +65,9 @@ function careerfy_call_to_action_shortcode($atts)
                                 src="<?php echo($cta_img) ?>" alt=""></div>
                 </aside>
                 <!--ends here-->
-            <?php } ?>
+                <?php
+            }
+            ?>
         </div>
     <?php }
     $html = ob_get_clean();

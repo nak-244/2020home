@@ -146,14 +146,16 @@ class JobsListingsTabs extends Widget_Base
         ?>
         <div class="careerfy-animate-filter">
             <ul class="filters-button-group">
-                <li><a data-filter="*" class="is-checked" href="javascript:void(0)"><?php echo esc_html__('All Categories', 'careerfy-frame'); ?></a></li>
+                <li><a data-filter="*" class="is-checked"
+                       href="javascript:void(0)"><?php echo esc_html__('All Categories', 'careerfy-frame'); ?></a></li>
                 <?php
                 if (!empty($sector_list) && !is_wp_error($sector_list)) {
                     foreach ($sector_list as $sector_list_item) {
                         if (isset($sector_list_item) && !empty($sector_list_item)) {
                             $term_data = get_term_by('slug', $sector_list_item, 'sector');
                             ?>
-                            <li><a data-filter=".<?php echo ($term_data->slug) ?>" href="javascript:void(0)"><?php echo ($term_data->name) ?></a></li>
+                            <li><a data-filter=".<?php echo($term_data->slug) ?>"
+                                   href="javascript:void(0)"><?php echo($term_data->name) ?></a></li>
                             <?php
                         }
                     }
@@ -178,6 +180,5 @@ class JobsListingsTabs extends Widget_Base
 
     protected function _content_template()
     {
-
     }
 }

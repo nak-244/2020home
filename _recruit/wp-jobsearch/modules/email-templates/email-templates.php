@@ -44,23 +44,20 @@ class Jobsearch_EmailTemplate {
     public function emailtemplate_admin_enqueue_scripts() {
         global $sitepress;
         
-        if (isset($_GET['page']) && $_GET['page'] == 'jobsearch-email-templates-fields') {
-
-            $admin_ajax_url = admin_url('admin-ajax.php');
-            if ( function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') ) {
-                $lang_code = $sitepress->get_current_language();
-                $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
-            }
-            wp_enqueue_style('jobsearch-email-template-css', jobsearch_plugin_get_url('modules/email-templates/css/email-template.css'), array(), '');
-            wp_register_script('jobsearch-email-template', jobsearch_plugin_get_url('modules/email-templates/js/email-template-functions.js'), array('jquery'), '', true);
-            // Localize the script
-            $jobsearch_emailtemplate_common_arr = array(
-                'plugin_url' => jobsearch_plugin_get_url(),
-                'ajax_url' => $admin_ajax_url,
-            );
-            wp_localize_script('jobsearch-email-template', 'jobsearch_emailtemplate_common_vars', $jobsearch_emailtemplate_common_arr);
-            wp_enqueue_script('jobsearch-email-template');
+        $admin_ajax_url = admin_url('admin-ajax.php');
+        if ( function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') ) {
+            $lang_code = $sitepress->get_current_language();
+            $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
         }
+        wp_enqueue_style('jobsearch-email-template-css', jobsearch_plugin_get_url('modules/email-templates/css/email-template.css'), array(), '');
+        wp_register_script('jobsearch-email-template', jobsearch_plugin_get_url('modules/email-templates/js/email-template-functions.js'), array('jquery'), '', true);
+        // Localize the script
+        $jobsearch_emailtemplate_common_arr = array(
+            'plugin_url' => jobsearch_plugin_get_url(),
+            'ajax_url' => $admin_ajax_url,
+        );
+        wp_localize_script('jobsearch-email-template', 'jobsearch_emailtemplate_common_vars', $jobsearch_emailtemplate_common_arr);
+        wp_enqueue_script('jobsearch-email-template'); 
     }
 
     public function jobsearch_load_email_templates_callback($email_template_entity) {
@@ -74,7 +71,6 @@ class Jobsearch_EmailTemplate {
         $rand_id = rand(123, 8787987);
         // load all saved fields 
         $email_templates_settings = self::$email_template_options;
-
         $field_db_slug = "jobsearch_" . $email_template_entity;
         $email_all_templates_saved_data = get_option($field_db_slug);
         $sender_name = isset($email_all_templates_saved_data['jobsearch_email_template_sender_name']) ? $email_all_templates_saved_data['jobsearch_email_template_sender_name'] : '';

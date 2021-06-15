@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 define('CAREERFY_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -14,6 +13,7 @@ final class CareerfyElementor
     public function __construct()
     {
         add_action('init', array($this, 'i18n'));
+        //add_action('init', array($this, 'includes'));
         add_action('plugins_loaded', array($this, 'init'));
         add_action('elementor/elements/categories_registered', [$this, 'add_elementor_widget_categories']);
     }
@@ -23,6 +23,10 @@ final class CareerfyElementor
         load_plugin_textdomain('careerfy-frame');
     }
 
+    public function includes()
+    {
+        include CAREERFY_PLUGIN_DIR . "elementor-widget/elementor-common-functions/common-functions.php";
+    }
 
     public function init()
     {

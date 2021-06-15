@@ -1,5 +1,7 @@
 <?php
+
 namespace CareerfyElementor\Widgets;
+
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
@@ -235,12 +237,16 @@ class AboutCompany extends Widget_Base
                         ?>
                     </div>
                 </div>
-                <?php if ($about_img != '') { ?>
+                <?php
+                if ($about_img != '') {
+                    ?>
                     <div class="col-md-6 careerfy-typo-wrap">
                         <div class="careerfy-about-thumb"><img src="<?php echo($about_img) ?>" alt=""></div>
                     </div>
                     <!--ends here-->
-                <?php } ?>
+                    <?php
+                }
+                ?>
             </div>
             <?php
         }

@@ -150,7 +150,7 @@ if (!class_exists('JobSearch_Featured_Cause')) {
                             <small>$<?php echo absint($related_cause_goal_amount); ?></small> 
                         </figure>
                         <div class="jobsearch-widget-feature">
-                            <time><i class="jobsearch-icon-time"></i><?php echo date_i18n(get_option('date_format'), strtotime($cause_date)) ?></time>
+                            <time><i class="jobsearch-icon-time"></i><?php echo date_i18n('d-m-Y', strtotime($cause_date)) ?></time>
                             <h6><a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" title="<?php echo esc_html(get_the_title(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 4, '...') ?></a></h6>
                             <div class="jobsearch-skillst jobsearch-feature-cause">
                                 <div class="skillbar" data-percent="<?php echo absint($related_raised_percentage); ?>%">

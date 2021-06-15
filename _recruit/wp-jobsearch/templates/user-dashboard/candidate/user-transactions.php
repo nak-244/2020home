@@ -117,7 +117,7 @@ if ($candidate_id > 0) { ?>
                                     <div class="jobsearch-table-cell">#<?php echo ($trans_order_id) ?></div>
                                     <div class="jobsearch-table-cell"><span><?php echo ($trans_order_name) ?></span></div>
                                     <div class="jobsearch-table-cell"><small><?php echo ($order_price) ?></small></div>
-                                    <div class="jobsearch-table-cell"><?php echo ($order_date != '' ? date_i18n(get_option('date_format'), strtotime($order_date)) : '-') ?></div>
+                                    <div class="jobsearch-table-cell"><?php echo ($order_date != '' ? date_i18n('M d, Y', strtotime($order_date)) : '-') ?></div>
                                     <div class="jobsearch-table-cell"><?php echo ($payment_mode) ?></div>
                                     <div class="jobsearch-table-cell"><i class="fa fa-circle <?php echo ($status_class) ?>"></i> <?php echo ($status_txt) ?></div>
                                 </div>

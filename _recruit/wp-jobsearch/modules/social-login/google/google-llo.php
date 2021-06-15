@@ -2,13 +2,12 @@
 /*
  * Import the Google SDK and load all the classes
  */
-include(plugin_dir_path(__FILE__) . 'google-sdk/autoload.php');
+include (plugin_dir_path(__FILE__) . 'google-sdk/autoload.php');
 
 /**
  * Class JobsearchGoogle
  */
-class JobsearchGoogle
-{
+class JobsearchGoogle {
 
     /**
      * Google APP ID
@@ -25,8 +24,7 @@ class JobsearchGoogle
     /**
      * JobsearchGoogle constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
 
         global $jobsearch_plugin_options;
 
@@ -65,12 +63,11 @@ class JobsearchGoogle
         }
     }
 
-    private function set_access_tokes()
-    {
+    private function set_access_tokes() {
         $client = new Google_Client();
-
+        
         $json_file = 'credentials.json';
-
+        
         $client->setAuthConfig($json_file);
         $client->setAccessType("offline");        // offline access
         $client->setIncludeGrantedScopes(true);   // incremental auth
@@ -93,8 +90,7 @@ class JobsearchGoogle
         }
     }
 
-    public function login_with_redirect_url()
-    {
+    public function login_with_redirect_url() {
 
         $user_data = isset($_POST['user_data']) ? $_POST['user_data'] : '';
 
@@ -191,8 +187,7 @@ class JobsearchGoogle
         die;
     }
 
-    public function google_callback()
-    {
+    public function google_callback() {
 
         global $jobsearch_plugin_options;
 
@@ -201,7 +196,7 @@ class JobsearchGoogle
         }
 
         $json_file = 'credentials.json';
-
+        
         $client = new Google_Client();
         $client->setAuthConfig($json_file);
         $client->setAccessType("offline");        // offline access
@@ -219,9 +214,8 @@ class JobsearchGoogle
         if (get_transient('access_token')) {
             $client->setAccessToken(get_transient('access_token'));
             $this->google_details = $service->userinfo->get();
-
-            var_dump($this->google_details);
-            die;
+            
+            var_dump($this->google_details); die;
 
             // We first try to login the user
             $this->loginUser();
@@ -247,8 +241,7 @@ class JobsearchGoogle
         die();
     }
 
-    public static function getLoginURL()
-    {
+    public static function getLoginURL() {
 
         $client = new Google_Client();
         $client->setApplicationName('Login Check');
@@ -276,13 +269,12 @@ class JobsearchGoogle
      *
      * It displays our Login / Register button
      */
-    public function renderShortcode()
-    {
+    public function renderShortcode() {
 
         if (isset($_GET['logout'])) {
             delete_transient('access_token');
         }
-
+        
         $json_file = 'credentials.json';
 
         $client = new Google_Client();
@@ -308,8 +300,7 @@ class JobsearchGoogle
         }
     }
 
-    private function loginUser()
-    {
+    private function loginUser() {
 
         // We look for the `eo_google_id` to see if there is any match
         $wp_users = get_users(array(
@@ -355,8 +346,7 @@ class JobsearchGoogle
     /**
      * Create a new WordPress account using Google Details
      */
-    private function createUser()
-    {
+    private function createUser() {
 
 
         $google_user = $this->google_details;
@@ -376,7 +366,7 @@ class JobsearchGoogle
             update_user_meta($_social_user_obj->ID, 'jobsearch_google_id', $user_id);
             $this->loginUser();
         }
-
+        
         $username = '';
 
         // Create a username
@@ -424,8 +414,7 @@ class JobsearchGoogle
         }
     }
 
-    public function do_apply_job_with_google($user_id)
-    {
+    public function do_apply_job_with_google($user_id) {
 
         if (isset($_COOKIE['jobsearch_apply_google_jobid']) && $_COOKIE['jobsearch_apply_google_jobid'] > 0) {
             $job_id = $_COOKIE['jobsearch_apply_google_jobid'];
@@ -455,8 +444,7 @@ class JobsearchGoogle
         }
     }
 
-    public function applying_job_with_google()
-    {
+    public function applying_job_with_google() {
         $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
         if ($job_id > 0 && get_post_type($job_id) == 'job') {
 
@@ -491,28 +479,32 @@ class JobsearchGoogle
         }
     }
 
-    public function apply_job_with_google($args = array())
-    {
+    public function apply_job_with_google($args = array()) {
         global $jobsearch_plugin_options;
         $google_login = isset($jobsearch_plugin_options['google-social-login']) ? $jobsearch_plugin_options['google-social-login'] : '';
         if ($google_login == 'on') {
             $job_id = isset($args['job_id']) ? $args['job_id'] : '';
+
             $classes = isset($args['classes']) && !empty($args['classes']) ? $args['classes'] : 'jobsearch-applyjob-google-btn';
             $label = isset($args['label']) ? $args['label'] : '';
             $view = isset($args['view']) ? $args['view'] : '';
 
-            if ($view == 'job2') { ?>
-                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
-                   data-id="<?php echo($job_id) ?>"> <?php echo($label); ?></a>
-            <?php } elseif ($view == 'job3') { ?>
-                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"></a>
-                </li>
-            <?php } elseif ($view == 'job4') { ?>
-                <a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
-                            class="fa fa-google-plus"></i> <?php esc_html_e('Apply with Google', 'wp-jobsearch') ?></a>
-            <?php } else { ?>
-                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
-                                class="fa fa-google-plus"></i> <?php esc_html_e('Google', 'wp-jobsearch') ?></a></li>
+
+            if ($view == 'job2') {
+                ?>
+                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"> <?php echo ($label); ?></a>
+                <?php
+            } elseif ($view == 'job3') {
+                ?>
+                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"></a></li>
+                <?php
+            } elseif ($view == 'job4') {
+                ?>
+                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="fa fa-google-plus"></i> <?php esc_html_e('Apply with Google', 'wp-jobsearch') ?></a>
+                <?php
+            } else {
+                ?>
+                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="fa fa-google-plus"></i> <?php esc_html_e('Google', 'wp-jobsearch') ?></a></li>
                 <?php
             }
         }

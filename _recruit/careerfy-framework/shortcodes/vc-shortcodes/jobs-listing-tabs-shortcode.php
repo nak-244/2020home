@@ -20,8 +20,7 @@ function jobsearch_job_listin_tabs_shortcode_callback($atts) {
             'taxonomy' => 'sector',
             'hide_empty' => false,
         ));
-        wp_enqueue_script('jobsearch-job-functions-script');
-        wp_enqueue_script('jobsearch-shortlist-functions-script');
+
         ob_start();
         $html = '';
         ?>
@@ -173,7 +172,7 @@ function job_fiter_items_callback($cat_list = array(), $job_per_page = '') {
                             <ul>
                                 <?php
                                 if ($job_city_title != '') { ?>
-                                    <li><i class="fa fa-map-marker"></i> <?php echo jobsearch_esc_html($job_city_title) ?></li>
+                                    <li><i class="fa fa-map-marker"></i> <?php echo ($job_city_title) ?></li>
                                 <?php } ?>
                                 <li><i class="fa fa-clock-o"></i> <?php
                                     $job_type = wp_get_post_terms($job_id, 'jobtype');

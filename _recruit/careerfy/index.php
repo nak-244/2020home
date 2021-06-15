@@ -11,11 +11,7 @@
  *
  * @package Careerfy
  */
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 ?>
 
 <!--// Main Content \\-->

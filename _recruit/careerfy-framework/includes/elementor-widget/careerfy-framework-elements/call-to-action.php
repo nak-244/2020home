@@ -1,6 +1,7 @@
 <?php
 
 namespace CareerfyElementor\Widgets;
+
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
@@ -24,7 +25,7 @@ class CallToAction extends Widget_Base
      */
     public function get_name()
     {
-        return 'careerfy-call-to-action';
+        return 'call-to-action';
     }
 
     /**
@@ -38,7 +39,7 @@ class CallToAction extends Widget_Base
      */
     public function get_title()
     {
-        return __('Careerfy Call To Action', 'careerfy-frame');
+        return __('Call To Action', 'careerfy-frame');
     }
 
     /**
@@ -85,6 +86,7 @@ class CallToAction extends Widget_Base
      */
     protected function _register_controls()
     {
+
         global $rand_num;
         $rand_num = rand(10000000, 99909999);
         $this->start_controls_section(
@@ -114,11 +116,8 @@ class CallToAction extends Widget_Base
         $this->add_control(
             'cta_img',
             [
-                'label' => __('Image', 'careerfy-frame'),
+                'label' => __('Title', 'careerfy-frame'),
                 'type' => Controls_Manager::MEDIA,
-                'condition' => [
-                    'view' => array('view-1', 'view-2')
-                ]
 
             ]
         );
@@ -168,7 +167,6 @@ class CallToAction extends Widget_Base
                 'type' => Controls_Manager::TEXT,
             ]
         );
-
         $this->add_control(
             'btn_url',
             [
@@ -176,55 +174,44 @@ class CallToAction extends Widget_Base
                 'type' => Controls_Manager::TEXT,
             ]
         );
-
         $this->add_control(
             'btn_txt_2',
             [
                 'label' => __('Button Text 2', 'careerfy-frame'),
                 'type' => Controls_Manager::TEXT,
-                'condition' => [
-                    'view' => 'view-5'
-                ]
             ]
         );
-
         $this->add_control(
             'btn_url_2',
             [
                 'label' => __('Button URL 2', 'careerfy-frame'),
                 'type' => Controls_Manager::TEXT,
-                'condition' => [
-                    'view' => 'view-5'
-                ]
             ]
         );
+
         $this->end_controls_section();
     }
 
     protected function render()
     {
         $atts = $this->get_settings_for_display();
-        extract(shortcode_atts(array(
-            'view' => '',
-            'cta_img' => '',
-            'cta_title1' => '',
-            'cta_title2' => '',
-            'cta_title_small' => '',
-            'cta_desc' => '',
-            'btn_txt' => '',
-            'btn_url' => '',
-            'btn_txt_2' => '',
-            'btn_url_2' => '',
-        ), $atts));
+        $view = $atts['view'];
+        $cta_img = $atts['cta_img'] != "" ? $atts['cta_img']['url'] : '';
+        $cta_title1 = $atts['cta_title1'];
+        $cta_title2 = $atts['cta_title2'];
+        $cta_title_small = $atts['cta_title_small'];
+        $cta_desc = $atts['cta_desc'];
+        $btn_txt = $atts['btn_txt'];
+        $btn_url = $atts['btn_url'];
+        $btn_txt_2 = $atts['btn_txt_2'];
+        $btn_url_2 = $atts['btn_url_2'];
 
         $cont_col = 'col-md-12';
         if ($cta_img != '') {
             $cont_col = 'col-md-6';
         }
-
         $cta_title_small = $cta_title_small != "" ? $cta_title_small : "";
 
-        ob_start();
         if ($view == 'view-5') { ?>
             <div class="careerfy-sixteen-parallex careerfy-sixteen-parallex-two">
                 <h2><?php echo $cta_title1 ?></h2>
@@ -245,7 +232,7 @@ class CallToAction extends Widget_Base
                 </h2>
                 <a href="<?php echo $btn_url ?>"><?php echo $btn_txt ?></a>
             </div>
-        <?php } else { ?>
+            <?php } else { ?>
             <div class="row">
                 <aside class="<?php echo($cont_col) ?> careerfy-typo-wrap">
                     <div class="careerfy-parallex-text <?php echo($view == 'view-2' ? 'careerfy-logo-text' : '') ?>">
@@ -257,9 +244,8 @@ class CallToAction extends Widget_Base
                 <?php
                 if ($cta_img != '') { ?>
                     <aside class="col-md-6 careerfy-typo-wrap">
-                        <div class="<?php echo($view == 'view-2' ? 'careerfy-logo-thumb' : 'careerfy-right') ?>">
-                            <img src="<?php echo($cta_img['url']) ?>" alt="">
-                        </div>
+                        <div class="<?php echo($view == 'view-2' ? 'careerfy-logo-thumb' : 'careerfy-right') ?>"><img
+                                    src="<?php echo($cta_img) ?>" alt=""></div>
                     </aside>
                 <?php } ?>
             </div>

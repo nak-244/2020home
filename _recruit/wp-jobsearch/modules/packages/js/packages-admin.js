@@ -2,11 +2,6 @@ function jobsearch_onchange_package_type(value) {
     if (typeof jQuery('#' + value + '_package_fields') !== 'undefined') {
         jQuery('.specific-pkges-fields').hide();
         jQuery('#' + value + '_package_fields').show();
-        if (value == 'cand_resume') {
-            jQuery('.to_unlimit_pexp').hide();
-        } else {
-            jQuery('.to_unlimit_pexp').show();
-        }
     }
 }
 

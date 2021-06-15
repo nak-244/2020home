@@ -33,15 +33,12 @@ function careerfy_banner_caption_shortcode($atts)
             <?php } ?>
             <div class="clearfix"></div>
             <div class="careerfy-thirteen-banner-btn">
-                <?php
-                if (function_exists('vc_param_group_parse_atts')) {
-                    $banner_btn = vc_param_group_parse_atts($banner_btn);
-                }
+                <?php $banner_btn = vc_param_group_parse_atts($banner_btn);
                 if (!empty($banner_btn) || !empty($banner_btn)) {
                     foreach ($banner_btn as $banner_btns) {
 
                         ?>
-                        <a href="<?php echo $banner_btns['btn_link'] ?>"><?php echo($banner_btns['btn_txt']) ?></a>
+                        <a href="<?php echo $banner_btns['btn_link'] ?>"><?php echo ($banner_btns['btn_txt']) ?></a>
                         <?php
                     }
 

@@ -19,8 +19,11 @@ function careerfy_blog_shortcode($atts)
     ), $atts));
 
     $rand_id = rand(100000, 999999);
+
     $html = '';
+
     $blog_per_page = $blog_per_page == '' ? -1 : absint($blog_per_page);
+
     $blog_paged = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
 
     if ($blog_view == 'view5') {
@@ -156,7 +159,6 @@ function careerfy_blog_shortcode($atts)
                         this_html = _this.html(),
                         appender_con = jQuery('.blog-masonry-<?php echo($rand_id) ?> > ul'),
                         ajax_url = '<?php echo admin_url('admin-ajax.php') ?>';
-
                     if (!_this.hasClass('ajax-loadin')) {
                         _this.addClass('ajax-loadin');
                         _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
@@ -211,13 +213,15 @@ function careerfy_blog_shortcode($atts)
             $lodmore_script = ob_get_clean();
             echo($lodmore_script);
         }
-        if ($blog_pagination == 'yes' && $total_posts > $blog_per_page && $blog_view != 'view5' && $blog_view != 'view7' && $blog_view != 'view8' && $blog_view != 'view9') {
+        if ($blog_pagination == 'yes' && $total_posts > $blog_per_page && $blog_view != 'view5' && $blog_view != 'view7' && $blog_view != 'view8' && $blog_view != 'view9' && $blog_view != 'view11') {
             careerfy_pagination($blog_query);
         }
     } else {
         esc_html_e("No post found.", "careerfy-frame");
     }
+
     $html .= ob_get_clean();
+
     return $html;
 }
 
@@ -286,19 +290,15 @@ if (!function_exists('careerfy_news_blog_view13')) {
         $categories = get_the_category();
         $blog_detail = get_post($post_id);
         $post_date_month = get_the_date('M', $post_id);
-        $post_date_day = get_the_date('d', $post_id); ?>
-
+        $post_date_day = get_the_date('j', $post_id); ?>
         <div class="col-md-6">
             <div class="careerfy-eighteen-blog-grid-inner">
-                <figure>
-                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><img
+                <figure><a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><img
                                 src="<?php echo esc_url($post_thumbnail_src); ?>" alt=""> <i
-                                class="fa fa-arrow-right"></i> </a>
-                </figure>
+                                class="fa fa-arrow-right"></i> </a></figure>
                 <div class="careerfy-eighteen-blog-grid-text">
                     <span><?php echo strtoupper($post_date_month) ?>
-                        <small><?php echo $post_date_day ?></small>
-                    </span>
+                        <small><?php echo $post_date_day ?></small></span>
                     <div class="careerfy-eighteen-blog-grid-left">
                         <h2>
                             <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo $blog_detail->post_title ?></a>
@@ -321,6 +321,7 @@ if (!function_exists('careerfy_news_blog_view12')) {
      * Blog Grid View7
      * @return html
      */
+
     function careerfy_news_blog_view12($post_id = '', $excerpt_length = '')
     {
         global $counter, $blog_per_page;
@@ -451,10 +452,8 @@ if (!function_exists('careerfy_news_blog_view10')) {
         </style>
         <li class="<?php echo $col_class ?>">
             <figure>
-                <a class="blog-img blog-bg-img-<?php echo $counter ?> "
-                   href="<?php echo esc_url(get_permalink(get_the_ID())) ?>">
-                    <!--                    <img src="--><?php //echo esc_url($post_thumbnail_src);
-                    ?><!--" alt="">-->
+                <a class="blog-img blog-bg-img-<?php echo $counter ?> " href="<?php echo esc_url(get_permalink(get_the_ID())) ?>">
+<!--                    <img src="--><?php //echo esc_url($post_thumbnail_src); ?><!--" alt="">-->
                 </a>
                 <figcaption>
                     <div class="careerfy-blog-style14-top">
@@ -467,7 +466,7 @@ if (!function_exists('careerfy_news_blog_view10')) {
                             echo implode(' / ', $category_names);
                         }
                         ?>
-                        <?php echo do_action('careerfy_post_like_btns', $post_id); ?>
+                        <?php echo do_action('careerfy_post_like_btns',$post_id); ?>
                     </div>
                     <div class="careerfy-blog-style14-bottom">
                         <ul>
@@ -539,8 +538,7 @@ if (!function_exists('careerfy_news_blog_view9')) {
                         <li><a href="javascript:void(0)"><i
                                         class="fa fa-comment"></i> <?php echo $numbers_of_comments->approved ?> <?php echo esc_html__('Comments', 'careerfy-frame') ?>
                             </a></li>
-                        <li><a href="javascript:void(0)"><i
-                                        class="fa fa-heart"></i><?php echo $careerfy_post_like_counter ?></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-heart"></i><?php echo $careerfy_post_like_counter ?></a></li>
                     </ul>
                     <h2>
                         <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo $blog_detail->post_title ?></a>
@@ -643,7 +641,7 @@ if (!function_exists('careerfy_news_blog_view7')) {
         $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : $no_placeholder_img;
         $categories = get_the_category();
         $blog_detail = get_post($post_id);
-        $post_date = get_the_date(get_option('date_format'), $post_id);
+        $post_date = get_the_date('F j, Y', $post_id);
         $numbers_of_comments = wp_count_comments($post_id);
         $careerfy_like_counter = get_post_meta($post_id, "careerfy_post_likes", true);
         $careerfy_post_like_counter = $careerfy_like_counter != "" ? $careerfy_like_counter : "0";
@@ -755,7 +753,7 @@ if (!function_exists('careerfy_news_blog_view5')) {
     {
         global $post;
         $post_thumbnail_id = get_post_thumbnail_id($post_id);
-        $post_date = get_the_date(get_option('date_format'), $post_id);
+        $post_date = get_the_date('F j, Y', $post_id);
         $numbers_of_comments = wp_count_comments($post_id);
         $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'full');
         $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : '';
@@ -820,7 +818,7 @@ if (!function_exists('careerfy_news_medium')) {
             <figure><a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><img
                             src="<?php echo esc_url($post_thumbnail_src); ?>" alt=""></a></figure>
             <div class="careerfy-blog-medium-text">
-                <span><time datetime="<?php echo date('Y-m-d ' . get_option('time_format'), strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time></span>
+                <span><time datetime="<?php echo date('Y-m-d H:i:s', strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time></span>
                 <h2>
                     <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 8, '...') ?></a>
                 </h2>
@@ -881,14 +879,16 @@ if (!function_exists('careerfy_blog_grid')) {
                 }
                 ?>
                 <h2>
-                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 8, '...') ?></a>
+                    <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 20, '...') ?></a>
                 </h2>
                 <ul class="careerfy-blog-grid-option">
+                  <!--
                     <li><?php esc_html_e('BY', 'careerfy-frame'); ?> <a
                                 href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>"
                                 class="careerfy-color"><?php echo get_the_author() ?></a></li>
+                                 -->
                     <li>
-                        <time datetime="<?php echo date('Y-m-d ' . get_option('time_format'), strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time>
+                        <time datetime="<?php echo date('Y-m-d H:i:s', strtotime(get_the_date())) ?>"><?php echo get_the_date(); ?></time>
                     </li>
                 </ul>
                 <?php
@@ -918,6 +918,7 @@ if (!function_exists('careerfy_news_grid')) {
 
     function careerfy_news_grid($post_id = '', $excerpt_length = '')
     {
+
         $post_thumbnail_id = get_post_thumbnail_id($post_id);
         $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'medium');
         $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : '';
@@ -927,10 +928,14 @@ if (!function_exists('careerfy_news_grid')) {
         <li class="col-md-4">
             <div class="careerfy-news-grid-wrap">
                 <figure>
-                    <?php if ($post_thumbnail_src != '') { ?>
+                    <?php
+                    if ($post_thumbnail_src != '') {
+                        ?>
                         <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><img
                                     src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""></a>
-                    <?php } ?>
+                        <?php
+                    }
+                    ?>
                 </figure>
                 <div class="careerfy-news-grid-text">
                     <ul>
@@ -945,9 +950,12 @@ if (!function_exists('careerfy_news_grid')) {
                         <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>"><?php echo wp_trim_words(get_the_title(get_the_ID()), 8, '...') ?></a>
                     </h2>
                     <?php
-                    if (careerfy_excerpt($excerpt_length)) { ?>
+                    if (careerfy_excerpt($excerpt_length)) {
+                        ?>
                         <p><?php echo careerfy_excerpt($excerpt_length) ?></p>
-                    <?php } ?>
+                        <?php
+                    }
+                    ?>
                     <a href="<?php echo esc_url(get_permalink(get_the_ID())) ?>" class="careerfy-modren-service-link"><i
                                 class="careerfy-icon careerfy-right-arrow-long"></i></a>
                 </div>

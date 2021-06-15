@@ -182,9 +182,6 @@ class JobsearchTwitter {
      */
     private function createUser() {
 
-        global $jobsearch_plugin_options;
-        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
-        
         $_user = $this->twitter_details;
         
         $site_url = parse_url(site_url());
@@ -208,8 +205,7 @@ class JobsearchTwitter {
         }
 
         // Creating our user
-        $user_pass = wp_generate_password();
-        $new_user = wp_create_user($username, $user_pass, $user_email);
+        $new_user = wp_create_user($username, wp_generate_password(), $user_email);
 
         if (is_wp_error($new_user)) {
             // Report our errors
@@ -218,7 +214,6 @@ class JobsearchTwitter {
             die;
         } else {
 
-            $user_candidate_id = jobsearch_get_user_candidate_id($new_user);
             // user role
             $user_role = 'jobsearch_candidate';
             wp_update_user(array('ID' => $new_user, 'role' => $user_role));
@@ -227,14 +222,7 @@ class JobsearchTwitter {
             update_user_meta($new_user, 'first_name', (isset($_user->first_name) ? $_user->first_name : ''));
             update_user_meta($new_user, 'last_name', (isset($_user->last_name) ? $_user->last_name : ''));
             update_user_meta($new_user, 'jobsearch_twitter_id', (isset($_user->id) ? $_user->id : ''));
-            
-            if ($candidate_auto_approve == 'on' || $candidate_auto_approve == 'email') {
-                update_post_meta($user_candidate_id, 'jobsearch_field_candidate_approved', 'on');
-            }
 
-            $c_user = get_user_by('ID', $new_user);
-            do_action('jobsearch_new_user_register', $c_user, $user_pass);
-            
             // Log the user ?
             wp_set_auth_cookie($new_user);
         }

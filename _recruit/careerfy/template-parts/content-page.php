@@ -16,7 +16,9 @@
         <header class="careerfy-entry-header">
             <?php the_title('<h1 class="entry-title">', '</h1>'); ?>
         </header><!-- .careerfy-entry-header -->
-    <?php } ?>
+        <?php
+    }
+    ?>
 
     <div class="careerfy-entry-content">
         <?php
@@ -33,12 +35,12 @@
         <footer class="careerfy-entry-footer">
             <?php
             edit_post_link(
-                sprintf(
-                /* translators: %s: Name of current post */
-                    esc_html__('Edit %s', 'careerfy'), the_title('<span class="screen-reader-text">"', '"</span>', false)
-                ), '<span class="edit-link">', '</span>'
+                    sprintf(
+                            /* translators: %s: Name of current post */
+                            esc_html__('Edit %s', 'careerfy'), the_title('<span class="screen-reader-text">"', '"</span>', false)
+                    ), '<span class="edit-link">', '</span>'
             );
             ?>
         </footer><!-- .careerfy-entry-footer -->
-    <?php endif; ?>
+        <?php endif; ?>
 </div><!-- #post-## -->

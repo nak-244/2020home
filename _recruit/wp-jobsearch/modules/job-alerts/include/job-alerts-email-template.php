@@ -125,8 +125,7 @@ if (!class_exists('jobsearch_job_alerts_email_template')) {
                 $subject = JobSearch_plugin::jobsearch_replace_variables($subject, $this->codes);
                 
                 $from = (isset($sender_detail_header) && $sender_detail_header != '') ? $sender_detail_header : esc_attr($blogname) . ' <' . $admin_email . '>';
-                $given_email = isset($this->alert_detail['email']) ? $this->alert_detail['email'] : '';
-                $recipients = (isset($template['recipients']) && $template['recipients'] != '') ? $template['recipients'] : $given_email;
+                $recipients = (isset($template['recipients']) && $template['recipients'] != '') ? $template['recipients'] : isset($this->alert_detail['email']) ? $this->alert_detail['email'] : '';
                 $email_type = (isset($template['email_type']) && $template['email_type'] != '') ? $template['email_type'] : 'html';
 
                 $email_message = isset($template['email_template']) ? $template['email_template'] : '';
@@ -217,20 +216,17 @@ if (!class_exists('jobsearch_job_alerts_email_template')) {
                     'compare' => '>=',
                 );
                 $jobs_query['posts_per_page'] = 10;
-                $jobs_query = apply_filters('jobsearch_jobalert_get_list_queryargs_inemail', $jobs_query, $this->alert_detail);
                 $loop = new WP_Query($jobs_query);
-                
-                $loop_posts = $loop->posts;
                 ob_start();
-                if (!empty($loop_posts)) {
+                if ($loop->have_posts()) {
                     ?>
                     <table cellspacing="0" width="100%" style="border-spacing: 0em 0.7em;">
                         <tbody>
                             <?php
-                            foreach ($loop_posts as $job_id) {
+                            while ($loop->have_posts()) : $loop->the_post();
                                 $job_random_id = rand(1111111, 9999999);
 
-                                //$job_id = get_the_id();
+                                $job_id = get_the_id();
                                 $job_publish_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
                                 $post_thumbnail_id = jobsearch_job_get_profile_image($job_id);
                                 $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
@@ -299,10 +295,10 @@ if (!class_exists('jobsearch_job_alerts_email_template')) {
                                         }
                                         ?> 
                                     </td>
-                                    <td style="text-align: right; border: 1px solid #ececec; border-left: none; padding-right: 19px;"><a href="<?php echo (get_permalink($job_id)) ?>" style="border: 1px solid #ececec; text-decoration: none; padding: 10px 22px; color: #333; font-size: 13px; outline: none; "><?php esc_html_e('View', 'wp-jobsearch'); ?></a></td>
+                                    <td style="text-align: right; border: 1px solid #ececec; border-left: none; padding-right: 19px;"><a href="<?php echo (get_permalink($job_id)) ?>" style="border: 1px solid #ececec; text-decoration: none; padding: 10px 22px; color: #333; font-size: 13px; outline: none; "><?php esc_html_e('View Detail', 'wp-jobsearch'); ?></a></td>
                                 </tr>
                                 <?php
-                            }
+                            endwhile;
                             ?>
                         </tbody>
                     </table>

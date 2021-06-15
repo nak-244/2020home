@@ -363,7 +363,7 @@ class PostNewJob extends Widget_Base
 
                     $job_tr_expiry = get_post_meta($job_id, 'jobsearch_field_job_expiry_date', true);
                     update_post_meta($ru_post_id, 'jobsearch_field_job_expiry_date', $job_tr_expiry);
-                    //
+
                     $job_tr_posted = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
                     update_post_meta($ru_post_id, 'jobsearch_field_job_publish_date', $job_tr_posted);
 
@@ -388,12 +388,15 @@ class PostNewJob extends Widget_Base
             }
 
             $_job_filled = get_post_meta($job_id, 'jobsearch_field_job_filled', true);
+
             $_job_apply_type = get_post_meta($job_id, 'jobsearch_field_job_apply_type', true);
             $_job_apply_url = get_post_meta($job_id, 'jobsearch_field_job_apply_url', true);
             $_job_apply_email = get_post_meta($job_id, 'jobsearch_field_job_apply_email', true);
+
             $_job_salary_type = get_post_meta($job_id, 'jobsearch_field_job_salary_type', true);
             $_job_salary = get_post_meta($job_id, 'jobsearch_field_job_salary', true);
             $_job_max_salary = get_post_meta($job_id, 'jobsearch_field_job_max_salary', true);
+
             $_job_salary_currency = get_post_meta($job_id, 'jobsearch_field_job_salary_currency', true);
             $_job_salary_pos = get_post_meta($job_id, 'jobsearch_field_job_salary_pos', true);
             $_job_salary_deci = get_post_meta($job_id, 'jobsearch_field_job_salary_deci', true);
@@ -401,6 +404,7 @@ class PostNewJob extends Widget_Base
         }
         ?>
         <div class="jobsearch-employer-dasboard jobsearch-typo-wrap">
+
             <?php
             $post_job_without_reg = isset($jobsearch_plugin_options['job-post-wout-reg']) ? $jobsearch_plugin_options['job-post-wout-reg'] : '';
             if (!is_user_logged_in() && $post_job_without_reg != 'on') {
@@ -420,7 +424,8 @@ class PostNewJob extends Widget_Base
                         </a>
                     </div>
                 </div>
-                <?php } else {
+                <?php
+            } else {
                 ob_start();
                 ?>
                 <form id="job-posting-form"
@@ -492,9 +497,12 @@ class PostNewJob extends Widget_Base
                         if ($free_jobs_allow != 'on' && $is_updating && isset($_GET['step']) && $_GET['step'] == 'package') {
                         $job_detail_tab = false;
                         $job_package_tab = true;
+
                         $job_is_active = jobsearch_check_job_approved_active($job_id);
+
                         // errors
-                        if (isset($package_form_errs[0]) && $package_form_errs[0] != '') { ?>
+                        if (isset($package_form_errs[0]) && $package_form_errs[0] != '') {
+                        ?>
                             <div class="jobsearch-alert jobsearch-error-alert">
                                 <p><?php echo($package_form_errs[0]) ?></p>
                             </div>
@@ -525,7 +533,8 @@ class PostNewJob extends Widget_Base
                                 $fpkgs_posts = $pkgs_query->posts;
                             }
 
-                        if (!empty($fpkgs_posts)) { ?>
+                        if (!empty($fpkgs_posts)) {
+                            ?>
                             <div class="jobsearch-employer-payments">
                                 <h2><?php esc_html_e('Aditional featured job package', 'careerfy-frame') ?></h2>
                                 <?php ?>
@@ -542,11 +551,15 @@ class PostNewJob extends Widget_Base
                                     foreach ($fpkgs_posts as $pkg_id) {
                                         $pkg_rand = rand(10000000, 99999999);
                                         //$pkg_id = get_the_ID();
+
                                         $pkg_otype = get_post_meta($pkg_id, 'jobsearch_field_package_type', true);
+
                                         $pkg_type = get_post_meta($pkg_id, 'jobsearch_field_charges_type', true);
                                         $pkg_price = get_post_meta($pkg_id, 'jobsearch_field_package_price', true);
+
                                         $job_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_job_expiry_time', true);
                                         $job_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_job_expiry_time_unit', true);
+
                                         $pkg_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_package_expiry_time', true);
                                         $pkg_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_package_expiry_time_unit', true);
 
@@ -741,28 +754,31 @@ class PostNewJob extends Widget_Base
                                     ?>
                                 </td>
                                 <?php
-                                if ($unlimited_pkg == 'yes') { ?>
+                                if ($unlimited_pkg == 'yes') {
+                                    ?>
                                     <td><?php esc_html_e('Never', 'careerfy-frame') ?></td>
-                                    <?php } else { ?>
+                                    <?php
+                                } else {
+                                    ?>
                                     <td><?php echo absint($job_exp_dur) . ' ' . jobsearch_get_duration_unit_str($job_exp_dur_unit) ?></td>
                                     <?php
                                 }
                                 if ($pkg_type == 'emp_allin_one') {
                                     ?>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s','careerfy-frame'), $total_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s'), $total_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s','careerfy-frame'), $total_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Jobs: %s'), $total_fjobs) ?>
                                     </td>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s','careerfy-frame'), $used_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s'), $used_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s','careerfy-frame'), $used_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Jobs: %s'), $used_fjobs) ?>
                                     </td>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s','careerfy-frame'), $remaining_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s'), $remaining_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s','careerfy-frame'), $remaining_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Jobs: %s'), $remaining_fjobs) ?>
                                     </td>
                                     <?php
                                 } else {
@@ -782,7 +798,8 @@ class PostNewJob extends Widget_Base
                             wp_reset_postdata();
                             $exict_pkgs_html = ob_get_clean();
 
-                        if ($exict_pkgs_html != '') { ?>
+                        if ($exict_pkgs_html != '') {
+                            ?>
                             <div class="jobsearch-employer-payments">
                                 <h2><?php esc_html_e('Select already purchased package', 'careerfy-frame') ?></h2>
                                 <table class="alexist-plans-list">
@@ -989,9 +1006,9 @@ class PostNewJob extends Widget_Base
                                                 if ($pkg_otype == 'emp_allin_one') {
                                                     ?>
                                                     <td>
-                                                        <?php printf(esc_html__('Normal Jobs: %s','careerfy-frame'), $total_jobs) ?>
+                                                        <?php printf(esc_html__('Normal Jobs: %s'), $total_jobs) ?>
                                                         <br>
-                                                        <?php printf(esc_html__('Featured Jobs: %s','careerfy-frame'), $total_fjobs) ?>
+                                                        <?php printf(esc_html__('Featured Jobs: %s'), $total_fjobs) ?>
                                                     </td>
                                                     <?php
                                                 } else {
@@ -1125,7 +1142,7 @@ class PostNewJob extends Widget_Base
                                     <label><?php esc_html_e('Job Title *', 'careerfy-frame') ?></label>
                                     <input id="ad-posting-title"
                                            class="jobsearch-req-field" <?php echo($is_updating ? 'value="' . get_the_title($job_id) . '"' : '') ?>
-                                           name="job_title" type="text" placeholder="<?php esc_html_e('Example: php developer', 'careerfy-frame') ?>">
+                                           name="job_title" type="text">
                                     <span class="field-error"></span>
                                 </li>
                                 <?php

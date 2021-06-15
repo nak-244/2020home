@@ -5,8 +5,7 @@
     float: left;
     width: 100%;
 }
-.email-jobs-top,
-.jobsearch-typo-wrap .email-jobs-top {
+.email-jobs-top {
     display: inline-block;
     width: 100%;
     padding: 17px 19px;
@@ -16,8 +15,7 @@
     text-transform: capitalize;
     border: none;
 }
-.email-jobs-top i,
-.jobsearch-typo-wrap .email-jobs-top i {
+.email-jobs-top i {
     margin-right: 5px;
     color: #ffffff;
 }
@@ -37,8 +35,7 @@
 .job-alerts-sec .jobsearch-search-filter-wrap {
     background-color: #fcfcfc;
 }
-.jobalert-submit,
-.jobsearch-typo-wrap .jobalert-submit {
+.jobalert-submit {
     padding: 8px 20px;
     text-transform: uppercase;
     color: #ffffff;

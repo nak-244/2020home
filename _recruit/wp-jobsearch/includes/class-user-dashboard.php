@@ -24,8 +24,6 @@ class JobSearch_User_Dashboard_Settings
 
         add_action('wp_ajax_jobsearch_user_dashboard_show_template', array($this, 'show_template_part'));
         add_action('jobsearch_user_dashboard_header', array($this, 'dashboard_header'));
-        
-        add_action('jobsearch_enqueue_dashboard_styles', array($this, 'dashboard_styles'));
 
         add_action('wp_ajax_jobsearch_employer_cover_img_remove', array($this, 'employer_cover_img_remove'));
         add_action('wp_ajax_jobsearch_candidate_cover_img_remove', array($this, 'candidate_cover_img_remove'));
@@ -33,8 +31,6 @@ class JobSearch_User_Dashboard_Settings
         add_action('wp_ajax_jobsearch_user_update_profileslug', array($this, 'user_update_profileslug'));
 
         add_action('wp_ajax_jobsearch_add_duplicate_post_byuser', array($this, 'duplicate_job'));
-        
-        add_action('wp_ajax_jobsearch_userdash_change_email_read_status', array($this, 'change_email_read_status'));
 
         //
         add_action('wp_ajax_jobsearch_dashboard_updating_user_avatar_img', array($this, 'user_avatar_upload_ajax'));
@@ -58,16 +54,16 @@ class JobSearch_User_Dashboard_Settings
         add_action('wp_ajax_jobsearch_remove_user_fav_job_from_list', array($this, 'remove_candidate_fav_job_from_list'));
 
         add_action('wp_ajax_jobsearch_remove_user_applied_job_from_list', array($this, 'remove_candidate_applied_job_from_list'));
+        
         //
         add_action('wp_ajax_jobsearch_userdash_rem_emp_followin', array($this, 'canddash_rem_emp_followin'));
+
         //
         add_action('wp_ajax_jobsearch_add_resume_education_to_list', array($this, 'add_resume_education_to_list'));
         //
         add_action('wp_ajax_jobsearch_add_resume_experience_to_list', array($this, 'add_resume_experience_to_list'));
         //
         add_action('wp_ajax_jobsearch_add_resume_skill_to_list', array($this, 'add_resume_skill_to_list'));
-        //
-        add_action('wp_ajax_jobsearch_add_resume_lang_to_list', array($this, 'add_resume_lang_to_list'));
         //
         add_action('wp_ajax_jobsearch_add_resume_portfolio_to_list', array($this, 'add_resume_portfolio_to_list'));
         //
@@ -78,6 +74,7 @@ class JobSearch_User_Dashboard_Settings
         add_action('wp_ajax_jobsearch_add_emp_affiliations_to_list', array($this, 'add_emp_affiliations_to_list'));
         //
         add_action('wp_ajax_jobsearch_add_resume_award_to_list', array($this, 'add_resume_award_to_list'));
+
         //
         add_action('wp_ajax_jobsearch_candidate_contact_form_submit', array($this, 'candidate_contact_form_submit'));
         add_action('wp_ajax_nopriv_jobsearch_candidate_contact_form_submit', array($this, 'candidate_contact_form_submit'));
@@ -90,42 +87,25 @@ class JobSearch_User_Dashboard_Settings
         add_action('wp_ajax_jobsearch_user_profile_delete_for', array($this, 'user_profile_delete_for'));
 
         //
-        add_action('wp_ajax_jobsearch_doing_mjobs_feature_job', array($this, 'doing_mjobs_feature_job'));
-        add_action('wp_ajax_nopriv_jobsearch_doing_mjobs_feature_job', array($this, 'doing_mjobs_feature_job'));
-        
-        // Email change by user check validation
-        add_action('wp_ajax_jobsearch_user_change_email_check_avail', array($this, 'user_change_email_check_avail'));
-        add_action('wp_ajax_nopriv_jobsearch_user_change_email_check_avail', array($this, 'user_change_email_check_avail'));
+        add_filter('wp_ajax_jobsearch_doing_mjobs_feature_job', array($this, 'doing_mjobs_feature_job'));
+        add_filter('wp_ajax_nopriv_jobsearch_doing_mjobs_feature_job', array($this, 'doing_mjobs_feature_job'));
 
         //
-        add_action('wp_ajax_jobsearch_doing_feat_job_with_alorder', array($this, 'doing_feat_job_with_alorder'));
-        add_action('wp_ajax_nopriv_jobsearch_doing_feat_job_with_alorder', array($this, 'doing_feat_job_with_alorder'));
-    }
-    
-    public function dashboard_styles() {
-        global $jobsearch_plugin_options;
-        $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-        if ($location_map_type == 'mapbox') {
-            wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
-        }
-        wp_enqueue_style('fancybox', jobsearch_plugin_get_url('css/fancybox.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('jobsearch-intlTelInput', jobsearch_plugin_get_url('css/intlTelInput.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('jobsearch-morris', jobsearch_plugin_get_url('css/morris.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('jobsearch-tag-it', jobsearch_plugin_get_url('css/jquery.tagit.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('dropzone-style', jobsearch_plugin_get_url('css/dropzone.min.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('datetimepicker-style', jobsearch_plugin_get_url('css/jquery.datetimepicker.css'), array(), JobSearch_plugin::get_version());
-        //
-        do_action('jobsearch_dashbord_instyles_list_aftr');
+        add_filter('wp_ajax_jobsearch_doing_feat_job_with_alorder', array($this, 'doing_feat_job_with_alorder'));
+        add_filter('wp_ajax_nopriv_jobsearch_doing_feat_job_with_alorder', array($this, 'doing_feat_job_with_alorder'));
     }
     
     public function canddash_rem_emp_followin() {
         if (isset($_POST['emp_id']) && $_POST['emp_id'] != '') {
             $emp_id = $_POST['emp_id'];
             $emp_user_id = jobsearch_get_employer_user_id($emp_id);
+            
             $user_id = get_current_user_id();
             $candidate_id = jobsearch_get_user_candidate_id($user_id);
             $cand_followin_list = get_post_meta($candidate_id, 'jobsearch_cand_followins_list', true);
+            
             $cand_followin_list = $cand_followin_list != '' ? explode(',', $cand_followin_list) : '';
+            
             if (!empty($cand_followin_list) && is_array($cand_followin_list) && in_array($emp_id, $cand_followin_list)) {
                 $new_followin_list = array();
                 foreach ($cand_followin_list as $folow_emp_id) {
@@ -151,16 +131,6 @@ class JobSearch_User_Dashboard_Settings
     }
 
     public function user_update_profileslug() {
-        if (jobsearch_candidate_not_allow_to_mod()) {
-            $msg = esc_html__('You are not allowed to do this.', 'wp-jobsearch');
-            echo json_encode(array('err_msg' => $msg));
-            die;
-        }
-        if (jobsearch_employer_not_allow_to_mod()) {
-            $msg = esc_html__('You are not allowed to do this.', 'wp-jobsearch');
-            echo json_encode(array('err_msg' => $msg));
-            die;
-        }
         if (isset($_POST['updte_slug']) && $_POST['updte_slug'] != '') {
             $user_profile_slug = sanitize_text_field($_POST['updte_slug']);
             $user_profile_slug = sanitize_title($user_profile_slug);
@@ -378,10 +348,8 @@ class JobSearch_User_Dashboard_Settings
         //
 
         if (isset($_POST['user_resume_form']) && $_POST['user_resume_form'] == '1') {
-            $_POST = jobsearch_input_post_vals_validate($_POST);
-            
             if (isset($_POST['jobsearch_field_resume_cover_letter'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_resume_cover_letter', jobsearch_esc_wp_editor($_POST['jobsearch_field_resume_cover_letter']));
+                update_post_meta($candidate_id, 'jobsearch_field_resume_cover_letter', $_POST['jobsearch_field_resume_cover_letter']);
             }
 
             // candidate skills
@@ -399,143 +367,115 @@ class JobSearch_User_Dashboard_Settings
 
             //
             if (isset($_POST['jobsearch_field_education_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_title', jobsearch_esc_html($_POST['jobsearch_field_education_title']));
+                update_post_meta($candidate_id, 'jobsearch_field_education_title', $_POST['jobsearch_field_education_title']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_education_title', '');
             }
-            if (isset($_POST['jobsearch_field_education_start_date'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_start_date', jobsearch_esc_html($_POST['jobsearch_field_education_start_date']));
+            if (isset($_POST['jobsearch_field_education_year'])) {
+                update_post_meta($candidate_id, 'jobsearch_field_education_year', $_POST['jobsearch_field_education_year']);
             } else {
-                update_post_meta($candidate_id, 'jobsearch_field_education_start_date', '');
-            }
-            if (isset($_POST['jobsearch_field_education_end_date'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_end_date', jobsearch_esc_html($_POST['jobsearch_field_education_end_date']));
-            } else {
-                update_post_meta($candidate_id, 'jobsearch_field_education_end_date', '');
-            }
-            if (isset($_POST['jobsearch_field_education_date_prsnt'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_date_prsnt', jobsearch_esc_html($_POST['jobsearch_field_education_date_prsnt']));
-            } else {
-                update_post_meta($candidate_id, 'jobsearch_field_education_date_prsnt', '');
+                update_post_meta($candidate_id, 'jobsearch_field_education_year', '');
             }
             if (isset($_POST['jobsearch_field_education_academy'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_academy', jobsearch_esc_html($_POST['jobsearch_field_education_academy']));
+                update_post_meta($candidate_id, 'jobsearch_field_education_academy', $_POST['jobsearch_field_education_academy']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_education_academy', '');
             }
             if (isset($_POST['jobsearch_field_education_description'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_education_description', jobsearch_esc_html($_POST['jobsearch_field_education_description']));
+                update_post_meta($candidate_id, 'jobsearch_field_education_description', $_POST['jobsearch_field_education_description']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_education_description', '');
             }
 
             //
             if (isset($_POST['jobsearch_field_experience_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_title', jobsearch_esc_html($_POST['jobsearch_field_experience_title']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_title', $_POST['jobsearch_field_experience_title']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_title', '');
             }
             if (isset($_POST['jobsearch_field_experience_start_date'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_start_date', jobsearch_esc_html($_POST['jobsearch_field_experience_start_date']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_start_date', $_POST['jobsearch_field_experience_start_date']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_start_date', '');
             }
             if (isset($_POST['jobsearch_field_experience_end_date'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_end_date', jobsearch_esc_html($_POST['jobsearch_field_experience_end_date']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_end_date', $_POST['jobsearch_field_experience_end_date']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_end_date', '');
             }
             if (isset($_POST['jobsearch_field_experience_date_prsnt'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_date_prsnt', jobsearch_esc_html($_POST['jobsearch_field_experience_date_prsnt']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_date_prsnt', $_POST['jobsearch_field_experience_date_prsnt']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_date_prsnt', '');
             }
             if (isset($_POST['jobsearch_field_experience_company'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_company', jobsearch_esc_html($_POST['jobsearch_field_experience_company']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_company', $_POST['jobsearch_field_experience_company']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_company', '');
             }
             if (isset($_POST['jobsearch_field_experience_description'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_experience_description', jobsearch_esc_html($_POST['jobsearch_field_experience_description']));
+                update_post_meta($candidate_id, 'jobsearch_field_experience_description', $_POST['jobsearch_field_experience_description']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_experience_description', '');
             }
 
             //
             if (isset($_POST['jobsearch_field_skill_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_skill_title', jobsearch_esc_html($_POST['jobsearch_field_skill_title']));
+                update_post_meta($candidate_id, 'jobsearch_field_skill_title', $_POST['jobsearch_field_skill_title']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_skill_title', '');
             }
             if (isset($_POST['jobsearch_field_skill_percentage'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_skill_percentage', jobsearch_esc_html($_POST['jobsearch_field_skill_percentage']));
+                update_post_meta($candidate_id, 'jobsearch_field_skill_percentage', $_POST['jobsearch_field_skill_percentage']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_skill_percentage', '');
             }
             if (isset($_POST['jobsearch_field_skill_desc'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_skill_desc', jobsearch_esc_html($_POST['jobsearch_field_skill_desc']));
+                update_post_meta($candidate_id, 'jobsearch_field_skill_desc', $_POST['jobsearch_field_skill_desc']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_skill_desc', '');
             }
 
             //
-            if (isset($_POST['jobsearch_field_lang_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_title', jobsearch_esc_html($_POST['jobsearch_field_lang_title']));
-            } else {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_title', '');
-            }
-            if (isset($_POST['jobsearch_field_lang_percentage'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_percentage', jobsearch_esc_html($_POST['jobsearch_field_lang_percentage']));
-            } else {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_percentage', '');
-            }
-            if (isset($_POST['jobsearch_field_lang_level'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_level', jobsearch_esc_html($_POST['jobsearch_field_lang_level']));
-            } else {
-                update_post_meta($candidate_id, 'jobsearch_field_lang_level', '');
-            }
-
-            //
             if (isset($_POST['jobsearch_field_award_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_award_title', jobsearch_esc_html($_POST['jobsearch_field_award_title']));
+                update_post_meta($candidate_id, 'jobsearch_field_award_title', $_POST['jobsearch_field_award_title']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_award_title', '');
             }
             if (isset($_POST['jobsearch_field_award_year'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_award_year', jobsearch_esc_html($_POST['jobsearch_field_award_year']));
+                update_post_meta($candidate_id, 'jobsearch_field_award_year', $_POST['jobsearch_field_award_year']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_award_year', '');
             }
             if (isset($_POST['jobsearch_field_award_description'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_award_description', jobsearch_esc_html($_POST['jobsearch_field_award_description']));
+                update_post_meta($candidate_id, 'jobsearch_field_award_description', $_POST['jobsearch_field_award_description']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_award_description', '');
             }
 
             //
             if (isset($_POST['jobsearch_field_portfolio_title'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_portfolio_title', jobsearch_esc_html($_POST['jobsearch_field_portfolio_title']));
+                update_post_meta($candidate_id, 'jobsearch_field_portfolio_title', $_POST['jobsearch_field_portfolio_title']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_portfolio_title', '');
             }
             if (isset($_POST['jobsearch_field_portfolio_image'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_portfolio_image', jobsearch_esc_html($_POST['jobsearch_field_portfolio_image']));
+                update_post_meta($candidate_id, 'jobsearch_field_portfolio_image', $_POST['jobsearch_field_portfolio_image']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_portfolio_image', '');
             }
             if (isset($_POST['jobsearch_field_portfolio_url'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_portfolio_url', jobsearch_esc_html($_POST['jobsearch_field_portfolio_url']));
+                update_post_meta($candidate_id, 'jobsearch_field_portfolio_url', $_POST['jobsearch_field_portfolio_url']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_portfolio_url', '');
             }
             if (isset($_POST['jobsearch_field_portfolio_vurl'])) {
-                update_post_meta($candidate_id, 'jobsearch_field_portfolio_vurl', jobsearch_esc_html($_POST['jobsearch_field_portfolio_vurl']));
+                update_post_meta($candidate_id, 'jobsearch_field_portfolio_vurl', $_POST['jobsearch_field_portfolio_vurl']);
             } else {
                 update_post_meta($candidate_id, 'jobsearch_field_portfolio_vurl', '');
             }
 
             jobsearch_candidate_skill_percent_count($user_id, 'none');
-            jobsearch_addto_candidate_exp_inyears($candidate_id);
 
             do_action('jobsearch_candidate_dash_resume_save_after', $candidate_id);
         }
@@ -561,426 +501,335 @@ class JobSearch_User_Dashboard_Settings
 
         if (isset($_POST['user_settings_form']) && $_POST['user_settings_form'] == '1') {
 
-            $_POST = jobsearch_input_post_vals_validate($_POST);
-            
-            if (isset($_POST['user_email_field'])) {
-                $user_email_input = $_POST['user_email_field'];
-                if ($user_email_input != '' && filter_var($user_email_input, FILTER_VALIDATE_EMAIL)) {
-                    if (email_exists($user_email_input) && $user_email_input != $user_email) {
-                        $diff_form_errs['user_email_error'] = esc_html__('This email address is already taken.', 'wp-jobsearch');
-                    }
-                } else {
-                    $diff_form_errs['user_email_error'] = esc_html__('Please enter the correct email address.', 'wp-jobsearch');
+            global $allowedposttags;
+            /*
+             * Allowed Tags for wp editor
+             * */
+
+            $allowed_atts = array(
+                'align' => array(),
+                'class' => array(),
+                'type' => array(),
+                'id' => array(),
+                'style' => array(),
+                'src' => array(),
+                'alt' => array(),
+                'href' => array(),
+                'rel' => array(),
+                'target' => array(),
+                'width' => array(),
+                'height' => array(),
+                'title' => array(),
+                'data' => array(),
+            );
+            $allowedposttags['form'] = $allowed_atts;
+            $allowedposttags['label'] = $allowed_atts;
+            $allowedposttags['input'] = $allowed_atts;
+            $allowedposttags['textarea'] = $allowed_atts;
+            $allowedposttags['iframe'] = $allowed_atts;
+            $allowedposttags['style'] = $allowed_atts;
+            $allowedposttags['strong'] = $allowed_atts;
+            $allowedposttags['small'] = $allowed_atts;
+            $allowedposttags['table'] = $allowed_atts;
+            $allowedposttags['span'] = $allowed_atts;
+            $allowedposttags['abbr'] = $allowed_atts;
+            $allowedposttags['code'] = $allowed_atts;
+            $allowedposttags['pre'] = $allowed_atts;
+            $allowedposttags['div'] = $allowed_atts;
+            $allowedposttags['img'] = $allowed_atts;
+            $allowedposttags['h1'] = $allowed_atts;
+            $allowedposttags['h2'] = $allowed_atts;
+            $allowedposttags['h3'] = $allowed_atts;
+            $allowedposttags['h4'] = $allowed_atts;
+            $allowedposttags['h5'] = $allowed_atts;
+            $allowedposttags['h6'] = $allowed_atts;
+            $allowedposttags['ol'] = $allowed_atts;
+            $allowedposttags['ul'] = $allowed_atts;
+            $allowedposttags['li'] = $allowed_atts;
+            $allowedposttags['em'] = $allowed_atts;
+            $allowedposttags['hr'] = $allowed_atts;
+            $allowedposttags['br'] = $allowed_atts;
+            $allowedposttags['tr'] = $allowed_atts;
+            $allowedposttags['td'] = $allowed_atts;
+            $allowedposttags['p'] = $allowed_atts;
+            $allowedposttags['a'] = $allowed_atts;
+            $allowedposttags['b'] = $allowed_atts;
+            $allowedposttags['i'] = $allowed_atts;
+
+            $allowed_tags = wp_kses_allowed_html('post');
+            $display_name = isset($_POST['display_name']) ? sanitize_text_field($_POST['display_name']) : '';
+            $user_bio = isset($_POST['user_bio']) ? wp_kses(stripslashes_deep($_POST['user_bio']), $allowed_tags) : '';
+            $user_website = isset($_POST['user_website']) ? sanitize_text_field($_POST['user_website']) : '';
+            $u_firstname = isset($_POST['u_firstname']) ? sanitize_text_field($_POST['u_firstname']) : $user_obj->first_name;
+            $u_lastname = isset($_POST['u_lastname']) ? sanitize_text_field($_POST['u_lastname']) : $user_obj->last_name;
+            if ($u_firstname != '' && $display_name == '') {
+                $display_name = $u_firstname;
+                if ($u_lastname != '') {
+                    $display_name .= ' ' . $u_lastname;
                 }
             }
-            
-            if (empty($diff_form_errs)) {
-                global $allowedposttags;
-                /*
-                 * Allowed Tags for wp editor
-                 * */
+            $user_def_array = array(
+                'ID' => $user_id,
+                'first_name' => $u_firstname,
+                'last_name' => $u_lastname,
+                'description' => $user_bio,
+                'user_url' => $user_website,
+            );
+            if (isset($display_name) && $display_name != '') {
+                $user_def_array['display_name'] = $display_name;
+            }
 
-                $allowed_atts = array(
-                    'align' => array(),
-                    'class' => array(),
-                    'type' => array(),
-                    'id' => array(),
-                    'style' => array(),
-                    'src' => array(),
-                    'alt' => array(),
-                    'href' => array(),
-                    'rel' => array(),
-                    'target' => array(),
-                    'width' => array(),
-                    'height' => array(),
-                    'title' => array(),
-                    'data' => array(),
-                );
-                $allowedposttags['form'] = $allowed_atts;
-                $allowedposttags['label'] = $allowed_atts;
-                $allowedposttags['input'] = $allowed_atts;
-                $allowedposttags['textarea'] = $allowed_atts;
-                $allowedposttags['iframe'] = $allowed_atts;
-                $allowedposttags['style'] = $allowed_atts;
-                $allowedposttags['strong'] = $allowed_atts;
-                $allowedposttags['small'] = $allowed_atts;
-                $allowedposttags['table'] = $allowed_atts;
-                $allowedposttags['span'] = $allowed_atts;
-                $allowedposttags['abbr'] = $allowed_atts;
-                $allowedposttags['code'] = $allowed_atts;
-                $allowedposttags['pre'] = $allowed_atts;
-                $allowedposttags['div'] = $allowed_atts;
-                $allowedposttags['img'] = $allowed_atts;
-                $allowedposttags['h1'] = $allowed_atts;
-                $allowedposttags['h2'] = $allowed_atts;
-                $allowedposttags['h3'] = $allowed_atts;
-                $allowedposttags['h4'] = $allowed_atts;
-                $allowedposttags['h5'] = $allowed_atts;
-                $allowedposttags['h6'] = $allowed_atts;
-                $allowedposttags['ol'] = $allowed_atts;
-                $allowedposttags['ul'] = $allowed_atts;
-                $allowedposttags['li'] = $allowed_atts;
-                $allowedposttags['em'] = $allowed_atts;
-                $allowedposttags['hr'] = $allowed_atts;
-                $allowedposttags['br'] = $allowed_atts;
-                $allowedposttags['tr'] = $allowed_atts;
-                $allowedposttags['td'] = $allowed_atts;
-                $allowedposttags['p'] = $allowed_atts;
-                $allowedposttags['a'] = $allowed_atts;
-                $allowedposttags['b'] = $allowed_atts;
-                $allowedposttags['i'] = $allowed_atts;
+            wp_update_user($user_def_array);
+            //
 
-                $allowed_tags = wp_kses_allowed_html('post');
-                $display_name = isset($_POST['display_name']) ? jobsearch_esc_html($_POST['display_name']) : '';
-                $user_bio = isset($_POST['user_bio']) ? wp_kses(stripslashes_deep($_POST['user_bio']), $allowed_tags) : '';
-                $user_website = isset($_POST['user_website']) ? jobsearch_esc_html($_POST['user_website']) : '';
-                $u_firstname = isset($_POST['u_firstname']) ? jobsearch_esc_html($_POST['u_firstname']) : $user_obj->first_name;
-                $u_lastname = isset($_POST['u_lastname']) ? jobsearch_esc_html($_POST['u_lastname']) : $user_obj->last_name;
-                if ($u_firstname != '' && $display_name == '') {
-                    $display_name = $u_firstname;
-                    if ($u_lastname != '') {
-                        $display_name .= ' ' . $u_lastname;
-                    }
-                }
-                $user_def_array = array(
-                    'ID' => $user_id,
-                    'first_name' => $u_firstname,
-                    'last_name' => $u_lastname,
-                    'description' => $user_bio,
-                    'user_url' => $user_website,
-                );
-                if (isset($display_name) && $display_name != '') {
-                    $user_def_array['display_name'] = $display_name;
-                }
-                if (isset($_POST['user_email_field']) && $_POST['user_email_field'] != '') {
-                    $user_def_array['user_email'] = $_POST['user_email_field'];
-                }
+            if ($user_is_candidate) {
 
-                wp_update_user($user_def_array);
-                //
-
-                if ($user_is_candidate) {
-
-                    if (isset($_POST['cand_user_facebook_url'])) {
-                        $fb_social_url = esc_url($_POST['cand_user_facebook_url']);
-                        update_post_meta($candidate_id, 'jobsearch_field_user_facebook_url', $fb_social_url);
-                    }
-                    if (isset($_POST['cand_user_twitter_url'])) {
-                        $twitter_social_url = esc_url($_POST['cand_user_twitter_url']);
-                        update_post_meta($candidate_id, 'jobsearch_field_user_twitter_url', $twitter_social_url);
-                    }
-                    if (isset($_POST['cand_user_linkedin_url'])) {
-                        $linkedin_social_url = esc_url($_POST['cand_user_linkedin_url']);
-                        update_post_meta($candidate_id, 'jobsearch_field_user_linkedin_url', $linkedin_social_url);
-                    }
-                    if (isset($_POST['cand_user_dribbble_url'])) {
-                        $dribbble_social_url = esc_url($_POST['cand_user_dribbble_url']);
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dribbble_url', $dribbble_social_url);
-                    }
-
-                    // Dynamic Candidate Social Fields /////
-                    $candidate_social_mlinks = isset($jobsearch_plugin_options['candidate_social_mlinks']) ? $jobsearch_plugin_options['candidate_social_mlinks'] : '';
-                    if (!empty($candidate_social_mlinks)) {
-                        if (isset($candidate_social_mlinks['title']) && is_array($candidate_social_mlinks['title'])) {
-                            $field_counter = 0;
-                            foreach ($candidate_social_mlinks['title'] as $field_title_val) {
-                                if (isset($_POST['candidate_dynm_social' . $field_counter])) {
-                                    $msocil_linkurl = esc_url($_POST['candidate_dynm_social' . $field_counter]);
-                                    update_post_meta($candidate_id, 'jobsearch_field_dynm_social' . $field_counter, $msocil_linkurl);
-                                }
-                                $field_counter++;
+                // Dynamic Candidate Social Fields /////
+                $candidate_social_mlinks = isset($jobsearch_plugin_options['candidate_social_mlinks']) ? $jobsearch_plugin_options['candidate_social_mlinks'] : '';
+                if (!empty($candidate_social_mlinks)) {
+                    if (isset($candidate_social_mlinks['title']) && is_array($candidate_social_mlinks['title'])) {
+                        $field_counter = 0;
+                        foreach ($candidate_social_mlinks['title'] as $field_title_val) {
+                            if (isset($_POST['candidate_dynm_social' . $field_counter])) {
+                                $msocil_linkurl = esc_url($_POST['candidate_dynm_social' . $field_counter]);
+                                update_post_meta($candidate_id, 'jobsearch_field_dynm_social' . $field_counter, $msocil_linkurl);
                             }
+                            $field_counter++;
                         }
                     }
-                    //
-                    // Public profile view saving
-                    if (isset($_POST['jobsearch_field_user_public_pview']) && !empty($_POST['jobsearch_field_user_public_pview'])) {
-                        $user_public_pview = $_POST['jobsearch_field_user_public_pview'];
-                        if ($user_public_pview == 'no') {
-                            $user_up_post = array(
-                                'ID' => $candidate_id,
-                                'post_type' => 'candidate',
-                                'post_status' => 'draft',
-                            );
-                            wp_update_post($user_up_post);
-                        } else {
-                            $user_up_post = array(
-                                'ID' => $candidate_id,
-                                'post_type' => 'candidate',
-                                'post_status' => 'publish',
-                            );
-                            wp_update_post($user_up_post);
-                        }
-                    }
-                    // updating user email to member
-                    update_post_meta($candidate_id, 'jobsearch_field_user_email', ($user_email));
-                    //
-                    if ($display_name != '') {
-                        $up_post = array(
+                }
+                //
+                // Public profile view saving
+                if (isset($_POST['jobsearch_field_user_public_pview']) && !empty($_POST['jobsearch_field_user_public_pview'])) {
+                    $user_public_pview = $_POST['jobsearch_field_user_public_pview'];
+                    if ($user_public_pview == 'no') {
+                        $user_up_post = array(
                             'ID' => $candidate_id,
-                            'post_title' => wp_strip_all_tags($display_name),
+                            'post_type' => 'candidate',
+                            'post_status' => 'draft',
                         );
-                        wp_update_post($up_post);
-                        //
-                        update_post_meta($candidate_id, 'member_display_name', wp_strip_all_tags($display_name));
+                        wp_update_post($user_up_post);
+                    } else {
+                        $user_up_post = array(
+                            'ID' => $candidate_id,
+                            'post_type' => 'candidate',
+                            'post_status' => 'publish',
+                        );
+                        wp_update_post($user_up_post);
                     }
+                }
+                //
+                // updating user email to member
+                update_post_meta($candidate_id, 'jobsearch_field_user_email', ($user_email));
 
+                //
+                if ($display_name != '') {
                     $up_post = array(
                         'ID' => $candidate_id,
-                        'post_content' => $user_bio,
+                        'post_title' => wp_strip_all_tags($display_name),
                     );
                     wp_update_post($up_post);
-
                     //
-                    if (isset($_POST['user_sector'])) {
-                        $user_sector = ($_POST['user_sector']);
-                        $user_sector = is_array($user_sector) ? $user_sector : array($user_sector);
-                        wp_set_post_terms($candidate_id, $user_sector, 'sector', false);
-                    }
-
-                    //
-                    if (isset($_POST['candidate_salary_type'])) {
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_type', jobsearch_esc_html($_POST['candidate_salary_type']));
-                    }
-                    if (isset($_POST['candidate_salary'])) {
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary', jobsearch_esc_html($_POST['candidate_salary']));
-                    }
-
-                    //
-                    // candidate salary currency
-                    if (isset($_POST['candidate_salary_currency'])) {
-                        $candidate_salary_type = jobsearch_esc_html($_POST['candidate_salary_currency']);
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_currency', $candidate_salary_type);
-                    }
-                    // candidate salary currency pos
-                    if (isset($_POST['candidate_salary_pos'])) {
-                        $candidate_salary_type = jobsearch_esc_html($_POST['candidate_salary_pos']);
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_pos', $candidate_salary_type);
-                    }
-                    // candidate salary currency decimal
-                    if (isset($_POST['candidate_salary_deci'])) {
-                        $candidate_salary_type = jobsearch_esc_html($_POST['candidate_salary_deci']);
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_deci', $candidate_salary_type);
-                    }
-                    // candidate salary currency sep
-                    if (isset($_POST['candidate_salary_sep'])) {
-                        $candidate_salary_type = jobsearch_esc_html($_POST['candidate_salary_sep']);
-                        update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_sep', $candidate_salary_type);
-                    }
-
-                    //
-                    if (isset($_POST['jobsearch_field_user_dob_whole']) && $_POST['jobsearch_field_user_dob_whole'] != '') {
-                        $whole_dob = $_POST['jobsearch_field_user_dob_whole'];
-                        $whole_dob_dd = date_i18n('d', strtotime($whole_dob));
-                        $whole_dob_mm = date_i18n('m', strtotime($whole_dob));
-                        $whole_dob_yy = date_i18n('Y', strtotime($whole_dob));
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_dd', jobsearch_esc_html($whole_dob_dd));
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_mm', jobsearch_esc_html($whole_dob_mm));
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_yy', jobsearch_esc_html($whole_dob_yy));
-                    } else {
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_dd', '');
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_mm', '');
-                        update_post_meta($candidate_id, 'jobsearch_field_user_dob_yy', '');
-                    }
-
-                    if (isset($_POST['user_phone'])) {
-                        $user_inp_phone = $_POST['user_phone'];
-                        $user_dial_code = isset($_POST['dial_code']) ? $_POST['dial_code'] : '';
-                        $contry_iso_code = isset($_POST['contry_iso_code']) ? $_POST['contry_iso_code'] : '';
-                        if ($user_dial_code == '') {
-                            $user_dial_code = get_post_meta($candidate_id, 'jobsearch_field_user_dial_code', true);
-                        }
-                        if ($contry_iso_code == '') {
-                            $contry_iso_code = get_post_meta($candidate_id, 'jobsearch_field_contry_iso_code', true);
-                        }
-                        if ($user_dial_code != '') {
-                            update_post_meta($candidate_id, 'jobsearch_field_user_phone', $user_dial_code . jobsearch_esc_html($user_inp_phone));
-                            update_post_meta($candidate_id, 'jobsearch_field_user_justphone', jobsearch_esc_html($user_inp_phone));
-                            update_post_meta($candidate_id, 'jobsearch_field_user_dial_code', $user_dial_code);
-                            update_post_meta($candidate_id, 'jobsearch_field_contry_iso_code', $contry_iso_code);
-                        } else {
-                            update_post_meta($candidate_id, 'jobsearch_field_user_phone', jobsearch_esc_html($user_inp_phone));
-                        }
-                    }
-
-                    // Cus Fields Upload Files /////
-                    do_action('jobsearch_custom_field_upload_files_save', $candidate_id, 'candidate');
-
-                    //
-                    jobsearch_candidate_skill_percent_count($user_id, 'none');
-                    //
-
-                    do_action('jobsearch_candidate_profile_save_after', $candidate_id);
-                    do_action('jobsearch_user_data_save_onprofile', $user_id, $candidate_id, 'candidate');
-                } else if ($user_is_employer) {
-
-                    if (isset($_POST['emp_user_facebook_url'])) {
-                        $fb_social_url = esc_url($_POST['emp_user_facebook_url']);
-                        update_post_meta($employer_id, 'jobsearch_field_user_facebook_url', $fb_social_url);
-                    }
-                    if (isset($_POST['emp_user_twitter_url'])) {
-                        $twitter_social_url = esc_url($_POST['emp_user_twitter_url']);
-                        update_post_meta($employer_id, 'jobsearch_field_user_twitter_url', $twitter_social_url);
-                    }
-                    if (isset($_POST['emp_user_linkedin_url'])) {
-                        $linkedin_social_url = esc_url($_POST['emp_user_linkedin_url']);
-                        update_post_meta($employer_id, 'jobsearch_field_user_linkedin_url', $linkedin_social_url);
-                    }
-                    if (isset($_POST['emp_user_dribbble_url'])) {
-                        $dribbble_social_url = esc_url($_POST['emp_user_dribbble_url']);
-                        update_post_meta($employer_id, 'jobsearch_field_user_dribbble_url', $dribbble_social_url);
-                    }
-                    //
-                    // Dynamic Employer Social Fields /////
-                    $employer_social_mlinks = isset($jobsearch_plugin_options['employer_social_mlinks']) ? $jobsearch_plugin_options['employer_social_mlinks'] : '';
-                    if (!empty($employer_social_mlinks)) {
-                        if (isset($employer_social_mlinks['title']) && is_array($employer_social_mlinks['title'])) {
-                            $field_counter = 0;
-                            foreach ($employer_social_mlinks['title'] as $field_title_val) {
-                                if (isset($_POST['employer_dynm_social' . $field_counter])) {
-                                    $msocil_linkurl = esc_url($_POST['employer_dynm_social' . $field_counter]);
-                                    update_post_meta($employer_id, 'jobsearch_field_dynm_social' . $field_counter, $msocil_linkurl);
-                                }
-                                $field_counter++;
-                            }
-                        }
-                    }
-                    //
-                    // Public profile view saving
-                    if (isset($_POST['jobsearch_field_user_public_pview']) && !empty($_POST['jobsearch_field_user_public_pview'])) {
-                        $user_public_pview = $_POST['jobsearch_field_user_public_pview'];
-                        if ($user_public_pview == 'no') {
-                            $user_up_post = array(
-                                'ID' => $employer_id,
-                                'post_status' => 'draft',
-                            );
-                            wp_update_post($user_up_post);
-                        } else {
-                            $user_up_post = array(
-                                'ID' => $employer_id,
-                                'post_status' => 'publish',
-                            );
-                            wp_update_post($user_up_post);
-                        }
-                    }
-                    //
-                    // Gallery ////////////////////////
-                    $gal_ids_arr = array();
-
-                    $max_gal_imgs_allow = isset($jobsearch_plugin_options['max_gal_imgs_allow']) && $jobsearch_plugin_options['max_gal_imgs_allow'] > 0 ? $jobsearch_plugin_options['max_gal_imgs_allow'] : 5;
-                    $number_of_gal_imgs = $max_gal_imgs_allow;
-
-                    if (isset($_POST['company_gallery_imgs']) && !empty($_POST['company_gallery_imgs'])) {
-                        $gal_ids_arr = array_merge($gal_ids_arr, $_POST['company_gallery_imgs']);
-                    }
-
-                    $gal_imgs_count = 0;
-                    if (!empty($gal_ids_arr)) {
-                        $gal_imgs_count = sizeof($gal_ids_arr);
-                    }
-
-                    if (!empty($gal_ids_arr) && $number_of_gal_imgs > 0) {
-                        $gal_ids_arr = array_slice($gal_ids_arr, 0, $number_of_gal_imgs, true);
-                    }
-
-                    update_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs', $gal_ids_arr);
-
-                    //
-                    // updating user email to member
-                    update_post_meta($employer_id, 'jobsearch_field_user_email', ($user_email));
-
-                    //
-                    $display_name = isset($_POST['display_name']) ? jobsearch_esc_html(sanitize_text_field($_POST['display_name'])) : '';
-
-                    //
-                    if ($display_name != '') {
-                        $up_post = array(
-                            'ID' => $employer_id,
-                            'post_title' => wp_strip_all_tags($display_name),
-                        );
-                        wp_update_post($up_post);
-                        //
-                        update_post_meta($employer_id, 'member_display_name', wp_strip_all_tags($display_name));
-                    }
-
-                    $up_post = array(
-                        'ID' => $employer_id,
-                        'post_content' => $user_bio,
-                    );
-
-                    wp_update_post($up_post);
-
-                    //
-                    if (isset($_POST['user_sector'])) {
-                        $user_sector = ($_POST['user_sector']);
-                        $user_sector = is_array($user_sector) ? $user_sector : array($user_sector);
-                        wp_set_post_terms($employer_id, $user_sector, 'sector', false);
-                    }
-
-                    //
-                    if (isset($_POST['user_dob_dd'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_user_dob_dd', jobsearch_esc_html($_POST['user_dob_dd']));
-                    }
-                    if (isset($_POST['user_dob_mm'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_user_dob_mm', jobsearch_esc_html($_POST['user_dob_mm']));
-                    }
-                    if (isset($_POST['user_dob_yy'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_user_dob_yy', jobsearch_esc_html($_POST['user_dob_yy']));
-                    }
-
-                    if (isset($_POST['user_phone'])) {
-                        $user_inp_phone = $_POST['user_phone'];
-                        $user_dial_code = isset($_POST['dial_code']) ? $_POST['dial_code'] : '';
-                        $contry_iso_code = isset($_POST['contry_iso_code']) ? $_POST['contry_iso_code'] : '';
-                        if ($user_dial_code == '') {
-                            $user_dial_code = get_post_meta($employer_id, 'jobsearch_field_user_dial_code', true);
-                        }
-                        if ($contry_iso_code == '') {
-                            $contry_iso_code = get_post_meta($employer_id, 'jobsearch_field_contry_iso_code', true);
-                        }
-                        if ($user_dial_code != '') {
-                            update_post_meta($employer_id, 'jobsearch_field_user_phone', $user_dial_code . jobsearch_esc_html($user_inp_phone));
-                            update_post_meta($employer_id, 'jobsearch_field_user_justphone', jobsearch_esc_html($user_inp_phone));
-                            update_post_meta($employer_id, 'jobsearch_field_user_dial_code', $user_dial_code);
-                            update_post_meta($employer_id, 'jobsearch_field_contry_iso_code', $contry_iso_code);
-                        } else {
-                            update_post_meta($employer_id, 'jobsearch_field_user_phone', jobsearch_esc_html($user_inp_phone));
-                        }
-                    }
-
-                    if (isset($_POST['jobsearch_field_affiliation_title'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_affiliation_title', jobsearch_esc_html($_POST['jobsearch_field_affiliation_title']));
-                    } else {
-                        update_post_meta($employer_id, 'jobsearch_field_affiliation_title', '');
-                    }
-                    if (isset($_POST['jobsearch_field_affiliation_image'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_affiliation_image', jobsearch_esc_html($_POST['jobsearch_field_affiliation_image']));
-                    } else {
-                        update_post_meta($employer_id, 'jobsearch_field_affiliation_image', '');
-                    }
-
-                    if (isset($_POST['jobsearch_field_award_title'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_award_title', jobsearch_esc_html($_POST['jobsearch_field_award_title']));
-                    } else {
-                        update_post_meta($employer_id, 'jobsearch_field_award_title', '');
-                    }
-                    if (isset($_POST['jobsearch_field_award_image'])) {
-                        update_post_meta($employer_id, 'jobsearch_field_award_image', jobsearch_esc_html($_POST['jobsearch_field_award_image']));
-                    } else {
-                        update_post_meta($employer_id, 'jobsearch_field_award_image', '');
-                    }
-
-                    // Cus Fields Upload Files /////
-                    do_action('jobsearch_custom_field_upload_files_save', $employer_id, 'employer');
-
-                    //
-
-                    do_action('jobsearch_employer_profile_save_after', $employer_id);
-                    do_action('jobsearch_user_data_save_onprofile', $user_id, $employer_id, 'employer');
+                    update_post_meta($candidate_id, 'member_display_name', wp_strip_all_tags($display_name));
                 }
 
-                jobsearch_onuser_update_wc_update($user_id);
+                $up_post = array(
+                    'ID' => $candidate_id,
+                    'post_content' => $user_bio,
+                );
+                wp_update_post($up_post);
+
+                //
+                if (isset($_POST['user_sector'])) {
+                    $user_sector = sanitize_text_field($_POST['user_sector']);
+                    wp_set_post_terms($candidate_id, array($user_sector), 'sector', false);
+                }
+
+                //
+                if (isset($_POST['candidate_salary_type'])) {
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_type', $_POST['candidate_salary_type']);
+                }
+                if (isset($_POST['candidate_salary'])) {
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary', $_POST['candidate_salary']);
+                }
+
+                //
+                // candidate salary currency
+                if (isset($_POST['candidate_salary_currency'])) {
+                    $candidate_salary_type = ($_POST['candidate_salary_currency']);
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_currency', $candidate_salary_type);
+                }
+                // candidate salary currency pos
+                if (isset($_POST['candidate_salary_pos'])) {
+                    $candidate_salary_type = sanitize_text_field($_POST['candidate_salary_pos']);
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_pos', $candidate_salary_type);
+                }
+                // candidate salary currency decimal
+                if (isset($_POST['candidate_salary_deci'])) {
+                    $candidate_salary_type = sanitize_text_field($_POST['candidate_salary_deci']);
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_deci', $candidate_salary_type);
+                }
+                // candidate salary currency sep
+                if (isset($_POST['candidate_salary_sep'])) {
+                    $candidate_salary_type = sanitize_text_field($_POST['candidate_salary_sep']);
+                    update_post_meta($candidate_id, 'jobsearch_field_candidate_salary_sep', $candidate_salary_type);
+                }
+
+                //
+                if (isset($_POST['jobsearch_field_user_dob_whole']) && $_POST['jobsearch_field_user_dob_whole'] != '') {
+                    $whole_dob = $_POST['jobsearch_field_user_dob_whole'];
+                    $whole_dob_dd = date('d', strtotime($whole_dob));
+                    $whole_dob_mm = date('m', strtotime($whole_dob));
+                    $whole_dob_yy = date('Y', strtotime($whole_dob));
+                    update_post_meta($candidate_id, 'jobsearch_field_user_dob_dd', $whole_dob_dd);
+                    update_post_meta($candidate_id, 'jobsearch_field_user_dob_mm', $whole_dob_mm);
+                    update_post_meta($candidate_id, 'jobsearch_field_user_dob_yy', $whole_dob_yy);
+                }
+
+                if (isset($_POST['user_phone'])) {
+                    $user_inp_phone = $_POST['user_phone'];
+                    $user_dial_code = isset($_POST['dial_code']) ? $_POST['dial_code'] : '';
+                    $contry_iso_code = isset($_POST['contry_iso_code']) ? $_POST['contry_iso_code'] : '';
+                    if ($user_dial_code != '') {
+                        update_post_meta($candidate_id, 'jobsearch_field_user_phone', $user_dial_code . $user_inp_phone);
+                        update_post_meta($candidate_id, 'jobsearch_field_user_justphone', $user_inp_phone);
+                        update_post_meta($candidate_id, 'jobsearch_field_user_dial_code', $user_dial_code);
+                        update_post_meta($candidate_id, 'jobsearch_field_contry_iso_code', $contry_iso_code);
+                    } else {
+                        update_post_meta($candidate_id, 'jobsearch_field_user_phone', $user_inp_phone);
+                    }
+                }
+
+                // Cus Fields Upload Files /////
+                do_action('jobsearch_custom_field_upload_files_save', $candidate_id, 'candidate');
+
+                //
+                jobsearch_candidate_skill_percent_count($user_id, 'none');
+                //
+
+                do_action('jobsearch_candidate_profile_save_after', $candidate_id);
+                do_action('jobsearch_user_data_save_onprofile', $user_id, $candidate_id, 'candidate');
+            } else if ($user_is_employer) {
+                //
+                // Dynamic Employer Social Fields /////
+                $employer_social_mlinks = isset($jobsearch_plugin_options['employer_social_mlinks']) ? $jobsearch_plugin_options['employer_social_mlinks'] : '';
+                if (!empty($employer_social_mlinks)) {
+                    if (isset($employer_social_mlinks['title']) && is_array($employer_social_mlinks['title'])) {
+                        $field_counter = 0;
+                        foreach ($employer_social_mlinks['title'] as $field_title_val) {
+                            if (isset($_POST['employer_dynm_social' . $field_counter])) {
+                                $msocil_linkurl = esc_url($_POST['employer_dynm_social' . $field_counter]);
+                                update_post_meta($employer_id, 'jobsearch_field_dynm_social' . $field_counter, $msocil_linkurl);
+                            }
+                            $field_counter++;
+                        }
+                    }
+                }
+                //
+                // Public profile view saving
+                if (isset($_POST['jobsearch_field_user_public_pview']) && !empty($_POST['jobsearch_field_user_public_pview'])) {
+                    $user_public_pview = $_POST['jobsearch_field_user_public_pview'];
+                    if ($user_public_pview == 'no') {
+                        $user_up_post = array(
+                            'ID' => $employer_id,
+                            'post_status' => 'draft',
+                        );
+                        wp_update_post($user_up_post);
+                    } else {
+                        $user_up_post = array(
+                            'ID' => $employer_id,
+                            'post_status' => 'publish',
+                        );
+                        wp_update_post($user_up_post);
+                    }
+                }
+                //
+                // Gallery ////////////////////////
+                $gal_ids_arr = array();
+
+                $max_gal_imgs_allow = isset($jobsearch_plugin_options['max_gal_imgs_allow']) && $jobsearch_plugin_options['max_gal_imgs_allow'] > 0 ? $jobsearch_plugin_options['max_gal_imgs_allow'] : 5;
+                $number_of_gal_imgs = $max_gal_imgs_allow;
+
+                if (isset($_POST['company_gallery_imgs']) && !empty($_POST['company_gallery_imgs'])) {
+                    $gal_ids_arr = array_merge($gal_ids_arr, $_POST['company_gallery_imgs']);
+                }
+
+                $gal_imgs_count = 0;
+                if (!empty($gal_ids_arr)) {
+                    $gal_imgs_count = sizeof($gal_ids_arr);
+                }
+
+                if (!empty($gal_ids_arr) && $number_of_gal_imgs > 0) {
+                    $gal_ids_arr = array_slice($gal_ids_arr, 0, $number_of_gal_imgs, true);
+                }
+
+                update_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs', $gal_ids_arr);
+
+                //
+                // updating user email to member
+                update_post_meta($employer_id, 'jobsearch_field_user_email', ($user_email));
+
+                //
+                $display_name = isset($_POST['display_name']) ? sanitize_text_field($_POST['display_name']) : '';
+
+                //
+                if ($display_name != '') {
+                    $up_post = array(
+                        'ID' => $employer_id,
+                        'post_title' => wp_strip_all_tags($display_name),
+                    );
+                    wp_update_post($up_post);
+                    //
+                    update_post_meta($employer_id, 'member_display_name', wp_strip_all_tags($display_name));
+                }
+
+                $up_post = array(
+                    'ID' => $employer_id,
+                    'post_content' => $user_bio,
+                );
+
+                wp_update_post($up_post);
+
+                //
+                if (isset($_POST['user_sector'])) {
+                    $user_sector = sanitize_text_field($_POST['user_sector']);
+                    wp_set_post_terms($employer_id, array($user_sector), 'sector', false);
+                }
+
+                //
+                if (isset($_POST['user_dob_dd'])) {
+                    update_post_meta($employer_id, 'jobsearch_field_user_dob_dd', $_POST['user_dob_dd']);
+                }
+                if (isset($_POST['user_dob_mm'])) {
+                    update_post_meta($employer_id, 'jobsearch_field_user_dob_mm', $_POST['user_dob_mm']);
+                }
+                if (isset($_POST['user_dob_yy'])) {
+                    update_post_meta($employer_id, 'jobsearch_field_user_dob_yy', $_POST['user_dob_yy']);
+                }
+
+                if (isset($_POST['user_phone'])) {
+                    $user_inp_phone = $_POST['user_phone'];
+                    $user_dial_code = isset($_POST['dial_code']) ? $_POST['dial_code'] : '';
+                    $contry_iso_code = isset($_POST['contry_iso_code']) ? $_POST['contry_iso_code'] : '';
+                    if ($user_dial_code != '') {
+                        update_post_meta($employer_id, 'jobsearch_field_user_phone', $user_dial_code . $user_inp_phone);
+                        update_post_meta($employer_id, 'jobsearch_field_user_justphone', $user_inp_phone);
+                        update_post_meta($employer_id, 'jobsearch_field_user_dial_code', $user_dial_code);
+                        update_post_meta($employer_id, 'jobsearch_field_contry_iso_code', $contry_iso_code);
+                    } else {
+                        update_post_meta($employer_id, 'jobsearch_field_user_phone', $user_inp_phone);
+                    }
+                }
+
+                // Cus Fields Upload Files /////
+                do_action('jobsearch_custom_field_upload_files_save', $employer_id, 'employer');
+
+                //
+
+                do_action('jobsearch_employer_profile_save_after', $employer_id);
+                do_action('jobsearch_user_data_save_onprofile', $user_id, $employer_id, 'employer');
             }
+
         }
         //
         if (isset($_POST['user_password_change_form']) && $_POST['user_password_change_form'] == '1') {
@@ -1027,7 +876,6 @@ class JobSearch_User_Dashboard_Settings
                         $ans_count = 0;
                         foreach ($_input_answers as $_inp_ans) {
                             $ans_to_ques = isset($sec_questions['answers'][$ans_count]) ? $sec_questions['answers'][$ans_count] : '';
-                            $ans_to_ques = base64_decode($ans_to_ques);
                             if ($ans_to_ques != '' && $ans_to_ques != $_inp_ans) {
                                 $diff_form_errs['wrong_ans_err'] = true;
                             }
@@ -1037,37 +885,24 @@ class JobSearch_User_Dashboard_Settings
                 }
 
                 if (empty($diff_form_errs)) {
-                    $to_save_secqusts = '';
-                    if (isset($_POST['user_security_questions']) && !empty($_POST['user_security_questions'])) {
-                        $to_save_secqusts = $_POST['user_security_questions'];
-                        if (isset($to_save_secqusts['answers']) && !empty($to_save_secqusts['answers'])) {
-                            $to_save_secqustsans = $to_save_secqusts['answers'];
-                            $answr_counter = 0;
-                            foreach ($to_save_secqustsans as $answr_item) {
-                                $answr_item = base64_encode($answr_item);
-                                $to_save_secqusts['answers'][$answr_counter] = $answr_item;
-                                $answr_counter++;
-                            }
-                        }
-                    }
                     if (jobsearch_user_isemp_member($user_id)) {
                         $sec_questions = get_user_meta($user_id, 'user_security_questions', true);
                         if (isset($_POST['user_security_questions'])) {
-                            update_user_meta($user_id, 'user_security_questions', ($to_save_secqusts));
+                            update_user_meta($user_id, 'user_security_questions', ($_POST['user_security_questions']));
                         }
                     } else {
                         if ($user_is_employer) {
                             $sec_questions = get_post_meta($employer_id, 'user_security_questions', true);
                             //
                             if (isset($_POST['user_security_questions'])) {
-                                update_post_meta($employer_id, 'user_security_questions', ($to_save_secqusts));
+                                update_post_meta($employer_id, 'user_security_questions', ($_POST['user_security_questions']));
                             }
                             //
                         } else {
                             $sec_questions = get_post_meta($candidate_id, 'user_security_questions', true);
                             //
                             if (isset($_POST['user_security_questions'])) {
-                                update_post_meta($candidate_id, 'user_security_questions', ($to_save_secqusts));
+                                update_post_meta($candidate_id, 'user_security_questions', ($_POST['user_security_questions']));
                             }
                             //
                         }
@@ -1107,16 +942,6 @@ class JobSearch_User_Dashboard_Settings
     {
         $cur_user_id = get_current_user_id();
         $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
-        if (jobsearch_candidate_not_allow_to_mod()) {
-            $msg = esc_html__('You are not allowed to delete profile image.', 'wp-jobsearch');
-            echo json_encode(array('err_msg' => $msg));
-            die;
-        }
-        if (jobsearch_employer_not_allow_to_mod()) {
-            $msg = esc_html__('You are not allowed to delete profile image.', 'wp-jobsearch');
-            echo json_encode(array('err_msg' => $msg));
-            die;
-        }
         if ($cur_user_id == $user_id) {
             $user_is_candidate = jobsearch_user_is_candidate($user_id);
             $user_is_employer = jobsearch_user_is_employer($user_id);
@@ -1173,7 +998,6 @@ class JobSearch_User_Dashboard_Settings
             echo json_encode(array('err_msg' => $msg));
             die;
         }
-        
         if ($user_is_employer) {
             $employer_id = jobsearch_get_user_employer_id($user_id);
             $atach_id = jobsearch_insert_upload_attach('avatar_file', $employer_id);
@@ -1196,6 +1020,7 @@ class JobSearch_User_Dashboard_Settings
             do_action('jobsearch_aftr_user_uploaded_profile_pic', $file_urls, $user_id);
 
             jobsearch_remove_cand_photo_foldr($candidate_id);
+            
             $folder_path = $file_urls['path'];
             $img_url = $file_urls['crop'];
             $orig_img_url = $file_urls['orig'];
@@ -1228,8 +1053,11 @@ class JobSearch_User_Dashboard_Settings
 
     public function candidate_cover_img_upload()
     {
+
         $user_id = get_current_user_id();
+
         $user_is_candiadte = jobsearch_user_is_candidate($user_id);
+
         if (jobsearch_candidate_not_allow_to_mod()) {
             $msg = esc_html__('You are not allowed to upload a cover image.', 'wp-jobsearch');
             echo json_encode(array('err_msg' => $msg));
@@ -1647,42 +1475,33 @@ class JobSearch_User_Dashboard_Settings
         }
 
         if (!empty($job_applicants_list)) {
+
             if (($key = array_search($candidate_id, $job_applicants_list)) !== false) {
                 unset($job_applicants_list[$key]);
 
                 $job_applicants_list = implode(',', $job_applicants_list);
                 update_post_meta($job_id, 'jobsearch_job_applicants_list', $job_applicants_list);
+                jobsearch_remove_user_meta_list($job_id, 'jobsearch-user-jobs-applied-list', $user_id);
             }
         }
-        jobsearch_remove_user_meta_list($job_id, 'jobsearch-user-jobs-applied-list', $user_id);
 
         echo json_encode(array('msg' => esc_html__('removed.', 'wp-jobsearch')));
         die;
-    }
-    
-    public function change_email_read_status() {
-        $email_id = isset($_POST['email_id']) ? $_POST['email_id'] : '';
-        
-        update_post_meta($email_id, 'jobsearch_email_read_status', '1');
-        
-        wp_send_json(array('success' => '1'));
     }
 
     public function add_resume_education_to_list()
     {
         $rand_num = rand(1000000, 9999999);
         $title = isset($_POST['title']) ? ($_POST['title']) : '';
-        $start_date = isset($_POST['start_date']) ? ($_POST['start_date']) : '';
-        $end_date = isset($_POST['end_date']) ? ($_POST['end_date']) : '';
-        $present_date = isset($_POST['present_date']) ? ($_POST['present_date']) : '';
+        $year = isset($_POST['year']) ? ($_POST['year']) : '';
         $institute = isset($_POST['institute']) ? ($_POST['institute']) : '';
         $desc = isset($_POST['desc']) ? ($_POST['desc']) : '';
 
-        if ($title != '' && $institute != '') {
+        if ($title != '' && $year != '' && $institute != '') {
             $html = '
             <li class="jobsearch-column-12 resume-list-item resume-list-edu">
                 <div class="jobsearch-resume-education-wrap">
-                    <small>' . ($start_date != '' ? date_i18n(get_option('date_format'), strtotime($start_date)) : '') . ' - ' . ($present_date == 'on' ? 'Present' : '') . ($end_date != '' && $present_date != 'on' ? date_i18n(get_option('date_format'), strtotime($end_date)) : '') . '</small>
+                    <small>' . $year . '</small>
                     <h2><a>' . $title . '</a></h2>
                     <span>' . $institute . '</span>
                 </div>
@@ -1698,20 +1517,13 @@ class JobSearch_User_Dashboard_Settings
             $html .= '
                             <input name="jobsearch_field_education_title[]" type="text" value="' . $title . '">
                         </li>
-                        <li class="jobsearch-column-4">
-                            <label>' . esc_html__('Start Date *', 'wp-jobsearch') . '</label>
-                            <input id="date-start-' . $rand_num . '" name="jobsearch_field_education_start_date[]" type="text" value="' . $start_date . '">
+                        <li class="jobsearch-column-6">';
+            $title_html = '<label>' . esc_html__('Year *', 'wp-jobsearch') . '</label>';
+            $html .= apply_filters('jobsearch_candash_resume_eduyear_label', $title_html);
+            $html .= '
+                            <input name="jobsearch_field_education_year[]" type="text" value="' . $year . '">
                         </li>
-                        <li class="jobsearch-column-4 cand-edu-todatefield-' . ($rand_num) . '" ' . ($present_date == 'on' ? 'style="display: none;"' : '') . '>
-                            <label>' . esc_html__('End Date', 'wp-jobsearch') . '</label>
-                            <input id="date-end-' . $rand_num . '" name="jobsearch_field_education_end_date[]" type="text" value="' . $end_date . '">
-                        </li>
-                        <li class="jobsearch-column-4 cand-edu-prsntfield">
-                            <label>' . esc_html__('Present', 'wp-jobsearch') . '</label>
-                            <input class="cand-edu-prsntchkbtn" data-id="' . ($rand_num) . '" type="checkbox" ' . ($present_date == 'on' ? 'checked' : '') . '>
-                            <input name="jobsearch_field_education_date_prsnt[]" type="hidden" value="' . ($present_date) . '">
-                        </li>
-                        <li class="jobsearch-column-12">
+                        <li class="jobsearch-column-6">
                             <label>' . esc_html__('Institute *', 'wp-jobsearch') . '</label>
                             <input name="jobsearch_field_education_academy[]" type="text" value="' . $institute . '">
                         </li>
@@ -1750,7 +1562,7 @@ class JobSearch_User_Dashboard_Settings
             $html = '
             <li class="jobsearch-column-12 resume-list-item resume-list-exp">
                 <div class="jobsearch-resume-education-wrap">
-                    <small>' . ($start_date != '' ? date_i18n(get_option('date_format'), strtotime($start_date)) : '') . ' - ' . ($present_date == 'on' ? 'Present' : '') . ($end_date != '' && $present_date != 'on' ? date_i18n(get_option('date_format'), strtotime($end_date)) : '') . '</small>
+                    <small>' . ($start_date != '' ? date_i18n('d M, Y', strtotime($start_date)) : '') . '</small>
                     <h2><a>' . $title . '</a></h2>
                     <span>' . $company . '</span>
                 </div>
@@ -1796,7 +1608,7 @@ class JobSearch_User_Dashboard_Settings
                             <input name="jobsearch_field_experience_company[]" type="text" value="' . $company . '">
                         </li>
                         <li class="jobsearch-column-12">';
-            $title_html = '<label>' . esc_html__('Experience Description', 'wp-jobsearch') . '</label>';
+            $title_html = '<label>' . esc_html__('Description', 'wp-jobsearch') . '</label>';
             $html .= apply_filters('jobsearch_candash_resume_expdesc_label', $title_html);
             $html .= '
                             <textarea name="jobsearch_field_experience_description[]" ' . apply_filters('jobsearch_candash_resume_expdesc_atts', '') . '>' . $desc . '</textarea>
@@ -1866,66 +1678,6 @@ class JobSearch_User_Dashboard_Settings
         echo json_encode(array('msg' => esc_html__('Please fill the necessary fields.', 'wp-jobsearch'), 'error' => '1'));
         die;
     }
-    
-    public function add_resume_lang_to_list()
-    {
-        $rand_num = rand(1000000, 99999999);
-        $title = isset($_POST['title']) ? ($_POST['title']) : '';
-        $lang_level = isset($_POST['lang_level']) ? ($_POST['lang_level']) : '';
-        $lang_percentage = isset($_POST['lang_percentage']) ? ($_POST['lang_percentage']) : '';
-
-        if ($lang_percentage < 0 || $lang_percentage > 100) {
-            echo json_encode(array('msg' => esc_html__('The language percentage should under 1 to 100.', 'wp-jobsearch'), 'error' => '1'));
-            die;
-        }
-
-        if ($title != '') {
-            $html = '
-            <li class="jobsearch-column-12 resume-list-item resume-list-lang">
-                <div class="jobsearch-add-skills-wrap">
-                    <span>' . $lang_percentage . '</span>
-                    <h2><a>' . $title . '</a></h2>
-                </div>
-                <div class="jobsearch-resume-education-btn">
-                    <a href="javascript:void(0);" class="jobsearch-icon jobsearch-edit update-resume-item"></a>
-                    <a href="javascript:void(0);" class="jobsearch-icon jobsearch-rubbish ' . (apply_filters('jobsearch_candash_resume_langlist_itmdelclass', 'del-resume-item', $rand_num)) . '" data-id="' . $rand_num . '"></a>
-                </div>
-                <div class="jobsearch-add-popup jobsearch-update-resume-items-sec">
-                    <ul class="jobsearch-row jobsearch-employer-profile-form">
-                        <li class="jobsearch-column-6">
-                            <label>' . esc_html__('Label *', 'wp-jobsearch') . '</label>
-                            <input name="jobsearch_field_lang_title[]" type="text" value="' . $title . '">
-                        </li>
-                        <li class="jobsearch-column-6">
-                            <label>' . esc_html__('Level', 'wp-jobsearch') . '</label>
-                            <div class="jobsearch-profile-select">
-                                <select name="jobsearch_field_lang_level[]" class="selectize-select" placeholder="' . __('Speaking Level', 'wp-jobsearch') . '">
-                                    <option value="beginner" ' . ($lang_level == 'beginner' ? 'selected="selected"' : '') . '>' . esc_html__('Beginner', 'wp-jobsearch') . '</option>
-                                    <option value="intermediate" ' . ($lang_level == 'intermediate' ? 'selected="selected"' : '') . '>' . esc_html__('Intermediate', 'wp-jobsearch') . '</option>
-                                    <option value="proficient" ' . ($lang_level == 'proficient' ? 'selected="selected"' : '') . '>' . esc_html__('Proficient', 'wp-jobsearch') . '</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li class="jobsearch-column-12">
-                            <label>' . esc_html__('Percentage', 'wp-jobsearch') . '</label>
-                            <input name="jobsearch_field_lang_percentage[]" type="number" placeholder="' . esc_html__('Enter a number between 1 to 100', 'wp-jobsearch') . '" min="1" max="100" value="' . $lang_percentage . '">
-                        </li>
-                        <li class="jobsearch-column-12">
-                            <input class="update-resume-list-btn" type="submit" value="' . esc_html__('Update', 'wp-jobsearch') . '">
-                        </li>
-                    </ul>
-                </div>
-            </li>';
-
-            $ddf_arr = array('msg' => esc_html__('Added Successfully.', 'wp-jobsearch'), 'html' => $html);
-            $ddf_arr = apply_filters('jobsearch_dashcand_resme_langadd_ajaxarr', $ddf_arr);
-            echo json_encode($ddf_arr);
-            die;
-        }
-
-        echo json_encode(array('msg' => esc_html__('Please fill the necessary fields.', 'wp-jobsearch'), 'error' => '1'));
-        die;
-    }
 
     public function add_resume_award_to_list()
     {
@@ -1983,13 +1735,10 @@ class JobSearch_User_Dashboard_Settings
         $portfolio_vurl = isset($_POST['portfolio_vurl']) ? ($_POST['portfolio_vurl']) : '';
 
         if ($title != '' && $portfolio_img != '') {
-            $user_id = get_current_user_id();
-            $candidate_id = jobsearch_get_user_candidate_id($user_id);
-            $portfolio_img_src = jobsearch_get_cand_portimg_url($candidate_id, $portfolio_img);
             $html = '
             <li class="jobsearch-column-3 resume-list-item resume-list-port">
                 <figure>
-                    <a class="portfolio-img-holder"><span style="background-image: url(\'' . $portfolio_img_src . '\');"></span></a>
+                    <a class="portfolio-img-holder"><span style="background-image: url(\'' . $portfolio_img . '\');"></span></a>
                     <figcaption>
                         <span>' . $title . '</span>
                         <div class="jobsearch-company-links">
@@ -2008,7 +1757,7 @@ class JobSearch_User_Dashboard_Settings
                             <label>' . esc_html__('Image *', 'wp-jobsearch') . '</label>
                             <div class="upload-img-holder-sec">
                                 <span class="file-loader"></span>
-                                <img src="' . $portfolio_img_src . '" alt="">
+                                <img src="' . $portfolio_img . '" alt="">
                                 <input name="add_portfolio_img" type="file" style="display: none;">
                                 <input type="hidden" class="img-upload-save-field" name="jobsearch_field_portfolio_image[]" value="' . $portfolio_img . '">
                                 <a href="javascript:void(0)" class="upload-port-img-btn"><i class="jobsearch-icon jobsearch-add"></i> ' . esc_html__('Upload Photo', 'wp-jobsearch') . '</a>
@@ -2230,30 +1979,16 @@ class JobSearch_User_Dashboard_Settings
         die;
     }
 
-    public function dashboard_adding_portfolio_img_url() {
-        
-        $rand_num = rand(100000000, 999999999);
+    public function dashboard_adding_portfolio_img_url()
+    {
 
-        //$atach_id = jobsearch_insert_upload_attach('add_portfolio_img');
-        $atach_arr = jobsearch_upload_cand_port_img('add_portfolio_img');
+        $atach_id = jobsearch_insert_upload_attach('add_portfolio_img');
 
-        if (!empty($atach_arr)) {
-            
-            if (isset($_POST['pid'])) {
-                $candidate_id = $_POST['pid'];
-            } else {
-                $user_id = get_current_user_id();
-                $candidate_id = jobsearch_get_user_candidate_id($user_id);
-            }
-            $post_imgs_parr = get_post_meta($candidate_id, 'jobsearch_portfolio_imgs_arr', true);
-            $post_imgs_parr = empty($post_imgs_parr) ? array() : $post_imgs_parr;
-            
-            $post_imgs_parr[$rand_num] = $atach_arr;
-            update_post_meta($candidate_id, 'jobsearch_portfolio_imgs_arr', $post_imgs_parr);
-            
-            $img_url = jobsearch_get_cand_portimg_url($candidate_id, $rand_num);
+        if ($atach_id > 0) {
+            $thumb_image = wp_get_attachment_image_src($atach_id, 'full');
+            $img_url = isset($thumb_image[0]) && esc_url($thumb_image[0]) != '' ? $thumb_image[0] : '';
 
-            echo json_encode(array('img_id' => $rand_num, 'img_url' => $img_url));
+            echo json_encode(array('img_url' => $img_url));
         }
         wp_die();
     }
@@ -2360,7 +2095,7 @@ class JobSearch_User_Dashboard_Settings
 
         $cur_user_id = get_current_user_id();
 
-        $emp_det_contact_form = isset($jobsearch_plugin_options['emp_det_contact_form']) ? $jobsearch_plugin_options['emp_det_contact_form'] : '';
+        $cnt__emp_wout_log = isset($jobsearch_plugin_options['emp_cntct_wout_login']) ? $jobsearch_plugin_options['emp_cntct_wout_login'] : '';
 
         $uname = isset($_POST['u_name']) ? $_POST['u_name'] : '';
         $uemail = isset($_POST['u_email']) ? $_POST['u_email'] : '';
@@ -2375,7 +2110,7 @@ class JobSearch_User_Dashboard_Settings
         $error = 0;
         $msg = '';
 
-        if ($emp_det_contact_form != 'on') {
+        if ($cnt__emp_wout_log != 'on') {
             $user_is_candidate = jobsearch_user_is_candidate($cur_user_id);
             if (!$user_is_candidate) {
                 $error = 1;
@@ -2490,22 +2225,9 @@ class JobSearch_User_Dashboard_Settings
     
     public function doing_feat_job_with_alorder() {
         $response = array();
-        
-        $current_date = current_time('timestamp');
-        
         $order_id = isset($_POST['order_id']) ? $_POST['order_id'] : '';
         $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
         if ($job_id > 0 && $order_id > 0) {
-            $user_id = get_current_user_id();
-            $is_user_member = false;
-            if (jobsearch_user_isemp_member($user_id)) {
-                $is_user_member = true;
-                $employer_id = jobsearch_user_isemp_member($user_id);
-                $user_id = jobsearch_get_employer_user_id($employer_id);
-            } else {
-                $employer_id = jobsearch_get_user_employer_id($user_id);
-            }
-            
             $order_package = get_post_meta($order_id, 'jobsearch_order_package', true);
             $order_package_obj = get_post($order_package);
 
@@ -2515,67 +2237,21 @@ class JobSearch_User_Dashboard_Settings
                 
                 $is_pkg_remain = false;
                 if ($order_pkg_type == 'featured_jobs') {
-                    $is_pkg_remain = jobsearch_fjobs_pckg_is_subscribed($package_id, $user_id);
+                    $is_pkg_remain = jobsearch_fjobs_pckg_is_subscribed($package_id);
                 } else if ($order_pkg_type == 'emp_allin_one') {
-                    $is_pkg_remain = jobsearch_allinpckg_is_subscribed($package_id, $user_id);
-                } else if ($order_pkg_type == 'employer_profile') {
-                    $is_pkg_remain = jobsearch_emprofpckg_is_subscribed($package_id, $user_id);
+                    $is_pkg_remain = jobsearch_allinpckg_is_subscribed($package_id, 0, 'fjobs');
                 }
                 //
                 if ($is_pkg_remain) {
-                    //
-                    if ($order_pkg_type == 'emp_allin_one') {
-                        $order_add_fcred = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
-                    } else if ($order_pkg_type == 'employer_profile') {
-                        $order_add_fcred = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
-                    } else if ($order_pkg_type == 'featured_jobs') {
-                        $order_add_fcred = get_post_meta($order_id, 'jobsearch_order_featc_list', true);
-                    }
-                    if ($order_add_fcred != '') {
-                        $order_add_fcred = explode(',', $order_add_fcred);
-                        $order_add_fcred[] = $job_id;
-                        $order_add_fcred = implode(',', $order_add_fcred);
-                    } else {
-                        $order_add_fcred = $job_id;
-                    }
-                    
-                    $in_the_pkgs = false;
-                    if ($order_pkg_type == 'emp_allin_one') {
-                        update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_add_fcred);
-                        
-                        //
-                        $fcred_exp_time = get_post_meta($order_id, 'fall_cred_expiry_time', true);
-                        $fcred_exp_time_unit = get_post_meta($order_id, 'fall_cred_expiry_time_unit', true);
-                        $in_the_pkgs = true;
-                    } else if ($order_pkg_type == 'employer_profile') {
-                        update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_add_fcred);
-                        
-                        //
-                        $fcred_exp_time = get_post_meta($order_id, 'emprof_fcred_expiry_time', true);
-                        $fcred_exp_time_unit = get_post_meta($order_id, 'emprof_fcred_expiry_time_unit', true);
-                        $in_the_pkgs = true;
-                    } else if ($order_pkg_type == 'featured_jobs') {
-                        update_post_meta($order_id, 'jobsearch_order_featc_list', $order_add_fcred);
-                        
-                        //
-                        $fcred_exp_time = get_post_meta($order_id, 'fcred_expiry_time', true);
-                        $fcred_exp_time_unit = get_post_meta($order_id, 'fcred_expiry_time_unit', true);
-                        $in_the_pkgs = true;
-                    }
-                    //
-                    
-                    if ($in_the_pkgs) {
-                        $tofeat_expiry_time = strtotime("+" . $fcred_exp_time . " " . $fcred_exp_time_unit, $current_date);
-                        if ($tofeat_expiry_time > 0 && $tofeat_expiry_time > $current_date) {
-                            update_post_meta($job_id, 'jobsearch_field_job_featured', 'on');
-
-                            $order_expiry_datetime = date('d-m-Y H:i:s', $tofeat_expiry_time);
-                            update_post_meta($job_id, 'jobsearch_field_job_feature_till', $order_expiry_datetime);
-                            $response['error'] = '0';
-                            $response['msg'] = esc_html__('reloading...', 'wp-jobsearch');
-                            echo json_encode($response);
-                            wp_die();
-                        }
+                    update_post_meta($job_id, 'jobsearch_field_job_featured', 'on');
+                    $order_expiry_time = get_post_meta($order_id, 'package_expiry_timestamp', true);
+                    if ($order_expiry_time > 0) {
+                        $order_expiry_datetime = date('d-m-Y H:i:s', $order_expiry_time);
+                        update_post_meta($job_id, 'jobsearch_field_job_feature_till', $order_expiry_datetime);
+                        $response['error'] = '0';
+                        $response['msg'] = esc_html__('reloading...', 'wp-jobsearch');
+                        echo json_encode($response);
+                        wp_die();
                     }
                 }
             }
@@ -2584,23 +2260,6 @@ class JobSearch_User_Dashboard_Settings
         $response['msg'] = esc_html__('You cannot make this job feature.', 'wp-jobsearch');
         echo json_encode($response);
         wp_die();
-    }
-    
-    public function user_change_email_check_avail() {
-        $email = $_POST['email'];
-        
-        $user_obj = wp_get_current_user();
-        $user_email = $user_obj->user_email;
-        
-        if ($email != '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if (email_exists($email) && $email != $user_email) {
-                wp_send_json(array('error' => '1', 'msg' => esc_html__('This email address is already taken.', 'wp-jobsearch')));
-            } else {
-                wp_send_json(array('error' => '0', 'msg' => esc_html__('This email address is available.', 'wp-jobsearch')));
-            }
-        } else {
-            wp_send_json(array('error' => '1', 'msg' => esc_html__('Please enter a valid email address.', 'wp-jobsearch')));
-        }
     }
 
     public function doing_mjobs_feature_job()
@@ -2656,7 +2315,8 @@ class JobSearch_User_Dashboard_Settings
         wp_die();
     }
 
-    public function duplicate_job() {
+    public function duplicate_job()
+    {
         global $wpdb, $jobsearch_plugin_options;
 
         $duplicate_jobs_allow = isset($jobsearch_plugin_options['duplicate_the_job']) ? $jobsearch_plugin_options['duplicate_the_job'] : '';
@@ -2668,19 +2328,8 @@ class JobSearch_User_Dashboard_Settings
         $free_jobs_allow = isset($jobsearch_plugin_options['free-jobs-allow']) ? $jobsearch_plugin_options['free-jobs-allow'] : '';
 
         $original_id = isset($_POST['origjob_id']) ? $_POST['origjob_id'] : '';
-        
-        $is_user_can = $is_admin = false;
-        if (is_super_admin() || current_user_can('administrator')) {
-            $is_user_can = true;
-            $is_admin = true;
-        }
-        $is_admin = apply_filters('jobsearch_injobduplic_check_user_isadmin', $is_admin, $original_id);
-        
-        if (jobsearch_is_employer_job($original_id)) {
-            $is_user_can = true;
-        }
 
-        if ($original_id > 0 && get_post_type($original_id) == 'job' && $is_user_can) {
+        if ($original_id > 0 && get_post_type($original_id) == 'job' && jobsearch_is_employer_job($original_id)) {
             $duplicate = get_post($original_id, 'ARRAY_A');
 
             $duplicate['post_title'] = $duplicate['post_title'];
@@ -2730,18 +2379,8 @@ class JobSearch_User_Dashboard_Settings
             }
             update_post_meta($duplicate_id, 'jobsearch_field_job_publish_date', current_time('timestamp'));
             if ($free_jobs_allow != 'on') {
-                if ($is_admin) {
-                    $original_job_expiry = get_post_meta($original_id, 'jobsearch_field_job_expiry_date', true);
-                    $to_put_expiry = strtotime("+30 day", current_time('timestamp'));
-                    if ($original_job_expiry > $to_put_expiry) {
-                        update_post_meta($duplicate_id, 'jobsearch_field_job_expiry_date', $original_job_expiry);
-                    } else {
-                        update_post_meta($duplicate_id, 'jobsearch_field_job_expiry_date', $to_put_expiry);
-                    }
-                } else {
-                    update_post_meta($duplicate_id, 'jobsearch_field_job_expiry_date', '');
-                    update_post_meta($duplicate_id, 'jobsearch_field_job_status', 'pending');
-                }
+                update_post_meta($duplicate_id, 'jobsearch_field_job_expiry_date', '');
+                update_post_meta($duplicate_id, 'jobsearch_field_job_status', 'pending');
             } else {
                 $job_expiry_days = isset($jobsearch_plugin_options['free-job-post-expiry']) ? $jobsearch_plugin_options['free-job-post-expiry'] : '';
                 // job expiry time
@@ -2750,17 +2389,11 @@ class JobSearch_User_Dashboard_Settings
                     update_post_meta($duplicate_id, 'jobsearch_field_job_expiry_date', $job_expiry_date);
                 }
             }
-            //
-            update_post_meta($duplicate_id, 'jobsearch_field_job_featured', '');
-            update_post_meta($duplicate_id, 'jobsearch_field_job_feature_till', '');
-            //
-            update_post_meta($duplicate_id, 'jobsearch_job_views_count', 0);
-            update_post_meta($duplicate_id, 'attach_packages_array', '');
-            update_post_meta($duplicate_id, 'jobsearch_field_job_filled', '');
-            update_post_meta($duplicate_id, 'jobsearch_job_applicants_list', '');
-            update_post_meta($duplicate_id, 'jobsearch_viewed_candidates', '');
-            update_post_meta($duplicate_id, '_job_short_interview_list', '');
-            update_post_meta($duplicate_id, '_job_reject_interview_list', '');
+            update_post_meta($job_id, 'jobsearch_field_job_filled', '');
+            update_post_meta($job_id, 'jobsearch_job_applicants_list', '');
+            update_post_meta($job_id, 'jobsearch_viewed_candidates', '');
+            update_post_meta($job_id, '_job_short_interview_list', '');
+            update_post_meta($job_id, '_job_reject_interview_list', '');
             //
             echo json_encode(array('duplicate' => '1'));
             die;

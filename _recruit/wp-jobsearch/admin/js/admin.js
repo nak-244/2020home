@@ -89,7 +89,7 @@
                 }).open();
     });
 
-    $(document).on('click', '.onoff-button input[type="checkbox"]', function () {
+    $(document).on('click', '.jobsearch-element-field .elem-field input[type="checkbox"]', function () {
         if ($(this).is(':checked')) {
             $(this).parents('.onoff-button').find('input[type="hidden"]').attr('value', 'on');
         } else {
@@ -680,15 +680,19 @@ jQuery(function ($) {
                 url: ajax_url,
                 method: "POST",
                 data: {
+
                     action: 'jobsearch_email_log_clear_cronjob',
                 },
                 dataType: "json"
             });
             request.done(function (msg) {
-                //
-            });
-            request.complete(function () {
                 window.location.reload();
+                this_loader.html('');
+                _this.removeClass('ajax-disabled');
+            });
+            request.fail(function (jqXHR, textStatus) {
+                this_loader.html('');
+                _this.removeClass('ajax-disabled');
             });
         }
 
@@ -1277,12 +1281,7 @@ jQuery(document).on('click', '.user-bkdashthumb-remove', function () {
     request.done(function (response) {
         if (typeof response.success !== 'undefined' && response.success == '1') {
             _this.hide();
-            if (jQuery('#candbk-profileimg-holder').length > 0) {
-                jQuery('#candbk-profileimg-holder').find('img').attr('src', response.img_url);
-            }
-            if (jQuery('#com-img-holder').length > 0) {
-                jQuery('#com-img-holder').find('img').attr('src', response.img_url);
-            }
+            jQuery('#candbk-profileimg-holder').find('img').attr('src', response.img_url);
         }
         loader_con.attr('class', 'dashicons dashicons-no-alt');
     });
@@ -1349,72 +1348,4 @@ jQuery(document).on('change', '#candidate_profile_img', function () {
 
 jQuery(document).on('change', '#candidate_cover_img', function () {
     jobsearch_bkcand_image_upload_func(this, 'jobsearch_bkmeta_updating_cand_cover_img', 'cover');
-});
-
-jQuery(document).on('click', '.jobsearch-save-integrationsetins', function () {
-    var _this = jQuery(this);
-
-    var ajax_url = ajaxurl;
-    var this_loader = _this.parent('.fields-save-buttoncon').find('.savesettins-loder');
-    var settin_form = _this.parents('form')[0];
-    var form_data = new FormData(settin_form);
-    
-    this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-
-    if (!_this.hasClass('ajax-disabled')) {
-        _this.addClass('ajax-disabled');
-        var request = jQuery.ajax({
-            url: ajax_url,
-            method: "POST",
-            processData: false,
-            contentType: false,
-            data: form_data,
-            dataType: "json"
-        });
-        request.done(function (response) {
-            this_loader.html(response.msg);
-            window.location.reload();
-            return false;
-        });
-        request.fail(function (jqXHR, textStatus) {
-            this_loader.html('');
-            _this.removeClass('ajax-disabled');
-        });
-    }
-
-});
-
-jQuery(document).on('click', '.jobsearch-addjobimport-schedule, .jobsearch-updatejobimport-schedule', function () {
-    var _this = jQuery(this);
-
-    var ajax_url = ajaxurl;
-    var this_loader = _this.parent('.fields-save-buttoncon').find('.savesettins-loder');
-    var settin_form = _this.parents('form')[0];
-    var form_data = new FormData(settin_form);
-    
-    this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-
-    if (!_this.hasClass('ajax-disabled')) {
-        _this.addClass('ajax-disabled');
-        var request = jQuery.ajax({
-            url: ajax_url,
-            method: "POST",
-            processData: false,
-            contentType: false,
-            data: form_data,
-            dataType: "json"
-        });
-        request.done(function (response) {
-            this_loader.html(response.msg);
-            if (typeof response.redirect !== 'undefined') {
-                window.location.href = response.redirect;
-            }
-            return false;
-        });
-        request.fail(function (jqXHR, textStatus) {
-            this_loader.html('');
-            _this.removeClass('ajax-disabled');
-        });
-    }
-
 });

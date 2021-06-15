@@ -164,7 +164,7 @@ if ($employer_id > 0) {
                                                                             </li>
                                                                             <li>
                                                                                 <div class="input-field-submit">
-                                                                                    <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="<?php echo esc_html__('Send','wp-jobsearch') ?>"/>
+                                                                                    <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="Send"/>
                                                                                     <span class="loader-box loader-box-<?php echo esc_html($p_masg_rand); ?>"></span>
                                                                                 </div>
                                                                             </li>

@@ -29,14 +29,13 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
             $page_url = jobsearch_wpml_lang_page_permalink($page_id, 'page');
             
             $user_id = get_current_user_id();
-            $user_id = apply_filters('jobsearch_in_fromdash_all_emailjobaplics_user_id', $user_id);
             $employer_id = jobsearch_get_user_employer_id($user_id);
 
             if ($employer_id > 0) {
                 $args = array(
                     'post_type' => 'job',
                     'posts_per_page' => 5,
-                    'post_status' => array('publish', 'draft'),
+                    'post_status' => 'publish',
                     'fields' => 'ids',
                     'order' => 'DESC',
                     'orderby' => 'ID',
@@ -53,10 +52,6 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                         ),
                     ),
                 );
-                $get_job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
-                if ($get_job_id > 0 && get_post_type($get_job_id) == 'job') {
-                    $args['post__in'] = array($get_job_id);
-                }
                 $jobs_query = new WP_Query($args);
                 $totl_found_jobs = $jobs_query->found_posts;
                 $jobs_posts = $jobs_query->posts;
@@ -119,17 +114,6 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                 </div>
 
                 <?php
-            } else {
-                ?>
-                <div class="jobsearch-employer-dasboard jobsearch-typo-wrap">
-                    <div class="jobsearch-employer-box-section">
-                        <div class="jobsearch-profile-title">
-                            <h2><?php esc_html_e('Applied by Email Applicants', 'wp-jobsearch') ?></h2>
-                        </div>
-                        <p><?php esc_html_e('No Applicants found.', 'wp-jobsearch') ?></p>
-                    </div>
-                </div>
-                <?php
             }
         }
 
@@ -171,7 +155,6 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
             $jobsearch_uploding_resume = true;
             
             $job_applicants_list = get_post_meta($_job_id, 'jobsearch_job_emailapps_list', true);
-            arsort($job_applicants_list);
 
             if (empty($job_applicants_list)) {
                 $job_applicants_list = array();
@@ -193,6 +176,16 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                     $email = isset($apply_data['email']) ? $apply_data['email'] : '';
                     $user_email = isset($apply_data['user_email']) ? $apply_data['user_email'] : '';
                     
+                    $user_def_avatar_url = get_avatar_url($user_email, array('size' => 69));
+                    $_candidate_id = '';
+                    if (email_exists($user_email)) {
+                        $_user_obj = get_user_by('email', $user_email);
+                        $_user_id = isset($_user_obj->ID) ? $_user_obj->ID : '';
+                        $_candidate_id = jobsearch_get_user_candidate_id($_user_id);
+                        
+                    }
+                    $user_def_avatar_url = jobsearch_candidate_img_url_comn($_candidate_id);
+                    
                     //
                     $first_name = isset($apply_data['username']) ? $apply_data['username'] : '';
                     $last_name = isset($apply_data['user_surname']) ? $apply_data['user_surname'] : '';
@@ -204,35 +197,19 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                     $att_file_args = isset($apply_data['att_file_args']) ? $apply_data['att_file_args'] : '';
                     
                     $current_salary = jobsearch_get_price_format($current_salary);
-                    
-                    $user_def_avatar_url = get_avatar_url($user_email, array('size' => 69));
-                    $_candidate_id = '';
-                    $user_page_url = 'javascript:void(0);';
-                    $candidate_title = $first_name . ' ' . $last_name;
-
-                    if (email_exists($user_email)) {
-                        $_user_obj = get_user_by('email', $user_email);
-                        $_user_id = isset($_user_obj->ID) ? $_user_obj->ID : '';
-                        if (jobsearch_user_is_candidate($_user_id)) {
-                            $_candidate_id = jobsearch_get_user_candidate_id($_user_id);
-                            $user_page_url = get_permalink($_candidate_id);
-                            $candidate_title = get_the_title($_candidate_id);
-                        }
-                    }
-                    $user_def_avatar_url = jobsearch_candidate_img_url_comn($_candidate_id);
 
                     $_rand_id = rand(1000000, 9999999);
                     ?>
                     <li class="jobsearch-column-12">
                         <div class="jobsearch-applied-jobs-wrap">
 
-                            <a href="<?php echo ($user_page_url) ?>" class="jobsearch-applied-jobs-thumb">
+                            <a class="jobsearch-applied-jobs-thumb">
                                 <img src="<?php echo ($user_def_avatar_url) ?>" alt="">
                             </a>
                             <div class="jobsearch-applied-jobs-text">
                                 <div class="jobsearch-applied-jobs-left">
                                     <h2 class="jobsearch-pst-title">
-                                        <a href="<?php echo ($user_page_url) ?>"><?php echo ($candidate_title) ?></a>
+                                        <a><?php echo ($first_name . ' ' . $last_name) ?></a>
                                         <?php
                                         if ($user_phone != '') {
                                             ?>
@@ -282,7 +259,6 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                                             <li><a href="<?php echo ($file_url) ?>" class="preview-candidate-profile btn-downlod-cvbtn" oncontextmenu="javascript: return false;" onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};" download="<?php echo ($filename) ?>"><?php esc_html_e('Download CV', 'wp-jobsearch') ?></a></li>
                                             <?php
                                         }
-                                        echo apply_filters('indash_email_apps_acts_list_after_download_link', '', $app_id, $job_id);
                                         ?>
                                     </ul>
                                 </div>
@@ -360,7 +336,7 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
             $args = array(
                 'posts_per_page' => "-1",
                 'post_type' => $posttype,
-                'post_status' => array('publish', 'draft'),
+                'post_status' => 'publish',
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',
@@ -403,7 +379,7 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
                 'post_type' => 'job',
                 'posts_per_page' => 5,
                 'paged' => $page_num,
-                'post_status' => array('publish', 'draft'),
+                'post_status' => 'publish',
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',
@@ -468,7 +444,7 @@ if (!class_exists('jobsearch_empemail_applicants_handle')) {
             $args = array(
                 'post_type' => 'job',
                 'posts_per_page' => -1,
-                'post_status' => array('publish', 'draft'),
+                'post_status' => 'publish',
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',

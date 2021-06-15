@@ -3232,12 +3232,6 @@ body:not(.search-results) .twentysixteen .entry-summary {
 @media (max-width: 767px) {
     .woocommerce-checkout .woocommerce,.woocommerce-checkout .col2-set,.woocommerce-checkout .woocommerce-checkout-review-order,.woocommerce form .form-row { width: 100%; }
     .woocommerce-checkout .col2-set { padding-right: 0px; }
-    form.woocommerce-cart-form { float: left; width: 100%; overflow: scroll; }
-    table.shop_table.shop_table_responsive.cart.woocommerce-cart-form__contents { width: 1120px; }
 }
 
-@media (max-width: 480px) {
-    
-}
-table.woocommerce-checkout-review-order-table thead tr th {
-    color: #333; }
+@media (max-width: 480px) {}

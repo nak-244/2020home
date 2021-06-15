@@ -240,7 +240,7 @@ if (!class_exists('jobsearch_job_applied_to_candidate_template')) {
                     'email_type' => $email_type,
                     'class_obj' => $this, // temprary comment
                 );
-                if (isset($att_file_id) && is_numeric($att_file_id) && $att_file_id > 0 && get_post_type($att_file_id) == 'attachment') {
+                if (isset($att_file_id) && $att_file_id > 0 && get_post_type($att_file_id) == 'attachment') {
                     $att_file_path = get_attached_file($att_file_id);
                     //var_dump($att_file_path);
                     if ($att_file_path != '') {
@@ -357,9 +357,9 @@ if (!class_exists('jobsearch_job_applied_to_candidate_template')) {
             $post_thumbnail_id = get_post_thumbnail_id($job_posted_by);
             $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
             $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : '';
-            $image_html = '-';
+            $image_html = '';
             if ($post_thumbnail_src != '') {
-                $image_html = '<img src="' . esc_url($post_thumbnail_src) . '" alt="">';
+                $image_html .= '<img src="' . esc_url($post_thumbnail_src) . '" alt="">';
             }
             return $image_html;
         }

@@ -6,11 +6,7 @@
  *
  * @package Careerfy
  */
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 global $careerfy_framework_options;
 $page_id = get_the_ID();
 $maintenance_mode_text_small_title = isset($careerfy_framework_options['maintenance-mode-text-small-title']) ? $careerfy_framework_options['maintenance-mode-text-small-title'] : '';
@@ -54,7 +50,8 @@ wp_enqueue_script('careerfy-countdown');
         <div class="careerfy-comingsoon-wrap">
             <div class="careerfy-comingsoon-text">
                 <?php
-                if ($maintenance_mode_text_small_title != '' || $maintenance_mode_text_large_title != '') {?>
+                if ($maintenance_mode_text_small_title != '' || $maintenance_mode_text_large_title != '') {
+                    ?>
                     <h2>
                         <?php
                         if ($maintenance_mode_text_small_title != '') { ?><span><?php echo esc_html($maintenance_mode_text_small_title); ?></span> <?php }

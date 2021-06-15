@@ -287,8 +287,6 @@ if (!class_exists('jobsearch_candidate_message_employer_template')) {
                     $user_name = $this->user->display_name;
                     $user_obj = $user;
                     $user_name = apply_filters('jobsearch_user_display_name', $user_name, $user_obj);
-                } else {
-                    $user_name = $user_puted_name;
                 }
             }
             return $user_name;

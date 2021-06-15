@@ -16,73 +16,22 @@ class Jobsearch_Reviews {
 // hook things up
     public function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'front_enqueue_scripts'));
-        //
-        add_action('jobsearch_dashbord_instyles_list_aftr', array($this, 'enqueue_dash_styles'));
         add_filter('redux/options/jobsearch_plugin_options/sections', array($this, 'jobsearch_location_plugin_option_fields'));
         add_action('init', array($this, 'titles_translation'));
         $this->load_files();
     }
-    
-    public function enqueue_dash_styles() {
-
-        global $jobsearch_plugin_options;
-        $cand_review_switch = isset($jobsearch_plugin_options['candidate_reviews_switch']) ? $jobsearch_plugin_options['candidate_reviews_switch'] : '';
-        $emp_review_switch = isset($jobsearch_plugin_options['reviews_switch']) ? $jobsearch_plugin_options['reviews_switch'] : '';
-        if ($cand_review_switch == 'on' || $emp_review_switch == 'on') {
-            wp_enqueue_style('fontawesome-stars', jobsearch_plugin_get_url('modules/reviews/css/fontawesome-stars.css'), array());
-            wp_enqueue_style('jobsearch-reviews', jobsearch_plugin_get_url('modules/reviews/css/reviews-style.css'), array());
-        }
-    }
 
     public function front_enqueue_scripts() {
-        global $sitepress, $jobsearch_plugin_options;
-        
-        $cand_review_switch = isset($jobsearch_plugin_options['candidate_reviews_switch']) ? $jobsearch_plugin_options['candidate_reviews_switch'] : '';
-        $emp_review_switch = isset($jobsearch_plugin_options['reviews_switch']) ? $jobsearch_plugin_options['reviews_switch'] : '';
+        global $sitepress;
 
         $admin_ajax_url = admin_url('admin-ajax.php');
         if ( function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') ) {
             $lang_code = $sitepress->get_current_language();
             $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
         }
-        $is_page = is_page();
-        $page_content = '';
-        if ($is_page) {
-            $page_id = get_the_ID();
-            $page_post = get_post($page_id);
-            $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
-        }
-        $is_jobs_elemnt_page = $is_cands_elemnt_page = $is_emps_elemnt_page = false;
-        if (strpos($page_content, 'job_short_counter')) {
-            $is_jobs_elemnt_page = true;
-        }
-        if (strpos($page_content, 'candidate_short_counter')) {
-            $is_cands_elemnt_page = true;
-        }
-        if (strpos($page_content, 'employer_short_counter')) {
-            $is_emps_elemnt_page = true;
-        }
-        
-        $enqueue_css = false;
-        if ($cand_review_switch == 'on' || $emp_review_switch == 'on') {
-            if ($is_page && 
-                    (has_shortcode($page_content, 'jobsearch_candidate_shortcode') 
-                    || has_shortcode($page_content, 'jobsearch_employer_shortcode') 
-                    || has_shortcode($page_content, 'jobsearch_ad'))
-                    || $is_cands_elemnt_page
-                    || $is_emps_elemnt_page
-                ) {
-                $enqueue_css = true;
-            }
-            if (is_singular(array('employer', 'candidate'))) {
-                $enqueue_css = true;
-            }
-        }
 
-        if ($enqueue_css) {
-            wp_enqueue_style('fontawesome-stars', jobsearch_plugin_get_url('modules/reviews/css/fontawesome-stars.css'), array());
-            wp_enqueue_style('jobsearch-reviews', jobsearch_plugin_get_url('modules/reviews/css/reviews-style.css'), array());
-        }
+        wp_enqueue_style('fontawesome-stars', jobsearch_plugin_get_url('modules/reviews/css/fontawesome-stars.css'), array());
+        wp_enqueue_style('jobsearch-reviews', jobsearch_plugin_get_url('modules/reviews/css/reviews-style.css'), array());
         
         //
         wp_register_script('jobsearch-add-review', jobsearch_plugin_get_url('modules/reviews/js/reviews-functions.js'), array(), '', true);

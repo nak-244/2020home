@@ -12,7 +12,7 @@ if (!class_exists('post_type_faq')) {
         // The Constructor
         public function __construct() {
             // 
-            add_action('init', array($this, 'faqsearch_faq_register'), 1); // post type register
+            add_action('init', array($this, 'faqsearch_faq_register'), 1); // post type register     
             add_action('init', array($this, 'careerfy_faq_category'), 3, 0);
         }
 

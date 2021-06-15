@@ -11,9 +11,7 @@ $(document).ready(function () {
 
         var exeducation_title = $('#education_title');
         var exeducation_academy = $('#education_academy');
-        var exeducation_start_date = $('#education_start_date');
-        var exeducation_end_date = $('#education_end_date');
-        var exeducation_prsnt_date = $('#education_prsnt_date');
+        var exeducation_year = $('#education_year');
         var exeducation_description = $('#education_description');
         if (exeducation_title.val() != '') {
             if (!_this.hasClass('ajax-disabled')) {
@@ -24,9 +22,7 @@ $(document).ready(function () {
                     data: {
                         education_title: exeducation_title.val(),
                         education_academy: exeducation_academy.val(),
-                        education_start_date: exeducation_start_date.val(),
-                        education_end_date: exeducation_end_date.val(),
-                        education_prsnt_date: exeducation_prsnt_date.val(),
+                        exeducation_year: exeducation_year.val(),
                         education_description: exeducation_description.val(),
                         action: 'jobsearch_add_project_educationfield',
                     },
@@ -36,9 +32,7 @@ $(document).ready(function () {
                     $("#jobsearch-educationfields-con").append(msg.html);
                     exeducation_title.val('');
                     exeducation_academy.val('');
-                    exeducation_start_date.val('');
-                    exeducation_end_date.val('');
-                    exeducation_prsnt_date.val('');
+                    exeducation_year.val('');
                     exeducation_description.val('');
                     this_loader.html('');
                     _this.removeClass('ajax-disabled');
@@ -108,65 +102,10 @@ $(document).ready(function () {
             return false;
         }
     });
-    
-    jQuery(document).on('click', '.jobsearch-upload-upportimg', function () {
-        var this_parent = jQuery(this).parents('.jobsearch-eximg-portcon');
-        this_parent.find('input[type=file]').trigger('click');
-    });
-    
-    function jobsearch_bkadmn_read_portfolio_file_url(input) {
-
-        if (input.files && input.files[0]) {
-
-            var _this = jQuery(input);
-            var this_parent = _this.parents('.jobsearch-eximg-portcon');
-            var loader_con = this_parent.find('.file-loader');
-            
-            var pid = this_parent.attr('data-id');
-
-            var img_file = input.files[0];
-            var img_size = img_file.size;
-
-            img_size = parseFloat(img_size / 1024).toFixed(2);
-
-            loader_con.html('<i class="fa fa-refresh fa-spin"></i>');
-            loader_con.show();
-            var formData = new FormData();
-            formData.append('pid', pid);
-            formData.append('add_portfolio_img', img_file);
-            formData.append('action', 'jobsearch_dashboard_adding_portfolio_img_url');
-
-            var request = jQuery.ajax({
-                url: ajaxurl,
-                method: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json"
-            });
-            request.done(function (response) {
-                if (typeof response.img_url !== 'undefined') {
-                    this_parent.find('.jobsearch-browse-med-image').removeAttr('style');
-                    this_parent.find('img').attr('src', response.img_url);
-                    this_parent.find('input[type=hidden]').val(response.img_id);
-                }
-                loader_con.html('');
-            });
-
-            request.fail(function (jqXHR, textStatus) {
-                loader_con.html('');
-            });
-        }
-    }
-
-    jQuery(document).on('change', 'input[name^="add_portfolio_img"]', function () {
-        jobsearch_bkadmn_read_portfolio_file_url(this);
-    });
 
     $(document).on('click', '#jobsearch-add-portfolio-exfield', function () {
         var _this = $(this);
         var _this_rand = _this.data('id');
-        var _this_pid = _this.data('pid');
         var loader_img = jobsearch_plugin_vars.plugin_url + 'images/ajax-loader.gif';
 
         var ajax_url = jobsearch_plugin_vars.ajax_url;
@@ -183,7 +122,6 @@ $(document).ready(function () {
                     url: ajax_url,
                     method: "POST",
                     data: {
-                        pid: _this_pid,
                         portfolio_title: exportfolio_title.val(),
                         portfolio_image: exportfolio_image.val(),
                         portfolio_url: exportfolio_url.val(),
@@ -283,50 +221,6 @@ $(document).ready(function () {
                     $("#jobsearch-skillfields-con").append(msg.html);
                     exskill_title.val('');
                     exskill_percentage.val('');
-                    this_loader.html('');
-                    _this.removeClass('ajax-disabled');
-                });
-                request.fail(function (jqXHR, textStatus) {
-                    this_loader.html('');
-                    _this.removeClass('ajax-disabled');
-                });
-                _this.addClass('ajax-disabled');
-            }
-        } else {
-            alert(jobsearch_plugin_vars.require_fields);
-            return false;
-        }
-    });
-
-    $(document).on('click', '#jobsearch-add-lang-exfield', function () {
-        var _this = $(this);
-        var _this_rand = _this.data('id');
-        var loader_img = jobsearch_plugin_vars.plugin_url + 'images/ajax-loader.gif';
-
-        var ajax_url = jobsearch_plugin_vars.ajax_url;
-        var this_loader = $(this).next('.ajax-loader');
-
-        var exlang_title = $('#lang_title');
-        var exlang_level = $('#lang_level');
-        var exlang_percentage = $('#lang_percentage');
-        if (exlang_title.val() != '') {
-            if (!_this.hasClass('ajax-disabled')) {
-                this_loader.html('<img alt="" src="' + loader_img + '">');
-                var request = $.ajax({
-                    url: ajax_url,
-                    method: "POST",
-                    data: {
-                        lang_title: exlang_title.val(),
-                        exlang_level: exlang_level.val(),
-                        exlang_percentage: exlang_percentage.val(),
-                        action: 'jobsearch_add_project_langfield',
-                    },
-                    dataType: "json"
-                });
-                request.done(function (msg) {
-                    $("#jobsearch-langfields-con").append(msg.html);
-                    exlang_title.val('');
-                    exlang_percentage.val('');
                     this_loader.html('');
                     _this.removeClass('ajax-disabled');
                 });

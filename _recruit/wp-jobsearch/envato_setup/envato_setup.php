@@ -520,7 +520,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                     <?php wp_print_scripts('envato-setup'); ?>
                     <?php do_action('admin_print_styles'); ?>
                     <?php do_action('admin_print_scripts'); ?>
-                    <?php //do_action('admin_head'); ?>
+                    <?php do_action('admin_head'); ?>
                 </head>
                 <body class="envato-setup wp-core-ui">
                     <h1 id="wc-logo">

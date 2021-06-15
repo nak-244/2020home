@@ -159,12 +159,9 @@ if (class_exists('JobSearch_plugin')) {
                                 if (function_exists('jobsearch_member_promote_profile_iconlab')) {
                                     echo jobsearch_member_promote_profile_iconlab($candidate_id);
                                 }
-                                if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                    echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_listv1');
-                                }
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
                                     ?>
-                                    <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><img src="<?php echo ($post_thumbnail_src) ?>" alt=""></a>
+                                    <img src="<?php echo ($post_thumbnail_src) ?>" alt="">
                                     <?php 
                                 }
                             }

@@ -162,7 +162,7 @@ function careerfy_services_item_shortcode($atts)
             <i class="' . $service_icon . '"' . $icon_color . '></i>
             <h2' . $text_color_h2 . '>' . ($service_link != '' ? '<a href="' . $service_link . '"' . $text_color_a . '>' : '') . $service_title . ($service_link != '' ? '</a>' : '') . '</h2>
             <p' . $text_color . '>' . $service_desc . '</p>
-            ' . ($view == 'view-4' && $service_shortcode_counter == 2 ? '<a ' . ($service_link != '' ? 'href="' . $service_link . '"' : '') . ' class="careerfy-services-stylefour-btn"><small class="careerfy-icon careerfy-right-arrow"></small></a>' : '') . '
+            ' . ($view == 'view-4' && $service_shortcode_counter == 2 ? '<a ' . ($service_link != '' ? 'href="' . $service_link . '"' : '') . ' class="careerfy-services-stylefour-btn"><small class="careerfy-right-arrow"></small></a>' : '') . '
             ' . ($view == 'view-4' ? '</div>' : '') . ' 
         </li>';
     } else if ($view == 'view-5') {
@@ -173,6 +173,7 @@ function careerfy_services_item_shortcode($atts)
             <p' . $text_color . '>' . $service_desc . '</p>
         </li>';
     } else if ($view == 'view-6') {
+
         $html = '
         <style>
          .careerfy-action-style11  .careerfy-services-style11-btn-' . $rand_num . ' {

@@ -329,10 +329,10 @@
 .jobsearch-social-icons li a.careerfy-dribbble-logo      { color: #f95c94; }
 .careerfy-sticky-header .careerfy-employer-detail2-tablink {
 	position: fixed;
-	top: 95px;
+	top: 93px;
 	width: 100%;
 	background-color: #fff;
-	padding: 20px 20px;
+	padding: 10px 0px;
 	z-index: 99;
 }
 .careerfy-employer-detail2-toparea .promotepof-badgeemp {
@@ -358,12 +358,4 @@
 .careerfy-company-review .reviw-mainitem-con:last-child .careerfy-company-review-text {
 	border: none;
 	padding-bottom: 0px;
-}
-.body-nowhite-bg .careerfy-employer-detail2-toparea {
-	background-color: #ffffff;
-	padding: 15px;
-}
-.body-nowhite-bg .careerfy-employer-detail2-tablink {
-	background-color: #ffffff;
-	padding: 15px 15px 0px 15px;
 }

@@ -104,16 +104,21 @@ if (class_exists('JobSearch_plugin')) {
             1;
     }
     // end ads script
+
     $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
+
     $columns_class = 'col-md-12';
+
     $http_request = jobsearch_server_protocol();
     ?>
     <div class="careerfy-candidate careerfy-candidate-style8"
          id="jobsearch-candidate-<?php echo absint($candidate_short_counter) ?>">
+
         <ul class="row">
             <?php
             if ($candidate_loop_obj->have_posts()) {
                 $flag_number = 1;
+
                 while ($candidate_loop_obj->have_posts()) : $candidate_loop_obj->the_post();
                     global $post, $jobsearch_member_profile;
                     $candidate_id = $post;
@@ -165,11 +170,14 @@ if (class_exists('JobSearch_plugin')) {
                             $final_color = 'style="background-color: ' . $comp_skills_clr . ';"';
                         }
                     }
+
                     $jobsearch_job_featured = get_post_meta($candidate_id, 'cuscand_feature_fbckend', true);
+
                     $candidate_post = get_post($candidate_id);
                     $candidate_desc = $candidate_post->post_content;
                     ?>
                     <li class="<?php echo esc_html($columns_class); ?>">
+
                         <div class="careerfy-candidate-style8-wrapper">
                             <?php
                             if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
@@ -182,7 +190,7 @@ if (class_exists('JobSearch_plugin')) {
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
                                     if ($post_thumbnail_src != '') { ?>
                                         <span class="careerfy-candidate-style8-thumb">
-                                            <img src="<?php echo ($post_thumbnail_src) ?>" alt="">
+                                            <img src="<?php echo($post_thumbnail_src) ?>" alt="">
                                         </span>
                                         <?php
                                     }
@@ -197,7 +205,7 @@ if (class_exists('JobSearch_plugin')) {
                                         <?php
                                         if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title')) {
                                             if ($candidate_company_str != '') { ?>
-                                                <small><?php echo jobsearch_esc_html($candidate_company_str) ?></small>
+                                                <small><?php echo($candidate_company_str) ?></small>
                                                 <?php
                                             }
                                         } ?>
@@ -236,34 +244,34 @@ if (class_exists('JobSearch_plugin')) {
                                         <?php if (!$cand_profile_restrict::cand_field_is_locked('address_defields')) {
                                             if ($get_candidate_location != '' && $all_location_allow == 'on') { ?>
                                                 <span class="careerfy-candidate-style8-loc">
-                                                <i class="fas fa-map-marker"></i><?php echo jobsearch_esc_html($get_candidate_location) ?>
+                                                <i class="fa fa-map-marker"></i><?php echo($get_candidate_location) ?>
                                             </span>
                                             <?php }
-
                                         } ?>
 
                                     </div>
                                     <div class="careerfy-candidate-style8-box2">
-                                        <p><?php echo wp_trim_words($candidate_desc, 20, '...') ?></p>
+                                        <p><?php echo limit_text($candidate_desc, 20) ?></p>
 
                                     </div>
                                 </div>
                                 <div class="careerfy-candidate-style8-box3">
                                     <small class="careerfy-candidate-style8-options"><i
-                                                class="careerfy-icon careerfy-calendar"></i> <?php echo get_the_date(get_option('date_format'), $candidate_id); ?>
+                                                class="careerfy-icon careerfy-calendar1"></i> <?php echo get_the_date(get_option('date_format'), $candidate_id); ?>
                                     </small>
 
                                     <small class="careerfy-candidate-style8-options">
                                         <?php if (!empty(jobsearch_candidate_current_salary($candidate_id))) { ?>
-                                            <i class="careerfy-icon careerfy-money-line"></i> <?php echo jobsearch_candidate_current_salary($candidate_id); ?>
+                                            <i class="careerfy-icon careerfy-money"></i> <?php echo jobsearch_candidate_current_salary($candidate_id); ?>
                                         <?php } ?>
                                     </small>
 
-                                    <?php do_action('jobsearch_candidate_listing_custom_fields', $atts, $candidate_id, $candidate_arg['custom_fields']); ?>
+                                    <?php
 
-                                    <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>" class="careerfy-candidate-style8-detail"><?php echo esc_html__('More Detail', 'careerfy') ?>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
+                                    do_action('jobsearch_candidate_listing_custom_fields', $atts, $candidate_id, $candidate_arg['custom_fields']); ?>
+
+                                    <a class="careerfy-candidate-style8-detail"><?php echo esc_html__('More Detail', 'wp-jobsearch') ?>
+                                        <i class="fa fa-angle-right"></i></a>
 
                                 </div>
                             </div>

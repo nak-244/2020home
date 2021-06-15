@@ -3,14 +3,12 @@
 /**
  * Class Jobsearch Social Login
  */
-class JobsearchSocialLogin
-{
+class JobsearchSocialLogin {
 
     /**
      * JobsearchSocialLogin constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
 
         add_action('init', array($this, 'social_login_includes'), 1);
         add_action('social_login_html', array($this, 'social_login_html_callback'), 10, 1);
@@ -19,8 +17,7 @@ class JobsearchSocialLogin
         add_filter('jobsearch_api_settings_section', array($this, 'social_login_api_settings'), 10, 1);
     }
 
-    public function social_login_includes()
-    {
+    public function social_login_includes() {
         // facebook login module
         include plugin_dir_path(dirname(__FILE__)) . 'social-login/facebook/facebook.php';
         // twitter login module
@@ -33,8 +30,7 @@ class JobsearchSocialLogin
         include plugin_dir_path(dirname(__FILE__)) . 'social-login/xing/xing.php';
     }
 
-    public function social_login_general_settings($section_settings = array())
-    {
+    public function social_login_general_settings($section_settings = array()) {
 
         if (isset($section_settings['fields'])) {
 
@@ -114,9 +110,9 @@ class JobsearchSocialLogin
         return $section_settings;
     }
 
-    public function social_login_api_settings($section_settings = array())
-    {
+    public function social_login_api_settings($section_settings = array()) {
         if (isset($section_settings['fields'])) {
+
             $section_settings['fields'][] = array(
                 'id' => 'jobsearch-google-client-id',
                 'type' => 'text',
@@ -210,14 +206,11 @@ class JobsearchSocialLogin
                 'desc' => '',
                 'default' => ''
             );
-
-
         }
         return $section_settings;
     }
 
-    public function social_login_html_callback($args = array())
-    {
+    public function social_login_html_callback($args = array()) {
         ob_start();
         $html = '';
         if (!is_user_logged_in()) {
@@ -253,7 +246,7 @@ class JobsearchSocialLogin
                         if ($xing_login == 'on') {
                             echo do_shortcode('[jobsearch_xing_login]');
                         }
-
+                        
                         apply_filters('jobsearch_social_logins_extra_sl_btns', '', 'popup');
                         ?>
                     </ul>

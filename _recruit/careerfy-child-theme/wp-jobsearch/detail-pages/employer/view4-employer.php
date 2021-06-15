@@ -68,9 +68,6 @@ if (function_exists('jobsearch_post_city_contry_txtstr')) {
     $employer_address = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city,$emp_det_full_address_switch);
 }
 
-$locations_lat = get_post_meta($employer_id, 'jobsearch_field_location_lat', true);
-$locations_lng = get_post_meta($employer_id, 'jobsearch_field_location_lng', true);
-
 $employer_phone = get_post_meta($employer_id, 'jobsearch_field_user_phone', true);
 
 $user_id = jobsearch_get_employer_user_id($employer_id);
@@ -153,23 +150,10 @@ wp_enqueue_style('careerfy-emp-detail-four');
                         ?>
                         <ul class="careerfy-jobdetail-options">
                             <?php
-                            if ((!empty($employer_address) || ($locations_lat != '' && $locations_lng != '')) && $all_location_allow == 'on') {
-                                $view_map_loc = urlencode($employer_address);
-                                if ($locations_lat != '' && $locations_lng != '') {
-                                    $view_map_loc = urlencode($locations_lat . ',' . $locations_lng);
-                                }
-                                $google_mapurl = 'https://www.google.com/maps/search/' . $view_map_loc;
+                            if (!empty($employer_address) && $all_location_allow == 'on') {
+                                $google_mapurl = 'https://www.google.com/maps/search/' . str_replace(' ', '+', $employer_address);
                                 ?>
-                                <li>
-                                    <?php
-                                    if (!empty($employer_address)) {
-                                        ?>
-                                        <i class="fa fa-map-marker"></i> <?php echo($employer_address) ?>
-                                        <?php
-                                    }
-                                    ?>
-                                    <a href="<?php echo ($google_mapurl) ?>" target="_blank" class="careerfy-jobdetail-view"><?php esc_html_e('View on Map', 'wp-jobsearch') ?></a>
-                                </li>
+                                <li><i class="fa fa-map-marker"></i> <?php echo ($employer_address) ?> <a href="<?php echo ($google_mapurl) ?>" target="_blank" class="careerfy-jobdetail-view"><?php esc_html_e('View on Map', 'careerfy') ?></a></li>
                                 <?php
                             }
                             if (isset($user_obj->user_url) && $user_obj->user_url != '' && $emp_web_switch == 'on') {
@@ -627,7 +611,7 @@ wp_enqueue_style('careerfy-emp-detail-four');
                     jobsearch_detail_common_ad_code($ad_args);
 
                     $emp_det_contact_form = isset($jobsearch_plugin_options['emp_det_contact_form']) ? $jobsearch_plugin_options['emp_det_contact_form'] : '';
-                    if ($emp_det_contact_form != 'off') {
+                    if ($emp_det_contact_form == 'on') {
                         ob_start();
                         ?>
                         <div class="widget widget_contact_form">
@@ -685,9 +669,11 @@ wp_enqueue_style('careerfy-emp-detail-four');
                                         <?php
                                         jobsearch_terms_and_con_link_txt();
                                         ?>
-                                        <input type="submit" class="jobsearch-employer-ct-form" data-id="<?php echo absint($cnt_counter) ?>" value="<?php echo esc_html__('Send now', 'careerfy') ?>">
+                                        <input type="submit" class="jobsearch-employer-ct-form" data-id="<?php echo absint($cnt_counter) ?>" value="<?php esc_html_e('Send now', 'careerfy') ?>">
                                         <?php
-                                        if (!is_user_logged_in() && $emp_det_contact_form != 'on') { ?>
+                                        $cnt__emp_wout_log = isset($jobsearch_plugin_options['emp_cntct_wout_login']) ? $jobsearch_plugin_options['emp_cntct_wout_login'] : '';
+                                        if (!is_user_logged_in() && $cnt__emp_wout_log != 'on') {
+                                            ?>
                                             <a class="jobsearch-open-signin-tab" style="display: none;"><?php esc_html_e('login', 'careerfy') ?></a>
                                             <?php
                                         }

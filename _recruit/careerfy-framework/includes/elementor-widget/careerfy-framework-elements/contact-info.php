@@ -112,13 +112,6 @@ class ContactInfo extends Widget_Base
                 'type' => Controls_Manager::TEXT,
             ]
         );
-        $this->add_control(
-            'con_form_title',
-            [
-                'label' => __('Contact form title', 'careerfy-frame'),
-                'type' => Controls_Manager::TEXT,
-            ]
-        );
 
         if (class_exists('WPCF7_ContactForm')) {
             $this->add_control(
@@ -130,6 +123,7 @@ class ContactInfo extends Widget_Base
                 ]
             );
         }
+
 
         $this->add_control(
             'con_desc',
@@ -174,7 +168,7 @@ class ContactInfo extends Widget_Base
         $repeater->add_control(
             'soc_icon', [
                 'label' => __('Social Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICONS,
+                'type' => Controls_Manager::ICON,
                 'label_block' => true,
             ]
         );
@@ -191,19 +185,20 @@ class ContactInfo extends Widget_Base
         $this->add_control(
             'social_links',
             [
-                'label' => __('Add Social Links', 'careerfy-frame'),
+                'label' => __('Repeater List', 'careerfy-frame'),
                 'type' => Controls_Manager::REPEATER,
                 'fields' => $repeater->get_controls(),
-                'title_field' => '{{{ soc_icon["value"] }}}',
+                'title_field' => '{{{ soc_icon }}}',
             ]
         );
+
         $this->end_controls_section();
+
     }
 
     protected function render()
     {
         $atts = $this->get_settings_for_display();
-
         extract(shortcode_atts(array(
             'con_info_title' => '',
             'con_form_title' => '',
@@ -219,48 +214,59 @@ class ContactInfo extends Widget_Base
         ob_start();
         ?>
         <div class="careerfy-contact-info-sec">
-            <?php if ($con_info_title != '') { ?>
+            <?php
+            if ($con_info_title != '') {
+                ?>
                 <h2><?php echo($con_info_title) ?></h2>
                 <?php
             }
-            if ($con_desc != '') { ?>
+            if ($con_desc != '') {
+                ?>
                 <p><?php echo($con_desc) ?></p>
-            <?php } ?>
+                <?php
+            }
+            ?>
             <ul class="careerfy-contact-info-list">
                 <?php
                 if ($con_address != '') {
                     ?>
-                    <li><i class="careerfy-icon careerfy-map-marker"></i> <?php echo($con_address) ?></li>
+                    <li><i class="careerfy-icon careerfy-placeholder"></i> <?php echo($con_address) ?></li>
                     <?php
                 }
-                if ($con_email != '') { ?>
+                if ($con_email != '') {
+                    ?>
                     <li><i class="careerfy-icon careerfy-envelope"></i> <a
                                 href="mailto:<?php echo($con_email) ?>"><?php printf(esc_html__('Email: %s', 'careerfy-frame'), $con_email) ?></a>
                     </li>
                     <?php
                 }
-                if ($con_phone != '') { ?>
+                if ($con_phone != '') {
+                    ?>
                     <li>
                         <i class="careerfy-icon careerfy-technology"></i> <?php printf(esc_html__('Call: %s', 'careerfy-frame'), $con_phone) ?>
                     </li>
                     <?php
                 }
-                if ($con_fax != '') { ?>
+                if ($con_fax != '') {
+                    ?>
                     <li>
                         <i class="careerfy-icon careerfy-fax"></i> <?php printf(esc_html__('Fax: %s', 'careerfy-frame'), $con_fax) ?>
                     </li>
-                <?php } ?>
+                    <?php
+                }
+                ?>
             </ul>
-
             <?php
-            $social_links = isset($atts['social_links']) ? $atts['social_links'] : '';
+            $social_links = $atts['social_links'];
             if (!empty($social_links)) { ?>
                 <div class="careerfy-contact-media">
                     <?php
                     foreach ($social_links as $social_link) {
-                        $soc_icon = isset($social_link['soc_icon']) ? $social_link['soc_icon']['value'] : '';
+                        $soc_icon = isset($social_link['soc_icon']) ? $social_link['soc_icon'] : '';
                         $soc_link = isset($social_link['soc_link']) ? $social_link['soc_link'] : '';
-                        if ($soc_icon != '') { ?>
+
+                        if ($soc_icon != '') {
+                            ?>
                             <a href="<?php echo($soc_link) ?>">
                                 <i class="<?php echo($soc_icon) ?>"></i>
                             </a>
@@ -269,17 +275,21 @@ class ContactInfo extends Widget_Base
                     }
                     ?>
                 </div>
-            <?php } ?>
+                <?php
+            }
+            ?>
         </div>
         <div class="careerfy-contact-form">
             <?php
-            if ($con_form_title != '') { ?>
+            if ($con_form_title != '') {
+                ?>
                 <h2><?php echo($con_form_title) ?></h2>
                 <?php
             }
             $cnt_counter = rand(1000000, 99999999);
-            if (class_exists('WPCF7_ContactForm') && $search_box != '') {
-                $con_form_7_id = careerfy__get_post_id($search_box, 'wpcf7_contact_form');
+            if (class_exists('WPCF7_ContactForm') && $con_form_7 != '') {
+                $con_form_7_id = careerfy__get_post_id($con_form_7, 'wpcf7_contact_form');
+
                 echo do_shortcode('[contact-form-7 id="' . $con_form_7_id . '" title="' . get_the_title($con_form_7_id) . '"]');
             } else {
                 ob_start();
@@ -309,8 +319,7 @@ class ContactInfo extends Widget_Base
                         </li>
                         <li class="careerfy-contact-form-full">
                             <textarea name="u_msg"
-                                      placeholder="<?php esc_html_e('Enter Your Message', 'careerfy-frame') ?>">
-                            </textarea>
+                                      placeholder="<?php esc_html_e('Enter Your Message', 'careerfy-frame') ?>"></textarea>
                         </li>
                         <li>
                             <input type="submit" class="careerfy-ct-form" data-id="<?php echo absint($cnt_counter) ?>"
@@ -331,8 +340,112 @@ class ContactInfo extends Widget_Base
         echo $html;
     }
 
-
     protected function _content_template()
     {
-    }
+        ?>
+        <#
+        var con_info_title = settings.con_info_title;
+        var con_form_title = settings.con_form_title;
+        var con_form_7 = settings.con_form_7;
+        var con_desc = settings.con_desc;
+        var con_address = settings.con_address;
+        var con_email = settings.con_email;
+        var con_phone = settings.con_phone;
+        var con_fax = settings.con_fax;
+        var social_links = settings.social_links;
+        var search_box = settings.search_box;
+        #>
+        <div class="careerfy-contact-info-sec">
+            <# if (con_info_title != '') { #>
+            <h2>{{{con_info_title}}}</h2>
+            <# }
+            if (con_desc != '') { #>
+            <p>{{{con_desc}}}</p>
+            <# } #>
+
+            <ul class="careerfy-contact-info-list">
+                <# if(con_address != ''){ #>
+                <li><i class="careerfy-icon careerfy-placeholder"></i>{{{con_address}}}</li>
+                <# } #>
+                <# if(con_email != ''){ #>
+                <li><i class="careerfy-icon careerfy-envelope"></i> <a
+                            href="#">Email: {{{con_email}}}</a>
+                </li>
+                <# } #>
+
+                <# if(con_phone != ''){ #>
+                <li>
+                    <i class="careerfy-icon careerfy-technology"></i>Call: {{{con_phone}}}
+                </li>
+                <# } #>
+
+                <# if(con_fax != '') { #>
+                <li>
+                    <i class="careerfy-icon careerfy-fax"></i>Fax: {{{con_fax}}}
+                </li>
+                <# } #>
+
+            </ul>
+            <# if (social_links !='') { #>
+            <div class="careerfy-contact-media">
+                <# _.each(settings.social_links, function(item,index) { #>
+                <# if(item.soc_icon != ''){ #>
+                <a href="#">
+                    <i class="{{{item.soc_icon}}}"></i>
+                </a>
+                <# } #>
+                <# }) #>
+
+            </div>
+
+        </div>
+        <# } #>
+        <div class="careerfy-contact-form">
+            <# if (con_form_title != '') { #>
+            <h2>{{{con_form_title}}}</h2>
+            <# } #>
+
+            <# if(search_box != ''){ #>
+
+            <h1>Contact Form 7 will only show on live page.</h1>
+
+            <# } else { #>
+
+            <form id="" method="post">
+                <ul>
+                    <li>
+                        <input type="text" name="u_name"
+                               placeholder="Enter Your Name">
+                        <i class="careerfy-icon careerfy-user"></i>
+                    </li>
+                    <li>
+                        <input placeholder="Subject" type="text"
+                               name="u_subject">
+                        <i class="careerfy-icon careerfy-user"></i>
+                    </li>
+                    <li>
+                        <input placeholder="Enter Your Email Address"
+                               type="text" name="u_email">
+                        <i class="careerfy-icon careerfy-mail"></i>
+                    </li>
+                    <li>
+                        <input placeholder="Enter Your Phone Number"
+                               type="text" name="u_number">
+                        <i class="careerfy-icon careerfy-technology"></i>
+                    </li>
+                    <li class="careerfy-contact-form-full">
+                            <textarea name="u_msg"
+                                      placeholder="Enter Your Message"></textarea>
+                    </li>
+                    <li>
+                        <input type="submit" class="careerfy-ct-form"
+                               value="Submit">
+                        <span class="careerfy-bt-msg careerfy-ct-msg"></span>
+                        <input type="hidden" name="u_type" value="content"/>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <# } #>
+    <?php }
 }

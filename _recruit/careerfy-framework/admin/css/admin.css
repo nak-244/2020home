@@ -378,4 +378,3 @@ a.careerfy-tooltip[title]:hover:after {
 }
 .column-status a.careerfy-tooltip[title]:after { left: -150%; }
 .post-type-job .widefat td,.post-type-job .widefat th,.column-action { overflow: inherit; }
-.redux-dev-mode-notice-container {display: none;}

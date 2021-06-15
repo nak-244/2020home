@@ -68,7 +68,6 @@
     line-height: 1;
     vertical-align: text-top;
     margin-left: 7px;
-    margin-top: -2px;
 }
 .jobsearch-typo-wrap .jobsearch-company-review-text {
     border-bottom: 1px dashed #efefef;
@@ -275,10 +274,3 @@
 .jobsearch-candidate-wrap-section .jobsearch-company-review ul li { margin-bottom: 30px; }
 .jobsearch-typo-wrap .dash-reviews-list .review-detail-popover {
     top: 90px; }
-span.undereview-msg {
-    display: inline-block;
-    font-size: 11px;
-    color: #f54c4c;
-    vertical-align: middle;
-    margin-left: 5px;
-}

@@ -11,21 +11,15 @@ if (!function_exists('jobsearch_candidate_education_fields_save_callback')) {
                 // services save
                 $jobsearch_field_education_title = 'jobsearch_field_education_title';
                 $jobsearch_field_education_academy = 'jobsearch_field_education_academy';
-                $jobsearch_field_education_start_date = 'jobsearch_field_education_start_date';
-                $jobsearch_field_education_end_date = 'jobsearch_field_education_end_date';
-                $jobsearch_field_education_date_prsnt = 'jobsearch_field_education_date_prsnt';
+                $jobsearch_field_education_year = 'jobsearch_field_education_year';
                 $jobsearch_field_education_description = 'jobsearch_field_education_description';
                 $education_title = isset($_POST[$jobsearch_field_education_title]) && !empty($_POST[$jobsearch_field_education_title]) ? $_POST[$jobsearch_field_education_title] : array();
                 $education_academy = isset($_POST[$jobsearch_field_education_academy]) && !empty($_POST[$jobsearch_field_education_academy]) ? $_POST[$jobsearch_field_education_academy] : array();
-                $education_start_date = isset($_POST[$jobsearch_field_education_start_date]) && !empty($_POST[$jobsearch_field_education_start_date]) ? $_POST[$jobsearch_field_education_start_date] : array();
-                $education_end_date = isset($_POST[$jobsearch_field_education_end_date]) && !empty($_POST[$jobsearch_field_education_end_date]) ? $_POST[$jobsearch_field_education_end_date] : array();
-                $education_prsnt_date = isset($_POST[$jobsearch_field_education_date_prsnt]) && !empty($_POST[$jobsearch_field_education_date_prsnt]) ? $_POST[$jobsearch_field_education_date_prsnt] : array();
+                $education_year = isset($_POST[$jobsearch_field_education_year]) && !empty($_POST[$jobsearch_field_education_year]) ? $_POST[$jobsearch_field_education_year] : array();
                 $education_description = isset($_POST[$jobsearch_field_education_description]) && !empty($_POST[$jobsearch_field_education_description]) ? $_POST[$jobsearch_field_education_description] : array();
                 update_post_meta($post_id, $jobsearch_field_education_title, $education_title);
                 update_post_meta($post_id, $jobsearch_field_education_academy, $education_academy);
-                update_post_meta($post_id, $jobsearch_field_education_start_date, $education_start_date);
-                update_post_meta($post_id, $jobsearch_field_education_end_date, $education_end_date);
-                update_post_meta($post_id, $jobsearch_field_education_date_prsnt, $education_prsnt_date);
+                update_post_meta($post_id, $jobsearch_field_education_year, $education_year);
                 update_post_meta($post_id, $jobsearch_field_education_description, $education_description);
             }
         }
@@ -37,21 +31,8 @@ if (!function_exists('education_meta_fields_callback')) {
 
     function education_meta_fields_callback($post) {
         global $jobsearch_form_fields;
-        $rand_num = rand(1000000, 99999999);
         wp_enqueue_script('jobsearch-plugin-custom-multi-meta-fields');
         ?>
-        <script>
-            jQuery(document).ready(function () {
-                jQuery('#education_start_date').datetimepicker({
-                    timepicker: false,
-                    format: 'Y-m-d'
-                });
-                jQuery('#education_end_date').datetimepicker({
-                    timepicker: false,
-                    format: 'Y-m-d'
-                });
-            });
-        </script>
         <div class="jobsearch-educations">
             <div class="jobsearch-elem-heading">
                 <h2><?php echo esc_html__('Education', 'wp-jobsearch') ?></h2>
@@ -90,44 +71,14 @@ if (!function_exists('education_meta_fields_callback')) {
                     </div>
                     <div class="jobsearch-element-field">
                         <div class="elem-label">
-                            <label><?php esc_html_e('Start Date', 'wp-jobsearch') ?> *</label>
+                            <label><?php esc_html_e('Year', 'wp-jobsearch') ?> *</label>
                         </div>
                         <div class="elem-field">
                             <?php
                             $field_params = array(
-                                'id' => 'education_start_date',
+                                'id' => 'education_year',
                             );
                             $jobsearch_form_fields->input_field($field_params);
-                            ?>
-                        </div>
-                    </div>
-                    <div class="jobsearch-element-field">
-                        <div class="elem-label">
-                            <label><?php esc_html_e('End Date', 'wp-jobsearch') ?></label>
-                        </div>
-                        <div class="elem-field">
-                            <?php
-                            $field_params = array(
-                                'id' => 'education_end_date',
-                            );
-                            $jobsearch_form_fields->input_field($field_params);
-                            ?>
-                        </div>
-                    </div>
-                    <div class="jobsearch-element-field">
-                        <div class="elem-label">
-                            <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label>
-                        </div>
-                        <div class="elem-field">
-                            <?php
-                            $field_params = array(
-                                'id' => 'education_prsnt_date',
-                                'options' => array(
-                                    'off' => esc_html__('No', 'wp-jobsearch'),
-                                    'on' => esc_html__('Yes', 'wp-jobsearch'),
-                                ),
-                            );
-                            $jobsearch_form_fields->select_field($field_params);
                             ?>
                         </div>
                     </div>
@@ -150,9 +101,7 @@ if (!function_exists('education_meta_fields_callback')) {
                 $exfield_list = get_post_meta($post->ID, 'jobsearch_field_education_title', true);
                 $exfield_list_val = get_post_meta($post->ID, 'jobsearch_field_education_description', true);
                 $education_academyfield_list = get_post_meta($post->ID, 'jobsearch_field_education_academy', true);
-                $education_start_datefield_list = get_post_meta($post->ID, 'jobsearch_field_education_start_date', true);
-                $education_end_datefield_list = get_post_meta($post->ID, 'jobsearch_field_education_end_date', true);
-                $education_prsnt_datefield_list = get_post_meta($post->ID, 'jobsearch_field_education_date_prsnt', true);
+                $education_yearfield_list = get_post_meta($post->ID, 'jobsearch_field_education_year', true);
                 ?>
                 <ul id="jobsearch-educationfields-con" class="jobsearch-bk-sortable">
                     <?php
@@ -164,23 +113,9 @@ if (!function_exists('education_meta_fields_callback')) {
 
                             $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                             $education_academyfield_val = isset($education_academyfield_list[$exfield_counter]) ? $education_academyfield_list[$exfield_counter] : '';
-                            $education_start_datefield_val = isset($education_start_datefield_list[$exfield_counter]) ? $education_start_datefield_list[$exfield_counter] : '';
-                            $education_end_datefield_val = isset($education_end_datefield_list[$exfield_counter]) ? $education_end_datefield_list[$exfield_counter] : '';
-                            $education_prsnt_datefield_val = isset($education_prsnt_datefield_list[$exfield_counter]) ? $education_prsnt_datefield_list[$exfield_counter] : '';
+                            $education_yearfield_val = isset($education_yearfield_list[$exfield_counter]) ? $education_yearfield_list[$exfield_counter] : '';
                             ?>
                             <li id="list-<?php echo absint($rand_num) ?>">
-                                <script>
-                                    jQuery(document).ready(function () {
-                                        jQuery('#education_start_date_<?php echo absint($rand_num) ?>').datetimepicker({
-                                            timepicker: false,
-                                            format: 'Y-m-d'
-                                        });
-                                        jQuery('#education_end_date_<?php echo absint($rand_num) ?>').datetimepicker({
-                                            timepicker: false,
-                                            format: 'Y-m-d'
-                                        });
-                                    });
-                                </script>
                                 <div class="multi-list-header" id="list-head-<?php echo absint($rand_num) ?>">
                                     <ul>
                                         <li class="drag-point"><a><i class="dashicons dashicons-image-flip-vertical"></i></a></li>
@@ -222,49 +157,15 @@ if (!function_exists('education_meta_fields_callback')) {
                                     </div>
                                     <div class="jobsearch-element-field">
                                         <div class="elem-label">
-                                            <label><?php esc_html_e('Start Date', 'wp-jobsearch') ?></label>
+                                            <label><?php esc_html_e('Year', 'wp-jobsearch') ?></label>
                                         </div>
                                         <div class="elem-field">
                                             <?php
                                             $field_params = array(
-                                                'id' => 'education_start_date_' . absint($rand_num),
-                                                'name' => 'education_start_date[]',
-                                                'force_std' => $education_start_datefield_val,
+                                                'name' => 'education_year[]',
+                                                'force_std' => $education_yearfield_val,
                                             );
                                             $jobsearch_form_fields->input_field($field_params);
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <div class="jobsearch-element-field">
-                                        <div class="elem-label">
-                                            <label><?php esc_html_e('End Date', 'wp-jobsearch') ?></label>
-                                        </div>
-                                        <div class="elem-field">
-                                            <?php
-                                            $field_params = array(
-                                                'id' => 'education_end_date_' . absint($rand_num),
-                                                'name' => 'education_end_date[]',
-                                                'force_std' => $education_end_datefield_val,
-                                            );
-                                            $jobsearch_form_fields->input_field($field_params);
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <div class="jobsearch-element-field">
-                                        <div class="elem-label">
-                                            <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label>
-                                        </div>
-                                        <div class="elem-field">
-                                            <?php
-                                            $field_params = array(
-                                                'name' => 'education_date_prsnt[]',
-                                                'options' => array(
-                                                    'off' => esc_html__('No', 'wp-jobsearch'),
-                                                    'on' => esc_html__('Yes', 'wp-jobsearch'),
-                                                ),
-                                                'force_std' => $education_prsnt_datefield_val,
-                                            );
-                                            $jobsearch_form_fields->select_field($field_params);
                                             ?>
                                         </div>
                                     </div>
@@ -313,9 +214,7 @@ if (!function_exists('jobsearch_add_project_educationfield')) {
         global $jobsearch_form_fields;
         $title = isset($_POST['education_title']) ? $_POST['education_title'] : '';
         $academy = isset($_POST['education_academy']) ? $_POST['education_academy'] : '';
-        $start_date = isset($_POST['education_start_date']) ? $_POST['education_start_date'] : '';
-        $end_date = isset($_POST['education_end_date']) ? $_POST['education_end_date'] : '';
-        $education_prsnt_datefield_val = isset($_POST['education_prsnt_date']) ? $_POST['education_prsnt_date'] : '';
+        $year = isset($_POST['exeducation_year']) ? $_POST['exeducation_year'] : '';
         $education_description = isset($_POST['education_description']) ? $_POST['education_description'] : '';
 
         $rand_num = rand(1000000, 99999999);
@@ -364,47 +263,15 @@ if (!function_exists('jobsearch_add_project_educationfield')) {
                 </div>
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
-                        <label><?php esc_html_e('Start Date', 'wp-jobsearch') ?></label>
+                        <label><?php esc_html_e('Year', 'wp-jobsearch') ?></label>
                     </div>
                     <div class="elem-field">
                         <?php
                         $field_params = array(
-                            'name' => 'education_start_date[]',
-                            'force_std' => $start_date,
+                            'name' => 'education_year[]',
+                            'force_std' => $year,
                         );
                         $jobsearch_form_fields->input_field($field_params);
-                        ?>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('End Date', 'wp-jobsearch') ?></label>
-                    </div>
-                    <div class="elem-field">
-                        <?php
-                        $field_params = array(
-                            'name' => 'education_end_date[]',
-                            'force_std' => $end_date,
-                        );
-                        $jobsearch_form_fields->input_field($field_params);
-                        ?>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Present', 'wp-jobsearch') ?></label>
-                    </div>
-                    <div class="elem-field">
-                        <?php
-                        $field_params = array(
-                            'name' => 'education_date_prsnt[]',
-                            'options' => array(
-                                'off' => esc_html__('No', 'wp-jobsearch'),
-                                'on' => esc_html__('Yes', 'wp-jobsearch'),
-                            ),
-                            'force_std' => $education_prsnt_datefield_val,
-                        );
-                        $jobsearch_form_fields->select_field($field_params);
                         ?>
                     </div>
                 </div>

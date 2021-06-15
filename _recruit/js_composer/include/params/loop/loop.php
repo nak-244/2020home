@@ -147,23 +147,7 @@ class VcLoopQueryBuilder {
 	 *
 	 */
 	protected function parse_categories( $value ) {
-		$values = explode( ',', $value );
-		$cat_in = array();
-		$cat_not_in = array();
-		foreach ( $values as $cat ) {
-			if ( (int) $cat > 0 ) {
-				$cat_in[] = $cat;
-			} else {
-				$cat_not_in[] = abs( $cat );
-			}
-		}
-		if ( ! empty( $cat_in ) ) {
-			$this->args['category__in'] = $cat_in;
-		}
-
-		if ( ! empty( $cat_not_in ) ) {
-			$this->args['category__not_in'] = $cat_not_in;
-		}
+		$this->args['cat'] = $value;
 	}
 
 	/**
@@ -235,12 +219,6 @@ class VcLoopQueryBuilder {
 		$this->args['tag__not_in'] = $not_in;
 	}
 
-	protected function parse_ignore_sticky_posts( $value ) {
-		if ( ! empty( $value ) ) {
-			$this->args['ignore_sticky_posts'] = true;
-		}
-	}
-
 	/**
 	 * By posts ids
 	 * @param $value
@@ -302,11 +280,9 @@ class VcLoopQueryBuilder {
 	 * @return array
 	 */
 	public function build() {
-		$args = apply_filters( 'wpb_loop_query_build_args', $this->args );
-
 		return array(
-			$args,
-			new WP_Query( $args ),
+			$this->args,
+			new WP_Query( $this->args ),
 		);
 	}
 }
@@ -336,7 +312,6 @@ class VcLoopSettings {
 		'order_by',
 		'order',
 		'post_type',
-		'ignore_sticky_posts',
 		'authors',
 		'categories',
 		'tags',
@@ -357,7 +332,6 @@ class VcLoopSettings {
 			'order_by' => esc_html__( 'Order by', 'js_composer' ),
 			'order' => esc_html__( 'Sort order', 'js_composer' ),
 			'post_type' => esc_html__( 'Post types', 'js_composer' ),
-			'ignore_sticky_posts' => esc_html__( 'Ignore Sticky posts', 'js_composer' ),
 			'authors' => esc_html__( 'Author', 'js_composer' ),
 			'categories' => esc_html__( 'Categories', 'js_composer' ),
 			'tags' => esc_html__( 'Tags', 'js_composer' ),
@@ -546,23 +520,6 @@ class VcLoopSettings {
 		}
 
 		return $this->parseMultiSelect( $value, $options );
-	}
-
-	/**
-	 * @param $value
-	 *
-	 * @return array
-	 */
-	public function parse_ignore_sticky_posts( $value ) {
-		return array(
-			'value' => [ $value ],
-			'options' => [
-				[
-					'1',
-					'Yes',
-				],
-			],
-		);
 	}
 
 	/**

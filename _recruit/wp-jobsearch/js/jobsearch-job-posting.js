@@ -31,14 +31,12 @@ function jobsearch_validate_form(that) {
             _this_form = $(that),
             form_validity = 'valid';
     var errors_counter = 1;
-
+    
     _this_form.find('input.' + req_class + ',select.' + req_class + ',textarea.' + req_class).jobsearch_req_field_loop(function (element, index, set) {
 
         var job_desc_max_len = parseInt(jobsearch_posting_vars.desc_len_exceed_num);
         var eror_str = '';
-        console.log($(element).attr('name'));
-        console.log($(element).val());
-        if ($(element).val() == '' || $(element).val() == null) {
+        if ($(element).val() == '') {
             form_validity = 'invalid';
             eror_str = jobsearch_posting_vars.blank_field_msg;
 
@@ -83,13 +81,7 @@ function jobsearch_validate_form(that) {
             if ($(element).attr('id') == 'job_detail') {
                 element = $(element).parents('.wp-editor-container');
             }
-            if ($(element).hasClass('jobsearch-reqtext-editor')) {
-                element = $(element).parents('.wp-editor-container');
-            }
-            if ($(element).attr('id') == 'job-type' || $(element).attr('id') == 'job-sector') {
-                element = $(element).parents('.jobsearch-profile-select');
-            }
-            if ($(element).hasClass('multiselect-req')) {
+            if ($(element).attr('id') == 'job-type') {
                 element = $(element).parents('.jobsearch-profile-select');
             }
             $(element).css({"border": "1px solid #ff0000"});
@@ -102,15 +94,6 @@ function jobsearch_validate_form(that) {
             }
 
             errors_counter++;
-        } else {
-            if ($(element).attr('id') == 'job-type' || $(element).attr('id') == 'job-sector') {
-                element = $(element).parents('.jobsearch-profile-select');
-                $(element).removeAttr('style');
-            }
-            if ($(element).hasClass('multiselect-req')) {
-                element = $(element).parents('.jobsearch-profile-select');
-                $(element).removeAttr('style');
-            }
         }
     });
 
@@ -118,7 +101,7 @@ function jobsearch_validate_form(that) {
         // API Locations
         var locations_type = jobsearch_posting_vars.locations_type;
         var is_req_apilocs = jobsearch_posting_vars.required_api_locs;
-
+        
         if (locations_type == 'api' && is_req_apilocs == 'yes') {
             var api_loc_contry = jQuery('select[name="jobsearch_field_location_location1"]');
             if (api_loc_contry.length > 0) {
@@ -158,17 +141,38 @@ function jobsearch_validate_form(that) {
             }
         }
         //
-
+        
+        var job_sector = jQuery('#job-sector');
+        if (job_sector.length > 0) {
+            var job_sectorval = job_sector.val();
+            if (job_sectorval == '') {
+                job_sector.parent('.jobsearch-profile-select').css({"border": "1px solid #ff0000"});
+                var animate_to = job_sector.parent('.jobsearch-profile-select');
+                jQuery('html, body').animate({scrollTop: animate_to.offset().top - 70}, 1000);
+                return false;
+            } else {
+                job_sector.parent('.jobsearch-profile-select').css({"border": "none"});
+            }
+        }
+        var job_type = jQuery('#job-type');
+        if (job_type.length > 0) {
+            var job_typeval = job_type.val();
+            if (job_typeval == '') {
+                job_type.parent('.jobsearch-profile-select').css({"border": "1px solid #ff0000"});
+                var animate_to = job_type.parent('.jobsearch-profile-select');
+                jQuery('html, body').animate({scrollTop: animate_to.offset().top - 70}, 1000);
+                return false;
+            } else {
+                job_type.parent('.jobsearch-profile-select').css({"border": "none"});
+            }
+        }
+        
         var salary_validtion = true;
         var job_slary_type = jQuery('select[name="job_salary_type"]');
         if (job_slary_type.length > 0 && job_slary_type.val() == 'negotiable') {
             salary_validtion = false;
         }
-        var salry_main_cont = jQuery('.salary-input-fordev');
-        if (!salry_main_cont.hasClass('required-field')) {
-            salary_validtion = false;
-        }
-
+        
         var min_salary_field = jQuery('.min-salary > input[name="job_salary"]');
         var max_salary_field = jQuery('.max-salary > input[name="job_max_salary"]');
         if (salary_validtion === true && min_salary_field.length > 0 && min_salary_field.length > 0) {
@@ -189,26 +193,6 @@ function jobsearch_validate_form(that) {
                 max_salary_field.css({"border": "1px solid #eceeef"});
             }
         }
-        
-        if (_this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]').length > 0) {
-            var element_to_go = _this_form.find('.cusfield-checkbox-required');
-            var req_checkboxs = _this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]');
-            var req_checkbox_err = 1;
-            req_checkboxs.each(function() {
-                if (jQuery(this).is(':checked')) {
-                    req_checkbox_err = 0;
-                }
-            });
-            if (req_checkbox_err == 1) {
-                jQuery(element_to_go).css({"border": "1px solid #ff0000"});
-                jQuery('html, body').animate({scrollTop: element_to_go.offset().top - 100}, 1000);
-                return false;
-            } else {
-                jQuery(element_to_go).removeAttr('style');
-            }
-        }
-        
-        jQuery('.jobsearch-postjob-btn').addClass('disabled-btn').attr('disabled', 'disabled');
         return true;
     } else {
         return false;
@@ -219,7 +203,7 @@ jQuery(document).on('change', 'select[name=job_salary_type]', function () {
     var _this = jQuery(this);
     var slary_input_con = _this.parents('li').find('.salary-input');
     var slary_curncy_con = jQuery('.jobsalary-curency-con');
-
+    
     if (_this.val() == 'negotiable') {
         slary_input_con.hide();
         slary_curncy_con.hide();
@@ -343,7 +327,7 @@ jQuery(document).on('click', 'input[name="job_package_featured"]', function () {
     if (_this.is(":checked")) {
         jQuery('input[name="job_package_featured"]').prop('checked', false);
         _this.prop('checked', true);
-
+    
         //
         jQuery('.jobsearch-pkgs-boughtnew').slideUp();
     }

@@ -118,7 +118,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
                     ?>
                     <expiryDate><?php echo ($expiry_date); ?></expiryDate>
                     <?php
-                    if ($salary_onoff_switch != 'off') {
+                    if ($salary_onoff_switch == 'on') {
                         ?>
                         <salary><![CDATA[<?php echo ($job_salary) ?>]]></salary>
                         <?php

@@ -38,25 +38,20 @@ class CareerfyElementorPlugin
          * WP Jobsearch Elements files
          *
          * */
-        if (class_exists('JobSearch_plugin')) {
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobs-listing.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/candidate-listing.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/employee-listing.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/login-registeration.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/job-categories.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/simple-jobs-listing.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/all-packages.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobsearch-features.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/explore-jobs.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobs-by-categories.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/simple-job-listing-multi.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/post-new-job.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/banner-advertisement.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/advance-search.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/simple-employer-listing.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/job-types.php');
-            require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/login-popup.php');
-        }
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobs-listing.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/candidate-listing.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/employee-listing.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/login-registeration.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/job-categories.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/simple-jobs-listing.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/all-packages.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobsearch-features.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/explore-jobs.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/jobs-by-categories.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/simple-job-listing-multi.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/post-new-job.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/banner-advertisement.php');
+        require_once(__DIR__ . '/elementor-widget/wp-jobsearch-elements/advance-search.php');
         /*
          *
          * Careerfy Framework Elements files
@@ -72,7 +67,7 @@ class CareerfyElementorPlugin
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/block-text.php');
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/simple-text.php');
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/find-question.php');
-        require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/careerfy-maps.php');
+        require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/google-maps.php');
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/contact-info.php');
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/about-info.php');
         require_once(__DIR__ . '/elementor-widget/careerfy-framework-elements/image-banner.php');
@@ -115,7 +110,7 @@ class CareerfyElementorPlugin
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\BlockTextWithVideo());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\SimpleText());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\FindQuestion());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\CareerfyMaps());
+        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\GoogleMaps());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\ContactInfo());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\AboutInfo());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\FAQ());
@@ -125,7 +120,6 @@ class CareerfyElementorPlugin
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\VideoTestimonialSlider());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\ImageServices());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\OurPartners());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\OurTeam());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\HelpLinks());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\testimonials());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\RecentQuestions());
@@ -137,7 +131,6 @@ class CareerfyElementorPlugin
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\PromoStats());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\NewsLetter());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\HowItWorks());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\SimpleEmployerListings());
         /*
          *
          * WP Jobsearch Elements
@@ -148,7 +141,6 @@ class CareerfyElementorPlugin
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\EmployeeListings());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\LoginRegisteration());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\JobCategories());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\JobsByCategories());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\SimpleJobsListings());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\AllPackages());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\JobFeatured());
@@ -157,8 +149,6 @@ class CareerfyElementorPlugin
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\PostNewJob());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\BannerAdvertisement());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\AdvanceSearch());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\JobTypes());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widgets\LoginPopup());
     }
 }
 

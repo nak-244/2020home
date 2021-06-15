@@ -38,12 +38,8 @@ class Jobsearch_EmployerFilterHTML
         $team_size_arr = explode('-', $team_size);
         $team_size_fv = isset($team_size_arr[0]) ? absint($team_size_arr[0]) : 0;
         $team_size_sv = isset($team_size_arr[1]) ? absint($team_size_arr[1]) : 0;
-        $team_size_fv = jobsearch_esc_html($team_size_fv);
-        $team_size_sv = jobsearch_esc_html($team_size_sv);
 
         $team_filter_collapse = isset($sh_atts['employer_filters_team_collapse']) ? $sh_atts['employer_filters_team_collapse'] : '';
-        
-        $filter_sort_by = isset($sh_atts['employer_filters_sortby']) ? $sh_atts['employer_filters_sortby'] : '';
 
         $filter_collapse_cval = 'open';
         if ($team_filter_collapse == 'yes') {
@@ -77,9 +73,6 @@ class Jobsearch_EmployerFilterHTML
                     ob_start();
                     ?>
                     <ul class="jobsearch-checkbox">
-                        <?php
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
                             $team_size_count_arr = array(
@@ -90,7 +83,7 @@ class Jobsearch_EmployerFilterHTML
                                     'compare' => 'BETWEEN',
                                 )
                             );
-                            $first_itm_totnum = $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
+                            $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
                             ?>
                             <input id="team-size-1-100-<?php echo absint($rand); ?>" type="radio"
                                    name="team_size" <?php if ($team_size == '1-100') echo 'checked="checked"'; ?>
@@ -102,10 +95,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($team_size_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $first_itm_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
                             $team_size_count_arr = array(
@@ -116,7 +105,7 @@ class Jobsearch_EmployerFilterHTML
                                     'compare' => 'BETWEEN',
                                 )
                             );
-                            $scond_itm_totnum = $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
+                            $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
                             ?>
                             <input id="team-size-101-200-<?php echo absint($rand); ?>" type="radio"
                                    name="team_size" <?php if ($team_size == '101-200') echo 'checked="checked"'; ?>
@@ -128,10 +117,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($team_size_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $scond_itm_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
                             $team_size_count_arr = array(
@@ -142,7 +127,7 @@ class Jobsearch_EmployerFilterHTML
                                     'compare' => 'BETWEEN',
                                 )
                             );
-                            $third_itm_totnum = $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
+                            $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
                             ?>
                             <input id="team-size-201-300-<?php echo absint($rand); ?>" type="radio"
                                    name="team_size" <?php if ($team_size == '201-300') echo 'checked="checked"'; ?>
@@ -154,10 +139,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($team_size_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $third_itm_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
                             $team_size_count_arr = array(
@@ -168,7 +149,7 @@ class Jobsearch_EmployerFilterHTML
                                     'compare' => 'BETWEEN',
                                 )
                             );
-                            $frth_itm_totnum = $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
+                            $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
                             ?>
                             <input id="team-size-301-400-<?php echo absint($rand); ?>" type="radio"
                                    name="team_size" <?php if ($team_size == '301-400') echo 'checked="checked"'; ?>
@@ -180,10 +161,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($team_size_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $frth_itm_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
                             $team_size_count_arr = array(
@@ -194,7 +171,7 @@ class Jobsearch_EmployerFilterHTML
                                     'compare' => 'BETWEEN',
                                 )
                             );
-                            $fifth_itm_totnum = $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
+                            $team_size_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $team_size_count_arr, $global_rand_id, 'team_size');
                             ?>
                             <input id="team-size-401-500-<?php echo absint($rand); ?>" type="radio"
                                    name="team_size" <?php if ($team_size == '401-500') echo 'checked="checked"'; ?>
@@ -206,48 +183,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($team_size_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $fifth_itm_html = ob_get_clean();
-                        
-                        $filter_html_arr = array(
-                            array(
-                                'count' => $first_itm_totnum,
-                                'html' => $first_itm_html
-                            ),
-                            array(
-                                'count' => $scond_itm_totnum,
-                                'html' => $scond_itm_html
-                            ),
-                            array(
-                                'count' => $third_itm_totnum,
-                                'html' => $third_itm_html
-                            ),
-                            array(
-                                'count' => $frth_itm_totnum,
-                                'html' => $frth_itm_html
-                            ),
-                            array(
-                                'count' => $fifth_itm_totnum,
-                                'html' => $fifth_itm_html
-                            ),
-                        );
-                        
-                        if ($filter_sort_by == 'desc') {
-                            krsort($filter_html_arr);
-                        } else if ($filter_sort_by == 'count') {
-                            usort($filter_html_arr, function ($a, $b) {
-                                if ($a['count'] == $b['count']) {
-                                    $ret_val = 0;
-                                }
-                                $ret_val = ($b['count'] < $a['count']) ? -1 : 1;
-                                return $ret_val;
-                            });
-                        }
-                        
-                        foreach ($filter_html_arr as $filtr_item_html) {
-                            echo ($filtr_item_html['html']);
-                        }
-                        ?>
                     </ul>
                     <?php
                     $filters_html = ob_get_clean();
@@ -272,7 +207,7 @@ class Jobsearch_EmployerFilterHTML
     static function jobsearch_employer_filter_date_posted_box_html_callback($html, $global_rand_id, $args_count, $left_filter_count_switch, $sh_atts)
     {
         $posted = isset($_REQUEST['posted']) ? $_REQUEST['posted'] : '';
-        $posted = jobsearch_esc_html($posted);
+
 
         $rand = rand(234, 34234);
         $default_date_time_formate = 'd-m-Y H:i:s';
@@ -280,8 +215,6 @@ class Jobsearch_EmployerFilterHTML
 
         $employer_date_filter = isset($sh_atts['employer_filters_date']) ? $sh_atts['employer_filters_date'] : '';
         $date_filter_collapse = isset($sh_atts['employer_filters_date_collapse']) ? $sh_atts['employer_filters_date_collapse'] : '';
-        
-        $filter_sort_by = isset($sh_atts['employer_filters_sortby']) ? $sh_atts['employer_filters_sortby'] : '';
 
         $filter_collapse_cval = 'open';
         if ($date_filter_collapse == 'yes') {
@@ -310,19 +243,15 @@ class Jobsearch_EmployerFilterHTML
                 <div class="jobsearch-checkbox-toggle"
                      style="display: <?php echo($date_filter_collapse == 'yes' ? 'none' : 'block') ?>;">
                     <ul class="jobsearch-checkbox">
-                        <?php
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $lastdate = date($default_date_time_formate, strtotime('-1 hours', $current_timestamp));
                             $last_hour_count_arr = array(
                                 array(
                                     'key' => 'post_date',
                                     'value' => strtotime($lastdate),
                                     'compare' => '>=',
-                                    'type' => 'numeric',
                                 )
                             );
                             $last_hour_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $last_hour_count_arr, $global_rand_id, 'posted');
@@ -337,20 +266,15 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($last_hour_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $last_hour_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $lastdate = date($default_date_time_formate, strtotime('-24 hours', $current_timestamp));
                             $last24_count_arr = array(
                                 array(
                                     'key' => 'post_date',
                                     'value' => strtotime($lastdate),
                                     'compare' => '>=',
-                                    'type' => 'numeric',
                                 )
                             );
                             $last24_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $last24_count_arr, $global_rand_id, 'posted');
@@ -365,20 +289,15 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($last24_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $last_24_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $lastdate = date($default_date_time_formate, strtotime('-7 days', $current_timestamp));
                             $days7_count_arr = array(
                                 array(
                                     'key' => 'post_date',
                                     'value' => strtotime($lastdate),
                                     'compare' => '>=',
-                                    'type' => 'numeric',
                                 )
                             );
                             $days7_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $days7_count_arr, $global_rand_id, 'posted');
@@ -393,20 +312,15 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($days7_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $last_7days_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $lastdate = date($default_date_time_formate, strtotime('-14 days', $current_timestamp));
                             $days14_count_arr = array(
                                 array(
                                     'key' => 'post_date',
                                     'value' => strtotime($lastdate),
                                     'compare' => '>=',
-                                    'type' => 'numeric',
                                 )
                             );
                             $days14_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $days14_count_arr, $global_rand_id, 'posted');
@@ -421,27 +335,22 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($days14_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $last_14days_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $lastdate = date($default_date_time_formate, strtotime('-30 days', $current_timestamp));
                             $days30_count_arr = array(
                                 array(
                                     'key' => 'post_date',
                                     'value' => strtotime($lastdate),
                                     'compare' => '>=',
-                                    'type' => 'numeric',
                                 )
                             );
                             $days30_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $days30_count_arr, $global_rand_id, 'posted');
                             ?>
                             <input id="30days<?php echo absint($rand); ?>" type="radio"
                                    name="posted" <?php if ($posted == '30days') echo 'checked="checked"'; ?>
-                                   onchange="jobsearch_employepr_content_load(<?php echo absint($global_rand_id); ?>);"
+                                   onchange="jobsearch_employer_content_load(<?php echo absint($global_rand_id); ?>);"
                                    value="30days"/>
                             <label for="30days<?php echo absint($rand); ?>"><span></span><?php esc_html_e('Last 30 days', 'wp-jobsearch') ?>
                             </label>
@@ -449,13 +358,9 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($days30_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $last_month_html = ob_get_clean();
-                        ob_start();
-                        ?>
                         <li<?php echo($left_filter_count_switch != 'yes' ? ' class="no-filter-counts"' : '') ?>>
                             <?php
-                            // main query array $args_count
+                            // main query array $args_count 
                             $all_days_count_arr = array();
                             $all_days_totnum = jobsearch_get_employer_item_count($left_filter_count_switch, $args_count, $all_days_count_arr, $global_rand_id, 'posted');
                             ?>
@@ -469,52 +374,6 @@ class Jobsearch_EmployerFilterHTML
                                 <span class="filter-post-count"><?php echo absint($all_days_totnum); ?></span>
                             <?php } ?>
                         </li>
-                        <?php
-                        $from_all_html = ob_get_clean();
-                        
-                        $filter_html_arr = array(
-                            array(
-                                'count' => $last_hour_totnum,
-                                'html' => $last_hour_html
-                            ),
-                            array(
-                                'count' => $last24_totnum,
-                                'html' => $last_24_html
-                            ),
-                            array(
-                                'count' => $days7_totnum,
-                                'html' => $last_7days_html
-                            ),
-                            array(
-                                'count' => $days14_totnum,
-                                'html' => $last_14days_html
-                            ),
-                            array(
-                                'count' => $days30_totnum,
-                                'html' => $last_month_html
-                            ),
-                            array(
-                                'count' => $all_days_totnum,
-                                'html' => $from_all_html
-                            ),
-                        );
-                        
-                        if ($filter_sort_by == 'desc') {
-                            krsort($filter_html_arr);
-                        } else if ($filter_sort_by == 'count') {
-                            usort($filter_html_arr, function ($a, $b) {
-                                if ($a['count'] == $b['count']) {
-                                    $ret_val = 0;
-                                }
-                                $ret_val = ($b['count'] < $a['count']) ? -1 : 1;
-                                return $ret_val;
-                            });
-                        }
-                        
-                        foreach ($filter_html_arr as $filtr_item_html) {
-                            echo ($filtr_item_html['html']);
-                        }
-                        ?>
                     </ul>
                 </div>
             </div>
@@ -532,13 +391,9 @@ class Jobsearch_EmployerFilterHTML
         global $jobsearch_form_fields;
         $sector_name = 'sector_cat';
         $sector = isset($_REQUEST['sector_cat']) ? $_REQUEST['sector_cat'] : '';
-        
-        $sector = jobsearch_esc_html($sector);
 
         $employer_sector_filter = isset($sh_atts['employer_filters_sector']) ? $sh_atts['employer_filters_sector'] : '';
         $sec_filter_collapse = isset($sh_atts['employer_filters_sector_collapse']) ? $sh_atts['employer_filters_sector_collapse'] : '';
-        
-        $filter_sort_by = isset($sh_atts['employer_filters_sortby']) ? $sh_atts['employer_filters_sortby'] : '';
 
         $filter_collapse_cval = 'open';
         if ($sec_filter_collapse == 'yes') {
@@ -566,8 +421,10 @@ class Jobsearch_EmployerFilterHTML
                 </div>
                 <div class="jobsearch-checkbox-toggle"
                      style="display: <?php echo($sec_filter_collapse == 'yes' ? 'none' : 'block') ?>;">
+
                     <?php
                     // get all employer types
+
                     $sector_parent_id = 0;
                     $sector_show_count = 0;
                     $input_type_sector = 'radio';   // if first level then select only sigle sector
@@ -635,14 +492,12 @@ class Jobsearch_EmployerFilterHTML
                             if ($input_type_sector == 'checkbox') {
 
                             }
-                            $filter_html_arr = array();
                             $number_option_flag = 1;
                             echo '<ul class="jobsearch-checkbox">';
                             foreach ($all_sector as $sectoritem) {
-                                $sector_count_post = jobsearch_get_taxanomy_type_item_count($left_filter_count_switch, $sectoritem->slug, 'sector', $args_count, 'employer');
+                                $sector_count_post = jobsearch_get_taxanomy_type_item_count($left_filter_count_switch, $sectoritem->slug, 'sector', $args_count);
                                 $employer_id_para = '';
 
-                                ob_start();
                                 if ($input_type_sector == 'checkbox') {
                                     ?>
                                     <li class="jobsearch-<?php echo $input_type_sector; ?><?php echo($number_option_flag > 6 ? ' filter-more-fields' : '') ?><?php echo($left_filter_count_switch != 'yes' ? ' no-filter-counts' : '') ?>">
@@ -670,8 +525,8 @@ class Jobsearch_EmployerFilterHTML
                                         <?php } ?>
 
                                     </li>
-                                    <?php 
-                                } else {
+                                    <?php
+                                } else
                                     if ($input_type_sector == 'radio') {
                                         $sector_selected = '';
                                         if ($sector == $sectoritem->slug) {
@@ -700,45 +555,20 @@ class Jobsearch_EmployerFilterHTML
                                         </li>
                                         <?php
                                     }
-                                }
-                                $filter_itm_html = ob_get_clean();
-                                $filter_html_arr[] = array(
-                                    'title' => $sectoritem->name,
-                                    'count' => $sector_count_post,
-                                    'html' => $filter_itm_html
-                                );
                                 $number_option++;
                                 $number_option_flag++;
                             }
-                            
-                            if ($filter_sort_by == 'desc') {
-                                krsort($filter_html_arr);
-                            } else if ($filter_sort_by == 'alpha') {
-                                usort($filter_html_arr, function ($a, $b) {
-                                    return strcmp($a["title"], $b["title"]);
-                                });
-                            } else if ($filter_sort_by == 'count') {
-                                usort($filter_html_arr, function ($a, $b) {
-                                    if ($a['count'] == $b['count']) {
-                                        $ret_val = 0;
-                                    }
-                                    $ret_val = ($b['count'] < $a['count']) ? -1 : 1;
-                                    return $ret_val;
-                                });
-                            }
-
-                            foreach ($filter_html_arr as $filtr_item_html) {
-                                echo ($filtr_item_html['html']);
-                            }
-                            
                             echo '</ul>';
                             if ($number_option_flag > 6) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list">' . esc_html__('+ see more', 'wp-jobsearch') . '</a>';
                             }
                         }
-                    } else { ?>
+                    } else {
+                        ?>
                         <p><?php esc_html_e('No sector found. Please add from admin > job > sectors.', 'wp-jobsearch') ?></p>
-                    <?php } ?>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -753,6 +583,7 @@ class Jobsearch_EmployerFilterHTML
 
     public function load_more_locations()
     {
+
         $page_num = isset($_POST['page_num']) && $_POST['page_num'] > 0 ? $_POST['page_num'] : 1;
         $global_rand_id = isset($_POST['param_rid']) ? $_POST['param_rid'] : 1;
         $left_filter_count_switch = isset($_POST['param_cousw']) ? $_POST['param_cousw'] : '';
@@ -796,8 +627,6 @@ class Jobsearch_EmployerFilterHTML
         $job_type_name = 'job-location';
 
         $job_type = isset($_REQUEST['location']) ? $_REQUEST['location'] : '';
-        
-        $job_type = jobsearch_esc_html($job_type);
 
         foreach ($terms as $term) {
             if ($parent_id == $term->parent) {
@@ -930,13 +759,7 @@ class Jobsearch_EmployerFilterHTML
 
         $loc_location1 = isset($_REQUEST['location_location1']) ? $_REQUEST['location_location1'] : '';
         $loc_location2 = isset($_REQUEST['location_location2']) ? $_REQUEST['location_location2'] : '';
-        $loc_location3 = isset($_REQUEST['location_location3']) ? $_REQUEST['location_location3'] : '';
-        
-        $loc_location1 = jobsearch_esc_html($loc_location1);
-        $loc_location2 = jobsearch_esc_html($loc_location2);
-        $loc_location3 = jobsearch_esc_html($loc_location3);
-        
-        ?>
+        $loc_location3 = isset($_REQUEST['location_location3']) ? $_REQUEST['location_location3'] : ''; ?>
         <script type="text/javascript">
             var jobsearch_sloc_country = '<?php echo $loc_location1 ?>';
             var jobsearch_sloc_state = '<?php echo $loc_location2 ?>';
@@ -956,8 +779,6 @@ class Jobsearch_EmployerFilterHTML
         $loc_counter = 1;
 
         $job_type = isset($_REQUEST['location']) ? $_REQUEST['location'] : '';
-        
-        $job_type = jobsearch_esc_html($job_type);
 
         $employer_loc_filter = isset($sh_atts['employer_filters_loc']) ? $sh_atts['employer_filters_loc'] : '';
         $employer_loc_filter_view = isset($sh_atts['employer_filters_loc_view']) ? $sh_atts['employer_filters_loc_view'] : '';
@@ -1154,11 +975,14 @@ class Jobsearch_EmployerFilterHTML
                                                     foreach ($api_contries_list as $api_cntry_key => $api_cntry_val) { ?>
                                                         <option value="<?php echo($api_cntry_val['code']) ?>" <?php echo($api_cntry_val['code'] == $loc_location1 ? 'selected="selected"' : '') ?>
                                                                 countryid="<?php echo($api_cntry_key['code']) ?>"><?php echo($api_cntry_val['name']) ?></option>
-                                                    <?php } } ?>
+                                                    <?php }
+                                                } ?>
                                             </select>
                                         </div>
                                     </li>
-                                    <?php } ?>
+                                    <?php
+                                }
+                                ?>
                                 <li class="jobsearch-column-12">
                                     <label><?php esc_html_e('State', 'wp-jobsearch') ?></label>
                                     <?php
@@ -1172,7 +996,7 @@ class Jobsearch_EmployerFilterHTML
                                     ?>
                                     <div id="jobsearch-gdapilocs-statecon" data-val="<?php echo($loc_location2) ?>"
                                          class="jobsearch-profile-select">
-                                        <select name="location_location2" <?php echo('class="location2-states states' . ($states_class) . '" id="stateId"') ?>>
+                                        <select name="location_location2" <?php echo('class="states' . ($states_class) . '" id="stateId"') ?>>
                                             <option value=""><?php esc_html_e('Select State', 'wp-jobsearch') ?></option>
                                             <?php
                                             if ($is_ajax) {
@@ -1228,7 +1052,8 @@ class Jobsearch_EmployerFilterHTML
                                             </select>
                                         </div>
                                     </li>
-                                    <?php }
+                                    <?php
+                                }
                                 ?>
                             </ul>
                             <div class="onsubmit-apilocs-con">
@@ -1262,7 +1087,8 @@ class Jobsearch_EmployerFilterHTML
                                 $job_location_flag = 1;
                                 echo self::get_terms_hierarchical($all_job_type, '', 0, 0, $global_rand_id, $args_count, $left_filter_count_switch);
                                 echo '</ul>';
-                            } else { ?>
+                            } else {
+                                ?>
                                 <p><?php esc_html_e('No location found. Please add from admin > job > locations.', 'wp-jobsearch') ?></p>
                                 <?php
                             }
@@ -1270,7 +1096,8 @@ class Jobsearch_EmployerFilterHTML
                             if ($loc_counter > 6) {
                                 echo '<a href="javascript:void(0);" class="show-toggle-filter-list jobsearch-loadmore-locations" data-ptype="employer" data-pnum="2" data-tpgs="' . $total_pages . '" data-rid="' . $global_rand_id . '" data-cousw="' . $left_filter_count_switch . '">' . esc_html__('+ see more', 'wp-jobsearch') . ' <small class="loc-filter-loder"></small></a>';
                             }
-                        }  ?>
+                        }
+                        ?>
 
                     </div>
                     <?php

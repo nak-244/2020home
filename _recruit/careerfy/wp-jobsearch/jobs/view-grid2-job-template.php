@@ -10,12 +10,8 @@ if (is_user_logged_in()) {
     $user_id = get_current_user_id();
     $user_company = get_user_meta($user_id, 'jobsearch_company', true);
 }
-$locations_view_type = isset($atts['job_loc_listing']) ? $atts['job_loc_listing'] : '';
-
 
 $locations_view_type = isset($atts['job_loc_listing']) ? $atts['job_loc_listing'] : '';
-$quick_apply_job = isset($atts['quick_apply_job']) ? $atts['quick_apply_job'] : '';
-$quick_apply_job_btn = $quick_apply_job == 'on' && !wp_is_mobile() ? 'jobsearch-quick-apply-show' : '';
 
 if (!is_array($locations_view_type)) {
 
@@ -108,9 +104,7 @@ $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']
 
 $columns_class = 'col-md-4';
 
-$has_featured_posts = false;
 if (isset($featjobs_posts) && !empty($featjobs_posts)) {
-    $has_featured_posts = true;
     $job_views_publish_date = isset($jobsearch_plugin_options['job_views_publish_date']) ? $jobsearch_plugin_options['job_views_publish_date'] : '';
     ?>
     <div class="careerfy-featured-jobs-grid">
@@ -140,46 +134,37 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                 <li class="<?php echo($columns_class); ?>">
 
                     <figure>
-
+                        <?php
+                        if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
+                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid2');
+                        }
+                        ?>
                         <?php
                         if ($job_type_str != '' && $job_types_switch == 'on') {
                             echo($job_type_str);
                         }
-                        if ($post_thumbnail_src != '') { ?>
-                            <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
-                               data-job-id="<?php echo esc_html($job_id); ?>"
-                               class="<?php echo($quick_apply_job_btn) ?>">
+                        if ($post_thumbnail_src != '') {
+                            ?>
+                            <a href="<?php the_permalink(); ?>">
                                 <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
                             </a>
                             <?php
                         }
-
-                        if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'style9');
-                        } ?>
-
-
+                        if ($jobsearch_job_featured == 'on') { ?>
+                            <span class="careerfy-job-featured"><?php echo esc_html__('Featured', 'careerfy'); ?></span>
+                        <?php } ?>
                     </figure>
                     <div class="featured-jobs-grid-text">
                         <?php
                         ob_start();
                         ?>
-                        <div class="featured-jobs-grid-tag"><?php echo($company_name) ?>
-                            <?php if ($jobsearch_job_featured == 'on') { ?>
-                                <span class="careerfy-job-featured"><i
-                                            class="fa fa-star"></i><?php echo esc_html__('Featured', 'careerfy'); ?></span>
-                            <?php } ?>
-                        </div>
+                        <div class="featured-jobs-grid-tag"><?php echo ($company_name) ?></div>
                         <?php
                         $comp_name_html = ob_get_clean();
                         echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view-grid2');
                         ?>
-                        <h2 class="jobsearch-pst-title <?php echo($quick_apply_job_btn) ?>"
-                            data-job-id="<?php echo esc_html($job_id); ?>">
-                            <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
-                               title="<?php echo esc_html(get_the_title($job_id)); ?>">
-                                <?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?>
-                            </a>
+                        <h2>
+                            <a href="<?php echo esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?></a>
                         </h2>
                         <ul>
                             <?php
@@ -202,8 +187,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <?php
                             if ($job_city_title != '' && $all_location_allow == 'on') {
                                 ?>
-                                <p>
-                                    <i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo jobsearch_esc_html($job_city_title) ?>
+                                <p><i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo($job_city_title) ?>
                                 </p>
                                 <?php
                             }
@@ -220,7 +204,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         <?php
                         if (jobsearch_excerpt(0, $job_id) != '') { ?>
                             <div class="jobsearch-list-excerpt">
-                                <p><?php echo jobsearch_esc_html(jobsearch_excerpt(0, $job_id)) ?></p>
+                                <p><?php echo jobsearch_excerpt(0, $job_id) ?></p>
                             </div>
                             <?php
                         }
@@ -273,26 +257,23 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                     <figure>
                         <?php
                         if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'style9');
+                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid2');
                         }
                         ?>
                         <?php
                         if ($job_type_str != '' && $job_types_switch == 'on') {
-                            echo jobsearch_esc_html($job_type_str);
+                            echo($job_type_str);
                         }
                         ?>
                         <?php if ($post_thumbnail_src != '') { ?>
-                            <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
-                               data-job-id="<?php echo esc_html($job_id); ?>"
-                               class="<?php echo($quick_apply_job_btn) ?>">
+                            <a href="<?php the_permalink(); ?>">
                                 <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
                             </a>
                         <?php } ?>
                         <?php
                         if ($jobsearch_job_featured == 'on') {
                             ?>
-                            <span class="careerfy-job-featured"><i
-                                        class="fa fa-star"></i><?php echo esc_html__('Featured', 'careerfy'); ?></span>
+                            <span class="careerfy-job-featured"><?php echo esc_html__('Featured', 'careerfy'); ?></span>
                             <?php
                         }
                         ?>
@@ -301,16 +282,13 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         <?php
                         ob_start();
                         ?>
-                        <div class="featured-jobs-grid-tag"><?php echo($company_name) ?></div>
+                        <div class="featured-jobs-grid-tag"><?php echo ($company_name) ?></div>
                         <?php
                         $comp_name_html = ob_get_clean();
                         echo apply_filters('jobsearch_empname_in_joblistin', $comp_name_html, $job_id, 'view-grid2');
                         ?>
-                        <h2 class="jobsearch-pst-title <?php echo($quick_apply_job_btn) ?>"
-                            data-job-id="<?php echo esc_html($job_id); ?>">
-                            <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
-                               title="<?php echo esc_html(get_the_title($job_id)); ?>">
-                                <?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?></a>
+                        <h2>
+                            <a href="<?php echo esc_url(get_permalink($job_id)); ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), 6)); ?></a>
                         </h2>
                         <ul>
                             <?php
@@ -332,8 +310,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             <?php
                             if ($job_city_title != '' && $all_location_allow == 'on') {
                                 ?>
-                                <p>
-                                    <i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo jobsearch_esc_html($job_city_title) ?>
+                                <p><i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo($job_city_title) ?>
                                 </p>
                                 <?php
                             }
@@ -347,11 +324,15 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                             do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                             ?>
                         </div>
-                        <?php if (jobsearch_excerpt(0, $job_id) != '') { ?>
+                        <?php
+                        if (jobsearch_excerpt(0, $job_id) != '') {
+                            ?>
                             <div class="jobsearch-list-excerpt">
-                                <p><?php echo jobsearch_esc_html(jobsearch_excerpt(0, $job_id)) ?></p>
+                                <p><?php echo jobsearch_excerpt(0, $job_id) ?></p>
                             </div>
-                        <?php } ?>
+                            <?php
+                        }
+                        ?>
                     </div>
 
                 </li>
@@ -372,19 +353,17 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
             endwhile;
             wp_reset_postdata();
         } else {
-            if (!$has_featured_posts) {
-                $reset_link = get_permalink(get_the_ID());
-                echo '
-                <li class="' . esc_html($columns_class) . '">
-                    <div class="no-job-match-error">
-                        <strong>' . esc_html__('No Record', 'careerfy') . '</strong>
-                        <span>' . esc_html__('Sorry!', 'careerfy') . '&nbsp; ' . esc_html__('Does not match record with your keyword', 'careerfy') . ' </span>
-                        <span>' . esc_html__('Change your filter keywords to re-submit', 'careerfy') . '</span>
-                        <em>' . esc_html__('OR', 'careerfy') . '</em>
-                        <a href="' . esc_url($reset_link) . '">' . esc_html__('Reset Filters', 'careerfy') . '</a>
-                    </div>
-                </li>';
-            }
+            $reset_link = get_permalink(get_the_ID());
+            echo '
+            <li class="' . esc_html($columns_class) . '">
+                <div class="no-job-match-error">
+                    <strong>' . esc_html__('No Record', 'careerfy') . '</strong>
+                    <span>' . esc_html__('Sorry!', 'careerfy') . '&nbsp; ' . esc_html__('Does not match record with your keyword', 'careerfy') . ' </span>
+                    <span>' . esc_html__('Change your filter keywords to re-submit', 'careerfy') . '</span>
+                    <em>' . esc_html__('OR', 'careerfy') . '</em>
+                    <a href="' . esc_url($reset_link) . '">' . esc_html__('Reset Filters', 'careerfy') . '</a>
+                </div>
+            </li>';
         }
         ?>
     </ul>

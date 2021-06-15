@@ -87,7 +87,9 @@ class TopJobSlider extends Widget_Base
      */
     protected function _register_controls()
     {
+        global $jobsearch_gdapi_allocation;
         $jobsearch__options = get_option('jobsearch_plugin_options');
+
         $categories = get_terms(array(
             'taxonomy' => 'sector',
             'hide_empty' => false,
@@ -237,7 +239,8 @@ class TopJobSlider extends Widget_Base
 
     private static function GetSliderList($top_job_posts, $top_job_style, $loc_view_country, $loc_view_state, $loc_view_city)
     {
-        global $jobsearch_plugin_options;
+        global $jobsearch_plugin_options, $JobSearchMultiPostThumbnails;
+
         $job_types_switch = isset($jobsearch_plugin_options['job_types_switch']) ? $jobsearch_plugin_options['job_types_switch'] : '';
 
         foreach ($top_job_posts as $top_recruiter_id) {
@@ -254,8 +257,8 @@ class TopJobSlider extends Widget_Base
             wp_enqueue_script('jobsearch-job-functions-script');
             $employer_cover_image_src_style_str = '';
             if ($job_employer_id != '') {
-                if (class_exists('JobSearchMultiPostThumbnails')) {
-                    $employer_cover_image_src = JobSearchMultiPostThumbnails::get_post_thumbnail_url('employer', 'cover-image', $job_employer_id);
+                if (!empty($JobSearchMultiPostThumbnails)) {
+                    $employer_cover_image_src = $JobSearchMultiPostThumbnails::get_post_thumbnail_url('employer', 'cover-image', $job_employer_id);
                     if ($employer_cover_image_src != '') {
                         $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($employer_cover_image_src) . ') no-repeat center/cover; "';
                     }
@@ -264,7 +267,7 @@ class TopJobSlider extends Widget_Base
             $wp_date_formate = get_option('date_format');
             $jobsearch_job_featured = get_post_meta($top_recruiter_id, 'jobsearch_field_job_featured', true);
             $job_deadline = get_post_meta($top_recruiter_id, 'jobsearch_field_job_application_deadline_date', true);
-            $postby_emp_id = get_post_meta($top_recruiter_id, 'jobsearch_field_job_posted_by', true);
+
             $top_recruiter_date_date = get_post_meta($top_recruiter_id, 'jobsearch_field_job_publish_date', true);
             $top_recruiter_date_date = absint($top_recruiter_date_date);
             $current_time = current_time('timestamp');
@@ -289,20 +292,13 @@ class TopJobSlider extends Widget_Base
                 }
 
             }
-
-
             if ($top_job_style == 'slider') { ?>
                 <div class="careerfy-top-recruiters-slider-layer">
                     <div class="careerfy-top-recruiters">
                         <div class="careerfy-top-recruiters-slider-image">
-                            <?php
-                            if ($jobsearch_job_featured == 'on') { ?>
-                                <strong class="promotepof-badge"><i class="fa fa-star"></i></strong>
+                            <?php if ($post_thumbnail_src != "") { ?>
+                                <img src="<?php echo $post_thumbnail_src ?>" alt="">
                             <?php } ?>
-                            <img src="<?php echo $post_thumbnail_src ?>" alt="">
-                            <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                                jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'job_listv1');
-                            } ?>
                         </div>
                         <div class="careerfy-top-recruiters-inner">
                             <?php
@@ -314,12 +310,12 @@ class TopJobSlider extends Widget_Base
                             </h2>
                             <ul>
                                 <li><i class="careerfy-icon careerfy-calendar"></i>
-                                    <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(date($wp_date_formate, $job_deadline), 'careerfy-frame') . "<br>"; ?>
+                                    <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(get_the_date($wp_date_formate, $job_deadline), 'careerfy-frame') . "<br>"; ?>
                                 </li>
                                 <?php if ($get_top_recruiter_job_location != "") { ?>
                                     <li><i class="careerfy-icon careerfy-pin"></i>
                                         <span><?php echo esc_html__('Location:', 'careerfy-frame') ?></span>
-                                        <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?>
+                                        <?php echo esc_html($get_top_recruiter_job_location); ?>
                                     </li>
                                 <?php } ?>
                             </ul>
@@ -332,12 +328,8 @@ class TopJobSlider extends Widget_Base
                     </div>
                 </div>
             <?php } else if ($top_job_style == 'slider2') { ?>
-
                 <div class="careerfy-top-recruiters-slider-layer">
                     <div class="careerfy-recruiters-top-list">
-                        <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'job_listv1');
-                        } ?>
                         <div class="careerfy-top-recruiters-slider-image">
                             <img src="<?php echo $post_thumbnail_src ?>" alt="">
                         </div>
@@ -355,7 +347,7 @@ class TopJobSlider extends Widget_Base
                             }
                             if ($get_top_recruiter_job_location != "") { ?>
                                 <small>
-                                    <i class="careerfy-icon careerfy-pin"></i> <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?>
+                                    <i class="careerfy-icon careerfy-pin"></i> <?php echo esc_html($get_top_recruiter_job_location); ?>
                                 </small>
                             <?php } ?>
                         </div>
@@ -371,24 +363,13 @@ class TopJobSlider extends Widget_Base
 
                 <div class="careerfy-sixteen-jobs-layer">
                     <div class="careerfy-sixteen-jobs-grid">
-                        <figure>
-                            <?php if ($jobsearch_job_featured == 'on') { ?>
-                                <span class="careerfy-jobs-style9-featured jobsearch-tooltipcon" title="Featured"><i
-                                            class="fa fa-star"></i></span>
-                            <?php } ?>
-                            <div class="">
-                                <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                                    jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'style10');
-                                } ?>
-                            </div>
-                            <a <?php echo($employer_cover_image_src_style_str) ?>
+                        <figure><a <?php echo($employer_cover_image_src_style_str) ?>
                                     href="<?php echo get_permalink($top_recruiter_id) ?>"><img
-                                        src="<?php echo $post_thumbnail_src ?>" alt=""></a>
-                        </figure>
+                                        src="<?php echo $post_thumbnail_src ?>" alt=""></a></figure>
                         <div class="careerfy-sixteen-jobs-grid-text">
                             <div class="careerfy-sixteen-jobs-grid-top">
                                 <?php if ($get_top_recruiter_job_location != "") { ?>
-                                    <span><i class="fa fa-map-marker"></i> <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?></span>
+                                    <span><i class="fa fa-map-marker"></i> <?php echo esc_html($get_top_recruiter_job_location); ?></span>
                                 <?php } ?>
                                 <h2>
                                     <a href="<?php echo get_permalink($top_recruiter_id) ?>"><?php echo $get_job_title ?></a>
@@ -403,7 +384,7 @@ class TopJobSlider extends Widget_Base
                                 do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                 ?>
                             </div>
-                            <p><?php echo limit_text(filter_var($top_recruiter_post_content, FILTER_SANITIZE_STRING), 12) ?></p>
+                            <p><?php echo limit_text($top_recruiter_post_content, 12) ?></p>
                             <?php
                             if ($job_type_str != '' && $job_types_switch == 'on') {
                                 echo force_balance_tags($job_type_str);

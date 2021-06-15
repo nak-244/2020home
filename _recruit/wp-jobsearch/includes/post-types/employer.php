@@ -36,18 +36,15 @@ if (!class_exists('post_type_employer')) {
         }
 
         function my_admin_custom_styles() {
-            global $pagenow;
-            if ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'employer') {
-                $output_css = '<style type="text/css"> 
-                    .column-employer_title { min-width:150px !important; max-width:300px !important; overflow:hidden; }
-                    .column-location { min-width:150px !important; max-width:300px !important; overflow:hidden; }
-                    .post-type-employer .column-featured { width:50px !important; overflow:hidden; } 
-                    .post-type-employer .column-posted_jobs { width:108px !important; overflow:hidden; } 
-                    .column-status { width:30px !important; overflow:hidden; }
-                    .column-action { text-align:right !important; width:150px !important; overflow:hidden; }
-                </style>';
-                echo $output_css;
-            }
+            $output_css = '<style type="text/css"> 
+                .column-employer_title { min-width:150px !important; max-width:300px !important; overflow:hidden; }
+                .column-location { min-width:150px !important; max-width:300px !important; overflow:hidden; }
+                .post-type-employer .column-featured { width:50px !important; overflow:hidden; } 
+                .post-type-employer .column-posted_jobs { width:108px !important; overflow:hidden; } 
+                .column-status { width:30px !important; overflow:hidden; }
+                .column-action { text-align:right !important; width:150px !important; overflow:hidden; }
+            </style>';
+            echo $output_css;
         }
 
         public function jobsearch_employer_register() {
@@ -67,10 +64,6 @@ if (!class_exists('post_type_employer')) {
                 'edit_item' => __('Edit Employer', 'wp-jobsearch'),
                 'view_item' => __('View Employer', 'wp-jobsearch'),
                 'all_items' => __('All Employers', 'wp-jobsearch'),
-                'featured_image' => __('Company logo', 'ritefoodies'),
-                'set_featured_image' => __('Set company logo', 'ritefoodies'),
-                'remove_featured_image' => __('Remove company logo', 'ritefoodies'),
-                'use_featured_image' => __('Use as company logo', 'ritefoodies'),
                 'search_items' => __('Search Employers', 'wp-jobsearch'),
                 'parent_item_colon' => __('Parent Employers:', 'wp-jobsearch'),
                 'not_found' => __('No employers found.', 'wp-jobsearch'),
@@ -94,7 +87,6 @@ if (!class_exists('post_type_employer')) {
                 'supports' => array('title', 'editor', 'excerpt', 'thumbnail')
             );
 
-			$args = apply_filters('jobsearch_reg_post_type_emp_args', $args);
             register_post_type('employer', $args);
         }
 
@@ -106,6 +98,14 @@ if (!class_exists('post_type_employer')) {
                 $post_id = isset($_GET['post']) ? $_GET['post'] : '';
                 $post_obj = get_post($post_id);
                 $post_type = isset($post_obj->post_type) ? $post_obj->post_type : '';
+            }
+            if ($post_type == 'employer') {
+                ?>
+                <script>
+                    jQuery('#postimagediv > h2').html('<span><?php esc_html_e('Company Logo', 'wp-jobsearch') ?></span>');
+                    jQuery('a#set-post-thumbnail').html('<?php esc_html_e('Set company logo', 'wp-jobsearch') ?>');
+                </script>
+                <?php
             }
         }
 
@@ -188,7 +188,7 @@ if (!class_exists('post_type_employer')) {
         }
 
         public function custom_job_filters($actions) {
-            if (is_array($actions)) {
+            if (is_array($actions) && isset($actions['trash'])) {
                 $actions['approved'] = esc_html__('Approved', 'wp-jobsearch');
                 $actions['pending'] = esc_html__('Pending', 'wp-jobsearch');
             }
@@ -199,15 +199,6 @@ if (!class_exists('post_type_employer')) {
             if ($doaction == 'approved' || $doaction == 'pending') {
                 if (!empty($post_ids)) {
                     foreach ($post_ids as $employer_id) {
-                        $user_aproved = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
-                        if ($user_aproved != 'on') {
-                            $user_id = get_post_meta($employer_id, 'jobsearch_user_id', true);
-                            $user_obj = get_user_by('ID', $user_id);
-                            if (isset($user_obj->ID)) {
-                                do_action('jobsearch_profile_approval_to_employer', $user_obj);
-                            }
-                        }
-                        
                         $do_save = $doaction == 'approved' ? 'on' : '';
                         update_post_meta($employer_id, 'jobsearch_field_employer_approved', $do_save);
                         if ($doaction == 'approved') {
@@ -320,7 +311,6 @@ if (!class_exists('post_type_employer')) {
         public function jobsearch_employer_columns($column) {
             global $post;
             $_post_id = $post->ID;
-            $employer_user_id = get_post_meta($_post_id, 'jobsearch_user_id', true);
             switch ($column) {
                 case 'employer_title' :
                     echo '<div class="employer_position">';
@@ -345,22 +335,10 @@ if (!class_exists('post_type_employer')) {
                         printf('%1$s', $employertype_list);
                     }
                     echo '</div>';
-                    
-                    if (class_exists('w357LoginAsUser')) {
-                        $w357LoginAsUser = new w357LoginAsUser;
-                        $user_obj = get_user_by('ID', $employer_user_id);
-                        if (isset($user_obj->ID)) {
-
-                            $the_user_obj = new WP_User($employer_user_id);
-                            $login_as_user_url = $w357LoginAsUser->build_the_login_as_user_url($the_user_obj);
-                            $login_as_link = '<a class="button w357-login-as-user-btn" href="' . esc_url($login_as_user_url) . '" title="'.esc_html__('Login as', 'login-as-user').': ' . $w357LoginAsUser->login_as_type($the_user_obj, false) . '"><span class="dashicons dashicons-admin-users"></span> '.esc_html__('Login as', 'login-as-user').': <strong>' . $w357LoginAsUser->login_as_type($the_user_obj) . '</strong></a>';
-                            echo ($login_as_link);
-                        }
-                    }
 
                     echo '</div>';
                     break;
-                
+
                 case 'location' :
                     $locat_str = '';
                     $location1 = get_post_meta($post->ID, 'jobsearch_field_location_location1', true);
@@ -392,7 +370,7 @@ if (!class_exists('post_type_employer')) {
                         $locat_str .= $full_addrs;
                     }
                     
-                    echo jobsearch_esc_html($locat_str);
+                    echo ($locat_str);
                     break;
                 case 'posted_jobs' :
                     echo '<div id="emp-actjobs-' . $post->ID . '" data-id="' . $post->ID . '" class="emp-activejobs-span"><span class="spinner is-active"></span></div>';

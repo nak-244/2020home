@@ -8,7 +8,7 @@ class Jobsearch_Jobs_Embeddable_Code {
 
     public function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'embeddable_scripts') );
-        add_action('init', array($this, 'jobs_embedcode_js'));
+        add_action('wp', array($this, 'jobs_embedcode_js'));
         add_shortcode('jobsearch_embeddable_jobs_generator', array($this, 'embed_code_generator'));
     }
 
@@ -192,9 +192,13 @@ class Jobsearch_Jobs_Embeddable_Code {
             if ($totl_found_jobs > $per_page) {
                 $total_pages = ceil($totl_found_jobs / $per_page);
             }
+            
             $job_posts = $jobs_query->posts;
-            ob_start();
 
+            ob_start();
+            //echo '<pre>';
+            //var_dump($jobs_args);
+            //echo '</pre>';
             echo '<div class="jobsearch-embeddable-jobs-content">';
             echo '<ul class="jobsearch-embeddable-jobs-listings">';
 

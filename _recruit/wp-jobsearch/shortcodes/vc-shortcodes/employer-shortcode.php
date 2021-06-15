@@ -132,7 +132,6 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                             'content' => $content,
                             'employer_map_counter' => $employer_map_counter,
                             'page_url' => $page_url,
-                            'page_id' => get_the_ID(),
                         );
                         $this->jobsearch_employers_content($employer_arg);
                         ?>
@@ -402,6 +401,23 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                 $all_post_ids = $this->employer_polygon_filter($loc_polygon_path, $all_post_ids, $element_filter_arr);
             }
 
+            if (isset($search_title) && $search_title != '') {
+
+//                $search_query = "SELECT ID FROM $wpdb->posts AS posts";
+//                $search_query .= " WHERE posts.post_type=%s AND posts.post_status='publish' AND (posts.post_title LIKE %s OR posts.post_content LIKE '%$search_title%')";
+//                if (!empty($all_post_ids)) {
+//                    $_post_ids = implode(',', $all_post_ids);
+//                    $search_query .= " AND posts.ID IN ($_post_ids)";
+//                }
+//                $search_query .= " ORDER BY ID DESC";
+//                $_job_ids = $wpdb->get_col($wpdb->prepare($search_query, 'employer', "%$search_title%"));
+//                if (!empty($_job_ids)) {
+//                    $all_post_ids = $_job_ids;
+//                } else {
+//                    $all_post_ids = array(0);
+//                }
+            }
+
             // recent employer query end
 
             if (!empty($all_post_ids)) {
@@ -409,8 +425,9 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                 $args['post__in'] = $all_post_ids;
             }
 
-            $args = apply_filters('jobsearch_emp_listing_query_args_array', $args, $atts);
-            $args_count = apply_filters('jobsearch_emp_listing_query_argscount_array', $args_count, $atts);
+            //echo '<pre>';
+            //print_r($args);
+            //echo '</pre>';
 
             add_filter('posts_where', 'jobsearch_search_query_results_filter', 10, 2);
             $employer_loop_obj = jobsearch_get_cached_obj('employer_result_cached_loop_obj1', $args, 12, false, 'wp_query');
@@ -430,7 +447,7 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
             }
             remove_filter('posts_join_paged', array($this, 'edit_join'), 999, 2);
             remove_filter('posts_orderby', array($this, 'edit_orderby'), 999, 2);
-
+            
             $page_container_view = get_post_meta($page_id, 'careerfy_field_page_view', true);
             ?>
             <form id="jobsearch_employer_frm_<?php echo absint($employer_short_counter); ?>">
@@ -459,23 +476,16 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                     $map_latitude = '51.2';
                     $map_longitude = '0.2';
 
-                    if ($loc_def_adres != '' && !(isset($_GET['location']))) {
+                    if ($loc_def_adres != '') {
                         $adre_to_cords = jobsearch_address_to_cords($loc_def_adres);
                         $map_latitude = isset($adre_to_cords['lat']) && $adre_to_cords['lat'] != '' ? $adre_to_cords['lat'] : $map_latitude;
                         $map_longitude = isset($adre_to_cords['lng']) && $adre_to_cords['lng'] != '' ? $adre_to_cords['lng'] : $map_longitude;
                     }
-                    if (isset($_GET['location']) && $_GET['location'] != '') {
-                        $url_get_loc = $_GET['location'];
-                        $adre_to_cords = jobsearch_address_to_cords($url_get_loc);
-                        $map_latitude = isset($adre_to_cords['lat']) && $adre_to_cords['lat'] != '' ? $adre_to_cords['lat'] : $map_latitude;
-                        $map_longitude = isset($adre_to_cords['lng']) && $adre_to_cords['lng'] != '' ? $adre_to_cords['lng'] : $map_longitude;
-                    }
-
                     $map_marker_icon = isset($jobsearch_plugin_options['elistin_map_marker_img']['url']) ? $jobsearch_plugin_options['elistin_map_marker_img']['url'] : '';
                     if ($map_marker_icon == '') {
                         $map_marker_icon = jobsearch_plugin_get_url('images/employer_map_marker.png');
                     }
-                    $map_cluster_icon = isset($jobsearch_plugin_options['elistin_map_cluster_img']['url']) ? $jobsearch_plugin_options['elistin_map_cluster_img']['url'] : '';
+                    $map_cluster_icon = isset($jobsearch_plugin_options['listin_map_cluster_img']['url']) ? $jobsearch_plugin_options['listin_map_cluster_img']['url'] : '';
                     if ($map_cluster_icon == '') {
                         $map_cluster_icon = jobsearch_plugin_get_url('images/map_cluster.png');
                     }
@@ -492,10 +502,12 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                             $get_pos_sectrs = wp_get_post_terms($employer_post, 'sector');
                             $map_pos_sectrs_html = '';
                             if (!empty($get_pos_sectrs)) {
-                                $map_secresult_page = get_permalink();
+                                $map_secpage_id = isset($jobsearch_plugin_options['jobsearch_search_list_page']) ? $jobsearch_plugin_options['jobsearch_search_list_page'] : '';
+                                $map_secpage_id = jobsearch__get_post_id($map_secpage_id, 'page');
+                                $map_secresult_page = get_permalink($map_secpage_id);
                                 $map_pos_sectrs_html .= ' ' . esc_html__('in', 'wp-jobsearch') . ' ';
                                 foreach ($get_pos_sectrs as $get_pos_sectr) {
-                                    $map_pos_sectrs_html .= '<a href="' . add_query_arg(array('sector_cat' => $get_pos_sectr->slug, 'ajax_filter' => 'true'), $map_secresult_page) . '">' . $get_pos_sectr->name . '</a> ';
+                                    $map_pos_sectrs_html .= '<a href="' . add_query_arg(array('sector_cat' => $get_pos_sectr->slug), $map_secresult_page) . '">' . $get_pos_sectr->name . '</a> ';
                                 }
                             }
                             //logo img
@@ -579,14 +591,12 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                         });
                     </script>
                     <div class="jobsearch-listing-mapcon <?php echo($emp_top_search == 'yes' ? 'with-serch-map-both' : '') ?>">
-                        <div id="listings-map-<?php echo absint($employer_short_counter); ?>"
-                             class="jobsearch-joblist-map"
-                             style="height: <?php echo($listing_top_map_height) ?>px;"></div>
+                        <div id="listings-map-<?php echo absint($employer_short_counter); ?>" class="jobsearch-joblist-map" style="height: <?php echo($listing_top_map_height) ?>px;"></div>
                     </div>
                     <?php
                     $map_html = ob_get_clean();
                     echo apply_filters('jobsearch_emps_listin_topmap_html', $map_html, $listn_map_obj, $employer_short_counter, $listing_top_map_height, $atts);
-
+                    
                     if ($page_container_view == 'wide') {
                         echo '<div class="container">';
                     }
@@ -619,16 +629,11 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                     $top_search_title = isset($atts['emp_top_search_title']) && !empty($atts['emp_top_search_title']) ? $atts['emp_top_search_title'] : 'yes';
                     $top_search_location = isset($atts['emp_top_search_location']) && !empty($atts['emp_top_search_location']) ? $atts['emp_top_search_location'] : 'yes';
                     $top_search_sector = isset($atts['emp_top_search_sector']) && !empty($atts['emp_top_search_sector']) ? $atts['emp_top_search_sector'] : 'yes';
-                    $vc_top_search_radius = isset($atts['emp_top_search_radius']) && !empty($atts['emp_top_search_radius']) ? $atts['emp_top_search_radius'] : 'yes';
                     $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
 
                     $search_title_val = isset($_REQUEST['search_title']) ? $_REQUEST['search_title'] : '';
-                    $location_val = isset($_REQUEST['location']) ? ($_REQUEST['location']) : '';
+                    $location_val = isset($_REQUEST['location']) ? $_REQUEST['location'] : '';
                     $cat_sector_val = isset($_REQUEST['sector_cat']) ? urldecode($_REQUEST['sector_cat']) : '';
-
-                    $search_title_val = jobsearch_esc_html($search_title_val);
-                    $location_val = jobsearch_esc_html($location_val);
-                    $cat_sector_val = jobsearch_esc_html($cat_sector_val);
 
                     $search_main_class = '';
                     if ($top_serch_style == 'advance') {
@@ -641,7 +646,7 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                     }
 
                     $without_sectr_class = 'search-cat-off';
-                    if (($top_search_sector == 'yes' && $sectors_enable_switch == 'on') || ($top_search_sector == 'no' && $sectors_enable_switch == 'no')) {
+                    if (($top_search_sector == 'yes' && $sectors_enable_switch == 'on') || ($sectors_enable_switch == 'on' && $top_search_sector == 'no')) {
                         $without_sectr_class = '';
                     }
                     $without_loc_class = 'search-loc-off';
@@ -653,9 +658,6 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                     $job_filters_loc = isset($atts['job_filters_loc']) ? $atts['job_filters_loc'] : '';
                     $top_search_locsugg = isset($jobsearch_plugin_options['top_search_locsugg']) ? $jobsearch_plugin_options['top_search_locsugg'] : '';
                     $top_search_geoloc = isset($jobsearch_plugin_options['top_search_geoloc']) ? $jobsearch_plugin_options['top_search_geoloc'] : '';
-                    $top_search_radius = isset($jobsearch_plugin_options['top_search_radius']) ? $jobsearch_plugin_options['top_search_radius'] : '';
-                    $top_search_def_radius = isset($jobsearch_plugin_options['top_search_def_radius']) ? $jobsearch_plugin_options['top_search_def_radius'] : 50;
-                    $top_search_max_radius = isset($jobsearch_plugin_options['top_search_max_radius']) ? $jobsearch_plugin_options['top_search_max_radius'] : 500;
                     ?>
                     <div class="jobsearch-top-searchbar jobsearch-typo-wrap <?php echo($search_main_class) ?> <?php echo $adv_search_on ?>">
                         <!-- Sub Header Form -->
@@ -677,12 +679,15 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                                             <div class="jobsearch_searchloc_div">
                                                 <span class="loc-loader"></span>
                                                 <?php
-                                                if ($top_search_locsugg == 'no') { ?>
+                                                if ($top_search_locsugg == 'no') {
+                                                    ?>
                                                     <input placeholder="<?php esc_html_e('City, State or ZIP', 'wp-jobsearch') ?>"
                                                            class="<?php echo($top_search_geoloc != 'no' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location"
                                                            value="<?php echo urldecode($location_val) ?>" type="text">
-                                                <?php } else { ?>
+                                                    <?php
+                                                } else {
+                                                    ?>
                                                     <input placeholder="<?php esc_html_e('City, State or ZIP', 'wp-jobsearch') ?>"
                                                            autocomplete="off" class="jobsearch_search_location_field"
                                                            value="<?php echo urldecode($location_val) ?>" type="text">
@@ -690,23 +695,15 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                                                            class="loc_search_keyword <?php echo($top_search_geoloc != 'no' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location"
                                                            value="<?php echo urldecode($location_val) ?>">
-                                                <?php }
-                                                if ($top_search_radius == 'yes' && $vc_top_search_radius == 'yes' && $top_serch_style != 'advance') { ?>
-                                                    <div class="careerfy-radius-tooltip">
-                                                        <label><?php echo esc_html__('Radius', 'careerfy-frame') ?>
-                                                            ( <?php echo esc_html__($def_radius_unit, 'careerfy-frame') ?>
-                                                            )</label><input
-                                                                type="number" name="loc_radius"
-                                                                value="<?php echo($top_search_def_radius) ?>"
-                                                                max="<?php echo($top_search_max_radius) ?>"></div>
-                                                <?php } ?>
+                                                    <?php
+                                                }
+
+                                                ?>
                                             </div>
                                             <?php
                                             if ($top_search_geoloc != 'no') {
                                                 ?>
-                                                <a href="javascript:void(0);" class="geolction-btn"
-                                                   onclick="JobsearchGetClientLocation()"><i
-                                                            class="jobsearch-icon jobsearch-location"></i></a>
+                                                <a href="javascript:void(0);" class="geolction-btn" onclick="JobsearchGetClientLocation()"><i class="jobsearch-icon jobsearch-location"></i></a>
                                                 <?php
                                             }
                                             ?>
@@ -739,13 +736,14 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                                         }
                                     }
 
-                                    if ($top_serch_style == 'advance') { ?>
-                                        <li class="adv-srch-toggler">
-                                            <a href="javascript:void(0);" class="adv-srch-toggle-btn">
-                                                <span>+</span> <?php esc_html_e('Advance Search', 'wp-jobsearch') ?>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
+                                    if ($top_serch_style == 'advance') {
+                                        ?>
+                                        <li class="adv-srch-toggler"><a href="javascript:void(0);"
+                                                                        class="adv-srch-toggle-btn"><span>+</span> <?php esc_html_e('Advance Search', 'wp-jobsearch') ?>
+                                            </a></li>
+                                        <?php
+                                    }
+                                    ?>
                                     <li class="jobsearch-banner-submit">
                                         <input type="hidden" name="ajax_filter" value="true">
                                         <input type="submit" value=""> <i class="jobsearch-icon jobsearch-search"></i>
@@ -793,25 +791,21 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                                                     ?>
                                                     <div class="filter-slider-range">
                                                         <span class="radius-txt"><?php esc_html_e('Radius:', 'wp-jobsearch') ?></span>
-                                                        <span id="radius-num-<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"
-                                                              class="radius-numvr-holdr"><?php echo esc_html($tpsrch_complete_str); ?></span>
+                                                        <span id="radius-num-<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>" class="radius-numvr-holdr"><?php echo esc_html($tpsrch_complete_str); ?></span>
                                                         <span class="radius-punit"><?php echo($to_radius_unit) ?></span>
-                                                        <input type="hidden" id="loc-def-radiusval"
-                                                               value="<?php echo esc_html($tpsrch_complete_str) ?>">
-                                                        <input type="hidden" name="loc_radius"
-                                                               id="<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"
-                                                               value="">
+                                                        <input type="hidden" id="loc-def-radiusval" value="<?php echo esc_html($tpsrch_complete_str) ?>">
+                                                        <input type="hidden" name="loc_radius" id="<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>" value="">
                                                     </div>
 
                                                     <div id="slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>"></div>
                                                     <script>
                                                         jQuery(document).ready(function () {
-                                                            var toSetRadiusVal = setInterval(function () {
+                                                            var toSetRadiusVal = setInterval(function() {
                                                                 jQuery('input#<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>').val('');
                                                                 <?php
                                                                 if ($tpsrch_complete_str > 0 && $tpsrch_field_max > $tpsrch_complete_str) {
                                                                 ?>
-                                                                var initSlideWidthPerc = (<?php echo($tpsrch_complete_str) ?>/<?php echo absint($tpsrch_field_max); ?>)*100;
+                                                                var initSlideWidthPerc = (<?php echo ($tpsrch_complete_str) ?>/<?php echo absint($tpsrch_field_max); ?>)*100;
                                                                 jQuery("#slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").find('.ui-slider-range').css({width: initSlideWidthPerc + '%'});
                                                                 <?php
                                                                 }
@@ -826,7 +820,7 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                                                                 max: <?php echo absint($tpsrch_field_max); ?>,
                                                                 values: [<?php echo absint($tpsrch_complete_str_first); ?>],
                                                                 slide: function (event, ui) {
-                                                                    var slideWidthPerc = ((ui.values[0]) /<?php echo absint($tpsrch_field_max); ?>) * 100;
+                                                                    var slideWidthPerc = ((ui.values[0])/<?php echo absint($tpsrch_field_max); ?>)*100;
                                                                     jQuery("#slider-tpsrch<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").find('.ui-slider-range').css({width: slideWidthPerc + '%'});
                                                                     jQuery("#<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").val(ui.values[0]);
                                                                     jQuery("#radius-num-<?php echo esc_html($tpsrch_str_var_name . $tprand_id) ?>").html(ui.values[0]);
@@ -934,14 +928,8 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                             set_query_var('employer_cus_fields', $employer_cus_fields);
                             set_query_var('employer_short_counter', $employer_short_counter);
                             set_query_var('atts', $atts);
-
                             jobsearch_get_template_part($employer_view, 'employer-template', 'employers');
-
-                            echo apply_filters('jobsearch_emps_list_template_after', '', $employer_short_counter, $atts);
                             wp_reset_postdata();
-                            if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') && isset($_REQUEST['lang']) && $_REQUEST['lang'] != '') {
-                                echo '<input type="hidden" name="lang" value="' . jobsearch_esc_html($_REQUEST['lang']) . '">';
-                            }
                             ?>
                         </div>
                         <?php
@@ -977,7 +965,7 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                         'std' => $employer_short_counter,
                     )
                 );
-
+                
                 if ($listing_top_map == 'yes') {
                     if ($page_container_view == 'wide') {
                         echo '</div>';
@@ -1421,9 +1409,6 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
 
             $radius = isset($_REQUEST['loc_radius']) ? $_REQUEST['loc_radius'] : '';
             $search_type = isset($_REQUEST['location_location1']) ? $_REQUEST['location_location1'] : '';
-
-            $jobsearch__options = get_option('jobsearch_plugin_options');
-            $all_locations_type = isset($jobsearch__options['all_locations_type']) ? $jobsearch__options['all_locations_type'] : '';
 
             $location_rslt = $all_post_ids;
 
@@ -2088,12 +2073,11 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
             $keyword_html = '';
             if (isset($qrystr) && $qrystr != '') {
 
-                //get all query string
+//get all query string
                 if (isset($qrystr)) {
                     $qrystr_arr = getMultipleParameters($qrystr);
                     foreach ($qrystr_arr as $qry_var => $qry_val) {
-                        $qry_var = jobsearch_esc_html($qry_var);
-                        if (strpos($qry_var, 'nonce') !== false || 'employer_page' == $qry_var || 'lang' == $qry_var || 'page_id' == $qry_var || 'per-page' == $qry_var || 'action' == $qry_var || 'ajax_filter' == $qry_var || 'advanced_search' == $qry_var || 'employer_arg' == $qry_var || 'action' == $qry_var || 'alert-frequency' == $qry_var || 'alerts-name' == $qry_var || 'loc_polygon' == $qry_var || 'alerts-email' == $qry_var || 'loc_polygon_path' == $qry_var)
+                        if ('employer_page' == $qry_var || 'lang' == $qry_var || 'page_id' == $qry_var || 'per-page' == $qry_var || 'action' == $qry_var || 'ajax_filter' == $qry_var || 'advanced_search' == $qry_var || 'employer_arg' == $qry_var || 'action' == $qry_var || 'alert-frequency' == $qry_var || 'alerts-name' == $qry_var || 'loc_polygon' == $qry_var || 'alerts-email' == $qry_var || 'loc_polygon_path' == $qry_var)
                             continue;
                         if ($qry_val != '') {
                             if (!is_array($qry_val)) {
@@ -2104,19 +2088,17 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
                             if (is_array($qry_val)) {
                                 foreach ($qry_val as $qry_val_var => $qry_val_value) {
                                     if ($qry_val_value != '') {
-                                        $qry_val_value = apply_filters('jobsearch_listing_url_query_vals_result', $qry_val_value, $qry_var, 'employer');
-                                        $qry_var_str = apply_filters('jobsearch_listing_url_query_vars_result', $qry_var, 'employer');
                                         $qry_val_value = urldecode($qry_val_value);
                                         $keyword_html .= '<li>';
                                         $qrystr1 = str_replace("&" . $qry_var . '[]=' . $qry_val_value, "", $qrystr);
                                         $qrystr1 = str_replace("&" . $qry_var . '=' . $qry_val_value, "", $qrystr);
-                                        $keyword_html .= '<a href="' . wp_kses(jobsearch_remove_qrystr_extra_var($qrystr1, $qry_var), array()) . '" title="' . $qry_var_str . '">' . ucwords(str_replace(array("+", "-"), " ", jobsearch_esc_html($qry_val_value))) . ' <i class="fa fa-window-close"></i></a>';
+                                        $keyword_html .= '<a href="' . jobsearch_remove_qrystr_extra_var($qrystr1, $qry_var) . '" title="' . ucwords(str_replace(array("+", "-", "_"), " ", $qry_var)) . '">' . ucwords(str_replace(array("+", "-"), " ", $qry_val_value)) . ' <i class="fa fa-window-close"></i></a>';
                                         $keyword_html .= '</li>';
                                     }
                                 }
                             } else {
                                 $keyword_html .= '<li>';
-                                $keyword_html .= '<a href="' . wp_kses(jobsearch_remove_qrystr_extra_var($qrystr, $qry_var), array()) . '" title="' . ucwords(str_replace(array("+", "-", "_"), " ", $qry_var)) . '">' . ucwords(str_replace(array("+", "-"), " ", jobsearch_esc_html($qry_val))) . ' <i class="fa fa-window-close"></i></a>';
+                                $keyword_html .= '<a href="' . jobsearch_remove_qrystr_extra_var($qrystr, $qry_var) . '" title="' . ucwords(str_replace(array("+", "-", "_"), " ", $qry_var)) . '">' . ucwords(str_replace(array("+", "-"), " ", $qry_val)) . ' <i class="fa fa-window-close"></i></a>';
                                 $keyword_html .= '</li>';
                             }
                         }
@@ -2126,16 +2108,21 @@ if (!class_exists('Jobsearch_Shortcode_Employers_Frontend')) {
 
             $employer_filters = isset($atts['employer_filters']) ? $atts['employer_filters'] : '';
 
-            if ($keyword_html != '' && $employer_filters != 'no') { ?>
+            if ($keyword_html != '' && $employer_filters != 'no') {
+                ?>
                 <div class="jobsearch-filterable" <?php echo($visibility); ?>>
-                    <ul class="filtration-tags" <?php echo isset($_GET['action']) && $_GET['action'] == 'elementor' || (isset($_POST['action']) && $_POST['action'] == 'elementor_ajax') ? 'style="display:none"' : '' ?>>
-                        <?php echo force_balance_tags($keyword_html); ?>
+                    <ul class="filtration-tags">
+                        <?php
+
+                        if ((isset($_POST['ajax_filter']) && $_POST['ajax_filter'] == 'true') || (isset($_GET['ajax_filter']) && $_GET['ajax_filter'] == 'true')) {
+                            echo force_balance_tags($keyword_html);
+                        }
+                        ?>
                     </ul>
                     <a class="clear-tags" href="<?php echo esc_url($page_url); ?>"
                        title="<?php esc_html_e('Clear all', 'wp-jobsearch') ?>"><?php esc_html_e('Clear all', 'wp-jobsearch') ?></a>
                 </div>
                 <?php
-
             }
             $html .= ob_get_clean();
             return $html;

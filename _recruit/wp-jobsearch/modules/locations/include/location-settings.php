@@ -13,36 +13,33 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         public function __construct()
         {
             $this->auto_load_files = false;
-            //header("Access-Control-Allow-Origin: *");
-
             add_action('init', array($this, 'load_locfiles_init'), 1);
+
             $this->save_locsettings();
+
             add_action('admin_menu', array($this, 'jobsearch_loc_settings_create_menu'));
             add_action('admin_footer', array($this, 'load_locations_js'));
-            add_action('wp_footer', array($this, 'load_locations_js'),100);
+            add_action('wp_footer', array($this, 'load_locations_js'));
             add_action('wp_head', array($this, 'global_variables_init'), 1);
             add_action('admin_head', array($this, 'global_variables_init'), 1);
             add_action('admin_enqueue_scripts', array($this, 'load_locations_script'));
             add_action('wp_ajax_jobsearch_locations_download', array($this, 'jobsearch_locations_download_callback'), 1);
-            //
+
             add_action('wp_ajax_jobsearch_update_country', array($this, 'jobsearch_update_country_callback'));
-            //
+
             add_action('wp_ajax_jobsearch_add_new_states', array($this, 'jobsearch_add_new_states_callback'));
-            //
+
             add_action('wp_ajax_jobsearch_add_new_cities', array($this, 'jobsearch_add_new_cities_callback'));
-            //
+
             add_action('wp_ajax_jobsearch_check_state_dir', array($this, 'jobsearch_check_state_dir_callback'));
-            //
-            add_action('wp_ajax_jobsearch_location_load_countries_data', array($this, 'jobsearch_location_load_countries_data_callback'));
-            add_action('wp_ajax_nopriv_jobsearch_location_load_countries_data', array($this, 'jobsearch_location_load_countries_data_callback'));
-            //
-            add_action('wp_ajax_jobsearch_location_load_states_data', array($this, 'jobsearch_location_load_states_data_callback'));
-            add_action('wp_ajax_nopriv_jobsearch_location_load_states_data', array($this, 'jobsearch_location_load_states_data_callback'));
-            //
-            add_action('wp_ajax_jobsearch_location_load_cities_data', array($this, 'jobsearch_location_load_cities_data_callback'));
-            add_action('wp_ajax_nopriv_jobsearch_location_load_cities_data', array($this, 'jobsearch_location_load_cities_data_callback'));
-            //
-            add_filter('jobsearch_form_fields_value', array($this, 'jobsearch_form_fields_value_callback'), 10, 2);
+        }
+
+        public function jobsearch_locations_path($path)
+        {
+            global $jobsearch_uploding_resume, $jobsearch_uploding_resume;
+            $jobsearch_uploding_resume = false;
+            $jobsearch_uploding_candimg = false;
+            return 'jobsearch-locations/';
         }
 
         public function load_locfiles_init()
@@ -67,6 +64,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         public function load_locations_script()
         {
             wp_register_script('jobsearch-location-editor', jobsearch_plugin_get_url('modules/locations/js/jobsearch-inline-editor.js'), array('jquery'), '', true);
+
         }
 
         public static function get_countries()
@@ -74,13 +72,13 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             global $jobsearch_download_locations;
             $jobsearch_download_locations = true;
 
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
             $wp_upload_dir = wp_upload_dir();
             $upload_file_path = $wp_upload_dir['path'];
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
             $jobsearch_download_locations = false;
 
             $contries_list = '';
@@ -94,6 +92,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 }
             }
             return $contries_list;
+
         }
 
         public static function get_states($contry_code)
@@ -116,27 +115,15 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             return $cities_list;
         }
 
-        public function jobsearch_form_fields_value_callback($val, $key)
-        {
-            $jobsearch_locsetin_options = get_option('jobsearch_locsetin_options');
-            $loc_optionstype = isset($jobsearch_locsetin_options['loc_optionstype']) ? $jobsearch_locsetin_options['loc_optionstype'] : '';
-
-            if ($key == 'jobsearch_field_location_location1' && ($loc_optionstype == 2 || $loc_optionstype == 3)) {
-                $val = $this->getCountryNameByCode($val);
-                return $val;
-            }
-            return $val;
-        }
-
         public function jobsearch_loc_settings_create_menu()
         {
             // create new top-level menu
             add_menu_page(esc_html__('Location Manager', 'wp-jobsearch'), esc_html__('Location Manager', 'wp-jobsearch'), 'administrator', 'jobsearch-location-sett', function () {
                 global $jobsearch_download_locations;
                 $jobsearch_download_locations = true;
-
-                add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+                add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
                 $wp_upload_dir = wp_upload_dir();
+
                 $upload_file_path = $wp_upload_dir['path'];
 
                 if (!file_exists($upload_file_path . "/countries")) {
@@ -144,9 +131,9 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 }
 
                 $upload_file_url = $wp_upload_dir['url'];
-
-                remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+                remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
                 $jobsearch_download_locations = false;
+
 
                 if (!file_exists($upload_file_path . "/countries")) {
                     self::download_files();
@@ -177,6 +164,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 $contry_preselct = $contry_preselct != '' ? $contry_preselct : 'none';
                 $contry_presel_contry = isset($jobsearch_locsetin_options['contry_presel_contry']) ? $jobsearch_locsetin_options['contry_presel_contry'] : '';
                 $autoload_files = $this->auto_load_files;
+                //var_dump($autoload_files); die;
                 ?>
 
                 <div class="jobsearch-allocssett-holder">
@@ -259,17 +247,18 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                                     data-placeholder="<?php echo esc_html_e('Select Country', 'wp-jobsearch') ?>">
                                 <option value=""><?php echo esc_html_e('Select Country', 'wp-jobsearch') ?></option>
                             </select>
-                        <?php } else { ?>
+                        <?php } else {
+                            ?>
 
                             <input type="hidden" name="country" id="countryId"
                                    value="<?php echo($contry_singl_contry) ?>"/>
                         <?php } ?>
-
-                        <select name="state" class="states location2-state" id="stateId">
+                        <select name="state" class="states" id="stateId">
                             <option value=""><?php esc_html_e('Select State', 'wp-jobsearch') ?></option>
                         </select>
                         <?php
-                        if ($loc_optionstype == '1' || $loc_optionstype == '2') { ?>
+                        if ($loc_optionstype == '1' || $loc_optionstype == '2') {
+                            ?>
                             <select name="city" class="cities" id="cityId">
                                 <option value="0"><?php esc_html_e('Select City', 'wp-jobsearch') ?></option>
                             </select>
@@ -434,7 +423,8 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                                                                         <option value="<?php echo($contry_info['name']) ?>" <?php echo(!empty($contry_filtrexc_contries) && is_array($contry_filtrexc_contries) && in_array($contry_info['name'], $contry_filtrexc_contries) ? 'selected="selected"' : '') ?>><?php echo($contry_info['name']) ?></option>
                                                                         <?php
                                                                     }
-                                                                } ?>
+                                                                }
+                                                                ?>
                                                             </select>
                                                         </div>
                                                     </li>
@@ -527,55 +517,6 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             return $countries_list;
         }
 
-        public function jobsearch_location_load_countries_data_callback()
-        {
-            $countries = read_location_file('countries.json');
-            if (isset($_POST['get_country_code']) && $_POST['get_country_code'] == true) {
-                $jobsearch_sloc_country = $_POST['jobsearch_sloc_country'];
-                $totl_countries = json_decode($countries);
-                foreach ($totl_countries as $cntry_info) {
-                    if ($cntry_info->name == $jobsearch_sloc_country) {
-                        echo json_encode($cntry_info->code);
-                    }
-                }
-            } else {
-                echo $countries;
-            }
-
-            wp_die();
-        }
-
-        public function jobsearch_location_load_states_data_callback()
-        {
-            $contry_code = $_POST['country_code'];
-            $cities = read_state_file('countries/' . $contry_code . '/' . $contry_code . '-states.json');
-            if (!is_wp_error($cities)) {
-                echo $cities;
-            }
-            wp_die();
-        }
-
-        public function jobsearch_location_load_cities_data_callback()
-        {
-            $contry_code = $_POST['country_code'];
-            $state = $_POST['state'];
-            $cities = read_state_cities('countries/' . $contry_code . '/' . $state . '/' . $contry_code . '-' . $state . '-cities.json');
-            echo $cities;
-            wp_die();
-        }
-
-        public static function getCountryNameByCode($code)
-        {
-            $countries = read_location_file('countries.json');
-            $country_name = '';
-            foreach (json_decode($countries) as $key => $val) {
-                if ($val->code == $code) {
-                    $country_name = $val->name;
-                }
-            }
-            return $country_name;
-        }
-
         public static function getCountryCode($name)
         {
             $countries = read_location_file('countries.json');
@@ -628,17 +569,13 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                             setTimeout(function () {
                                 location.reload();
                             }, 1000)
-                        } else if ('undefined' !== typeof response.status && response.status == 'permission_issue') {
-                            jQuery(document).find(".dnload-btn-wrapper").find("h3").text(" ");
-                            jQuery(document).find(".dnload-btn-wrapper").find("h3").text("Unable to create directory uploads/jobsearch-locations. Is its parent directory writable by the server? Please contact your hosting server provider.");
-                            jQuery(document).find(".location-loader").hide();
                         } else {
                             jQuery(document).find(".dnload-btn-wrapper").find("h3").text(" ");
                             jQuery(document).find(".dnload-btn-wrapper").find("h3").text("The destination folder for streaming files does not exist or cannot be written to.");
                         }
                     });
                     request.fail(function (jqXHR, textStatus) {
-                        //alert(textStatus)
+                        alert(textStatus)
                     });
                 });
             </script>
@@ -654,24 +591,19 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         function jobsearch_locations_download_callback()
         {
             global $wp_filesystem, $jobsearch_download_locations;
-            require_once ABSPATH . '/wp-admin/includes/file.php';
             $jobsearch_download_locations = true;
-            $url = wp_nonce_url("post.php", "filesystem-nonce");
+            $url = wp_nonce_url("options-general.php?page=demo", "filesystem-nonce");
             $form_fields = array("file-data");
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
-
             $upload_file_path = $wp_upload_dir['path'];
 
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
 
-            if (!empty($wp_upload_dir['error'])) {
-                echo json_encode(array('status' => 'permission_issue'));
-                wp_die();
-            }
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
 
             if (!file_exists($upload_file_path . "/countries")) {
@@ -712,7 +644,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         {
             global $jobsearch_download_locations;
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
@@ -721,7 +653,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
 
             $upload_file_url = $wp_upload_dir['url'];
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
 
             if (!file_exists($upload_file_path . "/countries")) {
@@ -827,7 +759,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                         <h3></h3>
                     </div>
                     <div class="locations-wrapper">
-                        <select name="state" class="states location2-states" id="stateId">
+                        <select name="state" class="states" id="stateId">
                             <option value=""><?php esc_html_e('Select State', 'wp-jobsearch') ?></option>
                         </select>
                     </div>
@@ -857,7 +789,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             </div>
             <script type="text/javascript">
 
-                var country_json_file = '<?php echo $upload_file_url ?>/countries.json?param=<?php echo rand(10, 100) ?>',
+                var country_json_file = '<?php echo $upload_file_url ?>/countries.json',
                     country_json_files_loc = '<?php echo $upload_file_url ?>/countries/';
 
                 <?php if($query_var != ''){ ?>
@@ -869,23 +801,23 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 var $ = jQuery;
                 $(function () {
 
-                    var $ = jQuery,
-                        upload_file_url = '<?php echo $this->wp_upload_dir_url() . '/jobsearch-locations' ?>';
+                    var $ = jQuery, upload_file_url = '<?php echo $upload_file_url ?>';
 
                     jQuery('#countryId').on('change', function () {
-                        var _this = jQuery(this);
-                        if (_this.val() != 0) {
-                            var country_code = _this.find('option:selected').attr("code");
+                        var $this = $(this);
+
+                        if ($this.val() != 0) {
+
+                            var country_code = $this.find('option:selected').attr("code");
+
                             jQuery(".cities-table-detail").find('tbody').html('');
-                            //
                             readsingleCountryData(country_json_file, country_code);
                             jQuery(".state-wrapper").removeClass('loc-hidden');
                             jQuery(".cities-wrapper").removeClass('loc-hidden');
                             jQuery("#stateId").removeClass('loc-hidden');
                             jQuery(".jobsearch-load-states-cities-name").find('h3').text('');
-                            //
-                            readSingleCityStateFile(upload_file_url + '/countries/' + country_code + '/' + country_code + '-states.json?param=<?php echo(rand(10, 100)) ?>', jQuery('.state-table'));
-                            jQuery('.jobsearch-load-state-name').find('h3').html(_this.val() + ", <?php echo esc_html_e('States', 'wp-jobsearch'); ?>");
+                            readSingleCityStateFile(upload_file_url + '/countries/' + country_code + '/' + country_code + '-states.json?param=<?php  echo(rand(10, 100)) ?>', $('.state-table'));
+                            jQuery('.jobsearch-load-state-name').find('h3').html($this.val() + ", <?php echo esc_html_e('States', 'wp-jobsearch'); ?>");
 
                         } else {
                             jQuery(".jobsearch-load-state-name").find('h3').text('');
@@ -898,12 +830,12 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                     });
 
                     jQuery(document).on('change', '#stateId', function () {
-                        var _this = jQuery(this);
-                        if (_this.val() != 0 && _this.val() != undefined) {
+                        $this = $(this);
+                        if ($this.val() != 0 && $this.val() != undefined) {
                             var country_code = jQuery("#countryId option:selected").attr('code');
-                            var filename = country_code + '-' + _this.val() + '-cities.json?param=<?php  echo(rand(10, 100)) ?>';
-                            readSingleCityStateFile(upload_file_url + '/countries/' + country_code + '/' + _this.val() + '/' + filename, jQuery('.cities-table'));
-                            jQuery('.jobsearch-load-states-cities-name').find('h3').html(_this.val() + ", <?php echo esc_html_e('Cities', 'wp-jobsearch'); ?>")
+                            var filename = country_code + '-' + $this.val() + '-cities.json?param=<?php  echo(rand(10, 100)) ?>';
+                            readSingleCityStateFile(upload_file_url + '/countries/' + country_code + '/' + $this.val() + '/' + filename, $('.cities-table'));
+                            jQuery('.jobsearch-load-states-cities-name').find('h3').html($this.val() + ", <?php echo esc_html_e('Cities', 'wp-jobsearch'); ?>")
                         } else {
                             jQuery(".jobsearch-load-states-cities-name").find('h3').text('');
                             jQuery(".cities-table-detail").find('tbody').html('');
@@ -915,12 +847,11 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             <?php
         }
 
-
         public function jobsearch_check_state_dir_callback()
         {
             global $wp_filesystem, $jobsearch_download_locations;
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
@@ -928,7 +859,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
 
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
 
             if (file_exists($upload_file_path . "/countries/" . $_POST['country_code'])) {
@@ -940,16 +871,16 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         public function jobsearch_add_new_cities_callback()
         {
             global $wp_filesystem, $jobsearch_download_locations;
-            require_once ABSPATH . '/wp-admin/includes/file.php';
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
+
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
 
             $url = wp_nonce_url("post.php");
@@ -964,6 +895,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
 
             $result = $new_cities;
+
             if (connect_fs($url, "", $upload_file_path, $form_fields)) {
 
                 $dir = $wp_filesystem->find_folder($upload_file_path . "/countries/" . $_POST['country_code'] . "/" . $_POST['states_name'] . "/" . $_POST['country_code'] . "-" . $_POST['states_name'] . "-cities.json");
@@ -991,16 +923,16 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         public function jobsearch_add_new_states_callback()
         {
             global $wp_filesystem, $jobsearch_download_locations;
-            require_once ABSPATH . '/wp-admin/includes/file.php';
+
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
 
             $url = wp_nonce_url("post.php");
@@ -1029,8 +961,11 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
 
             if (!empty($updated_states[0]['state_name'])) {
+
                 $result = array_merge($current_states, $new_states);
+
             } else {
+
                 $result = $current_states['result'];
             }
 
@@ -1107,16 +1042,15 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
         public function jobsearch_update_Country_Callback()
         {
             global $wp_filesystem, $jobsearch_download_locations;
-            require_once ABSPATH . '/wp-admin/includes/file.php';
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
             $url = wp_nonce_url("post.php");
             $form_fields = array("file-data");
@@ -1127,7 +1061,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             $new_countries = array();
 
             /*
-             * code will search for existing country
+             * code will add new country
              * */
 
             foreach ($updated_countries as $key => $val) {
@@ -1165,7 +1099,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             if ($country_to_update_index != "" && file_exists($upload_file_path . "/countries/" . $updated_countries[0]['code']) && $updated_countries[0]['name'] != "") {
                 $current_countries[$country_to_update_index] = array(
                     'name' => $new_countries[0]['name'],
-                    'code' => $new_countries[0]['code'],
+                    'code' => strtoupper($new_countries[0]['code']),
                     'population' => $new_countries[0]['population'],
                 );
             }
@@ -1181,7 +1115,9 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
 
             if (connect_fs($url, "", $upload_file_path, $form_fields)) {
+
                 foreach ($new_countries as $countries) {
+
                     if (!file_exists($upload_file_path . "/countries/" . strtoupper($countries['code']))) {
                         mkdir($upload_file_path . "/countries/" . strtoupper($countries['code']));
 
@@ -1200,6 +1136,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
 
                 $dir = $wp_filesystem->find_folder($upload_file_path . "/countries.json");
                 $file = rtrim($dir, '/');
+
                 $wp_filesystem->put_contents($file, json_encode($result), FS_CHMOD_FILE);
                 if (!empty($new_countries)) {
                     echo json_encode(array('status' => 'data_updated'));
@@ -1224,67 +1161,40 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
         }
 
-        function getCountryCodebyname($countries_name)
-        {
-            $inc_countries = [];
-            $countries = read_location_file('countries.json');
-            $total_countries = json_decode($countries);
-            foreach ($total_countries as $key => $val) {
-                if (in_array($val->name, $countries_name)) {
-                    $inc_countries[] = $val->code;
-                }
-            }
-            return json_encode($inc_countries);
-        }
-
-        public function wp_upload_dir_url()
-        {
-            $upload_dir = wp_upload_dir();
-            $upload_dir = $upload_dir['baseurl'];
-            return preg_replace('/^https?:/', '', $upload_dir);
-        }
 
         public function load_locations_js($force_flag = false, $ajax_flag = false)
         {
-            global $pagenow, $sitepress, $jobsearch_plugin_options, $jobsearch_download_locations, $jobsearch_uploding_candimg, $jobsearch_uploding_resume;
-
-            $lang_code = '';
-            if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-                $lang_code = $sitepress->get_current_language();
-            }
-
+            global $pagenow, $jobsearch_plugin_options, $jobsearch_download_locations, $jobsearch_uploding_candimg, $jobsearch_uploding_resume;
             $jobsearch_uploding_resume = false;
             $jobsearch_uploding_candimg = false;
+
             $jobsearch_download_locations = true;
-            add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+            add_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $wp_upload_dir = wp_upload_dir();
 
             $upload_file_path = $wp_upload_dir['path'];
             if (!file_exists($upload_file_path . "/countries")) {
                 $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
             }
-
             $upload_file_url = $wp_upload_dir['url'];
-            remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+
+            remove_filter('jobsearch_locations_upload_dir', array($this, 'jobsearch_locations_path'), 10, 1);
             $jobsearch_download_locations = false;
-            //
 
             if (!file_exists($upload_file_path . "/countries")) {
                 return;
             }
 
-            $page_id = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
-            $page_id = jobsearch__get_post_id($page_id, 'page');
-            if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-                $page_id = icl_object_id($page_id, 'page', false, $lang_code);
-            }
-
+            $page_id = $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
+            $page_id = $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
             $loc_flag = false;
+
             if ($force_flag == true) {
                 $loc_flag = true;
             }
 
-            if ($page_id > 0 && is_page($page_id)) {
+            if (is_page($page_id)) {
+
                 $loc_flag = true;
                 $state_param_name = 'jobsearch_field_location_location2';
                 $city_param_name = 'jobsearch_field_location_location3';
@@ -1309,13 +1219,11 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
             }
 
             $jobsearch_locsetin_options = get_option('jobsearch_locsetin_options');
-
             $loc_optionstype = isset($jobsearch_locsetin_options['loc_optionstype']) ? $jobsearch_locsetin_options['loc_optionstype'] : '';
 
             $contry_order = isset($jobsearch_locsetin_options['contry_order']) ? $jobsearch_locsetin_options['contry_order'] : '';
             $contry_order = $contry_order != '' ? $contry_order : 'alpha';
             $contry_filtrinc_contries = isset($jobsearch_locsetin_options['contry_filtrinc_contries']) ? $jobsearch_locsetin_options['contry_filtrinc_contries'] : '';
-
             $contry_filtring = isset($jobsearch_locsetin_options['contry_filtring']) ? $jobsearch_locsetin_options['contry_filtring'] : '';
             $contry_filtrexc_contries = isset($jobsearch_locsetin_options['contry_filtrexc_contries']) ? $jobsearch_locsetin_options['contry_filtrexc_contries'] : '';
             $contry_preselct = isset($jobsearch_locsetin_options['contry_preselct']) ? $jobsearch_locsetin_options['contry_preselct'] : '';
@@ -1336,479 +1244,568 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                 var jobsearch_is_loc_editor = '<?php echo $query_var; ?>';
                 <?php } ?>
 
-                var $ = jQuery, inc_countries = "", inc_countries_code = "",
-                    exec_countries = "", contry_presel_contry, ajax_flag = false,
+                var $ = jQuery, filename, rawFile, selector, inc_countries = "",
+                    exec_countries = "", index, contry_presel_contry, $this, ajax_flag = false,
                     contry_preselct = '<?php echo $contry_preselct ?>',
+                    random_num = '<?php echo rand(999, 1000) ?>',
                     contry_presel_contry_code = '<?php echo $contry_presel_contry ?>';
 
+                <?php
+                if($ajax_flag == false){ ?>
+
+                $(document).ready(function () {
+                    <?php } ?>
+
+                    var $ = jQuery;
+                    var _single_country_code = '';
+                    if (jobsearch_sloc_type == '2' || jobsearch_sloc_type == '3') {
+                        _single_country_code = $("#countryId").val();
+                    } else {
+                        if (jobsearch_sloc_country != 0) {
+                            _single_country_code = api_scrapper.getCountryCode(jobsearch_sloc_country);
+                        }
+                    }
+
+                    <?php if($ajax_flag == true){ ?>
+                    ajax_flag = '<?php echo $ajax_flag ?>';
+
+                    api_scrapper.readCountryFile('<?php echo $upload_file_url ?>/countries.json', $('#countryId'), jobsearch_sloc_country);
+                    <?php } ?>
+
+                    <?php if($contry_preselct != 'by_user_ip' || $query_var == 'jobsearch-location-sett-editor'){ ?>
+
+                    api_scrapper.readCountryFile('<?php echo $upload_file_url ?>/countries.json', $('#countryId'), '');
+
+                    <?php } ?>
+
+                    if (jobsearch_sloc_state != "") {
+
+                        api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + _single_country_code + '/' + _single_country_code + '-states.json', $("#stateId"))
+                    }
+
+                    if ((jobsearch_sloc_type == 2 || jobsearch_sloc_type == 3) && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
+
+                        api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + _single_country_code + '/' + _single_country_code + '-states.json', $("#stateId"))
+                    }
+
+                    if (jobsearch_sloc_city != "" && jobsearch_is_post_page != 'post.php' && jobsearch_is_post_page != 'post-new.php') {
+                        setTimeout(function () {
+                            $('#stateId').trigger('change');
+                        }, 1000)
+                    }
+
+                    <?php
+
+                    if($contry_preselct == 'by_user_ip' && $query_var != 'jobsearch-location-sett-editor'){ ?>
+
+                    if (jobsearch_sloc_country == 0 || jobsearch_sloc_state == 0) {
+
+                        api_scrapper.predictByIP();
+
+                    } else {
+
+                        api_scrapper.readCountryFile('<?php echo $upload_file_url ?>/countries.json', $('#countryId'), _single_country_code);
+                        api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + _single_country_code + '/' + _single_country_code + '-states.json', $("#stateId"));
+                    }
+                    <?php } ?>
+                    /*
+                    * Pre select Country
+                    * */
+
+                    <?php
+                    if ($contry_preselct == 'by_contry' && $contry_presel_contry != "" && $query_var != 'jobsearch-location-sett-editor') { ?>
+                    if ($("#countryId").val() != "") {
+
+                        _single_country_code = jobsearch_is_admin == 1 && $("select[name=contry_presel_contry]").val() != undefined ? $("select[name=contry_presel_contry]").val() : api_scrapper.getCountryCode($("#countryId").val());
+                    } else {
+
+                        _single_country_code = '<?php echo $contry_presel_contry ?>';
+
+                    }
+                    api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + _single_country_code + '/' + _single_country_code + '-states.json', $("#stateId"));
+                    <?php } ?>
+                    <?php if($ajax_flag == false){ ?>
+                });
+                <?php } ?>
+
+                /*
+                 *countries change event
+                 **/
+
+
+                $(document).on('change', '.countries', function () {
+                    var $ = jQuery;
+                    $this = $(this);
+                    if ($this.val() != 0 && $this.val() != undefined) {
+                        var _country_code = '';
+                        if (inc_countries != "") {
+                            _country_code = api_scrapper.getCountryCode($this.val());
+                        } else {
+                            _country_code = jobsearch_is_admin == 1 && $this.find('option:selected').attr("code") != undefined ? $this.find('option:selected').attr("code") : api_scrapper.getCountryCode($this.val());
+                        }
+                        api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + _country_code + '/' + _country_code + '-states.json', $("#stateId"));
+                    }
+                });
+
+                /*
+                * state change events
+                * */
+
+                $(document).on('change', '#stateId', function () {
+                    var $ = jQuery;
+                    $this = $(this);
+                    var country_code = '';
+                    if ($this.val() != 0 && $this.val() != undefined) {
+
+                        country_code = $("#countryId").find('option:selected').attr("code") != undefined ? $("#countryId").find('option:selected').attr("code") : $("#countryId").val();
+                        if (country_code.length > 2) {
+                            country_code = api_scrapper.getCountryCode($("#countryId").val())
+                        }
+
+                        var filename = country_code + '-' + $this.val() + '-cities.json?param=<?php echo(rand(10, 100)) ?>';
+                        api_scrapper.readCityOnlyFiles('<?php echo $upload_file_url ?>/countries/' + country_code + '/' + $this.val() + '/' + filename, $('#cityId'));
+                    }
+                });
                 /*
                 * Scrapper Events
                 * */
+
                 var api_scrapper = {
                     getCountryCode: function (jobsearch_sloc_country) {
-                        var country_code_from_country_name = '';
-                        jQuery.ajax({
-                            url: jobsearch_plugin_vars.ajax_url,
-                            async: false,
-                            method: "POST",
-                            data: {
-                                get_country_code: 'true',
-                                jobsearch_sloc_country: jobsearch_sloc_country,
-                                action: 'jobsearch_location_load_countries_data',
-                            },
-                            dataType: 'json',
-                            success: function (res) {
-                                country_code_from_country_name = res;
-                            }
-                        });
+                        var $ = jQuery;
+                        var _country_code = '';
+                        rawFile = new XMLHttpRequest();
+                        rawFile.open("GET", '<?php echo $upload_file_url ?>/countries.json', false);
+                        rawFile.onreadystatechange = function () {
+                            if (rawFile.readyState === 4) {
+                                if (rawFile.status === 200 || rawFile.status == 0) {
 
-                        return country_code_from_country_name;
+                                    var _result_coutries = JSON.parse(rawFile.responseText);
+                                    var results = _result_coutries.filter(function (item) {
+                                        return item.name.indexOf(jobsearch_sloc_country) > -1;
+                                    });
+
+                                    if (results.length != 0) {
+                                        _country_code = results[0].code;
+                                    }
+                                }
+                            }
+                        };
+                        rawFile.send(null);
+                        return _country_code;
                     },
-                    readCityOnlyFiles: function (country_code, state, selector) {
+                    readCityOnlyFiles: function (file, selector) {
 
                         var $ = jQuery;
                         if (jobsearch_is_admin == '' || ajax_flag == true) {
                             jQuery('#jobsearch-gdapilocs-citycon').empty();
                             jQuery('#jobsearch-gdapilocs-citycon').append('<select placeholder="<?php echo esc_html__('Select City', 'wp-jobsearch'); ?>" name="<?php echo $city_param_name; ?>" class="cities" id="cityId"><option value="0"><?php echo esc_html__("Select City", "wp-jobsearch") ?></option></select>');
-                            selector = jQuery(document).find("#cityId");
+                            selector = $(document).find("#cityId");
                         }
 
-                        var request = jQuery.ajax({
-                            url: jobsearch_plugin_vars.ajax_url,
-                            method: "POST",
-                            data: {
-                                country_code: country_code,
-                                state: state,
-                                action: 'jobsearch_location_load_cities_data',
-                            },
-                            dataType: 'json',
-                        });
+                        rawFile = new XMLHttpRequest();
+                        rawFile.open("GET", file, false);
+                        rawFile.onreadystatechange = function () {
+                            if (rawFile.readyState === 4) {
+                                if (rawFile.status === 200 || rawFile.status == 0) {
+                                    selector.html('');
+                                    selector.append('<option value="pls_wait"><?php echo esc_html_e('Please Wait...', 'wp-jobsearch') ?></option>');
+                                    setTimeout(function () {
+                                        selector.html('');
+                                        var _result_cities = JSON.parse(rawFile.responseText);
 
-                        request.done(function (response) {
-                            selector.html('');
-                            selector.append('<option value=""><?php echo esc_html_e('Please Wait...', 'wp-jobsearch') ?></option>');
-                            var _result_cities = response;
-                            if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                selector.selectize()[0].selectize.destroy();
-                            }
-
-                            setTimeout(function () {
-                                selector.html('');
-                                //if (jobsearch_is_admin == 1 && ajax_flag == false) {
-                                selector.append('<option value=""><?php echo esc_html_e('Select City', 'wp-jobsearch') ?></option>');
-                                // }
-                                var _option_select = '';
-                                $.each(_result_cities.result, function (index, element) {
-                                    if ($.trim(element) != "Enter Any City") {
-                                        if (jobsearch_sloc_city != "") {
-                                            _option_select = jobsearch_sloc_city == element ? 'selected' : '';
-                                        }
-                                        if (_option_select != "") {
-                                            selector.append(jQuery("<option></option>").attr("value", element).attr("selected", "selected").text(element));
-                                        } else {
-                                            selector.append(jQuery("<option></option>").attr("value", element).text(element));
-                                        }
-                                    }
-                                });
-                            }, 300);
-
-                            if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                setTimeout(function () {
-                                    selector.selectize({
-                                        sortField: 'text'
-                                    });
-                                }, 300)
-                            }
-                            jQuery('#cityId').trigger('change');
-                        });
-                        request.fail(function (jqXHR, textStatus) {
-
-                        });
-
-                    },
-                    readStateFile: function (country_code, selector) {
-                        var $ = jQuery, request, _result_states;
-                        if (jobsearch_is_admin == '' || ajax_flag == true) {
-                            jQuery('#jobsearch-gdapilocs-statecon').empty();
-                            jQuery('#jobsearch-gdapilocs-statecon').append('<select placeholder="<?php echo esc_html__("Select State", "wp-jobsearch") ?>"  class="states location2-states" id="stateId" name="<?php echo $state_param_name; ?>"><option value=""><?php echo esc_html__("Select State", "wp-jobsearch") ?></option></select>');
-                            selector = jQuery(document).find("#stateId, .location2-states");
-                        }
-
-                        request = jQuery.ajax({
-                            url: jobsearch_plugin_vars.ajax_url,
-                            method: "POST",
-                            data: {
-                                country_code: country_code,
-                                action: 'jobsearch_location_load_states_data',
-                            },
-                            dataType: 'json',
-                        });
-
-                        request.done(function (response) {
-                            if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                //selector.selectize()[0].selectize.destroy();
-                            }
-                            selector.html('');
-                            selector.append('<option value="pls_wait"><?php echo esc_html_e('Please Wait...', 'wp-jobsearch') ?></option>');
-                            _result_states = response;
-                            setTimeout(function () {
-                                selector.html('');
-                                //if (jobsearch_is_admin == 1 && ajax_flag == false) {
-                                selector.append('<option value=""><?php echo esc_html_e('Select State', 'wp-jobsearch') ?></option>');
-                                //}
-                                var _option_select = '';
-                                $.each(_result_states.result, function (index, element) {
-
-                                    if ($.trim(element) != "Enter Any State") {
-                                        if (jobsearch_sloc_state != "") {
-                                            _option_select = jobsearch_sloc_state == element ? 'selected' : '';
-                                        }
-
-                                        if (_option_select != "") {
-                                            selector.append(jQuery("<option></option>").attr("value", element).attr("selected", "selected").text(element));
-                                            // selector.append(jQuery('<option>', {
-                                            //     value: element,
-                                            //     text: element,
-                                            //     selected: _option_select,
-                                            // }));
-                                        } else {
-                                            selector.append(jQuery("<option></option>").attr("value", element).text(element));
-                                            // selector.append(jQuery('<option>', {
-                                            //     value: element,
-                                            //     text: element,
-                                            // }));
-                                        }
-                                    }
-                                });
-                            }, 300);
-                            /*
-                            * Initialize Selectize
-                            * */
-                            if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                setTimeout(function () {
-                                    selector.selectize({
-                                        sortField: 'text'
-                                    });
-                                }, 300)
-                            }
-                            //
-                        });
-                        request.fail(function (jqXHR, textStatus) {
-
-                        });
-                    },
-                    stripslashes: function (str) {
-                        if (str == undefined) {
-                            return;
-                        }
-                        return str.replace(/\\/g, '');
-                    },
-                    readCountryFile: function (file, selector, country) {
-                        var $ = jQuery, _result_countries, request;
-
-                        request = jQuery.ajax({
-                            url: jobsearch_plugin_vars.ajax_url,
-                            method: "POST",
-                            data: {
-                                action: 'jobsearch_location_load_countries_data',
-                            },
-                            dataType: "json"
-                        });
-
-                        request.done(function (response) {
-                            _result_countries = response;
-                            selector.html('');
-                            if (jobsearch_is_admin == 1 && ajax_flag == true) {
-                                selector.append('<option value=""><?php echo esc_html_e('Select Country', 'wp-jobsearch') ?></option>');
-                            } else {
-
-                                var $opt = jQuery('<option>');
-                                $opt.val('').text('<?php echo esc_html_e('Select Country', 'wp-jobsearch') ?>');
-                                $opt.appendTo(selector);
-                            }
-                            /*
-                            * Alphabetic countries
-                            * */
-
-                            <?php if($contry_order == 'alpha'){ ?>
-                            _result_countries.sort(function (a, b) {
-                                return api_scrapper.compareStrings(a.name, b.name);
-                            });
-                            <?php } ?>
-                            /*
-                            * Code will execute if Include only countries option will be selected.
-                            * */
-
-                            <?php if($contry_filtring == 'inc_contries'){ ?>
-                            inc_countries_code = <?php echo($this->getCountryCodebyname($contry_filtrinc_contries)) ?>;
-                            inc_countries = <?php echo json_encode($contry_filtrinc_contries);
-                            } ?>;
-
-                            /*
-                            * Code will execute if Exclude only countries option will be selected.
-                            * */
-
-                            <?php if($contry_filtring == 'exc_contries'){ ?>
-                            exec_countries = <?php echo json_encode($contry_filtrexc_contries);
-
-                            } ?>;
-                            /*
-                            * Code will execute if Random countries option will be selected.
-                            * */
-
-                            <?php if($contry_order == 'random'){ ?>
-                            _result_countries = api_scrapper.shuffleArray(_result_countries);
-                            <?php }
-                            /*
-                            * countries by population
-                            * */
-
-                            if($contry_order == 'by_population'){ ?>
-                            _result_countries.sort(function (a, b) {
-                                return parseFloat(b.population) - parseFloat(a.population);
-                            });
-                            <?php } ?>
-                            /*
-                            * Include only countries
-                            * */
-                            if (inc_countries != "" && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
-
-                                var _inc_flag = false;
-                                $.each(_result_countries, function (i, element) {
-                                    if (i < inc_countries.length) {
-                                        if (jobsearch_sloc_country == inc_countries[i]) {
-
-                                            selector.append(jQuery("<option></option>")
-                                                .attr("data-index", i)
-                                                .attr("code", inc_countries_code[i])
-                                                .attr("selected", "selected")
-                                                .attr("value", inc_countries[i])
-                                                .text(inc_countries[i]));
-                                            _inc_flag = true;
-
-                                        } else if (contry_preselct == 'by_contry' && contry_presel_contry_code == inc_countries_code[i] && ajax_flag == false && _inc_flag == false) {
-                                            selector.append(jQuery("<option></option>")
-                                                .attr("data-index", i)
-                                                .attr("code", inc_countries_code[i])
-                                                .attr("selected", "selected")
-                                                .attr("value", inc_countries[i])
-                                                .text(inc_countries[i]));
-
-                                        } else {
-                                            selector.append(jQuery("<option></option>")
-                                                .attr("data-index", i)
-                                                .attr("code", inc_countries_code[i])
-                                                .attr("value", inc_countries[i])
-                                                .text(inc_countries[i]));
-                                        }
-                                    }
-                                })
-
-                            } else if (exec_countries != '' && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
-                                /*
-                                * code will execute if "Exclude countries selected" filter option will be selected
-                                * */
-
-                                var _exec_flag = false;
-                                $.each(_result_countries, function (index, element) {
-                                    if (element != "") {
-                                        if (exec_countries.indexOf(element.name) == -1) {
-                                            /*
-                                            * code will execute if Country Name is from save in metavalue
-                                            * */
-
-                                            if (jobsearch_sloc_country == element.name) {
-                                                selector.append(jQuery("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("selected", "selected")
-                                                    .attr("value", element.name)
-                                                    .text(element.name));
-                                                _exec_flag = true;
-                                            } else if (contry_preselct == 'by_contry' && contry_presel_contry_code == element.code && ajax_flag == false && _exec_flag == false) {
-                                                selector.append(jQuery("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("selected", "selected")
-                                                    .attr("value", element.name)
-                                                    .text(element.name));
-
-                                            } else {
-                                                selector.append(jQuery("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("value", element.name)
-                                                    .text(element.name));
-                                            }
-                                        }
-                                    }
-                                })
-                            } else {
-
-                                $.each(_result_countries, function (index, element) {
-
-                                    if (element != "") {
-                                        /*
-                                        * code will execute if Preselect Country option will be selected
-                                        * */
-
-                                        <?php if ($contry_preselct == 'by_contry' && $contry_presel_contry != "" && $query_var != 'jobsearch-location-sett-editor') { ?>
-
-                                        contry_presel_contry = "<?php echo $contry_presel_contry ?>";
-
-                                        var _option_select = contry_presel_contry == element.code ? 'selected' : '';
-                                        /////////////////// code will execute on the front end//////////////
-                                        if (jobsearch_is_admin == '' || ajax_flag == true) {
-
-                                            if (contry_presel_contry == element.code) {
-                                                selector.append($('<option>', {
-                                                    value: element.name,
-                                                    text: element.name,
-                                                    selected: 'selected',
-                                                }));
-                                            } else {
-                                                selector.append($('<option>', {
-                                                    value: element.name,
-                                                    text: element.name,
-                                                }));
-                                            }
-                                            ///////////////////end//////////////
-                                        } else {
-
-                                            if (jobsearch_sloc_country != "") {
-
-                                                if (contry_presel_contry == element.code) {
-
-                                                    selector.append(jQuery("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("selected", "selected")
-                                                        .attr("value", element.name)
-                                                        .text(element.name));
-                                                } else {
-                                                    selector.append(jQuery("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("value", element.name)
-                                                        .text(element.name));
+                                        //if (jobsearch_is_admin == 1 && ajax_flag == false) {
+                                        selector.append('<option value=""><?php echo esc_html_e('Select City', 'wp-jobsearch') ?></option>');
+                                        // }
+                                        var _option_select = '';
+                                        $.each(_result_cities.result, function (index, element) {
+                                            if ($.trim(element) != "Enter Any City") {
+                                                if (jobsearch_sloc_city != "") {
+                                                    _option_select = jobsearch_sloc_city == element ? 'selected' : '';
                                                 }
+                                                if (_option_select != "") {
+                                                    selector.append($("<option></option>").attr("value", element).attr("selected", "selected").text(element));
 
-                                            } else {
-
-                                                if (contry_presel_contry == element.code) {
-                                                    selector.append(jQuery("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("selected", "selected")
-                                                        .attr("value", element.name)
-                                                        .text(element.name));
                                                 } else {
-                                                    selector.append($("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("value", element.name)
-                                                        .text(element.name));
+
+                                                    selector.append($("<option></option>").attr("value", element).text(element));
                                                 }
                                             }
+                                        });
 
-                                        }
-                                        /*
-                                        * Countries by IP
-                                        * */
-
-                                        <?php } else if($contry_preselct == 'by_user_ip'){ ?>
-
-                                        if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                            if (country == element.code) {
-                                                selector.append($('<option>', {
-                                                    value: element.name,
-                                                    text: element.name,
-                                                    selected: 'selected',
-                                                }));
-                                            } else {
-                                                selector.append($('<option>', {
-                                                    value: element.name,
-                                                    text: element.name,
-                                                }));
-                                            }
-                                        } else {
-
-                                            var _option_select = country == element.code ? 'selected' : '';
-                                            if (country == element.code) {
-                                                selector.append($("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("selected", "selected")
-                                                    .attr("value", element.name)
-                                                    .text(element.name));
-                                            } else {
-                                                selector.append($("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("value", element.name)
-                                                    .text(element.name));
-                                            }
-                                        }
-
-                                        <?php } else { ?>
-
-                                        if (jobsearch_sloc_type != 2 && jobsearch_sloc_type != 3) {
-
-                                            var _option_select = '';
-                                            if (jobsearch_sloc_country != '') {
-                                                if (api_scrapper.stripslashes(jobsearch_sloc_country) == api_scrapper.stripslashes(element.name)) {
-                                                    selector.append($("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("selected", "selected")
-                                                        .attr("value", element.name)
-                                                        .text(api_scrapper.stripslashes(element.name)));
-                                                } else {
-                                                    selector.append($("<option></option>")
-                                                        .attr("data-index", index)
-                                                        .attr("code", element.code)
-                                                        .attr("value", element.name)
-                                                        .text(api_scrapper.stripslashes(element.name)));
-                                                }
-                                            } else {
-                                                selector.append($("<option></option>")
-                                                    .attr("data-index", index)
-                                                    .attr("code", element.code)
-                                                    .attr("value", element.name)
-                                                    .text(api_scrapper.stripslashes(element.name)));
-                                            }
-
-                                        } else if (jobsearch_is_loc_editor == 'jobsearch-location-sett-editor') {
-                                            selector.append($("<option></option>")
-                                                .attr("data-index", index)
-                                                .attr("code", element.code)
-                                                .attr("value", element.name)
-                                                .text(api_scrapper.stripslashes(element.name)));
-                                        }
-
-
-                                        <?php } ?>
+                                    }, 300);
+                                    if (jobsearch_is_admin == '' || ajax_flag == true) {
+                                        setTimeout(function () {
+                                            selector.selectize({
+                                                sortField: 'text'
+                                            });
+                                        }, 300)
                                     }
-                                });
-                            }
-                            /*
-                            * Initialize Selectize
-                            * */
-
-                            if (jobsearch_is_admin == '' || ajax_flag == true) {
-                                if (jobsearch_sloc_type == 0 || jobsearch_sloc_type == 1) {
-                                    selector.selectize({
-                                        placeholder: '<?php echo esc_html_e('Select Country', 'wp-jobsearch') ?>',
-                                    });
                                 }
                             }
+                        };
+                        rawFile.send(null);
+                    },
+                    readStateFile: function (file, selector) {
 
-                        });
+                        var $ = jQuery;
+                        if (jobsearch_is_admin == '' || ajax_flag == true) {
+                            $('#jobsearch-gdapilocs-statecon').empty();
+                            $('#jobsearch-gdapilocs-statecon').append('<select placeholder="<?php echo esc_html__("Select State", "wp-jobsearch") ?>"  class="states" id="stateId" name="<?php echo $state_param_name; ?>"><option value=""><?php echo esc_html__("Select State", "wp-jobsearch") ?></option></select>');
+                            selector = $(document).find("#stateId");
+                        }
 
-                        request.fail(function (jqXHR, textStatus) {
+                        rawFile = new XMLHttpRequest();
+                        rawFile.open("GET", file, false);
+                        rawFile.onreadystatechange = function () {
+                            if (rawFile.readyState === 4) {
+                                if (rawFile.status === 200 || rawFile.status == 0) {
+                                    selector.html('');
+                                    selector.append('<option value="pls_wait"><?php echo esc_html_e('Please Wait...', 'wp-jobsearch') ?></option>');
+                                    setTimeout(function () {
+                                        selector.html('');
+                                        var _result_states = JSON.parse(rawFile.responseText);
 
-                        });
+                                        //if (jobsearch_is_admin == 1 && ajax_flag == false) {
+                                        selector.append('<option value=""><?php echo esc_html_e('Select State', 'wp-jobsearch') ?></option>');
+                                        //}
+                                        var _option_select = '';
+                                        $.each(_result_states.result, function (index, element) {
 
+                                            if ($.trim(element) != "Enter Any State") {
+                                                if (jobsearch_sloc_state != "") {
+                                                    _option_select = jobsearch_sloc_state == element ? 'selected' : '';
+                                                }
+
+
+                                                if (_option_select != "") {
+
+                                                    selector.append($("<option></option>").attr("value", element).attr("selected", "selected").text(element));
+
+                                                    // selector.append(jQuery('<option>', {
+                                                    //     value: element,
+                                                    //     text: element,
+                                                    //     selected: _option_select,
+                                                    // }));
+
+                                                } else {
+
+                                                    selector.append($("<option></option>").attr("value", element).text(element));
+
+                                                    // selector.append(jQuery('<option>', {
+                                                    //     value: element,
+                                                    //     text: element,
+                                                    // }));
+
+                                                }
+                                            }
+                                        });
+                                    }, 300);
+                                    /*
+                                    * Initialize Selectize
+                                    * */
+                                    if (jobsearch_is_admin == '' || ajax_flag == true) {
+                                        setTimeout(function () {
+                                            selector.selectize({
+                                                sortField: 'text'
+                                            });
+                                        }, 300)
+                                    }
+                                    //
+                                }
+                            }
+                        };
+                        rawFile.send(null);
+                    },
+                    readCountryFile: function (file, selector, country) {
+                        var rand_num = Math.random();
+                        var $ = jQuery;
+                        rawFile = new XMLHttpRequest();
+                        rawFile.open("GET", file + "?param=" + rand_num, false);
+                        rawFile.onreadystatechange = function () {
+                            if (rawFile.readyState === 4) {
+                                if (rawFile.status === 200 || rawFile.status == 0) {
+                                    var _result_countries = JSON.parse(rawFile.responseText);
+
+                                    selector.html('');
+                                    if (jobsearch_is_admin == 1 && ajax_flag == true) {
+
+                                        selector.append('<option value=""><?php echo esc_html_e('Select Country', 'wp-jobsearch') ?></option>');
+                                    } else {
+
+                                        var $opt = $('<option>');
+                                        $opt.val('').text('<?php echo esc_html_e('Select Country', 'wp-jobsearch') ?>');
+                                        $opt.appendTo(selector);
+                                    }
+                                    /*
+                                    * Alphabetic countries
+                                    * */
+
+                                    <?php if($contry_order == 'alpha'){ ?>
+                                    _result_countries.sort(function (a, b) {
+                                        return api_scrapper.compareStrings(a.name, b.name);
+                                    });
+                                    <?php } ?>
+                                    /*
+                                    * Code will execute if Exclude only countries option will be selected.
+                                    * */
+
+                                    <?php if($contry_filtring == 'inc_contries'){ ?>
+                                    inc_countries = <?php echo json_encode($contry_filtrinc_contries);
+                                    } ?>;
+
+                                    /*
+                                    * Code will execute if Exclude only countries option will be selected.
+                                    * */
+
+                                    <?php if($contry_filtring == 'exc_contries'){ ?>
+                                    exec_countries = <?php echo json_encode($contry_filtrexc_contries);
+
+                                    } ?>;
+                                    /*
+                                    * Code will execute if Random countries option will be selected.
+                                    * */
+
+                                    <?php if($contry_order == 'random'){ ?>
+                                    _result_countries = api_scrapper.shuffleArray(_result_countries);
+                                    <?php }
+                                    ////////// countries by population ////////////
+                                    if($contry_order == 'by_population'){ ?>
+                                    _result_countries.sort(function (a, b) {
+                                        return parseFloat(b.population) - parseFloat(a.population);
+                                    });
+                                    <?php } ?>
+                                    /*
+                                    * Include only countries
+                                    * */
+                                    if (inc_countries != "" && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
+
+                                        var _inc_flag = false;
+                                        $.each(_result_countries, function (i, element) {
+                                            if (i < inc_countries.length) {
+
+                                                if (jobsearch_sloc_country == inc_countries[i]) {
+
+                                                    selector.append($("<option></option>")
+                                                        .attr("data-index", i)
+                                                        .attr("code", api_scrapper.getCountryCode(inc_countries[i]))
+                                                        .attr("selected", "selected")
+                                                        .attr("value", inc_countries[i])
+                                                        .text(inc_countries[i]));
+                                                    _inc_flag = true;
+
+                                                } else if (contry_preselct == 'by_contry' && contry_presel_contry_code == api_scrapper.getCountryCode(inc_countries[i]) && ajax_flag == false && _inc_flag == false) {
+                                                    selector.append($("<option></option>")
+                                                        .attr("data-index", i)
+                                                        .attr("code", api_scrapper.getCountryCode(inc_countries[i]))
+                                                        .attr("selected", "selected")
+                                                        .attr("value", inc_countries[i])
+                                                        .text(inc_countries[i]));
+
+                                                } else {
+                                                    selector.append($("<option></option>")
+                                                        .attr("data-index", i)
+                                                        .attr("code", api_scrapper.getCountryCode(inc_countries[i]))
+                                                        .attr("value", inc_countries[i])
+                                                        .text(inc_countries[i]));
+                                                }
+                                            }
+                                        })
+
+                                    } else if (exec_countries != '' && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
+                                        /*
+                                        * code will execute if "Exclude countries selected" filter option will be selected
+                                        * */
+
+                                        var _exec_flag = false;
+                                        $.each(_result_countries, function (index, element) {
+                                            if (element != "") {
+                                                if (exec_countries.indexOf(element.name) == -1) {
+                                                    /*
+                                                    * code will execute if Country Name is from save in metavalue
+                                                    * */
+
+                                                    if (jobsearch_sloc_country == element.name) {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("selected", "selected")
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+                                                        _exec_flag = true;
+                                                    } else if (contry_preselct == 'by_contry' && contry_presel_contry_code == api_scrapper.getCountryCode(element.name) && ajax_flag == false && _exec_flag == false) {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("selected", "selected")
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+
+                                                    } else {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    } else {
+
+                                        $.each(_result_countries, function (index, element) {
+
+                                            if (element != "") {
+                                                /*
+                                                * code will execute if Preselect Country option will be selected
+                                                * */
+
+                                                <?php if ($contry_preselct == 'by_contry' && $contry_presel_contry != "" && $query_var != 'jobsearch-location-sett-editor') { ?>
+
+                                                contry_presel_contry = "<?php echo $contry_presel_contry ?>";
+                                                var _option_select = contry_presel_contry == element.code ? 'selected' : '';
+                                                /////////////////// code will execute on the front end//////////////
+                                                if (jobsearch_is_admin == '' || ajax_flag == true) {
+
+                                                    if (contry_presel_contry == element.code) {
+                                                        selector.append($('<option>', {
+                                                            value: element.name,
+                                                            text: element.name,
+                                                            selected: 'selected',
+                                                        }));
+                                                    } else {
+                                                        selector.append($('<option>', {
+                                                            value: element.name,
+                                                            text: element.name,
+                                                        }));
+                                                    }
+                                                    ///////////////////end//////////////
+                                                } else {
+
+                                                    if (jobsearch_sloc_country != "") {
+                                                        if (api_scrapper.getCountryCode(jobsearch_sloc_country) == element.code) {
+
+                                                            selector.append($("<option></option>")
+                                                                .attr("data-index", index)
+                                                                .attr("code", element.code)
+                                                                .attr("selected", "selected")
+                                                                .attr("value", element.name)
+                                                                .text(element.name));
+                                                        } else {
+                                                            selector.append($("<option></option>")
+                                                                .attr("data-index", index)
+                                                                .attr("code", element.code)
+                                                                .attr("value", element.name)
+                                                                .text(element.name));
+                                                        }
+
+                                                    } else {
+
+                                                        if (contry_presel_contry == element.code) {
+                                                            selector.append($("<option></option>")
+                                                                .attr("data-index", index)
+                                                                .attr("code", element.code)
+                                                                .attr("selected", "selected")
+                                                                .attr("value", element.name)
+                                                                .text(element.name));
+                                                        } else {
+                                                            selector.append($("<option></option>")
+                                                                .attr("data-index", index)
+                                                                .attr("code", element.code)
+                                                                .attr("value", element.name)
+                                                                .text(element.name));
+                                                        }
+                                                    }
+
+                                                }
+                                                /*
+                                                * Countries by IP
+                                                * */
+
+                                                <?php } else if($contry_preselct == 'by_user_ip'){ ?>
+
+
+                                                if (jobsearch_is_admin == '' || ajax_flag == true) {
+                                                    if (country == element.code) {
+                                                        selector.append($('<option>', {
+                                                            value: element.name,
+                                                            text: element.name,
+                                                            selected: 'selected',
+                                                        }));
+                                                    } else {
+                                                        selector.append($('<option>', {
+                                                            value: element.name,
+                                                            text: element.name,
+                                                        }));
+                                                    }
+                                                } else {
+                                                    var _option_select = country == element.code ? 'selected' : '';
+                                                    if (country == element.code) {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("selected", "selected")
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+                                                    } else {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+                                                    }
+                                                }
+
+                                                <?php } else { ?>
+
+                                                var _option_select = '';
+                                                if (jobsearch_sloc_country != '') {
+                                                    if (jobsearch_sloc_country == element.name) {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("selected", "selected")
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+
+
+                                                    } else {
+                                                        selector.append($("<option></option>")
+                                                            .attr("data-index", index)
+                                                            .attr("code", element.code)
+                                                            .attr("value", element.name)
+                                                            .text(element.name));
+
+                                                    }
+
+                                                } else {
+
+                                                    selector.append($("<option></option>")
+                                                        .attr("data-index", index)
+                                                        .attr("code", element.code)
+                                                        .attr("value", element.name)
+                                                        .text(element.name));
+                                                }
+
+                                                <?php } ?>
+                                            }
+                                        });
+                                    }
+                                    /*
+                                    * Initialize Selectize
+                                    * */
+
+                                    if (jobsearch_is_admin == '' || ajax_flag == true) {
+                                        if (jobsearch_sloc_type == 0 || jobsearch_sloc_type == 1) {
+                                            selector.selectize({
+                                                placeholder: '<?php echo esc_html_e('Select Country', 'wp-jobsearch') ?>',
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                        rawFile.send(null);
                     }, predictByIP: function () {
                         var $ = jQuery;
                         var request = $.ajax({
@@ -1818,8 +1815,8 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                         request.done(function (result) {
 
                             if (result != '') {
-                                api_scrapper.readCountryFile('<?php echo $this->wp_upload_dir_url() ?>/jobsearch-locations/countries.json', $('#countryId'), result.country);
-                                api_scrapper.readStateFile(result.country, jQuery('#stateId'))
+                                api_scrapper.readCountryFile('<?php echo $upload_file_url ?>/countries.json', $('#countryId'), result.country);
+                                api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + result.country + '/' + result.country + '-states.json', $('#stateId'))
                             } else {
                                 /*
                                 * Second Request will be sent if first request will fail.
@@ -1828,7 +1825,7 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                             }
                         });
                         request.fail(function (jqXHR, textStatus) {
-
+                            alert(textStatus)
                         });
                     }, shuffleArray: function (a) {
                         var j, x, i;
@@ -1845,140 +1842,22 @@ if (!class_exists('jobsearch_allocation_settings_handle')) {
                             dataType: "json"
                         });
                         request.done(function (result) {
-                            api_scrapper.readCountryFile('<?php echo $this->wp_upload_dir_url() ?>/jobsearch-locations/countries.json', $('#countryId'), result.countryCode);
-                            api_scrapper.readStateFile(result.countryCode, jQuery('#stateId'))
+                            api_scrapper.readCountryFile('<?php echo $upload_file_url ?>/countries.json', $('#countryId'), result.countryCode);
+                            api_scrapper.readStateFile('<?php echo $upload_file_url ?>/countries/' + result.countryCode + '/' + result.countryCode + '-states.json', $('#stateId'))
                         });
                         request.fail(function (jqXHR, textStatus) {
-
+                            alert(textStatus)()
                         });
                     }, compareStrings: function (a, b) {
                         a = a.toLowerCase();
                         b = b.toLowerCase();
                         return (a < b) ? -1 : (a > b) ? 1 : 0;
                     }
-                };
-
-                <?php if($ajax_flag == false){ ?>
-                jQuery(document).ready(function () {
-                //jQuery(window).load(function () {
-                    <?php } ?>
-
-                    var $ = jQuery;
-                    var _single_country_code = '';
-
-                    if (jobsearch_sloc_type == '2' || jobsearch_sloc_type == '3') {
-                        _single_country_code = jQuery("#countryId").val();
-
-                    } else {
-                        if (jobsearch_sloc_country != 0) {
-                            _single_country_code = api_scrapper.getCountryCode(jobsearch_sloc_country);
-                        }
-                    }
-
-                    <?php if($ajax_flag == true){ ?>
-                    ajax_flag = '<?php echo $ajax_flag ?>';
-
-                    api_scrapper.readCountryFile('<?php echo $this->wp_upload_dir_url() ?>/jobsearch-locations/countries.json', jQuery('#countryId'), jobsearch_sloc_country);
-                    <?php } ?>
-
-                    <?php if($contry_preselct != 'by_user_ip' || $query_var == 'jobsearch-location-sett-editor'){ ?>
-
-                    api_scrapper.readCountryFile('<?php echo $this->wp_upload_dir_url() ?>/jobsearch-locations/countries.json', jQuery('#countryId'), '');
-
-                    <?php } ?>
-
-                    if (jobsearch_sloc_state != "") {
-                        api_scrapper.readStateFile(_single_country_code, jQuery("#stateId"))
-                    }
-
-                    if ((jobsearch_sloc_type == 2 || jobsearch_sloc_type == 3) && jobsearch_is_loc_editor != 'jobsearch-location-sett-editor') {
-                        if (_single_country_code != "") {
-                            api_scrapper.readStateFile(_single_country_code, jQuery("#stateId"))
-                        }
-                        if (jobsearch_sloc_city != "") {
-                            setTimeout(function () {
-                                console.info("done first");
-                                jQuery('#stateId').trigger('change');
-                            }, 6000)
-                        }
-                    }
-
-                    if (jobsearch_sloc_city != "") {
-                        setTimeout(function () {
-                            console.info("triggered second");
-                            jQuery('#stateId').trigger('change');
-                        }, 4000)
-                    }
-
-                    <?php
-                    /*
-                     * Countries by user IP
-                     * */
-
-                    if($contry_preselct == 'by_user_ip' && $query_var != 'jobsearch-location-sett-editor'){ ?>
-                    if (jobsearch_sloc_country == 0 || jobsearch_sloc_state == 0) {
-                        api_scrapper.predictByIP();
-                    } else {
-                        api_scrapper.readCountryFile('<?php echo $this->wp_upload_dir_url() ?>/jobsearch-locations/countries.json', $('#countryId'), _single_country_code);
-                        api_scrapper.readStateFile(_single_country_code, $("#stateId"));
-                    }
-                    <?php } ?>
-                    /*
-                    * Pre select Country
-                    * */
-
-                    <?php
-                    if ($contry_preselct == 'by_contry' && $contry_presel_contry != "" && $query_var != 'jobsearch-location-sett-editor') { ?>
-
-                    if (jQuery("#countryId").val() != "") {
-                        _single_country_code = jobsearch_is_admin == 1 && $("select[name=contry_presel_contry]").val() != undefined ? $("select[name=contry_presel_contry]").val() : api_scrapper.getCountryCode($("#countryId").val());
-                    } else {
-                        _single_country_code = '<?php echo $contry_presel_contry ?>';
-                    }
-
-                    if (_single_country_code != "") {
-                        api_scrapper.readStateFile(_single_country_code, $("#stateId"));
-                    }
-                    <?php } ?>
-                    <?php if($ajax_flag == false){ ?>
-                });
-                <?php } ?>
-
-                /*
-                 *countries change event
-                 **/
-
-                jQuery(document).on('change', '.countries', function () {
-                    var _this = jQuery(this);
-                    if (_this.val() != 0 && _this.val() != undefined) {
-                        var _country_code = '';
-                        if (inc_countries != "") {
-                            _country_code = api_scrapper.getCountryCode(_this.val());
-                        } else {
-                            _country_code = jobsearch_is_admin == 1 && _this.find('option:selected').attr("code") != undefined ? _this.find('option:selected').attr("code") : api_scrapper.getCountryCode(_this.val());
-                        }
-                        api_scrapper.readStateFile(_country_code, jQuery("#stateId"));
-                    }
-                });
-
-                /*
-                * state change events
-                * */
-
-                jQuery(document).on('change', '#stateId', function () {
-                    var _this = jQuery(this);
-
-                    if (_this.val() != 0 && _this.val() != undefined) {
-                        var country_code = jQuery("#countryId").find('option:selected').attr("code") != undefined ? jQuery("#countryId").find('option:selected').attr("code") : jQuery("#countryId").val();
-                        if (country_code.length > 2) {
-                            country_code = api_scrapper.getCountryCode(jQuery("#countryId").val())
-                        }
-                        api_scrapper.readCityOnlyFiles(country_code, _this.val(), jQuery('#cityId'));
-                    }
-                });
+                }
             </script>
             <?php
         }
+
     }
 
     global $jobsearch_gdapi_allocation;

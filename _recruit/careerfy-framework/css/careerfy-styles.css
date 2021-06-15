@@ -98,9 +98,8 @@
    max-height: 17px;
    -webkit-line-clamp: 2;
    -webkit-box-orient: vertical;
-   color: #777;
 }
-/* Employers List */
+/* Recruiters List */
 .careerfy-jobs-scroll-slider,.careerfy-jobs-scroll-slider-wrap,
 .careerfy-jobs-scroll-slider-text {
     float: left;
@@ -120,7 +119,6 @@
     box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.10);
     text-align: center;
     border-radius: 8px;
-    background-color: #ffffff;
 }
 .careerfy-foot-wrap {
     float: left;
@@ -134,30 +132,11 @@
     padding: 17px 25px 23px 25px;
     text-align: left;
 }
-.careerfy-jobs-scroll-slider figure {
-    margin-bottom: 0px;
-    overflow: hidden;
-}
+.careerfy-jobs-scroll-slider figure { margin-bottom: 0px; }
 .careerfy-jobs-scroll-slider figure a {
     display: inline-block;
-    width: 170px;
-    padding: 0px 0px 0px 0px;
-    height: 170px;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    margin: 20px 0px;
-}
-.careerfy-jobs-scroll-slider figure a img {
-    vertical-align: middle;
-    max-height: 170px;
-    max-width: 170px;
-    display: inline-block;
-}
-.jobs-scrolslider-imghelpr {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+    width: 115px;
+    padding: 30px 0px 20px 0px;
 }
 .careerfy-jobs-scroll-slider figure figcaption {
     position: absolute;
@@ -175,7 +154,7 @@
     margin-left: 6px;
 }
 .careerfy-jobs-scroll-slider-text h2 {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 3px;
 }

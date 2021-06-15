@@ -2,21 +2,10 @@
 
 use WP_Jobsearch\Package_Limits;
 
-global $jobsearch_plugin_options, $Jobsearch_User_Dashboard_Settings, $sitepress;
+global $jobsearch_plugin_options, $Jobsearch_User_Dashboard_Settings;
 do_action('jobsearch_user_dashboard_header');
 
-do_action('jobsearch_enqueue_dashboard_styles');
-
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
-
-$lang_code = '';
-if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-    $lang_code = $sitepress->get_current_language();
-}
+get_header();
 
 $user_pkg_limits = new Package_Limits;
 
@@ -24,9 +13,6 @@ $user_id = get_current_user_id();
 $user_is_candidate = jobsearch_user_is_candidate($user_id);
 $user_is_employer = jobsearch_user_is_employer($user_id);
 wp_enqueue_script('jobsearch-user-dashboard');
-wp_enqueue_script('fancybox-pack');
-wp_enqueue_script('jobsearch-shortlist-functions-script');
-wp_enqueue_script('datetimepicker-script');
 
 $plugin_default_view = isset($jobsearch_plugin_options['jobsearch-default-page-view']) ? $jobsearch_plugin_options['jobsearch-default-page-view'] : 'full';
 $plugin_default_view_with_str = '';
@@ -51,9 +37,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
                 $user_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
                 $candidate_unapproved_text = isset($jobsearch_plugin_options['unapproverd_candidate_txt']) ? $jobsearch_plugin_options['unapproverd_candidate_txt'] : '';
-                $candidate_unapproved_text = apply_filters('wpml_translate_single_string', $candidate_unapproved_text, 'JobSearch Options', 'Unapproverd Candidate Message - ' . $candidate_unapproved_text, $lang_code);
-                //var_dump($lang_code);
-                //var_dump($candidate_unapproved_text);
                 if ($user_status != 'on' && $candidate_unapproved_text != '') {
                     ?>
                     <div class="jobsearch-column-12">
@@ -77,7 +60,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                 $employer_id = jobsearch_get_user_employer_id($user_id);
                 $user_status = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
                 $employer_unapproved_text = isset($jobsearch_plugin_options['unapproverd_employer_txt']) ? $jobsearch_plugin_options['unapproverd_employer_txt'] : '';
-                $employer_unapproved_text = apply_filters('wpml_translate_single_string', $employer_unapproved_text, 'JobSearch Options', 'Unapproverd Employer Message - ' . $employer_unapproved_text, $lang_code);
                 if ($user_status != 'on' && $employer_unapproved_text != '') { ?>
                     <div class="jobsearch-column-12">
                         <div class="jobsearch-unapproved-user-con">
@@ -99,8 +81,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
             //die;
             update_option('jobsearch_user_assign_advs_' . $user_id, '1');
             
-            $is_a_member = false;
-            
             $get_tab = isset($_REQUEST['tab']) ? $_REQUEST['tab'] : '';
             //require_once 'user-dashboard-sidebar.php';
             jobsearch_user_dashboard_sidebar_html();
@@ -108,9 +88,7 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
             <div class="jobsearch-column-9 jobsearch-typo-wrap">
                 <?php
                 $dashmenu_links_cand = isset($jobsearch_plugin_options['cand_dashbord_menu']) ? $jobsearch_plugin_options['cand_dashbord_menu'] : '';
-                $dashmenu_links_cand = apply_filters('jobsearch_cand_dashbord_menu_items_arr', $dashmenu_links_cand);
                 if ($user_is_candidate) {
-                    $is_a_member = true;
                     echo '<div id="dashboard-tab-settings" class="main-tab-section">';
                     if ($get_tab == 'dashboard-settings') {
                         if (isset($dashmenu_links_cand['my_profile']) && $dashmenu_links_cand['my_profile'] == '1' && !$user_pkg_limits::cand_field_is_locked('dashtab_fields|my_profile')) {
@@ -187,16 +165,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                     }
                     echo '</div>' . "\n";
 
-                    echo '<div id="dashboard-tab-my-emails" class="main-tab-section">';
-                    if ($get_tab == 'my-emails') {
-                        if (isset($dashmenu_links_cand['my_emails']) && $dashmenu_links_cand['my_emails'] == '1' && !$user_pkg_limits::cand_field_is_locked('dashtab_fields|my_emails')) {
-                            echo ($Jobsearch_User_Dashboard_Settings->show_template_part('candidate', 'emails'));
-                        } else {
-                            echo ($Jobsearch_User_Dashboard_Settings->show_template_part('candidate', 'stats'));
-                        }
-                    }
-                    echo '</div>' . "\n";
-
                     echo '<div id="dashboard-tab-following" class="main-tab-section">';
                     if ($get_tab == 'following') {
                         if (isset($dashmenu_links_cand['following']) && $dashmenu_links_cand['following'] == '1' && !$user_pkg_limits::cand_field_is_locked('dashtab_fields|following')) {
@@ -220,7 +188,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                     echo '</div>' . "\n";
                 }
                 if (jobsearch_user_isemp_member($user_id)) {
-                    $is_a_member = true;
                     $membusr_perms = jobsearch_emp_accmember_perms($user_id);
 
                     echo '<div id="dashboard-tab-settings" class="main-tab-section">';
@@ -270,7 +237,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                     echo '</div>' . "\n";
                 }
                 if ($user_is_employer) {
-                    $is_a_member = true;
                     $dashmenu_links_emp = isset($jobsearch_plugin_options['emp_dashbord_menu']) ? $jobsearch_plugin_options['emp_dashbord_menu'] : '';
                     echo '<div id="dashboard-tab-settings" class="main-tab-section">';
                     if ($get_tab == 'dashboard-settings') {
@@ -349,16 +315,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                     }
                     echo '</div>' . "\n";
 
-                    echo '<div id="dashboard-tab-my-emails" class="main-tab-section">';
-                    if ($get_tab == 'my-emails') {
-                        if (isset($dashmenu_links_emp['my_emails']) && $dashmenu_links_emp['my_emails'] == '1' && !$user_pkg_limits::emp_field_is_locked('dashtab_fields|my_emails')) {
-                            echo ($Jobsearch_User_Dashboard_Settings->show_template_part('employer', 'emails'));
-                        } else {
-                            echo ($Jobsearch_User_Dashboard_Settings->show_template_part('employer', 'stats'));
-                        }
-                    }
-                    echo '</div>' . "\n";
-
                     echo '<div id="dashboard-tab-followers" class="main-tab-section">';
                     if ($get_tab == 'followers') {
                         if (isset($dashmenu_links_emp['followers']) && $dashmenu_links_emp['followers'] == '1' && !$user_pkg_limits::emp_field_is_locked('dashtab_fields|followers')) {
@@ -381,11 +337,6 @@ do_action('jobsearch_user_dash_instart_act', $user_id);
                     }
                     echo '</div>' . "\n";
                 }
-                
-                if (!$is_a_member) {
-                    echo apply_filters('jobsearch_dashboard_tab_content_ext', '', $get_tab);
-                }
-                echo apply_filters('jobsearch_dash_tab_content_tabsdata_after', '', $get_tab);
                 ?>
             </div>
         </div>

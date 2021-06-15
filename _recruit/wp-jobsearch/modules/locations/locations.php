@@ -3,6 +3,7 @@
   Class : Location
  */
 
+
 // this is an include only WP file
 if (!defined('ABSPATH')) {
     die;
@@ -29,39 +30,7 @@ class Jobsearch_Location
         //
         add_filter('redux/options/jobsearch_plugin_options/sections', array($this, 'jobsearch_location_plugin_option_fields'));
         add_action('init', array($this, 'titles_translation'));
-        
-        add_action('save_post', array($this, 'location_fields_save'), 9999);
-        
         $this->load_files();
-    }
-    
-    public function location_fields_save($post_id) {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-            return;
-        }
-        
-        if (isset($_POST['jobsearch_field_location_postalcode'])) {
-            $postal_code = $_POST['jobsearch_field_location_postalcode'];
-            $old_postal_code = isset($_POST['jobsearch_location_old_postalcode']) ? $_POST['jobsearch_location_old_postalcode'] : '';
-            $post_addres = get_post_meta($post_id, 'jobsearch_field_location_address', true);
-            
-            $post_addres_parse = explode(', ', $post_addres);
-            $post_addres_end = !empty($post_addres_parse) ? end($post_addres_parse) : '';
-            if ($post_addres_end == $old_postal_code) {
-                $post_addres = str_replace(', ' . $old_postal_code, '', $post_addres);
-            }
-            
-            if ($post_addres != '') {
-                if ($postal_code != '' && strpos($post_addres, $postal_code) === false) {
-                    $post_addres .= ', ' . $postal_code;
-                    update_post_meta($post_id, 'jobsearch_field_location_address', $post_addres);
-                }
-            } else {
-                if ($postal_code != '') {
-                    update_post_meta($post_id, 'jobsearch_field_location_address', $postal_code);
-                }
-            }
-        }
     }
 
     public function titles_translation()
@@ -117,8 +86,6 @@ class Jobsearch_Location
             $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
             $all_locations_type = isset($jobsearch_plugin_options['all_locations_type']) ? $jobsearch_plugin_options['all_locations_type'] : '';
 
-            $map_search_locsugg = isset($jobsearch_plugin_options['top_search_locsugg']) ? $jobsearch_plugin_options['top_search_locsugg'] : '';
-
             $lang_code = '';
             $admin_ajax_url = admin_url('admin-ajax.php');
             if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -126,7 +93,7 @@ class Jobsearch_Location
                 $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
             }
             wp_register_script('jobsearch-location-editor', jobsearch_plugin_get_url('modules/locations/js/jobsearch-inline-editor.js'), array('jquery'), '', true);
-            wp_register_script('jobsearch-location', jobsearch_plugin_get_url('modules/locations/js/location-functions.js'), array('jquery'), rand(10000, 99999), true);
+            wp_register_script('jobsearch-location', jobsearch_plugin_get_url('modules/locations/js/location-functions.js'), array('jquery'), '', true);
             // Localize the script
             $jobsearch_location_common_arr = array(
                 'plugin_url' => jobsearch_plugin_get_url(),
@@ -145,7 +112,6 @@ class Jobsearch_Location
 
             $allow_full_address = isset($jobsearch_plugin_options['location-allow-full-address']) ? $jobsearch_plugin_options['location-allow-full-address'] : '';
 
-            $allow_postal_code = isset($jobsearch_plugin_options['location_allow_postal_code']) ? $jobsearch_plugin_options['location_allow_postal_code'] : '';
 
             $allow_location_map = isset($jobsearch_plugin_options['location-allow-map']) ? $jobsearch_plugin_options['location-allow-map'] : '';
 
@@ -176,7 +142,6 @@ class Jobsearch_Location
             $loc_location4 = get_post_meta($id, 'jobsearch_field_location_location4', true);
             //update_post_meta($id, 'jobsearch_field_location_address', '');
             $loc_address = get_post_meta($id, 'jobsearch_field_location_address', true);
-            $loc_postalcode = get_post_meta($id, 'jobsearch_field_location_postalcode', true);
             $loc_lat = get_post_meta($id, 'jobsearch_field_location_lat', true);
             $loc_lng = get_post_meta($id, 'jobsearch_field_location_lng', true);
             $loc_zoom = get_post_meta($id, 'jobsearch_field_location_zoom', true);
@@ -220,21 +185,6 @@ class Jobsearch_Location
                     // not neccessory for first load, it will populate on seelct country
                 }
             }
-
-            $loc_location1 = jobsearch_esc_html($loc_location1);
-            $loc_location2 = jobsearch_esc_html($loc_location2);
-            $loc_location3 = jobsearch_esc_html($loc_location3);
-            $loc_location4 = jobsearch_esc_html($loc_location4);
-            $loc_address = jobsearch_esc_html($loc_address);
-            $loc_postalcode = jobsearch_esc_html($loc_postalcode);
-            $loc_lat = jobsearch_esc_html($loc_lat);
-            $loc_lng = jobsearch_esc_html($loc_lng);
-            $loc_zoom = jobsearch_esc_html($loc_zoom);
-            $map_height = jobsearch_esc_html($map_height);
-            $marker_image = jobsearch_esc_html($marker_image);
-
-            do_action('jobsearch_in_bkloc_sec_before_fields', $id);
-            
             ob_start();
             ?>
             <script type="text/javascript">
@@ -476,8 +426,7 @@ class Jobsearch_Location
                     <?php
                     if ($loc_optionstype == '2' || $loc_optionstype == '3') {
                         ?>
-                        <input type="hidden" name="jobsearch_field_location_location1" id="countryId"
-                               data-randid="<?php echo($rand_num) ?>"
+                        <input type="hidden" name="country" id="countryId" data-randid="<?php echo($rand_num) ?>"
                                value="<?php echo($contry_singl_contry) ?>"/>
                         <?php
                     }
@@ -506,20 +455,17 @@ class Jobsearch_Location
                     <?php
                 }
             }
-
-            echo apply_filters('jobsearch_post_adminloc_before_full_adres', '', $id);
             ?>
             <div class="jobsearch-element-field" <?php echo(($allow_full_address != 'yes' && $allow_full_address != 'yes_req') ? 'style="display: none;"' : '') ?>>
                 <div class="elem-label">
                     <label><?php esc_html_e('Address', 'wp-jobsearch') ?></label>
                 </div>
                 <div class="elem-field">
-                    <?php if ($allow_location_map == 'yes' && $location_map_type == 'mapbox' && $mapbox_access_token != '' && $map_search_locsugg == 'yes') { ?>
-                        <div id="jobsearch_location_address_<?php echo($rand_num) ?>" class="mapbox-geocoder-searchtxt" style="display:none;"></div>
-                        <div id="jobsearch-locaddres-suggscon" class="jobsearch_searchloc_div">
-                            <span class="loc-loader"></span>
-                            <input id="jobsearch_lochiden_addr_<?php echo($rand_num) ?>" type="text" name="jobsearch_field_location_address" value="<?php echo($loc_address) ?>">
-                        </div>
+                    <?php if ($location_map_type == 'mapbox' && $mapbox_access_token != '') { ?>
+                        <div id="jobsearch_location_address_<?php echo($rand_num) ?>"
+                             class="mapbox-geocoder-searchtxt"></div>
+                        <input id="jobsearch_lochiden_addr_<?php echo($rand_num) ?>" type="hidden"
+                               name="jobsearch_field_location_address" value="<?php echo($loc_address) ?>">
                     <?php } else {
                         $field_params = array(
                             'id' => 'jobsearch_location_address_' . $rand_num,
@@ -535,7 +481,8 @@ class Jobsearch_Location
                         <?php
                     } else {
                         ?>
-                        <input id="check_loc_addr_<?php echo($rand_num) ?>" type="hidden" value="<?php echo($loc_address) ?>">
+                        <input id="check_loc_addr_<?php echo($rand_num) ?>" type="hidden"
+                               value="<?php echo($loc_address) ?>">
                         <?php
                     }
                     ?>
@@ -545,18 +492,7 @@ class Jobsearch_Location
             <?php
             $loc_fields_html = ob_get_clean();
             echo apply_filters('jobsearch_admin_loc_address_simpfields', $loc_fields_html, $id, $rand_num);
-            ?>
-            
-            <div class="jobsearch-element-field" <?php echo($allow_postal_code == 'yes' ? '' : 'style="display: none;"') ?>>
-                <div class="elem-label">
-                    <label><?php esc_html_e('Postal Code', 'wp-jobsearch') ?></label>
-                </div>
-                <div class="elem-field">
-                    <input type="hidden" name="jobsearch_location_old_postalcode" value="<?php echo ($loc_postalcode) ?>">
-                    <input id="jobsearch_loc_postalcode_<?php echo($rand_num) ?>" type="text" name="jobsearch_field_location_postalcode" value="<?php echo ($loc_postalcode) ?>">
-                </div>
-            </div>
-            <?php            
+
             //
             $autocomplete_adres_type = isset($jobsearch_plugin_options['autocomplete_adres_type']) ? $jobsearch_plugin_options['autocomplete_adres_type'] : '';
             ?>
@@ -598,11 +534,11 @@ class Jobsearch_Location
             } else {
                 $show_zoom = 'style="display: none;"';
             }
-            if ($mapbox_access_token == '' && $location_map_type == 'mapbox') {
+            if ($mapbox_access_token == '') {
                 $show_zoom = 'style="display: none;"';
             }
             ?>
-            <div class="jobsearch-element-field" <?php echo($show_zoom) ?>>
+            <div class="jobsearch-element-field" <?php echo ($show_zoom) ?>>
                 <div class="elem-label">
                     <label><?php esc_html_e('Zoom Level', 'wp-jobsearch') ?></label>
                 </div>
@@ -622,11 +558,11 @@ class Jobsearch_Location
             if ($allow_location_map != 'yes') {
                 $show_map_height = 'style="display: none;"';
             }
-            if ($allow_location_map == 'yes' && $mapbox_access_token == '' && $location_map_type == 'mapbox') {
+            if ($allow_location_map == 'yes' && $mapbox_access_token == '') {
                 $show_map_height = 'style="display: none;"';
             }
             ?>
-            <div class="jobsearch-element-field" <?php echo($show_map_height) ?>>
+            <div class="jobsearch-element-field" <?php echo ($show_map_height) ?>>
                 <div class="elem-label">
                     <label><?php esc_html_e('Map Height', 'wp-jobsearch') ?></label>
                 </div>
@@ -645,11 +581,11 @@ class Jobsearch_Location
             if ($allow_location_map != 'yes') {
                 $show_marker = 'style="display: none;"';
             }
-            if ($allow_location_map == 'yes' && $mapbox_access_token == '' && $location_map_type == 'mapbox') {
+            if ($allow_location_map == 'yes' && $mapbox_access_token == '') {
                 $show_marker = 'style="display: none;"';
             }
             ?>
-            <div class="jobsearch-element-field" <?php echo($show_marker) ?>>
+            <div class="jobsearch-element-field" <?php echo ($show_marker) ?>>
                 <div class="elem-label">
                     <label><?php esc_html_e('Marker', 'wp-jobsearch') ?></label>
                 </div>
@@ -668,16 +604,12 @@ class Jobsearch_Location
             if ($allow_location_map != 'yes') {
                 $map_height = 0;
             }
-            if ($allow_location_map == 'yes' && $mapbox_access_token == '' && $location_map_type == 'mapbox') {
+            if ($allow_location_map == 'yes' && $mapbox_access_token == '') {
                 $map_height = 0;
             }
             ?>
             <div id="jobsearch-map-<?php echo absint($rand_num); ?>" style="width: 100%; height: <?php echo($allow_location_map != 'yes' ? '0' : $map_height) ?>px;"></div>
 
-            <?php
-            do_action('jobsearch_in_bkloc_sec_after_fields', $id);
-            ?>
-            
             <script>
                 <?php
                 if ($location_map_type == 'mapbox') {
@@ -687,25 +619,8 @@ class Jobsearch_Location
                 var map;
                 var currentMarkers;
                 <?php
-                if ($allow_location_map == 'yes' && $mapbox_access_token != '' && $mapbox_style_url != '') {
+                if ($mapbox_access_token != '' && $mapbox_style_url != '') {
                 ?>
-                jQuery('body').on('click', function (e) {
-                    var this_dom = e.target;
-                    var thisdom_obj = jQuery(this_dom);
-                    if (thisdom_obj.parents('#jobsearch-locaddres-suggscon').length > 0) {
-                        //
-                    } else {
-                        jQuery('#jobsearch-locaddres-suggscon').find('.jobsearch_location_autocomplete').hide();
-                    }
-                });
-                var geocoder<?php echo($rand_num) ?>;
-                var _the_adres_input = '';
-                jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').keyup(function () {
-                    _the_adres_input = jQuery(this).val();
-                    if (_the_adres_input.length > 1) {
-                        geocoder<?php echo($rand_num) ?>.query(_the_adres_input);
-                    }
-                });
                 jQuery(document).ready(function () {
                     mapboxgl.accessToken = '<?php echo($mapbox_access_token) ?>';
                     map = new mapboxgl.Map({
@@ -716,79 +631,40 @@ class Jobsearch_Location
                         zoom: <?php echo esc_js($loc_zoom) ?>
                     });
                     currentMarkers = [];
-                    geocoder<?php echo($rand_num) ?> = new MapboxGeocoder({
+                    var geocoder<?php echo($rand_num) ?> = new MapboxGeocoder({
                         accessToken: mapboxgl.accessToken,
+                        placeholder: '<?php echo($loc_address) ?>',
                         marker: false,
-                        //flyTo: false,
                         mapboxgl: mapboxgl
                     });
-                    var selected_contries = jobsearch_plugin_vars.sel_countries_json;
-                    if (selected_contries != '') {
-                        var selected_contries_tojs = jQuery.parseJSON(selected_contries);
-                        var sel_countries_str = selected_contries_tojs.join();
-                        geocoder<?php echo($rand_num) ?>['countries'] = sel_countries_str;
-                    }
                     document.getElementById('jobsearch_location_address_<?php echo($rand_num) ?>').appendChild(geocoder<?php echo($rand_num) ?>.onAdd(map));
-                    //
-                    var predictionsDropDown = jQuery('<div class="jobsearch_location_autocomplete"></div>').appendTo(jQuery('#jobsearch-locaddres-suggscon'));
-                    geocoder<?php echo($rand_num) ?>.on('results', function (predictions) {
-                        //console.log(obj);
-                        //console.log(obj.features);
-                        var predic_line_html = '';
-                        if (typeof predictions.features !== 'undefined' && predictions.features.length > 0) {
-
-                            var predFeats = predictions.features;
-                            jQuery.each(predFeats, function (i, prediction) {
-                                var placename_str = prediction.place_name;
-                                var toshow_placename_str = placename_str.split(_the_adres_input).join('<strong>' + _the_adres_input + '</strong>');
-                                predic_line_html += '<div class="jobsearch_google_suggestions"><i class="icon-location-arrow"></i> ' + toshow_placename_str + '<span style="display:none">' + placename_str + '</span></div>';
+                    geocoder<?php echo($rand_num) ?>.on('result', function (obj) {
+                        var place_name = obj.result.place_name;
+                        var map_center_coords = obj.result.geometry.coordinates;
+                        if (map_center_coords.length > 1) {
+                            var map_center_lng = map_center_coords[0];
+                            var map_center_lat = map_center_coords[1];
+                            jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').val(place_name);
+                            document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = map_center_lat;
+                            document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = map_center_lng;
+                            // remove markers
+                            if (currentMarkers !== null) {
+                                for (var i = currentMarkers.length - 1; i >= 0; i--) {
+                                    currentMarkers[i].remove();
+                                }
+                            }
+                            //
+                            var new_marker = new mapboxgl.Marker({
+                                draggable: true
+                            }).setLngLat(map_center_coords).addTo(map);
+                            currentMarkers.push(new_marker);
+                            new_marker.on('dragend', function () {
+                                var lngLat = new_marker.getLngLat();
+                                document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = lngLat.lat;
+                                document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = lngLat.lng;
                             });
                         }
-                        predictionsDropDown.empty();
-                        predictionsDropDown.append(predic_line_html);
-                        predictionsDropDown.show();
                     });
-                    //
-                    predictionsDropDown.delegate('div', 'click', function () {
-                        var predic_loc_val = jQuery(this).find('span').html();
-                        jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').val(predic_loc_val);
-                        var map_center_coords = [];
-                        var map_addrapi_uri = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURI(predic_loc_val) + '.json?access_token=<?php echo($mapbox_access_token) ?>';
-                        jobsearch_common_getJSON(map_addrapi_uri, function (new_loc_status, new_loc_response) {
-                            if (typeof new_loc_response === 'object') {
-                                map_center_coords = new_loc_response.features[0].geometry.coordinates;
-                                if (map_center_coords !== 'undefined') {
-                                    map.flyTo({
-                                        center: map_center_coords,
-                                    });
-                                }
-                            }
-                            if (map_center_coords.length > 1) {
-                                var map_center_lng = map_center_coords[0];
-                                var map_center_lat = map_center_coords[1];
-                                document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = map_center_lat;
-                                document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = map_center_lng;
-                                // remove markers
-                                if (currentMarkers !== null) {
-                                    for (var i = currentMarkers.length - 1; i >= 0; i--) {
-                                        currentMarkers[i].remove();
-                                    }
-                                }
-                                //
-                                var new_marker = new mapboxgl.Marker({
-                                    draggable: true
-                                }).setLngLat(map_center_coords).addTo(map);
-                                currentMarkers.push(new_marker);
-                                new_marker.on('dragend', function () {
-                                    var lngLat = new_marker.getLngLat();
-                                    document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = lngLat.lat;
-                                    document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = lngLat.lng;
-                                });
-                            }
-                        });
-                        predictionsDropDown.hide();
-                    });
-
                     //
                     map.addControl(new mapboxgl.NavigationControl({
                         showCompass: false
@@ -843,8 +719,8 @@ class Jobsearch_Location
                             if (selected_contries != '') {
                                 var selected_contries_tojs = jQuery.parseJSON(selected_contries);
                                 selected_contries_json = {country: selected_contries_tojs};
-                                autcomplete_options.componentRestrictions = selected_contries_json;
                             }
+                            autcomplete_options.componentRestrictions = selected_contries_json;
 
                             var autocomplete = new google.maps.places.Autocomplete(autocomplete_input, autcomplete_options);
                             google.maps.event.addListener(autocomplete, 'place_changed', function () {
@@ -1014,8 +890,6 @@ class Jobsearch_Location
             $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
             $all_locations_type = isset($jobsearch_plugin_options['all_locations_type']) ? $jobsearch_plugin_options['all_locations_type'] : '';
 
-            $map_search_locsugg = isset($jobsearch_plugin_options['top_search_locsugg']) ? $jobsearch_plugin_options['top_search_locsugg'] : '';
-
             $lang_code = '';
             $admin_ajax_url = admin_url('admin-ajax.php');
             if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -1042,9 +916,6 @@ class Jobsearch_Location
             $map_styles = isset($jobsearch_plugin_options['jobsearch-location-map-style']) ? $jobsearch_plugin_options['jobsearch-location-map-style'] : '';
 
             $allow_full_address = isset($jobsearch_plugin_options['location-allow-full-address']) ? $jobsearch_plugin_options['location-allow-full-address'] : '';
-            
-            $allow_postal_code = isset($jobsearch_plugin_options['location_allow_postal_code']) ? $jobsearch_plugin_options['location_allow_postal_code'] : '';
-            
             $allow_location_map = isset($jobsearch_plugin_options['location-allow-map']) ? $jobsearch_plugin_options['location-allow-map'] : '';
 
             $def_map_zoom = isset($jobsearch_plugin_options['jobsearch-location-map-zoom']) && $jobsearch_plugin_options['jobsearch-location-map-zoom'] > 0 ? absint($jobsearch_plugin_options['jobsearch-location-map-zoom']) : '12';
@@ -1078,53 +949,11 @@ class Jobsearch_Location
             $loc_location3 = get_post_meta($id, 'jobsearch_field_location_location3', true);
             $loc_location4 = get_post_meta($id, 'jobsearch_field_location_location4', true);
             $loc_address = get_post_meta($id, 'jobsearch_field_location_address', true);
-            $loc_postalcode = get_post_meta($id, 'jobsearch_field_location_postalcode', true);
             $loc_lat = get_post_meta($id, 'jobsearch_field_location_lat', true);
             $loc_lng = get_post_meta($id, 'jobsearch_field_location_lng', true);
             $loc_zoom = get_post_meta($id, 'jobsearch_field_location_zoom', true);
             $map_height = get_post_meta($id, 'jobsearch_field_map_height', true);
             $marker_image = get_post_meta($id, 'jobsearch_field_marker_image', true);
-
-            if (isset($_GET['tab']) && $_GET['tab'] == 'user-job' && $id < 1) {
-                if (is_user_logged_in()) {
-                    $curr_user_id = get_current_user_id();
-                    if (jobsearch_user_isemp_member($curr_user_id)) {
-                        $employer_id = jobsearch_user_isemp_member($curr_user_id);
-                        $curr_user_id = jobsearch_get_employer_user_id($employer_id);
-                    } else {
-                        $employer_id = jobsearch_get_user_employer_id($curr_user_id);
-                    }
-                    if ($employer_id) {
-                        $loc_location1 = get_post_meta($employer_id, 'jobsearch_field_location_location1', true);
-                        $loc_location2 = get_post_meta($employer_id, 'jobsearch_field_location_location2', true);
-                        $loc_location3 = get_post_meta($employer_id, 'jobsearch_field_location_location3', true);
-                        $loc_location4 = get_post_meta($employer_id, 'jobsearch_field_location_location4', true);
-                        $loc_address = get_post_meta($employer_id, 'jobsearch_field_location_address', true);
-                        $loc_postalcode = get_post_meta($employer_id, 'jobsearch_field_location_postalcode', true);
-                        $loc_lat = get_post_meta($employer_id, 'jobsearch_field_location_lat', true);
-                        $loc_lng = get_post_meta($employer_id, 'jobsearch_field_location_lng', true);
-                        $loc_zoom = get_post_meta($employer_id, 'jobsearch_field_location_zoom', true);
-                        $map_height = get_post_meta($employer_id, 'jobsearch_field_map_height', true);
-                        $marker_image = get_post_meta($employer_id, 'jobsearch_field_marker_image', true);
-                    }
-                }
-            }
-
-            $loc_location1 = jobsearch_esc_html($loc_location1);
-            $loc_location2 = jobsearch_esc_html($loc_location2);
-            $loc_location3 = jobsearch_esc_html($loc_location3);
-            $loc_location4 = jobsearch_esc_html($loc_location4);
-            $loc_address = jobsearch_esc_html($loc_address);
-            $loc_postalcode = jobsearch_esc_html($loc_postalcode);
-            $loc_lat = jobsearch_esc_html($loc_lat);
-            $loc_lng = jobsearch_esc_html($loc_lng);
-            $loc_zoom = jobsearch_esc_html($loc_zoom);
-            $map_height = jobsearch_esc_html($map_height);
-            $marker_image = jobsearch_esc_html($marker_image);
-            
-            if ($allow_full_address == 'no') {
-                $loc_address = '';
-            }
 
             if (($loc_lat == '' || $loc_lng == '') && $default_location != '') {
 
@@ -1173,21 +1002,10 @@ class Jobsearch_Location
             </script>
 
             <div class="jobsearch-employer-box-section">
-                <?php
-                ob_start();
-                ?>
-                <div class="jobsearch-profile-title">
-                    <h2><?php esc_html_e('Address / Location', 'wp-jobsearch') ?></h2>
+                <div class="jobsearch-profile-title"><h2><?php esc_html_e('Address / Location', 'wp-jobsearch') ?></h2>
                 </div>
-                <?php
-                $loc_title_html = ob_get_clean();
-                echo apply_filters('jobsearch_dash_locfields_title_html', $loc_title_html);
-                
-                do_action('jobsearch_in_dashloc_sec_before_fields', $id);
-                ?>
                 <ul class="jobsearch-row jobsearch-employer-profile-form">
                     <?php
-                    do_action('jobsearch_in_dash_loc_simpfields_before', $id);
                     ob_start();
 
                     if ($all_locations_type != 'api') {
@@ -1418,14 +1236,14 @@ class Jobsearch_Location
                             <label><?php esc_html_e('State', 'wp-jobsearch') ?><?php echo($loc_required_fields == 'yes' ? '*' : '') ?></label>
                             <?php
                             if ($loc_optionstype == '2' || $loc_optionstype == '3') { ?>
-                                <input type="hidden" data-randid="<?php echo($rand_num) ?>"
-                                       name="jobsearch_field_location_location1"
+                                <input type="hidden" data-randid="<?php echo($rand_num) ?>" name="country"
                                        id="countryId"
                                        value="<?php echo($contry_singl_contry) ?>"/>
                                 <?php
                             }
                             ?>
-                            <div id="jobsearch-gdapilocs-statecon" data-val="<?php echo($loc_location2) ?>" class="jobsearch-profile-select">
+                            <div id="jobsearch-gdapilocs-statecon" data-val="<?php echo($loc_location2) ?>"
+                                 class="jobsearch-profile-select">
                                 <select name="jobsearch_field_location_location2" data-randid="<?php echo($rand_num) ?>"
                                         class="states"
                                         id="stateId">
@@ -1451,14 +1269,6 @@ class Jobsearch_Location
                             <?php
                         }
                     }
-                    
-                    ?>
-                    <li class="jobsearch-column-6" <?php echo($allow_postal_code == 'yes' ? '' : 'style="display: none;"') ?>>
-                        <label><?php esc_html_e('Postal Code', 'wp-jobsearch') ?></label>
-                        <input type="hidden" name="jobsearch_location_old_postalcode" value="<?php echo ($loc_postalcode) ?>">
-                        <input id="jobsearch_loc_postalcode_<?php echo($rand_num) ?>" type="text" name="jobsearch_field_location_postalcode" value="<?php echo ($loc_postalcode) ?>">
-                    </li>
-                    <?php
 
                     $full_addr_title = esc_html__('Full Address', 'wp-jobsearch');
                     //
@@ -1475,24 +1285,20 @@ class Jobsearch_Location
                         }
                     }
 
-                    echo apply_filters('jobsearch_post_frontloc_before_full_adres', '', $id);
+
                     ?>
                     <li class="jobsearch-column-<?php echo($addrfield_col_size) ?>" <?php echo(($allow_full_address != 'yes' && $allow_full_address != 'yes_req') ? 'style="display: none;"' : '') ?>>
                         <label><?php echo($full_addr_title) ?></label>
 
                         <?php
-                        if ($allow_location_map == 'yes' && $location_map_type == 'mapbox' && $mapbox_access_token != '' && $map_search_locsugg == 'yes') { ?>
-                            <div id="jobsearch_location_address_<?php echo($rand_num) ?>"
-                                 class="mapbox-geocoder-searchtxt" style="display: none;"></div>
-                            <div id="jobsearch-locaddres-suggscon" class="jobsearch_searchloc_div">
-                                <span class="loc-loader"></span>
-                                <input id="jobsearch_lochiden_addr_<?php echo($rand_num) ?>" type="text"
-                                       class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
-                                       name="jobsearch_field_location_address" value="<?php echo($loc_address) ?>">
-                            </div>
-                            <?php
-                        } else {
-                            ?>
+                        if ($location_map_type == 'mapbox' && $mapbox_access_token != '') { ?>
+
+                          <small>住所は■丁目▲番●号と入力後、候補リストからお選びください。</small>
+
+                            <div id="jobsearch_location_address_<?php echo($rand_num) ?>" class="mapbox-geocoder-searchtxt"></div>
+                            <input id="jobsearch_lochiden_addr_<?php echo($rand_num) ?>" type="hidden" class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
+                                   name="jobsearch_field_location_address" value="<?php echo($loc_address) ?>">
+                        <?php } else { ?>
                             <input type="text" id="jobsearch_location_address_<?php echo($rand_num) ?>"
                                    name="jobsearch_field_location_address"
                                    class="<?php echo(($allow_full_address == 'yes_req') ? ' jobsearch-req-field jobsearch-cpreq-field' : '') ?>"
@@ -1506,7 +1312,7 @@ class Jobsearch_Location
                     <?php
                     if ($location_map_type != 'mapbox') {
                         ?>
-                        <li class="jobsearch-column-2" <?php echo(($allow_location_map == 'yes') && ($allow_full_address == 'yes' || $allow_full_address == 'yes_req') ? '' : 'style="display: none;"') ?>>
+                        <li class="jobsearch-column-2" <?php echo($allow_location_map != 'yes' ? 'style="display: none;"' : '') ?>>
                             <button id="jobsearch-findmap-<?php echo absint($rand_num); ?>"
                                     class="jobsearch-findmap-btn"><?php esc_html_e('Find on Map', 'wp-jobsearch') ?></button>
                         </li>
@@ -1516,7 +1322,7 @@ class Jobsearch_Location
                     echo apply_filters('jobsearch_dash_loc_address_simpfields', $loc_fields_html, $id, $allow_full_address, $rand_num);
                     ?>
 
-                    <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
+                     <li class="jobsearch-column-4 dash-maploc-latfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Latitude', 'wp-jobsearch') ?></label>
                         <?php
                         $field_params = array(
@@ -1527,7 +1333,7 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
-                    <li class="jobsearch-column-4 dash-maploc-lngfield" <?php echo ($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
+                    <li class="jobsearch-column-4 dash-maploc-lngfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Longitude', 'wp-jobsearch') ?></label>
                         <?php
                         $field_params = array(
@@ -1538,7 +1344,7 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
-                    <li class="jobsearch-column-4 dash-maploc-zoomfield" <?php echo ($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
+                    <li class="jobsearch-column-4 dash-maploc-zoomfield" <?php echo($allow_location_map == 'yes' && $allow_latlng_fileds == 'yes' ? '' : 'style="display: none;"') ?>>
                         <label><?php esc_html_e('Zoom', 'wp-jobsearch') ?></label>
                         <?php
                         $field_params = array(
@@ -1549,27 +1355,25 @@ class Jobsearch_Location
                         $jobsearch_form_fields->input_field($field_params);
                         ?>
                     </li>
+
                     <?php
                     $map_con_style = '';
                     if ($allow_location_map != 'yes') {
                         $map_con_style = 'style="display: none;"';
                     }
-                    if ($allow_location_map == 'yes' && $mapbox_access_token == '' && $location_map_type == 'mapbox') {
+                    if ($allow_location_map == 'yes' && $mapbox_access_token == '') {
                         $map_con_style = 'style="display: none;"';
                     }
                     ?>
-                    <li class="jobsearch-column-12" <?php echo($map_con_style) ?>>
+                    <li class="jobsearch-column-12" <?php echo ($map_con_style) ?>>
                         <div class="jobsearch-profile-map">
-                            <div id="jobsearch-map-<?php echo absint($rand_num); ?>"
-                                 style="width: 100%; height: <?php echo($allow_location_map != 'yes' ? '0' : $map_height) ?>px;"></div>
+                            <div id="jobsearch-map-<?php echo absint($rand_num); ?>" style="width: 100%; height: <?php echo($allow_location_map != 'yes' ? '0' : $map_height) ?>px;"></div>
                         </div>
                         <span class="jobsearch-short-message" <?php echo($allow_location_map != 'yes' ? 'style="display: none;"' : '') ?>><?php esc_html_e('For the precise location, you can drag and drop the pin.', 'wp-jobsearch') ?></span>
                     </li>
                 </ul>
-                <?php
-                do_action('jobsearch_in_dashloc_sec_after_fields', $id);
-                ?>
             </div>
+
             <?php
             if ($allow_location_map == 'yes') {
                 $autocomplete_adres_type = isset($jobsearch_plugin_options['autocomplete_adres_type']) ? $jobsearch_plugin_options['autocomplete_adres_type'] : '';
@@ -1583,25 +1387,8 @@ class Jobsearch_Location
                     var map;
                     var currentMarkers;
                     <?php
-                    if ($allow_location_map == 'yes' && $mapbox_access_token != '' && $mapbox_style_url != '') {
+                    if ($mapbox_access_token != '' && $mapbox_style_url != '') {
                     ?>
-                    jQuery('body').on('click', function (e) {
-                        var this_dom = e.target;
-                        var thisdom_obj = jQuery(this_dom);
-                        if (thisdom_obj.parents('#jobsearch-locaddres-suggscon').length > 0) {
-                            //
-                        } else {
-                            jQuery('#jobsearch-locaddres-suggscon').find('.jobsearch_location_autocomplete').hide();
-                        }
-                    });
-                    var geocoder<?php echo($rand_num) ?>;
-                    var _the_adres_input = '';
-                    jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').keyup(function () {
-                        _the_adres_input = jQuery(this).val();
-                        if (_the_adres_input.length > 1) {
-                            geocoder<?php echo($rand_num) ?>.query(_the_adres_input);
-                        }
-                    });
                     jQuery(document).ready(function () {
                         mapboxgl.accessToken = '<?php echo($mapbox_access_token) ?>';
                         map = new mapboxgl.Map({
@@ -1612,80 +1399,40 @@ class Jobsearch_Location
                             zoom: <?php echo esc_js($loc_zoom) ?>
                         });
                         currentMarkers = [];
-                        geocoder<?php echo($rand_num) ?> = new MapboxGeocoder({
+                        var geocoder<?php echo($rand_num) ?> = new MapboxGeocoder({
                             accessToken: mapboxgl.accessToken,
+                            placeholder: '<?php echo($loc_address) ?>',
                             marker: false,
-                            //flyTo: false,
                             mapboxgl: mapboxgl
                         });
-                        var selected_contries = jobsearch_plugin_vars.sel_countries_json;
-                        if (selected_contries != '') {
-                            var selected_contries_tojs = jQuery.parseJSON(selected_contries);
-                            var sel_countries_str = selected_contries_tojs.join();
-                            geocoder<?php echo($rand_num) ?>['countries'] = sel_countries_str;
-                        }
                         document.getElementById('jobsearch_location_address_<?php echo($rand_num) ?>').appendChild(geocoder<?php echo($rand_num) ?>.onAdd(map));
-
-                        //
-                        var predictionsDropDown = jQuery('<div class="jobsearch_location_autocomplete"></div>').appendTo(jQuery('#jobsearch-locaddres-suggscon'));
-                        geocoder<?php echo($rand_num) ?>.on('results', function (predictions) {
-                            //console.log(obj);
-                            //console.log(obj.features);
-                            var predic_line_html = '';
-                            if (typeof predictions.features !== 'undefined' && predictions.features.length > 0) {
-
-                                var predFeats = predictions.features;
-                                jQuery.each(predFeats, function (i, prediction) {
-                                    var placename_str = prediction.place_name;
-                                    var toshow_placename_str = placename_str.split(_the_adres_input).join('<strong class="jobsearch-color">' + _the_adres_input + '</strong>');
-                                    predic_line_html += '<div class="jobsearch_google_suggestions"><i class="icon-location-arrow"></i> ' + toshow_placename_str + '<span style="display:none">' + placename_str + '</span></div>';
+                        geocoder<?php echo($rand_num) ?>.on('result', function (obj) {
+                            var place_name = obj.result.place_name;
+                            var map_center_coords = obj.result.geometry.coordinates;
+                            if (map_center_coords.length > 1) {
+                                var map_center_lng = map_center_coords[0];
+                                var map_center_lat = map_center_coords[1];
+                                jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').val(place_name);
+                                document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = map_center_lat;
+                                document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = map_center_lng;
+                                // remove markers
+                                if (currentMarkers !== null) {
+                                    for (var i = currentMarkers.length - 1; i >= 0; i--) {
+                                        currentMarkers[i].remove();
+                                    }
+                                }
+                                //
+                                var new_marker = new mapboxgl.Marker({
+                                    draggable: true
+                                }).setLngLat(map_center_coords).addTo(map);
+                                currentMarkers.push(new_marker);
+                                new_marker.on('dragend', function () {
+                                    var lngLat = new_marker.getLngLat();
+                                    document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = lngLat.lat;
+                                    document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = lngLat.lng;
                                 });
                             }
-                            predictionsDropDown.empty();
-                            predictionsDropDown.append(predic_line_html);
-                            predictionsDropDown.show();
                         });
-                        //
-                        predictionsDropDown.delegate('div', 'click', function () {
-                            var predic_loc_val = jQuery(this).find('span').html();
-                            jQuery('#jobsearch_lochiden_addr_<?php echo($rand_num) ?>').val(predic_loc_val);
-                            var map_center_coords = [];
-                            var map_addrapi_uri = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURI(predic_loc_val) + '.json?access_token=<?php echo($mapbox_access_token) ?>';
-                            jobsearch_common_getJSON(map_addrapi_uri, function (new_loc_status, new_loc_response) {
-                                if (typeof new_loc_response === 'object') {
-                                    map_center_coords = new_loc_response.features[0].geometry.coordinates;
-                                    if (map_center_coords !== 'undefined') {
-                                        map.flyTo({
-                                            center: map_center_coords,
-                                        });
-                                    }
-                                }
-                                if (map_center_coords.length > 1) {
-                                    var map_center_lng = map_center_coords[0];
-                                    var map_center_lat = map_center_coords[1];
-                                    document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = map_center_lat;
-                                    document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = map_center_lng;
-                                    // remove markers
-                                    if (currentMarkers !== null) {
-                                        for (var i = currentMarkers.length - 1; i >= 0; i--) {
-                                            currentMarkers[i].remove();
-                                        }
-                                    }
-                                    //
-                                    var new_marker = new mapboxgl.Marker({
-                                        draggable: true
-                                    }).setLngLat(map_center_coords).addTo(map);
-                                    currentMarkers.push(new_marker);
-                                    new_marker.on('dragend', function () {
-                                        var lngLat = new_marker.getLngLat();
-                                        document.getElementById("jobsearch_location_lat_<?php echo absint($rand_num); ?>").value = lngLat.lat;
-                                        document.getElementById("jobsearch_location_lng_<?php echo absint($rand_num); ?>").value = lngLat.lng;
-                                    });
-                                }
-                            });
-                            predictionsDropDown.hide();
-                        });
-
                         //
                         map.addControl(new mapboxgl.NavigationControl({
                             showCompass: false
@@ -1737,8 +1484,8 @@ class Jobsearch_Location
                             if (selected_contries != '') {
                                 var selected_contries_tojs = jQuery.parseJSON(selected_contries);
                                 selected_contries_json = {country: selected_contries_tojs};
-                                autcomplete_options.componentRestrictions = selected_contries_json;
                             }
+                            autcomplete_options.componentRestrictions = selected_contries_json;
 
                             var autocomplete = new google.maps.places.Autocomplete(autocomplete_input, autcomplete_options);
                             google.maps.event.addListener(autocomplete, 'place_changed', function () {
@@ -1988,7 +1735,8 @@ class Jobsearch_Location
                 $term_parent = $term->term_id;
                 $location_obj = jobsearch_custom_get_terms('job-location', $term_parent);
 
-                if (!empty($location_obj)) { ?>
+                if (!empty($location_obj)) {
+                    ?>
                     <select id="location_location2_<?php echo($rand_num) ?>" name="location_location2"
                             class="location_location2" data-randid="<?php echo($rand_num) ?>"
                             data-nextfieldelement="<?php echo($please_select . ' ' . $label_location3) ?>"
@@ -1996,12 +1744,17 @@ class Jobsearch_Location
                         <?php
                         echo "<option value=\"\">" . $nextfieldelement . "</option>" . "\n";
                         foreach ($location_obj as $country_arr) {
-                            $selected = $country_arr->slug == $nextfieldval ? ' selected="selected"' : ''; ?>
+                            $selected = $country_arr->slug == $nextfieldval ? ' selected="selected"' : '';
+                            ?>
                             <option <?php echo($selected) ?>
                                     value="<?php echo($country_arr->slug) ?>"><?php echo($country_arr->name) ?></option>
-                        <?php } ?>
+                            <?php
+                        }
+                        ?>
                     </select>
-                <?php } else { ?>
+                    <?php
+                } else {
+                    ?>
                     <select id="location_location2_<?php echo($rand_num) ?>" name="location_location2"
                             class="location_location2" data-randid="<?php echo($rand_num) ?>"
                             data-nextfieldelement="<?php echo($please_select . ' ' . $label_location3) ?>"
@@ -2269,19 +2022,6 @@ class Jobsearch_Location
                     'default' => '',
                 ),
                 array(
-                    'id' => 'location_allow_postal_code',
-                    'type' => 'button_set',
-                    'title' => __('Postal Code Field', 'wp-jobsearch'),
-                    'required' => array('all_location_allow', 'equals', 'on'),
-                    'subtitle' => __('Allow users to enter postal code.', 'wp-jobsearch'),
-                    'desc' => '',
-                    'options' => array(
-                        'yes' => __('Yes', 'wp-jobsearch'),
-                        'no' => __('No', 'wp-jobsearch'),
-                    ),
-                    'default' => 'yes',
-                ),
-                array(
                     'id' => 'locmapsettings-sec',
                     'type' => 'section',
                     'title' => __('Map settings', 'wp-jobsearch'),
@@ -2355,7 +2095,7 @@ class Jobsearch_Location
                         array('location-allow-map', 'equals', 'yes'),
                         array('location_map_type', 'equals', 'mapbox')
                     ),
-                    'subtitle' => __('Paste mapbox style URL here. Get your MapBox Style URL from here <a href="https://www.mapbox.com/" target="_blank">www.mapbox.com/</a>', 'wp-jobsearch'),
+                    'subtitle' => __('Paste your mapbox style URL here.', 'wp-jobsearch'),
                     'desc' => '',
                     'default' => 'mapbox://styles/mapbox/streets-v11',
                 ),
@@ -2370,7 +2110,6 @@ class Jobsearch_Location
                     'options' => array(
                         'employer' => __('Employer', 'wp-jobsearch'),
                         'job' => __('Job', 'wp-jobsearch'),
-                        'candidate' => __('Candidate', 'wp-jobsearch'),
                     ),
                     'default' => array('employer', 'job'),
                 ),
@@ -2476,9 +2215,12 @@ class Jobsearch_Location
                 ),
             ),
         );
+        // echo '<pre>'; print_r($sections);echo '</pre>';
         return $sections;
     }
+
 }
-// class Jobsearch_Location 
+
+// class Jobsearch_Location
 global $Jobsearch_Location_obj;
 $Jobsearch_Location_obj = new Jobsearch_Location();

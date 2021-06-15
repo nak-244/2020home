@@ -25,7 +25,7 @@
 .jobsearch-payments-checkbox input[type="radio"]:checked + label span:before,
 .jobsearch-payments-checkbox input[type="radio"] + label:hover span:before,.jobsearch-candidate-default-text ul li a.jobsearch-candidate-default-studio,
 .jobsearch-candidate-grid figure figcaption p a a,.aplicants-grid-inner-con p a,.short-li-icons li a,.embed-code-getbtncon a:hover,.hder-notifics-count,.hdernotifics-after-con a:hover,
-.hdernotifics-after-con a,.addnew-aplyquestbtn-con button:hover,.jobsearch-add-job-to-favourite.jobsearch-job-like i {
+.hdernotifics-after-con a {
     color: #13b5ea;
 }
 .jobsearch-bgcolor,.jobsearch-bgcolorhover:hover,.navbar-nav > li > a:before,.jobsearch-banner-search ul li.jobsearch-banner-submit i,.jobsearch-plain-btn a,.jobsearch-testimonial-slider .slick-arrow:hover,
@@ -53,8 +53,7 @@ ul li:hover .jobsearch-employer-grid-btn,.jobsearch_box_contact_form input[type=
 .jobsearch-typo-wrap button:hover, .jobsearch-typo-wrap button:focus, .jobsearch-typo-wrap input[type="button"]:hover, .jobsearch-typo-wrap input[type="button"]:focus,
 .jobsearch-typo-wrap input[type="submit"]:hover, .jobsearch-typo-wrap input[type="submit"]:focus,.jobsearch-cvupload-file:hover span,.salary-type-radio input[type="radio"]:checked + label span,
 .demo-login-pbtns .active .jobsearch-demo-login-btn,.demo-login-pbtns .jobsearch-demo-login-btn:hover,.jobsearch-file-attach-sec li:hover .file-download-btn,.embed-code-getbtncon a,
-.jobsearch-usernotifics-menubtn a span,.hdernotifics-after-con a:hover,.quest-typecon-leftsec i,.addnew-questtypes-btnsiner a:hover i,.addnew-aplyquestbtn-con button,.addnew-questtypes-btnsiner a.active-type-itm i,
-.quests-item-answer p a,.jobsearch-applics-filterscon input.applics-filter-formbtn,.jobsearch-job-like {
+.jobsearch-usernotifics-menubtn a span,.hdernotifics-after-con a:hover {
     background-color: #13b5ea;
 }
 .jobsearch-bordercolor,.jobsearch-bordercolorhover:hover,.jobsearch-jobdetail-btn,.jobsearch-employer-list-btn,.jobsearch-fileUpload span,.jobsearch-employer-confitmation a,.jobsearch-candidate-default-btn,
@@ -68,7 +67,7 @@ ul li:hover .jobsearch-employer-grid-btn,.jobsearch_box_contact_form input[type=
 .jobsearch-typo-wrap .ui-state-default, .jobsearch-typo-wrap .ui-widget-content .ui-state-default,.jobsearch-drpzon-con .jobsearch-drpzon-btn,.jobsearch-employerdetail-btn,
 .jobsearch-typo-wrap .jobsearch-employer-profile-submit,.other-lang-translate-post,.jobsearch-typo-wrap .jobsearch-findmap-btn, .jobsearch-employer-profile-form .jobsearch-findmap-btn,
 .jobsearch-employer-profile-form .upload-port-img-btn,.jobsearch-empmember-add-popup,.dash-hdtabchng-btn,.addcand-databy-emp,.jobsearch-jobdetail-btn.active,.jobsearch-employer-list-btn,
-.jobsearch-company-photo .jobsearch-fileUpload span,.short-li-icons li a,.embed-code-getbtncon a,.hder-notifics-count,.hdernotifics-after-con a,.addnew-aplyquestbtn-con button,.jobsearch-job-like {
+.jobsearch-company-photo .jobsearch-fileUpload span,.short-li-icons li a,.embed-code-getbtncon a,.hder-notifics-count,.hdernotifics-after-con a {
     border-color: #13b5ea;
 }
 .jobsearch-read-more {

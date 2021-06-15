@@ -67,7 +67,7 @@ function careerfy_all_package_item_shortcode($atts)
         $att_pck = careerfy__get_post_id($att_pck, 'package');
         if ($att_pck > 0 && get_post_type($att_pck) == 'package') {
             $package_type = get_post_meta($att_pck, 'jobsearch_field_package_type', true);
-            $check_pkg_types = apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile','cand_resume'));
+            $check_pkg_types = apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile'));
             if (in_array($package_type, $check_pkg_types)) {
                 $pkg_type = get_post_meta($att_pck, 'jobsearch_field_charges_type', true);
                 $pkg_price = get_post_meta($att_pck, 'jobsearch_field_package_price', true);
@@ -146,7 +146,7 @@ function careerfy_all_package_item_shortcode($atts)
                             if (is_user_logged_in()) { ?>
                                 <div class="careerfy-sixteen-priceplan-btn">
                                     <a href="javascript:void(0);"
-                                       class="<?php echo($buy_btn_class) ?>"
+                                       class="jobsearch-subscribe-job-pkg"
                                        data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Select Plan', 'careerfy-frame') ?></a>
                                     <span class="pkg-loding-msg" style="display:none;"></span></div>
                             <?php } else { ?>
@@ -214,7 +214,7 @@ function careerfy_all_package_item_shortcode($atts)
                             <?php if (is_user_logged_in()) { ?>
                                 <div class="careerfy-priceplan-thirteen-btn">
                                     <a href="javascript:void(0);"
-                                       class="<?php echo($buy_btn_class) ?> "
+                                       class="jobsearch-subscribe-job-pkg "
                                        data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Plan', 'careerfy-frame') ?></a>
                                     <span class="pkg-loding-msg" style="display:none;"></span></div>
                             <?php } else { ?>
@@ -277,7 +277,7 @@ function careerfy_all_package_item_shortcode($atts)
                             <?php }
                             if (is_user_logged_in()) { ?>
                                 <a href="javascript:void(0);"
-                                   class="<?php echo($buy_btn_class) ?> careerfy-fifteen-packages-plan-btn"
+                                   class="jobsearch-subscribe-job-pkg careerfy-fifteen-packages-plan-btn"
                                    data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Plan', 'careerfy-frame') ?></a>
                                 <span class="pkg-loding-msg" style="display:none;"></span>
                             <?php } else { ?>
@@ -352,7 +352,7 @@ function careerfy_all_package_item_shortcode($atts)
                                 ?>
                                 <div class="careerfy-priceplan-twelve-btn">
                                     <a href="javascript:void(0);"
-                                       class="<?php echo($buy_btn_class) ?>"
+                                       class="jobsearch-subscribe-job-pkg"
                                        data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Started', 'careerfy-frame') ?></a>
                                     <span class="pkg-loding-msg" style="display:none;"></span></div>
                             <?php } else { ?>

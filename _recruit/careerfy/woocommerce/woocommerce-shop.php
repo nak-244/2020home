@@ -3,11 +3,7 @@
  * The template for 
  * displaying shop page
  */
-if (wp_is_mobile()) {
-    get_header('mobile');
-} else {
-    get_header();
-}
+get_header();
 $shop_id = wc_get_page_id('shop');
 
 $page_spacing = get_post_meta($shop_id, 'careerfy_field_page_spacing', true);

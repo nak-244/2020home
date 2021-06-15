@@ -45,11 +45,11 @@ if (!function_exists('experience_meta_fields_callback')) {
             jQuery(document).ready(function () {
                 jQuery('#experience_start_date').datetimepicker({
                     timepicker: false,
-                    format: 'Y-m-d'
+                    format: 'd-m-Y'
                 });
                 jQuery('#experience_end_date').datetimepicker({
                     timepicker: false,
-                    format: 'Y-m-d'
+                    format: 'd-m-Y'
                 });
             });
         </script>
@@ -174,11 +174,11 @@ if (!function_exists('experience_meta_fields_callback')) {
                                     jQuery(document).ready(function () {
                                         jQuery('#experience_start_date_<?php echo absint($rand_num) ?>').datetimepicker({
                                             timepicker: false,
-                                            format: 'Y-m-d'
+                                            format: 'd-m-Y'
                                         });
                                         jQuery('#experience_end_date_<?php echo absint($rand_num) ?>').datetimepicker({
                                             timepicker: false,
-                                            format: 'Y-m-d'
+                                            format: 'd-m-Y'
                                         });
                                     });
                                 </script>

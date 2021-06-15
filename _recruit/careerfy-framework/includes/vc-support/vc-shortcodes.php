@@ -14,7 +14,6 @@ add_action('vc_before_init', 'careerfy_vc_left_title_shortcode');
 add_action('vc_before_init', 'careerfy_vc_button_shortcode');
 add_action('vc_before_init', 'careerfy_vc_advance_search');
 add_action('vc_before_init', 'careerfy_vc_job_categories');
-add_action('vc_before_init', 'careerfy_vc_job_types');
 add_action('vc_before_init', 'careerfy_vc_simple_jobs_listing');
 add_action('vc_before_init', 'careerfy_vc_jobs_listing');
 add_action('vc_before_init', 'careerfy_vc_employer_listing');
@@ -58,10 +57,6 @@ add_action('vc_before_init', 'careerfy_vc_promo_statistics_shortcode');
 add_action('vc_before_init', 'careerfy_vc_how_it_works');
 add_action('vc_before_init', 'careerfy_vc_news_letter');
 add_action('vc_before_init', 'careerfy_vc_sign_up');
-add_action('vc_before_init', 'careerfy_vc_embeddable_jobs');
-add_action('vc_before_init', 'careerfy_vc_user_job_shortcode');
-add_action('vc_before_init', 'careerfy_vc_banner_advertisement');
-add_action('vc_before_init', 'careerfy_vc_login_registration_shortcode');
 
 /**
  * adding user job shortcode
@@ -70,6 +65,7 @@ add_action('vc_before_init', 'careerfy_vc_login_registration_shortcode');
 
 function careerfy_vc_sign_up()
 {
+
     $attributes = array(
         "name" => esc_html__("Sign Up Form", "careerfy-frame"),
         "base" => "careerfy_sign_up",
@@ -179,17 +175,6 @@ function careerfy_vc_news_letter()
                     'value' => array('style1')
                 )
             ),
-            array(
-                'type' => 'checkbox',
-                'heading' => esc_html__("List", "careerfy-frame"),
-                'param_name' => 'news_letter_list_multi',
-                'value' => $careerfy_mailchimp_list,
-                'description' => esc_html__("Select any two options.", "careerfy-frame"),
-                'dependency' => array(
-                    'element' => 'view',
-                    'value' => array('style2', 'style3', 'style4')
-                )
-            ),
         )
     );
 
@@ -233,9 +218,9 @@ function jobsearch_vc_featured_jobs()
                 'heading' => esc_html__("Locations in listing", "careerfy-frame"),
                 'param_name' => 'job_list_loc_listing',
                 'value' => array(
-                    esc_html__("Country", "careerfy-frame") => 'country',
-                    esc_html__("State", "careerfy-frame") => 'state',
-                    esc_html__("City", "careerfy-frame") => 'city',
+                    esc_html__("Country", "jobsearch-vc") => 'country',
+                    esc_html__("State", "jobsearch-vc") => 'state',
+                    esc_html__("City", "jobsearch-vc") => 'city',
                 ),
                 'std' => 'country,city',
                 'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
@@ -322,7 +307,6 @@ function careerfy_vc_jobs_listings_tabs()
             $cate_array[$category->name] = $category->slug;
         }
     }
-    //
     $attributes = array(
         "name" => esc_html__("Jobs Listing Tabs", "careerfy-frame"),
         "base" => "jobsearch_job_listin_tabs_shortcode",
@@ -438,7 +422,7 @@ function careerfy_vc_blog_shortcode()
                 'default' => 'no',
                 'dependency' => array(
                     'element' => 'blog_view',
-                    'value' => array('view1', 'view2', 'view3', 'view4', 'view5', 'view9', 'view10', 'view11', 'view12', 'view13')
+                    'value' => array('view1', 'view2', 'view3', 'view4', 'view5', 'view9', 'view10', 'view12', 'view13')
                 ),
                 'description' => esc_html__("Choose Yes if you want to show pagination for post items.", "careerfy-frame")
             ),
@@ -795,10 +779,10 @@ function careerfy_vc_section_heading()
                 'heading' => __('Css', 'careerfy-frame'),
                 'param_name' => 'css',
                 'group' => __('Design options', 'careerfy-frame'),
-//                'dependency' => array(
-//                    'element' => 'view',
-//                    'value' => array('view1', 'view2', 'view3', 'view4', 'view5')
-//                ),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view4', 'view5')
+                ),
             ),
         )
     );
@@ -856,6 +840,7 @@ function careerfy_vc_left_title_shortcode()
  */
 function careerfy_vc_button_shortcode()
 {
+
     $attributes = array(
         "name" => esc_html__("Button", "careerfy-frame"),
         "base" => "careerfy_button",
@@ -900,8 +885,6 @@ function careerfy_vc_button_shortcode()
  */
 function careerfy_vc_advance_search()
 {
-    global $jobsearch_plugin_options;
-    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
     $all_page = array();
     $args = array(
@@ -928,391 +911,393 @@ function careerfy_vc_advance_search()
         }
     }
 
-    $adv_srch_listsh_parms = [];
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Style", "careerfy-frame"),
-        'param_name' => 'view',
-        'value' => array(
-            esc_html__("Style 1", "careerfy-frame") => 'view1',
-            esc_html__("Style 2", "careerfy-frame") => 'view2',
-            esc_html__("Style 3", "careerfy-frame") => 'view3',
-            esc_html__("Style 4", "careerfy-frame") => 'view4',
-            esc_html__("Style 5", "careerfy-frame") => 'view5',
-            esc_html__("Style 6", "careerfy-frame") => 'view6',
-            esc_html__("Style 7", "careerfy-frame") => 'view7',
-            esc_html__("Style 8", "careerfy-frame") => 'view8',
-            esc_html__("Style 9", "careerfy-frame") => 'view9',
-            esc_html__("Style 10", "careerfy-frame") => 'view10',
-            esc_html__("Style 11", "careerfy-frame") => 'view11',
-            esc_html__("Style 12", "careerfy-frame") => 'view12',
-            esc_html__("Style 13", "careerfy-frame") => 'view13',
-            esc_html__("Style 14", "careerfy-frame") => 'view14',
-            esc_html__("Style 15", "careerfy-frame") => 'view15',
-            esc_html__("Style 16", "careerfy-frame") => 'view16',
-            esc_html__("Style 17", "careerfy-frame") => 'view17',
-            esc_html__("Style 18", "careerfy-frame") => 'view18',
-            esc_html__("Style 19", "careerfy-frame") => 'view19',
-            esc_html__("Style 20", "careerfy-frame") => 'view20',
-        ),
-        'description' => ''
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'careerfy_browse_img',
-        'heading' => esc_html__("Background Image", "careerfy-frame"),
-        'param_name' => 'bg_img',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view12')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Small Title", "careerfy-frame"),
-        'param_name' => 'small_search_title',
-        'value' => '',
-        'description' => esc_html__("The Small title will show above the title.", "careerfy-frame"),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view18', 'view19', 'view20')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Title", "careerfy-frame"),
-        'param_name' => 'srch_title',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'view11', 'view12', 'view13', 'view15', 'view16', 'view17')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Total Number of Job Types", "careerfy-frame"),
-        'param_name' => 'no_total_jobtypes',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view14', 'view15')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textarea_html',
-        'heading' => esc_html__("First Description", "careerfy-frame"),
-        'param_name' => 'content',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view18', 'view19', 'view20')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textarea',
-        'heading' => esc_html__("Description", "careerfy-frame"),
-        'param_name' => 'srch_desc',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'view11', 'view12', 'view13', 'view15', 'view16', 'view17', 'view18', 'view19')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'param_group',
-        'value' => '',
-        'heading' => esc_html__("Images", "careerfy-frame"),
-        'param_name' => 'adv_banner_images',
-        'params' => array(
-            array(
-                'type' => 'careerfy_browse_img',
-                'heading' => esc_html__("Image", "careerfy-frame"),
-                'param_name' => 'banner_img',
-                'value' => '',
-                'description' => '',
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Image Link", "careerfy-frame"),
-                'param_name' => 'img_link',
-                'description' => ''
-            ),
-        ),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view11')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textarea',
-        'heading' => esc_html__("Text Below Form 1", "careerfy-frame"),
-        'param_name' => 'txt_below_forms_1',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => 'view9'
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Search Result Page by Jobs", "careerfy-frame"),
-        'param_name' => 'result_page',
-        'value' => $all_page,
-        'description' => '',
-
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Search Result Page by Employer", "careerfy-frame"),
-        'param_name' => 'result_page_2',
-        'value' => $all_page,
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => 'view9'
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textarea',
-        'heading' => esc_html__("Text Below Form 2", "careerfy-frame"),
-        'param_name' => 'txt_below_forms_2',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => 'view9'
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Search Result Page by Candidate", "careerfy-frame"),
-        'param_name' => 'result_page_3',
-        'value' => $all_page,
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view9', 'view12', 'view17', 'view18', 'view19', 'view20')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textarea',
-        'heading' => esc_html__("Text Below Form 3", "careerfy-frame"),
-        'param_name' => 'txt_below_forms_3',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => 'view9'
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Button 1 Text", "careerfy-frame"),
-        'param_name' => 'btn1_txt',
-        'value' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-        'description' => esc_html__("This will not show in Search Style 4.", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Button 1 URL", "careerfy-frame"),
-        'param_name' => 'btn1_url',
-        'value' => '',
-        'description' => esc_html__("This will not show in Search Style 4.", "careerfy-frame"),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'iconpicker',
-        'heading' => esc_html__("Button 1 Icon", "careerfy-frame"),
-        'param_name' => 'btn_1_icon',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Button 2 Text", "careerfy-frame"),
-        'param_name' => 'btn2_txt',
-        'value' => '',
-        'description' => esc_html__("This will only show in Search Style 1.", "careerfy-frame"),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Button 2 URL", "careerfy-frame"),
-        'param_name' => 'btn2_url',
-        'value' => '',
-        'description' => esc_html__("This will only show in Search Style 1.", "careerfy-frame"),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'iconpicker',
-        'heading' => esc_html__("Button 2 Icon", "careerfy-frame"),
-        'param_name' => 'btn_2_icon',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Keyword Field", "careerfy-frame"),
-        'param_name' => 'keyword_field',
-        'value' => array(
-            esc_html__("Show", "careerfy-frame") => 'show',
-            esc_html__("Hide", "careerfy-frame") => 'hide',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Keyword Suggestions", "careerfy-frame"),
-        'param_name' => 'autofill_keyword',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location Field", "careerfy-frame"),
-        'param_name' => 'location_field',
-        'value' => array(
-            esc_html__("Show", "careerfy-frame") => 'show',
-            esc_html__("Hide", "careerfy-frame") => 'hide',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location Radius", "careerfy-frame"),
-        'param_name' => 'radius_field',
-        'value' => array(
-            esc_html__("Show", "careerfy-frame") => 'show',
-            esc_html__("Hide", "careerfy-frame") => 'hide',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location Suggestions", "careerfy-frame"),
-        'param_name' => 'autofill_location',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("AutoFill Geo Location", "careerfy-frame"),
-        'param_name' => 'auto_geo_location',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Fields Settings", "careerfy-frame"),
-    );
-    if ($sectors_enable_switch == 'on') {
-        $adv_srch_listsh_parms[] = array(
-            'type' => 'dropdown',
-            'heading' => esc_html__("Sector Field", "careerfy-frame"),
-            'param_name' => 'category_field',
-            'value' => array(
-                esc_html__("Show", "careerfy-frame") => 'show',
-                esc_html__("Hide", "careerfy-frame") => 'hide',
-            ),
-            'description' => '',
-            'group' => esc_html__("Fields Settings", "careerfy-frame"),
-        );
-    }
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Title Color", "careerfy-frame"),
-        'param_name' => 'search_title_color',
-        'value' => '',
-        'description' => '',
-        'group' => esc_html__("Color Settings", "careerfy-frame"),
-        'dependency' => array(
-            'element' => 'view',
-            'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view17', 'view19')
-        ),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Paragraph Color", "careerfy-frame"),
-        'param_name' => 'search_paragraph_color',
-        'value' => '',
-        'description' => '',
-        'group' => esc_html__("Color Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Link Color", "careerfy-frame"),
-        'param_name' => 'search_link_color',
-        'value' => '',
-        'description' => '',
-        'group' => esc_html__("Color Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Button Background Color", "careerfy-frame"),
-        'param_name' => 'search_btn_bg_color',
-        'value' => '',
-        'description' => '',
-        'group' => esc_html__("Color Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Button Text Color", "careerfy-frame"),
-        'param_name' => 'search_btn_txt_color',
-        'value' => '',
-        'description' => '',
-        'group' => esc_html__("Color Settings", "careerfy-frame"),
-    );
-    $adv_srch_listsh_parms[] = array(
-        'type' => 'css_editor',
-        'heading' => __('Css', 'careerfy-frame'),
-        'param_name' => 'css',
-        'group' => __('Design options', 'careerfy-frame'),
-    );
     $attributes = array(
         "name" => esc_html__("Advance Search", "careerfy-frame"),
         "base" => "careerfy_advance_search",
         "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
         "class" => "",
-        "params" => apply_filters('careerfy_adv_search_vcsh_params', $adv_srch_listsh_parms)
+        "params" => apply_filters('careerfy_adv_search_vcsh_params', array(
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Style", "careerfy-frame"),
+                'param_name' => 'view',
+                'value' => array(
+                    esc_html__("Style 1", "careerfy-frame") => 'view1',
+                    esc_html__("Style 2", "careerfy-frame") => 'view2',
+                    esc_html__("Style 3", "careerfy-frame") => 'view3',
+                    esc_html__("Style 4", "careerfy-frame") => 'view4',
+                    esc_html__("Style 5", "careerfy-frame") => 'view5',
+                    esc_html__("Style 6", "careerfy-frame") => 'view6',
+                    esc_html__("Style 7", "careerfy-frame") => 'view7',
+                    esc_html__("Style 8", "careerfy-frame") => 'view8',
+                    esc_html__("Style 9", "careerfy-frame") => 'view9',
+                    esc_html__("Style 10", "careerfy-frame") => 'view10',
+                    esc_html__("Style 11", "careerfy-frame") => 'view11',
+                    esc_html__("Style 12", "careerfy-frame") => 'view12',
+                    esc_html__("Style 13", "careerfy-frame") => 'view13',
+                    esc_html__("Style 14", "careerfy-frame") => 'view14',
+                    esc_html__("Style 15", "careerfy-frame") => 'view15',
+                    esc_html__("Style 16", "careerfy-frame") => 'view16',
+                    esc_html__("Style 17", "careerfy-frame") => 'view17',
+                    esc_html__("Style 18", "careerfy-frame") => 'view18',
+                    esc_html__("Style 19", "careerfy-frame") => 'view19',
+                    esc_html__("Style 20", "careerfy-frame") => 'view20',
+                ),
+                'description' => ''
+            ),
+            array(
+                'type' => 'careerfy_browse_img',
+                'heading' => esc_html__("Background Image", "careerfy-frame"),
+                'param_name' => 'bg_img',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view12')
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Small Title", "careerfy-frame"),
+                'param_name' => 'small_search_title',
+                'value' => '',
+                'description' => esc_html__("The Small title will show above the title.", "careerfy-frame"),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view18', 'view19', 'view20')
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Title", "careerfy-frame"),
+                'param_name' => 'srch_title',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'view11', 'view12', 'view13', 'view15', 'view16', 'view17')
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Total Number of Job Types", "careerfy-frame"),
+                'param_name' => 'no_total_jobtypes',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view14', 'view15')
+                ),
+            ),
+            array(
+                'type' => 'textarea_html',
+                'heading' => esc_html__("First Description", "careerfy-frame"),
+                'param_name' => 'content',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view18', 'view19', 'view20')
+                ),
+            ),
+            array(
+                'type' => 'textarea',
+                'heading' => esc_html__("Description", "careerfy-frame"),
+                'param_name' => 'srch_desc',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'view11', 'view12', 'view13', 'view15', 'view16', 'view17', 'view18', 'view19')
+                ),
+            ),
+            array(
+                'type' => 'param_group',
+                'value' => '',
+                'heading' => esc_html__("Images", "careerfy-frame"),
+                'param_name' => 'adv_banner_images',
+                'params' => array(
+                    array(
+                        'type' => 'careerfy_browse_img',
+                        'heading' => esc_html__("Image", "careerfy-frame"),
+                        'param_name' => 'banner_img',
+                        'value' => '',
+                        'description' => '',
+                    ),
+                    array(
+                        'type' => 'textfield',
+                        'heading' => esc_html__("Image Link", "careerfy-frame"),
+                        'param_name' => 'img_link',
+                        'description' => ''
+                    ),
+                ),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view11')
+                ),
+            ),
+            array(
+                'type' => 'textarea',
+                'heading' => esc_html__("Text Below Form 1", "careerfy-frame"),
+                'param_name' => 'txt_below_forms_1',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => 'view9'
+                ),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Search Result Page by Jobs", "careerfy-frame"),
+                'param_name' => 'result_page',
+                'value' => $all_page,
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view4', 'view5', 'view6', 'view7', 'view8', 'view9', 'view11', 'view10', 'view12', 'view14', 'view15', 'view16', 'view17', 'view18', 'view19', 'view20')
+                ),
+            ),
+
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Search Result Page by Employer", "careerfy-frame"),
+                'param_name' => 'result_page_2',
+                'value' => $all_page,
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => 'view9'
+                ),
+            ),
+            array(
+                'type' => 'textarea',
+                'heading' => esc_html__("Text Below Form 2", "careerfy-frame"),
+                'param_name' => 'txt_below_forms_2',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => 'view9'
+                ),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Search Result Page by Candidate", "careerfy-frame"),
+                'param_name' => 'result_page_3',
+                'value' => $all_page,
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view9', 'view12', 'view17', 'view18', 'view19', 'view20')
+                ),
+            ),
+            array(
+                'type' => 'textarea',
+                'heading' => esc_html__("Text Below Form 3", "careerfy-frame"),
+                'param_name' => 'txt_below_forms_3',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => 'view9'
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Button 1 Text", "careerfy-frame"),
+                'param_name' => 'btn1_txt',
+                'value' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+                'description' => esc_html__("This will not show in Search Style 4.", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Button 1 URL", "careerfy-frame"),
+                'param_name' => 'btn1_url',
+                'value' => '',
+                'description' => esc_html__("This will not show in Search Style 4.", "careerfy-frame"),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+            ),
+            array(
+                'type' => 'iconpicker',
+                'heading' => esc_html__("Button 1 Icon", "careerfy-frame"),
+                'param_name' => 'btn_1_icon',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Button 2 Text", "careerfy-frame"),
+                'param_name' => 'btn2_txt',
+                'value' => '',
+                'description' => esc_html__("This will only show in Search Style 1.", "careerfy-frame"),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Button 2 URL", "careerfy-frame"),
+                'param_name' => 'btn2_url',
+                'value' => '',
+                'description' => esc_html__("This will only show in Search Style 1.", "careerfy-frame"),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+            ),
+            array(
+                'type' => 'iconpicker',
+                'heading' => esc_html__("Button 2 Icon", "careerfy-frame"),
+                'param_name' => 'btn_2_icon',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7')
+                ),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Keyword Field", "careerfy-frame"),
+                'param_name' => 'keyword_field',
+                'value' => array(
+                    esc_html__("Show", "careerfy-frame") => 'show',
+                    esc_html__("Hide", "careerfy-frame") => 'hide',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Keyword Suggestions", "careerfy-frame"),
+                'param_name' => 'autofill_keyword',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Location Field", "careerfy-frame"),
+                'param_name' => 'location_field',
+                'value' => array(
+                    esc_html__("Show", "careerfy-frame") => 'show',
+                    esc_html__("Hide", "careerfy-frame") => 'hide',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Location Radius", "careerfy-frame"),
+                'param_name' => 'radius_field',
+                'value' => array(
+                    esc_html__("Show", "careerfy-frame") => 'show',
+                    esc_html__("Hide", "careerfy-frame") => 'hide',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Location Suggestions", "careerfy-frame"),
+                'param_name' => 'autofill_location',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("AutoFill Geo Location", "careerfy-frame"),
+                'param_name' => 'auto_geo_location',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector Field", "careerfy-frame"),
+                'param_name' => 'category_field',
+                'value' => array(
+                    esc_html__("Show", "careerfy-frame") => 'show',
+                    esc_html__("Hide", "careerfy-frame") => 'hide',
+                ),
+                'description' => '',
+                'group' => esc_html__("Fields Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Title Color", "careerfy-frame"),
+                'param_name' => 'search_title_color',
+                'value' => '',
+                'description' => '',
+                'group' => esc_html__("Color Settings", "careerfy-frame"),
+                'dependency' => array(
+                    'element' => 'view',
+                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view17', 'view19')
+                ),
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Paragraph Color", "careerfy-frame"),
+                'param_name' => 'search_paragraph_color',
+                'value' => '',
+                'description' => '',
+                'group' => esc_html__("Color Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Link Color", "careerfy-frame"),
+                'param_name' => 'search_link_color',
+                'value' => '',
+                'description' => '',
+                'group' => esc_html__("Color Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Button Background Color", "careerfy-frame"),
+                'param_name' => 'search_btn_bg_color',
+                'value' => '',
+                'description' => '',
+                'group' => esc_html__("Color Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Button Text Color", "careerfy-frame"),
+                'param_name' => 'search_btn_txt_color',
+                'value' => '',
+                'description' => '',
+                'group' => esc_html__("Color Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'css_editor',
+                'heading' => __('Css', 'careerfy-frame'),
+                'param_name' => 'css',
+                'group' => __('Design options', 'careerfy-frame'),
+            ),
+        ))
     );
     if (function_exists('vc_map') && class_exists('JobSearch_plugin')) {
         vc_map($attributes);
@@ -1388,16 +1373,6 @@ function careerfy_vc_jobs_by_categories()
                 'description' => ''
             ),
             array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Show Jobs Counts", "careerfy-frame"),
-                'param_name' => 'sector_job_counts',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'yes',
-                    esc_html__("No", "careerfy-frame") => 'no',
-                ),
-                'description' => ''
-            ),
-            array(
                 'type' => 'textfield',
                 'heading' => esc_html__("Title", "careerfy-frame"),
                 'param_name' => 'cat_title',
@@ -1444,7 +1419,9 @@ function careerfy_vc_jobs_by_categories()
  */
 function careerfy_vc_job_categories()
 {
+
     $all_page = array(esc_html__("Select Page", "careerfy-frame") => '');
+
     $args = array(
         'sort_order' => 'asc',
         'sort_column' => 'post_title',
@@ -1525,20 +1502,6 @@ function careerfy_vc_job_categories()
             ),
             array(
                 'type' => 'dropdown',
-                'heading' => esc_html__("Show Jobs Counts", "careerfy-frame"),
-                'param_name' => 'sector_job_counts',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'yes',
-                    esc_html__("No", "careerfy-frame") => 'no',
-                ),
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'slider')
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
                 'heading' => esc_html__("Result Page", "careerfy-frame"),
                 'param_name' => 'result_page',
                 'value' => $all_page,
@@ -1550,167 +1513,6 @@ function careerfy_vc_job_categories()
                 'param_name' => 'order_by',
                 'value' => array(
                     esc_html__("By Jobs Count", "careerfy-frame") => 'jobs_count',
-                    esc_html__("By Title", "careerfy-frame") => 'title',
-                    esc_html__("By Random", "careerfy-frame") => 'id',
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'colorpicker',
-                'heading' => esc_html__("Icon Color", "careerfy-frame"),
-                'param_name' => 'icon_color',
-                'value' => '',
-                'description' => '',
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('view5')
-                ),
-            ),
-            array(
-                'type' => 'colorpicker',
-                'heading' => esc_html__("Jobs Number Background Color", "careerfy-frame"),
-                'param_name' => 'job_bg_color',
-                'value' => '',
-                'description' => '',
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('view5')
-                ),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Title", "careerfy-frame"),
-                'param_name' => 'cat_title',
-                'value' => '',
-                'description' => '',
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('slider')
-                ),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Link text", "careerfy-frame"),
-                'param_name' => 'cat_link_text',
-                'value' => '',
-                'description' => '',
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('slider')
-                ),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Link text URL", "careerfy-frame"),
-                'param_name' => 'cat_link_text_url',
-                'value' => '',
-                'description' => '',
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('slider')
-                ),
-            ),
-        )
-    );
-
-    if (function_exists('vc_map') && class_exists('JobSearch_plugin')) {
-        vc_map($attributes);
-    }
-}
-
-/**
- * Adding job types shortcode
- * @return markup
- */
-function careerfy_vc_job_types()
-{
-
-    $all_page = array(esc_html__("Select Page", "careerfy-frame") => '');
-    $args = array(
-        'sort_order' => 'asc',
-        'sort_column' => 'post_title',
-        'hierarchical' => 1,
-        'exclude' => '',
-        'include' => '',
-        'meta_key' => '',
-        'meta_value' => '',
-        'authors' => '',
-        'child_of' => 0,
-        'parent' => -1,
-        'exclude_tree' => '',
-        'number' => '',
-        'offset' => 0,
-        'post_type' => 'page',
-        'post_status' => 'publish'
-    );
-    $pages = get_pages($args);
-    if (!empty($pages)) {
-        foreach ($pages as $page) {
-            $all_page[$page->post_title] = $page->ID;
-        }
-    }
-
-    $attributes = array(
-        "name" => esc_html__("Job Types", "careerfy-frame"),
-        "base" => "careerfy_job_types",
-        "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "class" => "",
-        "params" => array(
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Style", "careerfy-frame"),
-                'param_name' => 'cats_view',
-                'value' => array(
-                    esc_html__("Style 1", "careerfy-frame") => 'view1',
-                    esc_html__("Style 2", "careerfy-frame") => 'view2',
-                    esc_html__("Style 3", "careerfy-frame") => 'view3',
-                    esc_html__("Style 4", "careerfy-frame") => 'view4',
-                    esc_html__("Style 5", "careerfy-frame") => 'view5',
-                    esc_html__("Style 6", "careerfy-frame") => 'view6',
-                    esc_html__("Style 7", "careerfy-frame") => 'view7',
-                    esc_html__("Style 8", "careerfy-frame") => 'view8',
-                    esc_html__("Style 9", "careerfy-frame") => 'view9',
-                    esc_html__("Style 10", "careerfy-frame") => 'view10',
-                    esc_html__("Slider", "careerfy-frame") => 'slider',
-                ),
-                'description' => ''
-            ),
-
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Number of Types", "careerfy-frame"),
-                'param_name' => 'num_cats',
-                'value' => '',
-                'description' => esc_html__("Set the number of Types to show", "careerfy-frame")
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Show Jobs Counts", "careerfy-frame"),
-                'param_name' => 'sector_job_counts',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'yes',
-                    esc_html__("No", "careerfy-frame") => 'no',
-                ),
-                'dependency' => array(
-                    'element' => 'cats_view',
-                    'value' => array('view1', 'view2', 'view3', 'view5', 'view6', 'view7', 'view9', 'slider')
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Result Page", "careerfy-frame"),
-                'param_name' => 'result_page',
-                'value' => $all_page,
-                'description' => '',
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Order", "careerfy-frame"),
-                'param_name' => 'order_by',
-                'value' => array(
-                    esc_html__("By Jobs Count", "careerfy-frame") => 'jobs_count',
-                    esc_html__("By Title", "careerfy-frame") => 'title',
                     esc_html__("By Random", "careerfy-frame") => 'id',
                 ),
                 'description' => ''
@@ -2110,7 +1912,7 @@ function careerfy_vc_all_packages()
         'meta_query' => array(
             array(
                 'key' => 'jobsearch_field_package_type',
-                'value' => apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile', 'cand_resume')),
+                'value' => apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile')),
                 'compare' => 'IN',
             ),
         ),
@@ -2637,6 +2439,9 @@ function careerfy_vc_candidate_packages()
  */
 function careerfy_vc_how_it_works()
 {
+    global $jobsearch_gdapi_allocation;
+    $jobsearch__options = get_option('jobsearch_plugin_options');
+
     $attributes = array(
         "name" => esc_html__("How It Works", "careerfy-frame"),
         "base" => "jobsearch_how_it_works_shortcode",
@@ -2832,9 +2637,8 @@ function careerfy_vc_how_it_works()
  */
 function careerfy_vc_jobs_listing()
 {
-    global $jobsearch_gdapi_allocation, $jobsearch_plugin_options;
+    global $jobsearch_gdapi_allocation;
     $jobsearch__options = get_option('jobsearch_plugin_options');
-    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
     $categories = get_terms(array(
         'taxonomy' => 'sector',
@@ -2977,20 +2781,6 @@ function careerfy_vc_jobs_listing()
         'value' => array(
             esc_html__("No", "careerfy-frame") => 'no',
             esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $job_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters Sort by", "careerfy-frame"),
-        'param_name' => 'job_filters_sortby',
-        'value' => array(
-            esc_html__("Default", "careerfy-frame") => 'default',
-            esc_html__("Ascending", "careerfy-frame") => 'asc',
-            esc_html__("Descending", "careerfy-frame") => 'desc',
-            esc_html__("Alphabetical", "careerfy-frame") => 'alpha',
-            esc_html__("Highest Count", "careerfy-frame") => 'count',
         ),
         'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
         'group' => esc_html__("Filters Settings", "careerfy-frame"),
@@ -3176,18 +2966,6 @@ function careerfy_vc_jobs_listing()
     );
     $job_listsh_parms[] = array(
         'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Radius", "careerfy-frame"),
-        'param_name' => 'job_top_search_radius',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'default' => 'yes',
-        'description' => esc_html__("Enable/Disable top search radius.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $job_listsh_parms[] = array(
-        'type' => 'dropdown',
         'heading' => esc_html__("Job Title, Keywords, or Phrase", "careerfy-frame"),
         'param_name' => 'top_search_title',
         'value' => array(
@@ -3208,19 +2986,18 @@ function careerfy_vc_jobs_listing()
         'description' => esc_html__("Enable/Disable location field.", "careerfy-frame"),
         'group' => esc_html__("Top Search", "careerfy-frame"),
     );
-    if ($sectors_enable_switch == 'on') {
-        $job_listsh_parms[] = array(
-            'type' => 'dropdown',
-            'heading' => esc_html__("Sector", "careerfy-frame"),
-            'param_name' => 'top_search_sector',
-            'value' => array(
-                esc_html__("Yes", "careerfy-frame") => 'yes',
-                esc_html__("No", "careerfy-frame") => 'no',
-            ),
-            'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
-            'group' => esc_html__("Top Search", "careerfy-frame"),
-        );
-    }
+    $job_listsh_parms[] = array(
+        'type' => 'dropdown',
+        'heading' => esc_html__("Sector", "careerfy-frame"),
+        'param_name' => 'top_search_sector',
+        'value' => array(
+            esc_html__("Yes", "careerfy-frame") => 'yes',
+            esc_html__("No", "careerfy-frame") => 'no',
+        ),
+
+        'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
+        'group' => esc_html__("Top Search", "careerfy-frame"),
+    );
     $job_listsh_parms[] = array(
         'type' => 'dropdown',
         'heading' => esc_html__("AutoFill Search Box", "careerfy-frame"),
@@ -3232,25 +3009,24 @@ function careerfy_vc_jobs_listing()
         'description' => esc_html__("Enable/Disable autofill in search keyword field.", "careerfy-frame"),
         'group' => esc_html__("Top Search", "careerfy-frame"),
     );
-
     $job_listsh_parms[] = array(
         'type' => 'dropdown',
         'heading' => esc_html__("Sort by Fields", "careerfy-frame"),
         'param_name' => 'job_sort_by',
         'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
+            esc_html__("Yes", "jobsearch-vc") => 'yes',
+            esc_html__("No", "jobsearch-vc") => 'no',
         ),
-        'description' => esc_html__("Results search sorting section switch. When choosing option yes then jobs display counts will show.", "careerfy-frame")
+        'description' => esc_html__("Results search sorting section switch.", "careerfy-frame")
     );
     $job_listsh_parms[] = array(
         'type' => 'checkbox',
         'heading' => esc_html__("Locations in listing", "careerfy-frame"),
         'param_name' => 'job_loc_listing',
         'value' => array(
-            esc_html__("Country", "careerfy-frame") => 'country',
-            esc_html__("State", "careerfy-frame") => 'state',
-            esc_html__("City", "careerfy-frame") => 'city',
+            esc_html__("Country", "jobsearch-vc") => 'country',
+            esc_html__("State", "jobsearch-vc") => 'state',
+            esc_html__("City", "jobsearch-vc") => 'city',
         ),
         'std' => 'country,city',
         'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
@@ -3264,8 +3040,8 @@ function careerfy_vc_jobs_listing()
             'value' => 'yes',
         ),
         'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
+            esc_html__("Yes", "jobsearch-vc") => 'yes',
+            esc_html__("No", "jobsearch-vc") => 'no',
         ),
         'description' => ''
     );
@@ -3312,16 +3088,6 @@ function careerfy_vc_jobs_listing()
         'param_name' => 'job_per_page',
         'value' => '10',
         'description' => esc_html__("Set number that how much jobs you want to show per page. Leave it blank for all jobs on a single page.", "careerfy-frame")
-    );
-    $job_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Quick Apply job", "careerfy-frame"),
-        'param_name' => 'quick_apply_job',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'off',
-            esc_html__("Yes", "careerfy-frame") => 'on',
-        ),
-        'description' => esc_html__("By setting this option to yes, when user will click on job title or image, pop-up will be appear from the side.", "careerfy-frame")
     );
     $job_listsh_parms[] = array(
         'type' => 'dropdown',
@@ -3446,9 +3212,9 @@ function careerfy_vc_simple_jobs_listing()
         'heading' => esc_html__("Locations in listing", "careerfy-frame"),
         'param_name' => 'job_list_loc_listing',
         'value' => array(
-            esc_html__("Country", "careerfy-frame") => 'country',
-            esc_html__("State", "careerfy-frame") => 'state',
-            esc_html__("City", "careerfy-frame") => 'city',
+            esc_html__("Country", "jobsearch-vc") => 'country',
+            esc_html__("State", "jobsearch-vc") => 'state',
+            esc_html__("City", "jobsearch-vc") => 'city',
         ),
         'std' => 'country,city',
         'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
@@ -3508,7 +3274,7 @@ function careerfy_vc_simple_jobs_listing()
         'description' => esc_html__("Choose yes if you want to show more job items.", "careerfy-frame"),
         'dependency' => array(
             'element' => 'job_list_style',
-            'value' => array('style1', 'style2', 'style7', 'style8', 'style4', 'style5', 'style6', 'style9')
+            'value' => array('style1', 'style2', 'style7', 'style8')
         ),
     );
     $job_listsh_parms[] = array(
@@ -3566,7 +3332,9 @@ function careerfy_vc_simple_jobs_listing_multi()
         }
     }
 
+
     $job_listsh_parms = array();
+
     $job_listsh_parms[] = array(
         'type' => 'dropdown',
         'heading' => esc_html__("Sector", "careerfy-frame"),
@@ -3622,12 +3390,10 @@ function careerfy_vc_simple_jobs_listing_multi()
  */
 function careerfy_vc_employer_listing()
 {
-    global $jobsearch_plugin_options;
     $categories = get_terms(array(
         'taxonomy' => 'sector',
         'hide_empty' => false,
     ));
-    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
     $cate_array = array(esc_html__("Select Sector", "careerfy-frame") => '');
     if (is_array($categories) && sizeof($categories) > 0) {
@@ -3635,358 +3401,324 @@ function careerfy_vc_employer_listing()
             $cate_array[$category->name] = $category->slug;
         }
     }
-    $emp_listsh_parms = [];
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("View", "careerfy-frame"),
-        'param_name' => 'employer_view',
-        'value' => array(
-            esc_html__("Style 1", "careerfy-frame") => 'view-default',
-            esc_html__("Style 2", "careerfy-frame") => 'view-grid',
-            esc_html__("Style 3", "careerfy-frame") => 'view-slider',
-        ),
-        'description' => esc_html__("Select employers listing view.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector", "careerfy-frame"),
-        'param_name' => 'employer_cat',
-        'value' => $cate_array,
-        'description' => esc_html__("Select Sector.", "careerfy-frame")
-    );
 
-    $emp_listsh_parms[] = array(
-        'type' => 'checkbox',
-        'heading' => esc_html__("Locations in listing", "careerfy-frame"),
-        'param_name' => 'employer_loc_listing',
-        'value' => array(
-            esc_html__("Country", "careerfy-frame") => 'country',
-            esc_html__("State", "careerfy-frame") => 'state',
-            esc_html__("City", "careerfy-frame") => 'city',
-        ),
-        'std' => 'country,city',
-        'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Employer Founds with display counts", "careerfy-frame"),
-        'param_name' => 'display_per_page',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Display the per page empoyers count at top of the listing.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters", "careerfy-frame"),
-        'param_name' => 'employer_filters',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Employers searching filters switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters Count", "careerfy-frame"),
-        'param_name' => 'employer_filters_count',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters Sort by", "careerfy-frame"),
-        'param_name' => 'employer_filters_sortby',
-        'value' => array(
-            esc_html__("Default", "careerfy-frame") => 'default',
-            esc_html__("Ascending", "careerfy-frame") => 'asc',
-            esc_html__("Descending", "careerfy-frame") => 'desc',
-            esc_html__("Alphabetical", "careerfy-frame") => 'alpha',
-            esc_html__("Highest Count", "careerfy-frame") => 'count',
-        ),
-        'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Locations", "careerfy-frame"),
-        'param_name' => 'employer_filters_loc',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Employers searching filters 'Location' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Locations Filter Collapse", "careerfy-frame"),
-        'param_name' => 'employer_filters_loc_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Locations Filter Style", "careerfy-frame"),
-        'param_name' => 'employer_filters_loc_view',
-        'value' => array(
-            esc_html__("Checkbox List", "careerfy-frame") => 'checkboxes',
-            esc_html__("Dropdown Fields", "careerfy-frame") => 'dropdowns',
-            esc_html__("Input Field", "careerfy-frame") => 'input',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Date Posted", "careerfy-frame"),
-        'param_name' => 'employer_filters_date',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Employers searching filters 'Date Posted' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Date Posted Collapse", "careerfy-frame"),
-        'param_name' => 'employer_filters_date_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector", "careerfy-frame"),
-        'param_name' => 'employer_filters_sector',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Employers searching filters 'Sector' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector Filter Collapse", "careerfy-frame"),
-        'param_name' => 'employer_filters_sector_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Team Size", "careerfy-frame"),
-        'param_name' => 'employer_filters_team',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Employers searching filters 'Team Size' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Team Size Filter Collapse", "careerfy-frame"),
-        'param_name' => 'employer_filters_team_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Map", "careerfy-frame"),
-        'param_name' => 'emp_top_map',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Employers top map switch.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Map Height", "careerfy-frame"),
-        'param_name' => 'emp_top_map_height',
-        'value' => '450',
-        'description' => esc_html__("Employers top map height.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Map Zoom", "careerfy-frame"),
-        'param_name' => 'emp_top_map_zoom',
-        'value' => '8',
-        'description' => esc_html__("Employers top map zoom.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Bar", "careerfy-frame"),
-        'param_name' => 'emp_top_search',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Employer&apos;s top search bar switch.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Style", "careerfy-frame"),
-        'param_name' => 'emp_top_search_view',
-        'value' => array(
-            esc_html__("Simple", "careerfy-frame") => 'simple',
-            esc_html__("Advance Search", "careerfy-frame") => 'advance',
-        ),
-        'description' => esc_html__("Employers top search style.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Radius", "careerfy-frame"),
-        'param_name' => 'emp_top_search_radius',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable top search radius.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("AutoFill Search Box", "careerfy-frame"),
-        'param_name' => 'top_search_autofill',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable autofill in search keyword field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Job Title, Keywords, or Phrase", "careerfy-frame"),
-        'param_name' => 'emp_top_search_title',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable search keyword field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location", "careerfy-frame"),
-        'param_name' => 'emp_top_search_location',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable location field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    if ($sectors_enable_switch == 'on') {
-        $emp_listsh_parms[] = array(
-            'type' => 'dropdown',
-            'heading' => esc_html__("Sector", "careerfy-frame"),
-            'param_name' => 'emp_top_search_sector',
-            'value' => array(
-                esc_html__("Yes", "careerfy-frame") => 'yes',
-                esc_html__("No", "careerfy-frame") => 'no',
-            ),
-            'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
-            'group' => esc_html__("Top Search", "careerfy-frame"),
-        );
-    }
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sort by Fields", "careerfy-frame"),
-        'param_name' => 'employer_sort_by',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Results search sorting section switch.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Excerpt Length", "careerfy-frame"),
-        'param_name' => 'employer_excerpt',
-        'value' => '20',
-        'description' => esc_html__("Set the number of words you want to show for excerpt.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Order", "careerfy-frame"),
-        'param_name' => 'employer_order',
-        'value' => array(
-            esc_html__("Descending", "careerfy-frame") => 'DESC',
-            esc_html__("Ascending", "careerfy-frame") => 'ASC',
-        ),
-        'description' => esc_html__("Choose job list items order.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Orderby", "careerfy-frame"),
-        'param_name' => 'employer_orderby',
-        'value' => array(
-            esc_html__("Date", "careerfy-frame") => 'date',
-            esc_html__("Title", "careerfy-frame") => 'title',
-            esc_html__("Promote Profile", "careerfy-frame") => 'promote_profile',
-        ),
-        'description' => esc_html__("Choose list items orderby.", "careerfy-frame")
-    );
-    $emp_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Pagination", "careerfy-frame"),
-        'param_name' => 'employer_pagination',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Choose yes if you want to show pagination for employer items.", "careerfy-frame")
-    );
-
-    $emp_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Items per Page", "careerfy-frame"),
-        'param_name' => 'employer_per_page',
-        'value' => '10',
-        'description' => esc_html__("Set number that how much employers you want to show per page. Leave it blank for all employers on a single page.", "careerfy-frame")
-    );
     $attributes = array(
         "name" => esc_html__("Employer Listing", "careerfy-frame"),
         "base" => "jobsearch_employer_shortcode",
         "class" => "",
         "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => apply_filters('jobsearch_employer_listings_vcsh_params', $emp_listsh_parms)
+        "params" => apply_filters('jobsearch_employer_listings_vcsh_params', array(
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("View", "careerfy-frame"),
+                'param_name' => 'employer_view',
+                'value' => array(
+                    esc_html__("Style 1", "careerfy-frame") => 'view-default',
+                    esc_html__("Style 2", "careerfy-frame") => 'view-grid',
+                    esc_html__("Style 3", "careerfy-frame") => 'view-slider',
+                ),
+                'description' => esc_html__("Select employers listing view.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'employer_cat',
+                'value' => $cate_array,
+                'description' => esc_html__("Select Sector.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'checkbox',
+                'heading' => esc_html__("Locations in listing", "careerfy-frame"),
+                'param_name' => 'employer_loc_listing',
+                'value' => array(
+                    esc_html__("Country", "jobsearch-vc") => 'country',
+                    esc_html__("State", "jobsearch-vc") => 'state',
+                    esc_html__("City", "jobsearch-vc") => 'city',
+                ),
+                'std' => 'country,city',
+                'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Employer Founds with display counts", "jobsearch-vc"),
+                'param_name' => 'display_per_page',
+                'value' => array(
+                    esc_html__("Yes", "jobsearch-vc") => 'yes',
+                    esc_html__("No", "jobsearch-vc") => 'no',
+                ),
+                'description' => esc_html__("Display the per page empoyers count at top of the listing.", "jobsearch-vc")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Filters", "careerfy-frame"),
+                'param_name' => 'employer_filters',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Employers searching filters switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Filters Count", "careerfy-frame"),
+                'param_name' => 'employer_filters_count',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Locations", "careerfy-frame"),
+                'param_name' => 'employer_filters_loc',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Employers searching filters 'Location' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Locations Filter Collapse", "careerfy-frame"),
+                'param_name' => 'employer_filters_loc_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Locations Filter Style", "careerfy-frame"),
+                'param_name' => 'employer_filters_loc_view',
+                'value' => array(
+                    esc_html__("Checkbox List", "careerfy-frame") => 'checkboxes',
+                    esc_html__("Dropdown Fields", "careerfy-frame") => 'dropdowns',
+                    esc_html__("Input Field", "careerfy-frame") => 'input',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Date Posted", "careerfy-frame"),
+                'param_name' => 'employer_filters_date',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Employers searching filters 'Date Posted' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Date Posted Collapse", "careerfy-frame"),
+                'param_name' => 'employer_filters_date_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'employer_filters_sector',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Employers searching filters 'Sector' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector Filter Collapse", "careerfy-frame"),
+                'param_name' => 'employer_filters_sector_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Team Size", "careerfy-frame"),
+                'param_name' => 'employer_filters_team',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Employers searching filters 'Team Size' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Team Size Filter Collapse", "careerfy-frame"),
+                'param_name' => 'employer_filters_team_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Map", "careerfy-frame"),
+                'param_name' => 'emp_top_map',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Employers top map switch.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Map Height", "careerfy-frame"),
+                'param_name' => 'emp_top_map_height',
+                'value' => '450',
+                'description' => esc_html__("Employers top map height.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Map Zoom", "careerfy-frame"),
+                'param_name' => 'emp_top_map_zoom',
+                'value' => '8',
+                'description' => esc_html__("Employers top map zoom.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Search Bar", "careerfy-frame"),
+                'param_name' => 'emp_top_search',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Employer&apos;s top search bar switch.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Search Style", "careerfy-frame"),
+                'param_name' => 'emp_top_search_view',
+                'value' => array(
+                    esc_html__("Simple", "careerfy-frame") => 'simple',
+                    esc_html__("Advance Search", "careerfy-frame") => 'advance',
+                ),
+                'description' => esc_html__("Employers top search style.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("AutoFill Search Box", "careerfy-frame"),
+                'param_name' => 'top_search_autofill',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable autofill in search keyword field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Job Title, Keywords, or Phrase", "careerfy-frame"),
+                'param_name' => 'emp_top_search_title',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable search keyword field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Location", "careerfy-frame"),
+                'param_name' => 'emp_top_search_location',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable location field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'emp_top_search_sector',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sort by Fields", "careerfy-frame"),
+                'param_name' => 'employer_sort_by',
+                'value' => array(
+                    esc_html__("Yes", "jobsearch-vc") => 'yes',
+                    esc_html__("No", "jobsearch-vc") => 'no',
+                ),
+                'description' => esc_html__("Results search sorting section switch.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Excerpt Length", "careerfy-frame"),
+                'param_name' => 'employer_excerpt',
+                'value' => '20',
+                'description' => esc_html__("Set the number of words you want to show for excerpt.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Order", "careerfy-frame"),
+                'param_name' => 'employer_order',
+                'value' => array(
+                    esc_html__("Descending", "careerfy-frame") => 'DESC',
+                    esc_html__("Ascending", "careerfy-frame") => 'ASC',
+                ),
+                'description' => esc_html__("Choose job list items order.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Orderby", "careerfy-frame"),
+                'param_name' => 'employer_orderby',
+                'value' => array(
+                    esc_html__("Date", "careerfy-frame") => 'date',
+                    esc_html__("Title", "careerfy-frame") => 'title',
+                    esc_html__("Promote Profile", "careerfy-frame") => 'promote_profile',
+                ),
+                'description' => esc_html__("Choose list items orderby.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Pagination", "careerfy-frame"),
+                'param_name' => 'employer_pagination',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Choose yes if you want to show pagination for employer items.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Items per Page", "careerfy-frame"),
+                'param_name' => 'employer_per_page',
+                'value' => '10',
+                'description' => esc_html__("Set number that how much employers you want to show per page. Leave it blank for all employers on a single page.", "careerfy-frame")
+            )
+        ))
     );
 
     if (function_exists('vc_map') && class_exists('JobSearch_plugin')) {
@@ -4197,13 +3929,10 @@ function careerfy_vc_simple_employers_shortcode()
  */
 function careerfy_vc_candidate_listing()
 {
-    global $jobsearch_plugin_options;
     $categories = get_terms(array(
         'taxonomy' => 'sector',
         'hide_empty' => false,
     ));
-
-    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
     $cate_array = array(esc_html__("Select Sector", "careerfy-frame") => '');
     if (is_array($categories) && sizeof($categories) > 0) {
@@ -4219,350 +3948,314 @@ function careerfy_vc_candidate_listing()
             $job_cus_field_arr[$value['label']] = $key;
         }
     }
-    $cand_listsh_parms = [];
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("View", "careerfy-frame"),
-        'param_name' => 'candidate_view',
-        'value' => array(
-            esc_html__("Style 1", "careerfy-frame") => 'view-default',
-            esc_html__("Style 2", "careerfy-frame") => 'view-grid',
-            esc_html__("Style 3", "careerfy-frame") => 'view-classic',
-            esc_html__("Style 4", "careerfy-frame") => 'view-modern',
-            esc_html__("Style 5", "careerfy-frame") => 'view-fancy',
-            esc_html__("Style 6", "careerfy-frame") => 'view-fancy-2',
-            esc_html__("Style 7", "careerfy-frame") => 'view-fancy-3',
-            esc_html__("Style 8", "careerfy-frame") => 'view-fancy-4',
-        ),
-        'description' => esc_html__("Select candidates listing view.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector", "careerfy-frame"),
-        'param_name' => 'candidate_cat',
-        'value' => $cate_array,
-        'description' => esc_html__("Select Sector.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Candidate Founds with display counts", "careerfy-frame"),
-        'param_name' => 'display_per_page',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Display the per page candidates count at top of the listing.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("First Button Color", "careerfy-frame"),
-        'param_name' => 'first_btn_color',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'candidate_view',
-            'value' => array('view-fancy-3')
-        ),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'checkbox',
-        'heading' => esc_html__("Locations in listing", "careerfy-frame"),
-        'param_name' => 'candidate_loc_listing',
-        'value' => array(
-            esc_html__("Country", "careerfy-frame") => 'country',
-            esc_html__("State", "careerfy-frame") => 'state',
-            esc_html__("City", "careerfy-frame") => 'city',
-        ),
-        'std' => 'country,city',
-        'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'colorpicker',
-        'heading' => esc_html__("Second Button Color", "careerfy-frame"),
-        'param_name' => 'second_btn_color',
-        'value' => '',
-        'description' => '',
-        'dependency' => array(
-            'element' => 'candidate_view',
-            'value' => array('view-fancy-3')
-        ),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters", "careerfy-frame"),
-        'param_name' => 'candidate_filters',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Candidates searching filters switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters Count", "careerfy-frame"),
-        'param_name' => 'candidate_filters_count',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Filters Sort by", "careerfy-frame"),
-        'param_name' => 'candidate_filters_sortby',
-        'value' => array(
-            esc_html__("Default", "careerfy-frame") => 'default',
-            esc_html__("Ascending", "careerfy-frame") => 'asc',
-            esc_html__("Descending", "careerfy-frame") => 'desc',
-            esc_html__("Alphabetical", "careerfy-frame") => 'alpha',
-            esc_html__("Highest Count", "careerfy-frame") => 'count',
-        ),
-        'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Date Posted", "careerfy-frame"),
-        'param_name' => 'candidate_filters_date',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Candidates searching filters 'Date Posted' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Date Posted Collapse", "careerfy-frame"),
-        'param_name' => 'candidate_filters_date_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector", "careerfy-frame"),
-        'param_name' => 'candidate_filters_sector',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Candidates searching filters 'Sector' switch.", "careerfy-frame"),
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector Filter Collapse", "careerfy-frame"),
-        'param_name' => 'candidate_filters_sector_collapse',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => '',
-        'group' => esc_html__("Filters Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Map", "careerfy-frame"),
-        'param_name' => 'cand_top_map',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Candidates top map switch.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Map Height", "careerfy-frame"),
-        'param_name' => 'cand_top_map_height',
-        'value' => '450',
-        'description' => esc_html__("Candidates top map height.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Map Zoom", "careerfy-frame"),
-        'param_name' => 'cand_top_map_zoom',
-        'value' => '8',
-        'description' => esc_html__("Candidates top map zoom.", "careerfy-frame"),
-        'group' => esc_html__("Map Settings", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Bar", "careerfy-frame"),
-        'param_name' => 'cand_top_search',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Candidates top search bar switch.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Style", "careerfy-frame"),
-        'param_name' => 'cand_top_search_view',
-        'value' => array(
-            esc_html__("Simple", "careerfy-frame") => 'simple',
-            esc_html__("Advance Search", "careerfy-frame") => 'advance',
-        ),
-        'description' => esc_html__("Candidates top search style.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Top Search Radius", "careerfy-frame"),
-        'param_name' => 'cand_top_search_radius',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Candidates top search radius.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Job Title, Keywords, or Phrase", "careerfy-frame"),
-        'param_name' => 'cand_top_search_title',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable search keyword field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location", "careerfy-frame"),
-        'param_name' => 'cand_top_search_location',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable location field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    if ($sectors_enable_switch == 'on') {
-        $cand_listsh_parms[] = array(
-            'type' => 'dropdown',
-            'heading' => esc_html__("Sector", "careerfy-frame"),
-            'param_name' => 'cand_top_search_sector',
-            'value' => array(
-                esc_html__("Yes", "careerfy-frame") => 'yes',
-                esc_html__("No", "careerfy-frame") => 'no',
-            ),
-            'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
-            'group' => esc_html__("Top Search", "careerfy-frame"),
-        );
-    }
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("AutoFill Search Box", "careerfy-frame"),
-        'param_name' => 'top_search_autofill',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Enable/Disable autofill in search keyword field.", "careerfy-frame"),
-        'group' => esc_html__("Top Search", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sort by Fields", "careerfy-frame"),
-        'param_name' => 'candidate_sort_by',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Results search sorting section switch.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Excerpt Length", "careerfy-frame"),
-        'param_name' => 'candidate_excerpt',
-        'value' => '20',
-        'description' => esc_html__("Set the number of words you want to show for excerpt.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Order", "careerfy-frame"),
-        'param_name' => 'candidate_order',
-        'value' => array(
-            esc_html__("Descending", "careerfy-frame") => 'DESC',
-            esc_html__("Ascending", "careerfy-frame") => 'ASC',
-        ),
-        'description' => esc_html__("Choose candidate list items order.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Orderby", "careerfy-frame"),
-        'param_name' => 'candidate_orderby',
-        'value' => array(
-            esc_html__("Date", "careerfy-frame") => 'date',
-            esc_html__("Title", "careerfy-frame") => 'title',
-            esc_html__("Promote Profile", "careerfy-frame") => 'promote_profile',
-        ),
-        'description' => esc_html__("Choose list items orderby.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Pagination", "careerfy-frame"),
-        'param_name' => 'candidate_pagination',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Choose yes if you want to show pagination for candidate items.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Pagination", "careerfy-frame"),
-        'param_name' => 'candidate_pagination',
-        'value' => array(
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-            esc_html__("No", "careerfy-frame") => 'no',
-        ),
-        'description' => esc_html__("Choose yes if you want to show pagination for candidate items.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Items per Page", "careerfy-frame"),
-        'param_name' => 'candidate_per_page',
-        'value' => '10',
-        'description' => esc_html__("Set number that how much candidates you want to show per page. Leave it blank for all candidates on a single page.", "careerfy-frame")
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Custom Fields", "careerfy-frame"),
-        'param_name' => 'candidate_custom_fields_switch',
-        'value' => array(
-            esc_html__("No", "careerfy-frame") => 'no',
-            esc_html__("Yes", "careerfy-frame") => 'yes',
-        ),
-        'description' => esc_html__("Enable / Disable job custom fields", "careerfy-frame"),
-        'group' => esc_html__("Custom Fields", "careerfy-frame"),
-    );
-    $cand_listsh_parms[] = array(
-        'type' => 'checkbox',
-        'heading' => esc_html__("Select Fields", "careerfy-frame"),
-        'param_name' => 'candidate_elem_custom_fields',
-        'value' => $job_cus_field_arr,
-        'description' => '',
-        'group' => esc_html__("Custom Fields", "careerfy-frame"),
-    );
+
     $attributes = array(
         "name" => esc_html__("Candidate Listing", "careerfy-frame"),
         "base" => "jobsearch_candidate_shortcode",
         "class" => "",
         "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => apply_filters('jobsearch_candidate_listings_vcsh_params', $cand_listsh_parms)
+        "params" => apply_filters('jobsearch_candidate_listings_vcsh_params', array(
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("View", "careerfy-frame"),
+                'param_name' => 'candidate_view',
+                'value' => array(
+                    esc_html__("Style 1", "careerfy-frame") => 'view-default',
+                    esc_html__("Style 2", "careerfy-frame") => 'view-grid',
+                    esc_html__("Style 3", "careerfy-frame") => 'view-classic',
+                    esc_html__("Style 4", "careerfy-frame") => 'view-modern',
+                    esc_html__("Style 5", "careerfy-frame") => 'view-fancy',
+                    esc_html__("Style 6", "careerfy-frame") => 'view-fancy-2',
+                    esc_html__("Style 7", "careerfy-frame") => 'view-fancy-3',
+                    esc_html__("Style 8", "careerfy-frame") => 'view-fancy-4',
+                ),
+                'description' => esc_html__("Select candidates listing view.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'candidate_cat',
+                'value' => $cate_array,
+                'description' => esc_html__("Select Sector.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Candidate Founds with display counts", "jobsearch-vc"),
+                'param_name' => 'display_per_page',
+                'value' => array(
+                    esc_html__("Yes", "jobsearch-vc") => 'yes',
+                    esc_html__("No", "jobsearch-vc") => 'no',
+                ),
+                'description' => esc_html__("Display the per page candidates count at top of the listing.", "jobsearch-vc")
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("First Button Color", "careerfy-frame"),
+                'param_name' => 'first_btn_color',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'candidate_view',
+                    'value' => array('view-fancy-3')
+                ),
+            ),
+            array(
+                'type' => 'checkbox',
+                'heading' => esc_html__("Locations in listing", "careerfy-frame"),
+                'param_name' => 'candidate_loc_listing',
+                'value' => array(
+                    esc_html__("Country", "jobsearch-vc") => 'country',
+                    esc_html__("State", "jobsearch-vc") => 'state',
+                    esc_html__("City", "jobsearch-vc") => 'city',
+                ),
+                'std' => 'country,city',
+                'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'colorpicker',
+                'heading' => esc_html__("Second Button Color", "careerfy-frame"),
+                'param_name' => 'second_btn_color',
+                'value' => '',
+                'description' => '',
+                'dependency' => array(
+                    'element' => 'candidate_view',
+                    'value' => array('view-fancy-3')
+                ),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Filters", "careerfy-frame"),
+                'param_name' => 'candidate_filters',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Candidates searching filters switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Filters Count", "careerfy-frame"),
+                'param_name' => 'candidate_filters_count',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Show result counts in front of every filter.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Date Posted", "careerfy-frame"),
+                'param_name' => 'candidate_filters_date',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Candidates searching filters 'Date Posted' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Date Posted Collapse", "careerfy-frame"),
+                'param_name' => 'candidate_filters_date_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'candidate_filters_sector',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Candidates searching filters 'Sector' switch.", "careerfy-frame"),
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector Filter Collapse", "careerfy-frame"),
+                'param_name' => 'candidate_filters_sector_collapse',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => '',
+                'group' => esc_html__("Filters Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Map", "careerfy-frame"),
+                'param_name' => 'cand_top_map',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Candidates top map switch.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Map Height", "careerfy-frame"),
+                'param_name' => 'cand_top_map_height',
+                'value' => '450',
+                'description' => esc_html__("Candidates top map height.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Map Zoom", "careerfy-frame"),
+                'param_name' => 'cand_top_map_zoom',
+                'value' => '8',
+                'description' => esc_html__("Candidates top map zoom.", "careerfy-frame"),
+                'group' => esc_html__("Map Settings", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Search Bar", "careerfy-frame"),
+                'param_name' => 'cand_top_search',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Candidates top search bar switch.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Top Search Style", "careerfy-frame"),
+                'param_name' => 'cand_top_search_view',
+                'value' => array(
+                    esc_html__("Simple", "careerfy-frame") => 'simple',
+                    esc_html__("Advance Search", "careerfy-frame") => 'advance',
+                ),
+                'description' => esc_html__("Candidates top search style.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Job Title, Keywords, or Phrase", "careerfy-frame"),
+                'param_name' => 'cand_top_search_title',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable search keyword field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Location", "careerfy-frame"),
+                'param_name' => 'cand_top_search_location',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable location field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sector", "careerfy-frame"),
+                'param_name' => 'cand_top_search_sector',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable Sector Dropdown field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("AutoFill Search Box", "careerfy-frame"),
+                'param_name' => 'top_search_autofill',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Enable/Disable autofill in search keyword field.", "careerfy-frame"),
+                'group' => esc_html__("Top Search", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Sort by Fields", "careerfy-frame"),
+                'param_name' => 'candidate_sort_by',
+                'value' => array(
+                    esc_html__("Yes", "jobsearch-vc") => 'yes',
+                    esc_html__("No", "jobsearch-vc") => 'no',
+                ),
+                'description' => esc_html__("Results search sorting section switch.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Excerpt Length", "careerfy-frame"),
+                'param_name' => 'candidate_excerpt',
+                'value' => '20',
+                'description' => esc_html__("Set the number of words you want to show for excerpt.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Order", "careerfy-frame"),
+                'param_name' => 'candidate_order',
+                'value' => array(
+                    esc_html__("Descending", "careerfy-frame") => 'DESC',
+                    esc_html__("Ascending", "careerfy-frame") => 'ASC',
+                ),
+                'description' => esc_html__("Choose candidate list items order.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Orderby", "careerfy-frame"),
+                'param_name' => 'candidate_orderby',
+                'value' => array(
+                    esc_html__("Date", "careerfy-frame") => 'date',
+                    esc_html__("Title", "careerfy-frame") => 'title',
+                    esc_html__("Promote Profile", "careerfy-frame") => 'promote_profile',
+                ),
+                'description' => esc_html__("Choose list items orderby.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Pagination", "careerfy-frame"),
+                'param_name' => 'candidate_pagination',
+                'value' => array(
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                    esc_html__("No", "careerfy-frame") => 'no',
+                ),
+                'description' => esc_html__("Choose yes if you want to show pagination for candidate items.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__("Items per Page", "careerfy-frame"),
+                'param_name' => 'candidate_per_page',
+                'value' => '10',
+                'description' => esc_html__("Set number that how much candidates you want to show per page. Leave it blank for all candidates on a single page.", "careerfy-frame")
+            ),
+            array(
+                'type' => 'dropdown',
+                'heading' => esc_html__("Custom Fields", "careerfy-frame"),
+                'param_name' => 'candidate_custom_fields_switch',
+                'value' => array(
+                    esc_html__("No", "careerfy-frame") => 'no',
+                    esc_html__("Yes", "careerfy-frame") => 'yes',
+                ),
+                'description' => esc_html__("Enable / Disable job custom fields", "careerfy-frame"),
+                'group' => esc_html__("Custom Fields", "careerfy-frame"),
+            ),
+            array(
+                'type' => 'checkbox',
+                'heading' => esc_html__("Select Fields", "careerfy-frame"),
+                'param_name' => 'candidate_elem_custom_fields',
+                'value' => $job_cus_field_arr,
+                'description' => '',
+                'group' => esc_html__("Custom Fields", "careerfy-frame"),
+            )
+        ))
     );
 
     if (function_exists('vc_map') && class_exists('JobSearch_plugin')) {
@@ -4999,12 +4692,11 @@ function careerfy_vc_simple_block_text()
 }
 
 /**
- * adding Google Map shortcode
+ * Adding Google Map shortcode
  * @return markup
  */
 function careerfy_vc_google_map_shortcode()
 {
-
     global $jobsearch_plugin_options;
     $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
 
@@ -5013,35 +4705,30 @@ function careerfy_vc_google_map_shortcode()
     } else {
         $map_style_desc = __("Set map styles. You can get predefined styles from <a href=\"https://snazzymaps.com/\" target=\"_blank\">snazzymaps.com</a>", "careerfy-frame");
     }
-
     $shortcode_params = array();
-    $shortcode_params[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Box Address", "careerfy-frame"),
-        'param_name' => 'map_box_address',
-        'value' => '',
-        'description' => esc_html__("Set infobox Address for map.", "careerfy-frame"),
-    );
     $shortcode_params[] = array(
         'type' => 'textfield',
         'heading' => esc_html__("Latitude", "careerfy-frame"),
         'param_name' => 'map_latitude',
-        'value' => '',
+        'value' => '51.2',
         'description' => esc_html__("Set Latitude of map.", "careerfy-frame"),
+        'group' => __('Map Settings', 'careerfy-frame'),
     );
     $shortcode_params[] = array(
         'type' => 'textfield',
         'heading' => esc_html__("Longitude", "careerfy-frame"),
         'param_name' => 'map_longitude',
-        'value' => '',
+        'value' => '0.2',
         'description' => esc_html__("Set Longitude of map.", "careerfy-frame"),
+        'group' => __('Map Settings', 'careerfy-frame'),
     );
     $shortcode_params[] = array(
         'type' => 'textfield',
         'heading' => esc_html__("Zoom", "careerfy-frame"),
         'param_name' => 'map_zoom',
-        'value' => '',
-        'description' => esc_html__("Set Zoom for map.", "careerfy-frame"),
+        'value' => '8',
+        'description' => esc_html__("Set Zoom for the map.", "careerfy-frame"),
+        'group' => __('Map Settings', 'careerfy-frame'),
     );
     $shortcode_params[] = array(
         'type' => 'textfield',
@@ -5049,6 +4736,7 @@ function careerfy_vc_google_map_shortcode()
         'param_name' => 'map_height',
         'value' => '350',
         'description' => esc_html__("Set Height for map.", "careerfy-frame"),
+        'group' => __('Map Settings', 'careerfy-frame'),
     );
     if ($location_map_type != 'mapbox') {
         $shortcode_params[] = array(
@@ -5063,7 +4751,6 @@ function careerfy_vc_google_map_shortcode()
             'group' => __('Map Settings', 'careerfy-frame'),
         );
     }
-
     $shortcode_params[] = array(
         'type' => 'dropdown',
         'heading' => esc_html__("Scroll Wheel control", "careerfy-frame"),
@@ -5093,43 +4780,9 @@ function careerfy_vc_google_map_shortcode()
         'heading' => esc_html__("Marker Icon", "careerfy-frame"),
         'param_name' => 'map_marker',
         'value' => '',
-        'description' => esc_html__("Put custom marker icon for map.", "careerfy-frame"),
+        'description' => esc_html__("Put custom marker icon for the map.", "careerfy-frame"),
+        'group' => __('Map Settings', 'careerfy-frame'),
     );
-
-    $shortcode_params[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Box Title", "advisor-common"),
-        'param_name' => 'map_box_title',
-        'value' => '',
-        'description' => esc_html__("Set infobox title for map.", "advisor-common"),
-    );
-
-
-
-    $shortcode_params[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Box Telephone", "advisor-common"),
-        'param_name' => 'map_box_phone',
-        'value' => '',
-        'description' => esc_html__("Set infobox Telephone for map.", "advisor-common"),
-    );
-
-    $shortcode_params[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Box Email", "advisor-common"),
-        'param_name' => 'map_box_email',
-        'value' => '',
-        'description' => esc_html__("Set infobox Email for map.", "advisor-common"),
-    );
-
-    $shortcode_params[] = array(
-        'type' => 'textfield',
-        'heading' => esc_html__("Box Website", "advisor-common"),
-        'param_name' => 'map_box_website',
-        'value' => '',
-        'description' => esc_html__("Set infobox Website for map.", "advisor-common"),
-    );
-
     $shortcode_params[] = array(
         'type' => ($location_map_type == 'mapbox' ? 'textfield' : 'textarea'),
         'heading' => ($location_map_type == 'mapbox' ? esc_html__("Style URL", "careerfy-frame") : esc_html__("Styles", "careerfy-frame")),
@@ -5140,109 +4793,17 @@ function careerfy_vc_google_map_shortcode()
     );
 
     $attributes = array(
-        "name" => esc_html__("Careerfy Map", "careerfy-frame"),
-        "base" => "careerfy_google_map_shortcode",
+        "name" => esc_html__("Google Map", "careerfy-frame"),
+        "base" => "careerfy_google_map",
         "category" => esc_html__("Careerfy Theme", "careerfy-frame"),
-        "as_parent" => array('only' => 'careerfy_map_item'),
-        "content_element" => true,
-        "show_settings_on_create" => false,
-        "is_container" => true,
-        "params" => $shortcode_params,
-        "js_view" => 'VcColumnView'
+        "class" => "",
+        "params" => $shortcode_params
     );
 
     if (function_exists('vc_map')) {
         vc_map($attributes);
-    }
-
-    $attributes = array(
-        "name" => esc_html__("Map Marker", "careerfy-frame"),
-        "base" => "careerfy_map_item",
-        "content_element" => true,
-        "as_child" => array('only' => 'careerfy_google_map_shortcode'),
-        "show_settings_on_create" => true,
-        "params" => array(
-            // add params same as with any other content element
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Box Title", "advisor-common"),
-                'param_name' => 'map_box_title',
-                'value' => '',
-                'description' => esc_html__("Set info box title for map.", "advisor-common"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Latitude", "careerfy-frame"),
-                'param_name' => 'map_latitude',
-                'value' => '',
-                'description' => esc_html__("Set Latitude.", "careerfy-frame"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Longitude", "careerfy-frame"),
-                'param_name' => 'map_longitude',
-                'value' => '',
-                'description' => esc_html__("Set Longitude.", "careerfy-frame"),
-            ),
-            array(
-                'type' => 'careerfy_browse_img',
-                'heading' => esc_html__("Marker Icon", "careerfy-frame"),
-                'param_name' => 'map_marker',
-                'value' => '',
-                'description' => esc_html__("Put custom marker icon for map.", "careerfy-frame"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Box Address", "careerfy-frame"),
-                'param_name' => 'map_box_address',
-                'value' => '',
-                'description' => esc_html__("Set infobox Address for map.", "careerfy-frame"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Box Telephone", "advisor-common"),
-                'param_name' => 'map_box_phone',
-                'value' => '',
-                'description' => esc_html__("Set infobox Telephone for map.", "advisor-common"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Box Email", "advisor-common"),
-                'param_name' => 'map_box_email',
-                'value' => '',
-                'description' => esc_html__("Set infobox Email for map.", "advisor-common"),
-            ),
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Box Website", "advisor-common"),
-                'param_name' => 'map_box_website',
-                'value' => '',
-                'description' => esc_html__("Set infobox Website for map.", "advisor-common"),
-            ),
-        ),
-    );
-    if (function_exists('vc_map')) {
-        vc_map($attributes);
-    }
-
-    if (class_exists('WPBakeryShortCodesContainer')) {
-
-        class WPBakeryShortCode_Careerfy_Google_Map_Shortcode extends WPBakeryShortCodesContainer
-        {
-
-        }
-
-    }
-    if (class_exists('WPBakeryShortCode')) {
-
-        class WPBakeryShortCode_Careerfy_Map_Item extends WPBakeryShortCode
-        {
-
-        }
-
     }
 }
-
 
 /**
  * Adding Contact information shortcode
@@ -6092,9 +5653,9 @@ function careerfy_vc_top_recruiters_slider_shortcode()
         'heading' => esc_html__("Locations in listing", "careerfy-frame"),
         'param_name' => 'job_list_loc_listing',
         'value' => array(
-            esc_html__("Country", "careerfy-frame") => 'country',
-            esc_html__("State", "careerfy-frame") => 'state',
-            esc_html__("City", "careerfy-frame") => 'city',
+            esc_html__("Country", "jobsearch-vc") => 'country',
+            esc_html__("State", "jobsearch-vc") => 'state',
+            esc_html__("City", "jobsearch-vc") => 'city',
         ),
         'std' => 'country,city',
         'description' => esc_html__("Select which type of location in listing. If nothing select then full address will display.", "careerfy-frame")
@@ -7169,259 +6730,5 @@ function careerfy_vc_testimonials_with_image()
 
         }
 
-    }
-}
-
-/**
- * adding embeddable jobs shortcode
- * @return markup
- */
-function careerfy_vc_embeddable_jobs()
-{
-
-    $sh_atts = array();
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Site Title", "careerfy-frame"),
-        'param_name' => 'site_title',
-        'value' => array(
-            esc_html__('On', 'wp-jobsearch') => 'on',
-            esc_html__('Off', 'wp-jobsearch') => 'off',
-        ),
-        'description' => esc_html__("Site title in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Employer base jobs", "careerfy-frame"),
-        'param_name' => 'employer_base_jobs',
-        'value' => array(
-            esc_html__('No', 'wp-jobsearch') => 'no',
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-        ),
-        'description' => esc_html__("Employer base jobs in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Keyword search", "careerfy-frame"),
-        'param_name' => 'keyword_search',
-        'value' => array(
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-            esc_html__('No', 'wp-jobsearch') => 'no',
-        ),
-        'description' => esc_html__("Keyword search in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Location search", "careerfy-frame"),
-        'param_name' => 'location_search',
-        'value' => array(
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-            esc_html__('No', 'wp-jobsearch') => 'no',
-        ),
-        'description' => esc_html__("Location search in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Sector search", "careerfy-frame"),
-        'param_name' => 'job_sector',
-        'value' => array(
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-            esc_html__('No', 'wp-jobsearch') => 'no',
-        ),
-        'description' => esc_html__("Sector search in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Job Type search", "careerfy-frame"),
-        'param_name' => 'job_type',
-        'value' => array(
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-            esc_html__('No', 'wp-jobsearch') => 'no',
-        ),
-        'description' => esc_html__("Job Type search in embeddable jobs on/off.", "careerfy-frame")
-    );
-    $sh_atts[] = array(
-        'type' => 'dropdown',
-        'heading' => esc_html__("Custom Fields", "careerfy-frame"),
-        'param_name' => 'custom_fields',
-        'value' => array(
-            esc_html__('No', 'wp-jobsearch') => 'no',
-            esc_html__('Yes', 'wp-jobsearch') => 'yes',
-        ),
-        'description' => esc_html__("Custom Fields in embeddable jobs on/off.", "careerfy-frame")
-    );
-
-    $attributes = array(
-        "name" => esc_html__("Embeddable Jobs", "careerfy-frame"),
-        "base" => "jobsearch_embeddable_jobs",
-        "class" => "",
-        "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => $sh_atts,
-    );
-
-    if (function_exists('vc_map') && class_exists('JobSearch_plugin')) {
-        vc_map($attributes);
-    }
-}
-
-/**
- * adding user job shortcode
- * @return markup
- */
-function careerfy_vc_user_job_shortcode()
-{
-    $attributes = array(
-        "name" => esc_html__("Post New Job", "careerfy-frame"),
-        "base" => "jobsearch_user_job",
-        "class" => "",
-        "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => array(
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Title", "careerfy-frame"),
-                'param_name' => 'title',
-                'value' => '',
-                'description' => ''
-            ),
-        )
-    );
-
-    if (function_exists('vc_map')) {
-        vc_map($attributes);
-    }
-}
-
-/**
- * adding user job shortcode
- * @return markup
- */
-function careerfy_vc_banner_advertisement()
-{
-    global $jobsearch_plugin_options;
-    $groups_value = isset($jobsearch_plugin_options['ad_banner_groups']) ? $jobsearch_plugin_options['ad_banner_groups'] : '';
-    $sinle_value = isset($jobsearch_plugin_options['ad_banners_list']) ? $jobsearch_plugin_options['ad_banners_list'] : '';
-
-    $group_add_arr = array(esc_html__('Select banner', 'careerfy-frame') => '');
-    if (isset($groups_value) && !empty($groups_value) && is_array($groups_value)) {
-        for ($ad = 0; $ad < count($groups_value['group_title']); $ad++) {
-            $ad_title = $groups_value['group_title'][$ad];
-            $ad_code = $groups_value['group_code'][$ad];
-            $group_add_arr[$ad_title] = $ad_code;
-        }
-    }
-    $single_add_arr = array(esc_html__('Select banner', 'careerfy-frame') => '');
-    if (isset($sinle_value) && !empty($sinle_value) && is_array($sinle_value)) {
-        for ($ad = 0; $ad < count($sinle_value['banner_title']); $ad++) {
-            $ad_title = $sinle_value['banner_title'][$ad];
-            $ad_code = $sinle_value['banner_code'][$ad];
-            $single_add_arr[$ad_title] = $ad_code;
-        }
-    }
-    $attributes = array(
-        "name" => esc_html__("Banner Advertisement", "careerfy-frame"),
-        "base" => "jobsearch_banner_advertisement",
-        "class" => "",
-        "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => array(
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Banner Style", "careerfy-frame"),
-                'param_name' => 'banner_style',
-                'value' => array(
-                    esc_html__("Single Banner", "careerfy-frame") => 'single_banner',
-                    esc_html__("Group Banner ", "careerfy-frame") => 'group_banner',
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Single Style", "careerfy-frame"),
-                'param_name' => 'banner_sinle_style',
-                'value' => $single_add_arr,
-                'description' => '',
-                'dependency' => array('element' => 'banner_style', 'value' => array('single_banner'))
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Group Style", "careerfy-frame"),
-                'param_name' => 'banner_group_style',
-                'value' => $group_add_arr,
-                'description' => '',
-                'dependency' => array('element' => 'banner_style', 'value' => array('group_banner'))
-            ),
-        )
-    );
-
-    if (function_exists('vc_map')) {
-        vc_map($attributes);
-    }
-}
-
-/**
- * Login Registration Form shortcode
- * @return markup
- */
-function careerfy_vc_login_registration_shortcode()
-{
-
-    $attributes = array(
-        "name" => esc_html__("Login Registration Form", "careerfy-frame"),
-        "base" => "jobsearch_login_registration",
-        "class" => "",
-        "category" => esc_html__("Wp JobSearch", "careerfy-frame"),
-        "params" => array(
-            array(
-                'type' => 'textfield',
-                'heading' => esc_html__("Title", "careerfy-frame"),
-                'param_name' => 'login_registration_title',
-                'value' => '',
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Enable Register", "careerfy-frame"),
-                'param_name' => 'login_register_form',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'on',
-                    esc_html__("No", "careerfy-frame") => 'off',
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Form Type", "careerfy-frame"),
-                'param_name' => 'logreg_form_type',
-                'value' => array(
-                    esc_html__("Both Forms", "careerfy-frame") => 'on',
-                    esc_html__("Register Form Only", "careerfy-frame") => 'reg_only',
-                    esc_html__("Login Form Only", "careerfy-frame") => 'login_only',
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Enable Candidate Registration", "careerfy-frame"),
-                'param_name' => 'login_candidate_register',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'yes',
-                    esc_html__("No", "careerfy-frame") => 'no',
-                ),
-                'description' => ''
-            ),
-            array(
-                'type' => 'dropdown',
-                'heading' => esc_html__("Enable Employer Registration", "careerfy-frame"),
-                'param_name' => 'login_employer_register',
-                'value' => array(
-                    esc_html__("Yes", "careerfy-frame") => 'yes',
-                    esc_html__("No", "careerfy-frame") => 'no',
-                ),
-                'description' => ''
-            ),
-        )
-    );
-
-    if (function_exists('vc_map')) {
-        vc_map($attributes);
     }
 }

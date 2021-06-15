@@ -9,23 +9,21 @@ if (!defined('ABSPATH')) {
 }
 
 // main plugin class
-class Jobsearch_Packages
-{
+class Jobsearch_Packages {
 
 // hook things up
-    public function __construct()
-    {
+    public function __construct() {
 
         $this->load_files();
         add_action('admin_enqueue_scripts', array($this, 'admin_style_scripts'));
         add_action('wp_enqueue_scripts', array($this, 'front_style_scripts'));
         add_action('add_meta_boxes', array($this, 'packages_meta_box'));
+
         //
         add_action('save_post', array($this, 'update_package_product_meta'), 10, 1);
     }
 
-    private function load_files()
-    {
+    private function load_files() {
         include plugin_dir_path(dirname(__FILE__)) . 'packages/include/package-post-type.php';
         include plugin_dir_path(dirname(__FILE__)) . 'packages/include/custom-fields.php';
         include plugin_dir_path(dirname(__FILE__)) . 'packages/include/vc-shortcodes.php';
@@ -33,13 +31,11 @@ class Jobsearch_Packages
         include plugin_dir_path(dirname(__FILE__)) . 'packages/include/package-functions.php';
     }
 
-    public function admin_style_scripts()
-    {
+    public function admin_style_scripts() {
         wp_enqueue_script('jobsearch-packages-scripts', plugin_dir_url(dirname(__FILE__)) . 'packages/js/packages-admin.js', array(), '', true);
     }
 
-    public function front_style_scripts()
-    {
+    public function front_style_scripts() {
         wp_register_script('jobsearch-packages-scripts', plugin_dir_url(dirname(__FILE__)) . 'packages/js/packages.js', array(), '', true);
         $jobsearch_plugin_arr = array(
             'plugin_url' => jobsearch_plugin_get_url(),
@@ -49,69 +45,42 @@ class Jobsearch_Packages
         wp_localize_script('jobsearch-packages-scripts', 'jobsearch_packages_vars', $jobsearch_plugin_arr);
     }
 
-    public function packages_meta_box()
-    {
+    public function packages_meta_box() {
         add_meta_box('jobsearch-package-options', esc_html__('Package Options', 'wp-jobsearch'), array($this, 'package_options_box'), 'package', 'normal');
     }
 
-    public function package_options_box()
-    {
+    public function package_options_box() {
         global $post, $wpdb, $jobsearch_form_fields, $jobsearch_plugin_options, $Jobsearch_Package_Custom_Fields;
 
         $_post_id = $post->ID;
-
+        
         wp_enqueue_script('jobsearch-selectize');
-
+        
         $cand_pkg_base_profile = isset($jobsearch_plugin_options['cand_pkg_base_profile']) ? $jobsearch_plugin_options['cand_pkg_base_profile'] : '';
         $emp_pkg_base_profile = isset($jobsearch_plugin_options['emp_pkg_base_profile']) ? $jobsearch_plugin_options['emp_pkg_base_profile'] : '';
-
+        
         $package_type = get_post_meta($post->ID, 'jobsearch_field_package_type', true);
         $charges_type = get_post_meta($post->ID, 'jobsearch_field_charges_type', true);
-
+        
         $unlimitd_exp = get_post_meta($post->ID, 'jobsearch_field_unlimited_pkg', true);
         ?>
         <div class="jobsearch-post-settings" style="min-height: 500px;">
             <div class="pckges-typeinfo-con">
                 <h2><?php esc_html_e('Package Types Information', 'wp-jobsearch') ?></h2>
                 <ul>
-                    <li><strong><?php esc_html_e('Jobs Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for employers to post jobs.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Jobs Package with featured credits', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for employers to post jobs with featured credits.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Employer download CV\'s Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for employers to save a specific number of resumes.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('All in one Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for employers to post jobs, featured jobs and download CVs.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Single Featured Job credit', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for employers to post single featured job only.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Candidate Job Apply Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for candidates to apply a specific number of jobs.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Promote Profile', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for both employers/candidates to promote profile in top of the listings.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Urgent Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is for both employers/candidates to get urgent tag with his/her profile.', 'wp-jobsearch') ?>
-                    </li>
-                    <li><strong><?php esc_html_e('Candidate Profile Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is usefull for candidates profile limitations according to subscribed package.', 'wp-jobsearch') ?>
-                    </li>
-                    <li>
-                        <strong>
-                            <?php esc_html_e('Employer Profile Package', 'wp-jobsearch') ?>
-                            :</strong> <?php esc_html_e('This package is usefull for employers profile limitations according to subscribed package.', 'wp-jobsearch') ?>
-                    </li>
-                    <?php echo do_action('jobsearch_pkg_admin_descriptions_after'); ?>
+                    <li><strong><?php esc_html_e('Jobs Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for employers to post jobs.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Jobs Package with featured jobs', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for employers to post jobs with featured jobs.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('CV\'s Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for employers to save a specific number of resumes.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('All in one Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for employers to post jobs, featured jobs and save resumes.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Featured Job only', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for employers to post featured jobs only.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Candidate\'s Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for candidates to apply a specific number of jobs.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Promote Profile', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for both employers/candidates to promote profile in top of the listings.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Urgent Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is for both employers/candidates to get urgent tag with his/her profile.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Candidate Profile Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is usefull for candidates profile limitations according to subscribed package.', 'wp-jobsearch') ?></li>
+                    <li><strong><?php esc_html_e('Employer Profile Package', 'wp-jobsearch') ?>:</strong> <?php esc_html_e('This package is usefull for employers profile limitations according to subscribed package.', 'wp-jobsearch') ?></li>
                 </ul>
             </div>
-
-            <div class="jobsearch-element-field to_unlimit_pexp"
-                 style="display: <?php echo($package_type == 'cand_resume' ? 'none' : 'block') ?>">
+            <div class="jobsearch-element-field">
                 <div class="elem-label">
                     <label><?php esc_html_e('Recommended Package', 'wp-jobsearch') ?></label>
                 </div>
@@ -148,8 +117,7 @@ class Jobsearch_Packages
                     ?>
                 </div>
             </div>
-            <div class="jobsearch-package-price-fields"
-                 style="display: <?php echo($charges_type == 'free' ? 'none' : 'block') ?>;">
+            <div class="jobsearch-package-price-fields" style="display: <?php echo ($charges_type == 'free' ? 'none' : 'block') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Package Price', 'wp-jobsearch') ?></label>
@@ -174,18 +142,19 @@ class Jobsearch_Packages
                     <?php
                     $pckg_types_options = array(
                         'job' => esc_html__('Jobs Package', 'wp-jobsearch'),
-                        'featured_jobs' => esc_html__('Jobs Package with featured credits', 'wp-jobsearch'),
-                        'cv' => esc_html__('Employer download CV\'s Package', 'wp-jobsearch'),
+                        'featured_jobs' => esc_html__('Jobs Package with featured jobs', 'wp-jobsearch'),
+                        'cv' => esc_html__('CV\'s Package', 'wp-jobsearch'),
                         'emp_allin_one' => esc_html__('All in one', 'wp-jobsearch'),
-                        'feature_job' => esc_html__('Single Featured Job credit', 'wp-jobsearch'),
-                        'candidate' => esc_html__('Candidate Job Apply Package', 'wp-jobsearch'),
+                        'feature_job' => esc_html__('Featured Job only', 'wp-jobsearch'),
+                        'candidate' => esc_html__('Candidate\'s Package', 'wp-jobsearch'),
                         'promote_profile' => esc_html__('Promote Profile', 'wp-jobsearch'),
                         'urgent_pkg' => esc_html__('Urgent Package', 'wp-jobsearch'),
                     );
                     $pckg_types_options['candidate_profile'] = esc_html__('Candidate Profile Package', 'wp-jobsearch');
                     $pckg_types_options['employer_profile'] = esc_html__('Employer Profile Package', 'wp-jobsearch');
+                    
                     $pckg_types_options = apply_filters('jobsearch_admin_change_package_types', $pckg_types_options);
-
+                    
                     $field_params = array(
                         'name' => 'package_type',
                         'ext_attr' => 'onchange="jobsearch_onchange_package_type(this.value)"',
@@ -195,8 +164,7 @@ class Jobsearch_Packages
                     ?>
                 </div>
             </div>
-            <div class="jobsearch-element-field to_unlimit_pexp"
-                 style="display: <?php echo($package_type == 'cand_resume' ? 'none' : 'block') ?>">
+            <div class="jobsearch-element-field to_unlimit_pexp">
                 <div class="elem-label">
                     <label><?php esc_html_e('Package Expiry Time', 'wp-jobsearch') ?></label>
                 </div>
@@ -205,9 +173,7 @@ class Jobsearch_Packages
                 $unlimtd_pkg_expiryval = get_post_meta($_post_id, 'jobsearch_field_unlimited_pkg', true);
                 ?>
                 <div class="elem-field">
-                    <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                         class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_expiryval == 'on' ? 'limted-disabled' : '') ?>"
-                         style="float: left; width: 70%;">
+                    <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_expiryval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                         <div class="input-select-field input-f">
                             <?php
                             $field_params = array(
@@ -234,18 +200,15 @@ class Jobsearch_Packages
                     </div>
                     <div style="float: right; width: 27%;">
                         <div class="unlimitd-chekbox">
-                            <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                   data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_expiryval == 'on' ? 'checked' : '') ?>>
-                            <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                            <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                   name="jobsearch_field_unlimited_pkg" value="<?php echo($unlimtd_pkg_expiryval) ?>">
+                            <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_expiryval == 'on' ? 'checked' : '') ?>>
+                            <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                            <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_pkg" value="<?php echo ($unlimtd_pkg_expiryval) ?>">
                         </div>
                     </div>
                 </div>
             </div>
             <?php do_action('jobsearch_admin_package_meta_fields', $post->ID); ?>
-            <div id="candidate_package_fields" class="candidate-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'candidate' ? 'block' : 'none') ?>;">
+            <div id="candidate_package_fields" class="candidate-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'candidate' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Number of Applications', 'wp-jobsearch') ?></label>
@@ -255,9 +218,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_numcappsval = get_post_meta($_post_id, 'jobsearch_field_unlimited_numcapps', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numcappsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numcappsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'num_of_apps',
@@ -268,12 +229,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numcappsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_numcapps"
-                                       value="<?php echo($unlimtd_pkg_numcappsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numcappsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_numcapps" value="<?php echo ($unlimtd_pkg_numcappsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -282,8 +240,7 @@ class Jobsearch_Packages
             <?php
             ob_start();
             ?>
-            <div id="job_package_fields" class="job-package-fields specific-pkges-fields"
-                 style="display: <?php echo(($package_type == '' || $package_type == 'job') ? 'block' : 'none') ?>;">
+            <div id="job_package_fields" class="job-package-fields specific-pkges-fields" style="display: <?php echo (($package_type == '' || $package_type == 'job') ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Number of Jobs', 'wp-jobsearch') ?></label>
@@ -293,9 +250,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_numjobsval = get_post_meta($_post_id, 'jobsearch_field_unlimited_numjobs', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numjobsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numjobsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'num_of_jobs',
@@ -306,12 +261,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numjobsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_numjobs"
-                                       value="<?php echo($unlimtd_pkg_numjobsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numjobsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_numjobs" value="<?php echo ($unlimtd_pkg_numjobsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -328,9 +280,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_jobexpval = get_post_meta($_post_id, 'jobsearch_field_unlimited_jobsexp', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_jobexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_jobexpval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <div class="input-select-field input-f">
                                 <?php
                                 $field_params = array(
@@ -357,12 +307,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_jobexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_jobsexp"
-                                       value="<?php echo($unlimtd_pkg_jobexpval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_jobexpval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_jobsexp" value="<?php echo ($unlimtd_pkg_jobexpval) ?>">
                             </div>
                         </div>
                     </div>
@@ -371,17 +318,13 @@ class Jobsearch_Packages
                 $pkg_job_exp_field = ob_get_clean();
                 echo apply_filters('jobsearch_pkgs_job_exp_meta_field', $pkg_job_exp_field);
                 ?>
-                <?php echo($Jobsearch_Package_Custom_Fields->init_fields('job_package')); ?>
+                <?php echo ($Jobsearch_Package_Custom_Fields->init_fields('job_package')); ?>
             </div>
             <?php
             $job_meta_fields = ob_get_clean();
             echo apply_filters('jobsearch_pkg_admin_job_meta_fields', $job_meta_fields);
             ?>
-
-            <?php echo apply_filters('jobsearch_pkg_admin_resume_meta_fields', $package_type, $_post_id) ?>
-
-            <div id="featured_jobs_package_fields" class="job-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'featured_jobs' ? 'block' : 'none') ?>;">
+            <div id="featured_jobs_package_fields" class="job-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'featured_jobs' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <?php
                     $unl_pkg_rand = rand(10000000, 99999999);
@@ -391,9 +334,7 @@ class Jobsearch_Packages
                         <label><?php esc_html_e('Number of Jobs', 'wp-jobsearch') ?></label>
                     </div>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numfjobsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'num_of_fjobs',
@@ -404,12 +345,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_numfjobs"
-                                       value="<?php echo($unlimtd_pkg_numfjobsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numfjobsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_numfjobs" value="<?php echo ($unlimtd_pkg_numfjobsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -423,9 +361,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_fjobscrval = get_post_meta($_post_id, 'jobsearch_field_unlimited_fjobscr', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_fjobscrval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'feat_job_credits',
@@ -436,12 +372,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_fjobscr"
-                                       value="<?php echo($unlimtd_pkg_fjobscrval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_fjobscrval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_fjobscr" value="<?php echo ($unlimtd_pkg_fjobscrval) ?>">
                             </div>
                         </div>
                     </div>
@@ -458,9 +391,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_fjobexpval = get_post_meta($_post_id, 'jobsearch_field_unlimited_fjobexp', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_fjobexpval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <div class="input-select-field input-f">
                                 <?php
                                 $field_params = array(
@@ -487,12 +418,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_fjobexp"
-                                       value="<?php echo($unlimtd_pkg_fjobexpval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_fjobexpval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_fjobexp" value="<?php echo ($unlimtd_pkg_fjobexpval) ?>">
                             </div>
                         </div>
                     </div>
@@ -501,58 +429,9 @@ class Jobsearch_Packages
                 $pkg_job_exp_field = ob_get_clean();
                 echo apply_filters('jobsearch_pkgs_fjobs_exp_meta_field', $pkg_job_exp_field);
                 ?>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Featured Credit Expiry Time', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_fcredexpval = get_post_meta($_post_id, 'jobsearch_field_unlimited_fcredexp', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <div class="input-select-field input-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'fcred_expiry_time',
-                                    'std' => '7',
-                                );
-                                $jobsearch_form_fields->input_field($field_params);
-                                ?>
-                            </div>
-                            <div class="input-select-field select-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'fcred_expiry_time_unit',
-                                    'options' => array(
-                                        'days' => esc_html__('Days', 'wp-jobsearch'),
-                                        'weeks' => esc_html__('Weeks', 'wp-jobsearch'),
-                                        'months' => esc_html__('Months', 'wp-jobsearch'),
-                                        'years' => esc_html__('Years', 'wp-jobsearch'),
-                                    ),
-                                );
-                                $jobsearch_form_fields->select_field($field_params);
-                                ?>
-                            </div>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Never', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_fcredexp"
-                                       value="<?php echo($unlimtd_pkg_fcredexpval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php echo($Jobsearch_Package_Custom_Fields->init_fields('featured_jobs_package')); ?>
+                <?php echo ($Jobsearch_Package_Custom_Fields->init_fields('featured_jobs_package')); ?>
             </div>
-            <div id="emp_allin_one_package_fields" class="job-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'emp_allin_one' ? 'block' : 'none') ?>;">
+            <div id="emp_allin_one_package_fields" class="job-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'emp_allin_one' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <?php
                     $unl_pkg_rand = rand(10000000, 99999999);
@@ -562,9 +441,7 @@ class Jobsearch_Packages
                         <label><?php esc_html_e('Number of Jobs', 'wp-jobsearch') ?></label>
                     </div>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numfjobsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'allin_num_jobs',
@@ -575,12 +452,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_allinjobs"
-                                       value="<?php echo($unlimtd_pkg_numfjobsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numfjobsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlim_allinjobs" value="<?php echo ($unlimtd_pkg_numfjobsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -594,9 +468,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_fjobscrval = get_post_meta($_post_id, 'jobsearch_field_unlim_allinfjobs', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_fjobscrval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'allin_num_fjobs',
@@ -607,17 +479,14 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_allinfjobs"
-                                       value="<?php echo($unlimtd_pkg_fjobscrval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_fjobscrval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlim_allinfjobs" value="<?php echo ($unlimtd_pkg_fjobscrval) ?>">
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Job Expiry Time', 'wp-jobsearch') ?></label>
@@ -627,9 +496,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_fjobexpval = get_post_meta($_post_id, 'jobsearch_field_unlim_allinjobexp', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_fjobexpval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <div class="input-select-field input-f">
                                 <?php
                                 $field_params = array(
@@ -656,66 +523,13 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_allinjobexp"
-                                       value="<?php echo($unlimtd_pkg_fjobexpval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_fjobexpval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlim_allinjobexp" value="<?php echo ($unlimtd_pkg_fjobexpval) ?>">
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Featured Credit Expiry Time', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_fcredexpval = get_post_meta($_post_id, 'jobsearch_field_unlimited_fall_credexp', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <div class="input-select-field input-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'fall_cred_expiry_time',
-                                    'std' => '7',
-                                );
-                                $jobsearch_form_fields->input_field($field_params);
-                                ?>
-                            </div>
-                            <div class="input-select-field select-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'fall_cred_expiry_time_unit',
-                                    'options' => array(
-                                        'days' => esc_html__('Days', 'wp-jobsearch'),
-                                        'weeks' => esc_html__('Weeks', 'wp-jobsearch'),
-                                        'months' => esc_html__('Months', 'wp-jobsearch'),
-                                        'years' => esc_html__('Years', 'wp-jobsearch'),
-                                    ),
-                                );
-                                $jobsearch_form_fields->select_field($field_params);
-                                ?>
-                            </div>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Never', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_fall_credexp"
-                                       value="<?php echo($unlimtd_pkg_fcredexpval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Number of CV\'s', 'wp-jobsearch') ?></label>
@@ -725,9 +539,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_numcvsval = get_post_meta($_post_id, 'jobsearch_field_unlim_allinnumcvs', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numcvsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'allin_num_cvs',
@@ -738,12 +550,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_allinnumcvs"
-                                       value="<?php echo($unlimtd_pkg_numcvsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numcvsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlim_allinnumcvs" value="<?php echo ($unlimtd_pkg_numcvsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -762,10 +571,9 @@ class Jobsearch_Packages
                         ?>
                     </div>
                 </div>
-                <?php echo($Jobsearch_Package_Custom_Fields->init_fields('emp_allin_one_package')); ?>
+                <?php echo ($Jobsearch_Package_Custom_Fields->init_fields('emp_allin_one_package')); ?>
             </div>
-            <div id="cv_package_fields" class="cv-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'cv' ? 'block' : 'none') ?>;">
+            <div id="cv_package_fields" class="cv-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'cv' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Number of CV\'s', 'wp-jobsearch') ?></label>
@@ -775,9 +583,7 @@ class Jobsearch_Packages
                     $unlimtd_pkg_numcvsval = get_post_meta($_post_id, 'jobsearch_field_unlimited_numcvs', true);
                     ?>
                     <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
+                        <div id="limted-pkgexp-con-<?php echo ($unl_pkg_rand) ?>" class="limited-expiry-pkkgcon <?php echo ($unlimtd_pkg_numcvsval == 'on' ? 'limted-disabled' : '') ?>" style="float: left; width: 70%;">
                             <?php
                             $field_params = array(
                                 'name' => 'num_of_cvs',
@@ -788,12 +594,9 @@ class Jobsearch_Packages
                         </div>
                         <div style="float: right; width: 27%;">
                             <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_numcvs"
-                                       value="<?php echo($unlimtd_pkg_numcvsval) ?>">
+                                <input type="checkbox" id="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>" data-id="<?php echo ($unl_pkg_rand) ?>" <?php echo ($unlimtd_pkg_numcvsval == 'on' ? 'checked' : '') ?>>
+                                <label for="unli-pkgexp-<?php echo ($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
+                                <input type="hidden" id="unli_pkgexp_<?php echo ($unl_pkg_rand) ?>" name="jobsearch_field_unlimited_numcvs" value="<?php echo ($unlimtd_pkg_numcvsval) ?>">
                             </div>
                         </div>
                     </div>
@@ -840,7 +643,7 @@ class Jobsearch_Packages
                                     'salary' => __('Salary', 'wp-jobsearch'),
                                     'about_desc' => __('Description', 'wp-jobsearch'),
                                 ),
-                                'classes' => 'packge-selectize',
+                                'classes' => 'selectize-select',
                                 'std' => array('display_name', 'profile_img', 'cover_img', 'sector')
                             );
                             $jobsearch_form_fields->multi_select_field($field_params);
@@ -980,11 +783,10 @@ class Jobsearch_Packages
                     <?php
                 }
                 ?>
-                <?php echo($Jobsearch_Package_Custom_Fields->init_fields('cv_package')); ?>
+                <?php echo ($Jobsearch_Package_Custom_Fields->init_fields('cv_package')); ?>
             </div>
-
-            <div id="candidate_profile_package_fields" class="job-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'candidate_profile' ? 'block' : 'none') ?>;">
+            
+            <div id="candidate_profile_package_fields" class="job-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'candidate_profile' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Profile Fields', 'wp-jobsearch') ?></label>
@@ -1005,7 +807,7 @@ class Jobsearch_Packages
                                 'salary' => __('Salary', 'wp-jobsearch'),
                                 'about_desc' => __('Description', 'wp-jobsearch'),
                             ),
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => array('cover_img', 'public_view', 'sector')
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1041,7 +843,7 @@ class Jobsearch_Packages
                             'db_name' => 'cand_pbase_social',
                             'cus_name' => 'jobsearch_field_cand_pbase_social[]',
                             'options' => $cand_pkgbase_social_arr,
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => ''
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1071,7 +873,7 @@ class Jobsearch_Packages
                                 'db_name' => 'cand_pbase_cusfields',
                                 'cus_name' => 'jobsearch_field_cand_pbase_cusfields[]',
                                 'options' => $cand_pkgbase_cusfileds_arr,
-                                'classes' => 'packge-selectize',
+                                'classes' => 'selectize-select',
                                 'std' => ''
                             );
                             $jobsearch_form_fields->multi_select_field($field_params);
@@ -1090,7 +892,6 @@ class Jobsearch_Packages
                     'fav_jobs' => __('Favorite Jobs', 'wp-jobsearch'),
                     'packages' => __('Packages', 'wp-jobsearch'),
                     'transactions' => __('Transactions', 'wp-jobsearch'),
-                    'my_emails' => __('My Emails', 'wp-jobsearch'),
                     'following' => __('Following', 'wp-jobsearch'),
                     'change_password' => __('Change Password', 'wp-jobsearch'),
                 ));
@@ -1121,7 +922,7 @@ class Jobsearch_Packages
                             'db_name' => 'cand_pbase_dashtabs',
                             'cus_name' => 'jobsearch_field_cand_pbase_dashtabs[]',
                             'options' => $cand_pkgbase_dashsecs_arr,
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => ''
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1234,8 +1035,7 @@ class Jobsearch_Packages
                 </div>
             </div>
 
-            <div id="employer_profile_package_fields" class="job-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'employer_profile' ? 'block' : 'none') ?>;">
+            <div id="employer_profile_package_fields" class="job-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'employer_profile' ? 'block' : 'none') ?>;">
                 <div class="jobsearch-element-field">
                     <div class="elem-label">
                         <label><?php esc_html_e('Profile Fields', 'wp-jobsearch') ?></label>
@@ -1255,7 +1055,7 @@ class Jobsearch_Packages
                                 'founded_date' => __('Founded Date', 'wp-jobsearch'),
                                 'about_company' => __('About the Company', 'wp-jobsearch'),
                             ),
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => array('jobs_cover_img', 'public_view', 'sector')
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1291,7 +1091,7 @@ class Jobsearch_Packages
                             'db_name' => 'emp_pbase_social',
                             'cus_name' => 'jobsearch_field_emp_pbase_social[]',
                             'options' => $emp_pkgbase_social_arr,
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => ''
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1321,7 +1121,7 @@ class Jobsearch_Packages
                                 'db_name' => 'emp_pbase_cusfields',
                                 'cus_name' => 'jobsearch_field_emp_pbase_cusfields[]',
                                 'options' => $emp_pkgbase_cusfileds_arr,
-                                'classes' => 'packge-selectize',
+                                'classes' => 'selectize-select',
                                 'std' => ''
                             );
                             $jobsearch_form_fields->multi_select_field($field_params);
@@ -1340,7 +1140,6 @@ class Jobsearch_Packages
                     'saved_candidates' => __('Saved Candidates', 'wp-jobsearch'),
                     'packages' => __('Packages', 'wp-jobsearch'),
                     'transactions' => __('Transactions', 'wp-jobsearch'),
-                    'my_emails' => __('My Emails', 'wp-jobsearch'),
                     'followers' => __('Followers', 'wp-jobsearch'),
                     'change_password' => __('Change Password', 'wp-jobsearch'),
                 ));
@@ -1371,7 +1170,7 @@ class Jobsearch_Packages
                             'db_name' => 'emp_pbase_dashtabs',
                             'cus_name' => 'jobsearch_field_emp_pbase_dashtabs[]',
                             'options' => $emp_pkgbase_dashsecs_arr,
-                            'classes' => 'packge-selectize',
+                            'classes' => 'selectize-select',
                             'std' => ''
                         );
                         $jobsearch_form_fields->multi_select_field($field_params);
@@ -1469,282 +1268,9 @@ class Jobsearch_Packages
                         ?>
                     </div>
                 </div>
-
-                <div class="jobsearch-element-field">
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_numfjobsval = get_post_meta($_post_id, 'jobsearch_field_unlim_emprofjobs', true);
-                    ?>
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Number of Jobs', 'wp-jobsearch') ?></label>
-                    </div>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <?php
-                            $field_params = array(
-                                'name' => 'emprof_num_jobs',
-                                'std' => '10',
-                            );
-                            $jobsearch_form_fields->input_field($field_params);
-                            ?>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numfjobsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_emprofjobs"
-                                       value="<?php echo($unlimtd_pkg_numfjobsval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Featured Job Credits', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_fjobscrval = get_post_meta($_post_id, 'jobsearch_field_unlim_emproffjobs', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <?php
-                            $field_params = array(
-                                'name' => 'emprof_num_fjobs',
-                                'std' => '5',
-                            );
-                            $jobsearch_form_fields->input_field($field_params);
-                            ?>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobscrval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_emproffjobs"
-                                       value="<?php echo($unlimtd_pkg_fjobscrval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Job Expiry Time', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_fjobexpval = get_post_meta($_post_id, 'jobsearch_field_unlim_emprofjobexp', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <div class="input-select-field input-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprofjob_expiry_time',
-                                    'std' => '7',
-                                );
-                                $jobsearch_form_fields->input_field($field_params);
-                                ?>
-                            </div>
-                            <div class="input-select-field select-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprofjob_expiry_time_unit',
-                                    'options' => array(
-                                        'days' => esc_html__('Days', 'wp-jobsearch'),
-                                        'weeks' => esc_html__('Weeks', 'wp-jobsearch'),
-                                        'months' => esc_html__('Months', 'wp-jobsearch'),
-                                        'years' => esc_html__('Years', 'wp-jobsearch'),
-                                    ),
-                                );
-                                $jobsearch_form_fields->select_field($field_params);
-                                ?>
-                            </div>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fjobexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_emprofjobexp"
-                                       value="<?php echo($unlimtd_pkg_fjobexpval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Featured Credit Expiry Time', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_fcredexpval = get_post_meta($_post_id, 'jobsearch_field_unlimited_emprof_fcredexp', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <div class="input-select-field input-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprof_fcred_expiry_time',
-                                    'std' => '7',
-                                );
-                                $jobsearch_form_fields->input_field($field_params);
-                                ?>
-                            </div>
-                            <div class="input-select-field select-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprof_fcred_expiry_time_unit',
-                                    'options' => array(
-                                        'days' => esc_html__('Days', 'wp-jobsearch'),
-                                        'weeks' => esc_html__('Weeks', 'wp-jobsearch'),
-                                        'months' => esc_html__('Months', 'wp-jobsearch'),
-                                        'years' => esc_html__('Years', 'wp-jobsearch'),
-                                    ),
-                                );
-                                $jobsearch_form_fields->select_field($field_params);
-                                ?>
-                            </div>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_fcredexpval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Never', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_emprof_fcredexp"
-                                       value="<?php echo($unlimtd_pkg_fcredexpval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Number of CV\'s', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_pkg_numcvsval = get_post_meta($_post_id, 'jobsearch_field_unlim_emprofnumcvs', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <?php
-                            $field_params = array(
-                                'name' => 'emprof_num_cvs',
-                                'std' => '10',
-                            );
-                            $jobsearch_form_fields->input_field($field_params);
-                            ?>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_pkg_numcvsval == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlim_emprofnumcvs"
-                                       value="<?php echo($unlimtd_pkg_numcvsval) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Credit Consume on Resume View', 'wp-jobsearch') ?></label>
-                    </div>
-                    <div class="elem-field">
-                        <?php
-                        $field_params = array(
-                            'name' => 'emprofview_consume_cvs',
-                            'std' => '',
-                        );
-                        $jobsearch_form_fields->checkbox_field($field_params);
-                        ?>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Promote Profile', 'wp-jobsearch') ?></label>
-                    </div>
-                    <div class="elem-field">
-                        <?php
-                        $field_params = array(
-                            'name' => 'emprof_promote_profile',
-                            'std' => '',
-                        );
-                        $jobsearch_form_fields->checkbox_field($field_params);
-                        ?>
-                    </div>
-                </div>
-                <div class="jobsearch-element-field">
-                    <div class="elem-label">
-                        <label><?php esc_html_e('Promote Profile Expiry Time', 'wp-jobsearch') ?></label>
-                    </div>
-                    <?php
-                    $unl_pkg_rand = rand(10000000, 99999999);
-                    $unlimtd_promote_exp = get_post_meta($_post_id, 'jobsearch_field_unlimited_emprof_promote_exp', true);
-                    ?>
-                    <div class="elem-field">
-                        <div id="limted-pkgexp-con-<?php echo($unl_pkg_rand) ?>"
-                             class="limited-expiry-pkkgcon <?php echo($unlimtd_promote_exp == 'on' ? 'limted-disabled' : '') ?>"
-                             style="float: left; width: 70%;">
-                            <div class="input-select-field input-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprof_promote_expiry_time',
-                                    'std' => '7',
-                                );
-                                $jobsearch_form_fields->input_field($field_params);
-                                ?>
-                            </div>
-                            <div class="input-select-field select-f">
-                                <?php
-                                $field_params = array(
-                                    'name' => 'emprof_promote_expiry_time_unit',
-                                    'options' => array(
-                                        'days' => esc_html__('Days', 'wp-jobsearch'),
-                                        'weeks' => esc_html__('Weeks', 'wp-jobsearch'),
-                                        'months' => esc_html__('Months', 'wp-jobsearch'),
-                                        'years' => esc_html__('Years', 'wp-jobsearch'),
-                                    ),
-                                );
-                                $jobsearch_form_fields->select_field($field_params);
-                                ?>
-                            </div>
-                        </div>
-                        <div style="float: right; width: 27%;">
-                            <div class="unlimitd-chekbox">
-                                <input type="checkbox" id="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"
-                                       data-id="<?php echo($unl_pkg_rand) ?>" <?php echo($unlimtd_promote_exp == 'on' ? 'checked' : '') ?>>
-                                <label for="unli-pkgexp-<?php echo($unl_pkg_rand) ?>"><?php esc_html_e('Never', 'wp-jobsearch') ?></label>
-                                <input type="hidden" id="unli_pkgexp_<?php echo($unl_pkg_rand) ?>"
-                                       name="jobsearch_field_unlimited_emprof_promote_exp"
-                                       value="<?php echo($unlimtd_promote_exp) ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div id="feature_job_package_fields" class="feature-job-package-fields specific-pkges-fields"
-                 style="display: <?php echo($package_type == 'feature_job' ? 'block' : 'none') ?>;">
+            
+            <div id="feature_job_package_fields" class="feature-job-package-fields specific-pkges-fields" style="display: <?php echo ($package_type == 'feature_job' ? 'block' : 'none') ?>;">
                 <?php echo force_balance_tags($Jobsearch_Package_Custom_Fields->init_fields('feature_job_package')); ?>
             </div>
             <div class="pckg-extra-fields-con">
@@ -1764,16 +1290,14 @@ class Jobsearch_Packages
                                 <h2><?php esc_html_e('Extra Field', 'wp-jobsearch') ?></h2>
                             </div>
                             <div class="field-remove-con">
-                                <a href="javascript:void(0);" class="field-remove-btn"><i
-                                            class="dashicons dashicons-no-alt"></i></a>
+                                <a href="javascript:void(0);" class="field-remove-btn"><i class="dashicons dashicons-no-alt"></i></a>
                             </div>
                             <div class="jobsearch-element-field">
                                 <div class="elem-label">
                                     <label><?php esc_html_e('Field Text', 'wp-jobsearch') ?></label>
                                 </div>
                                 <div class="elem-field">
-                                    <input type="text" name="jobsearch_field_package_exfield_title[]"
-                                           value="<?php echo($_exfield_title) ?>">
+                                    <input type="text" name="jobsearch_field_package_exfield_title[]" value="<?php echo ($_exfield_title) ?>">
                                 </div>
                             </div>
                             <div class="jobsearch-element-field">
@@ -1782,8 +1306,8 @@ class Jobsearch_Packages
                                 </div>
                                 <div class="elem-field">
                                     <select name="jobsearch_field_package_exfield_status[]">
-                                        <option value="active"<?php echo($_exfield_status == 'active' ? ' selected="selected"' : '') ?>><?php esc_html_e('Active', 'wp-jobsearch') ?></option>
-                                        <option value="inactive"<?php echo($_exfield_status == 'inactive' ? ' selected="selected"' : '') ?>><?php esc_html_e('Inactive', 'wp-jobsearch') ?></option>
+                                        <option value="active"<?php echo ($_exfield_status == 'active' ? ' selected="selected"' : '') ?>><?php esc_html_e('Active', 'wp-jobsearch') ?></option>
+                                        <option value="inactive"<?php echo ($_exfield_status == 'inactive' ? ' selected="selected"' : '') ?>><?php esc_html_e('Inactive', 'wp-jobsearch') ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -1797,35 +1321,33 @@ class Jobsearch_Packages
             <div class="jobsearch-element-field">
                 <div class="elem-label">&nbsp;</div>
                 <div class="elem-field">
-                    <a href="javascript:void(0);"
-                       class="button button-primary button-large add-pkg-more-fields"><?php esc_html_e('Add Extra Info', 'wp-jobsearch') ?></a>
+                    <a href="javascript:void(0);" class="button button-primary button-large add-pkg-more-fields"><?php esc_html_e('Add Extra Info', 'wp-jobsearch') ?></a>
                 </div>
             </div>
             <script>
-                jQuery(document).ready(function () {
-                    jQuery('.packge-selectize').selectize({
-                        //allowEmptyOption: true,
-                        plugins: ['remove_button'],
-                    });
+            jQuery(document).ready(function () {
+                jQuery('.selectize-select').selectize({
+                    //allowEmptyOption: true,
+                    plugins: ['remove_button'],
                 });
-                jQuery(document).on('click', '.unlimitd-chekbox input[type="checkbox"]', function () {
-                    var _this = jQuery(this);
-                    var _this_id = _this.attr('data-id');
-                    if (_this.is(":checked")) {
-                        jQuery('#limted-pkgexp-con-' + _this_id).addClass('limted-disabled');
-                        jQuery('#unli_pkgexp_' + _this_id).val('on');
-                    } else {
-                        jQuery('#limted-pkgexp-con-' + _this_id).removeClass('limted-disabled');
-                        jQuery('#unli_pkgexp_' + _this_id).val('');
-                    }
-                });
+            });
+            jQuery(document).on('click', '.unlimitd-chekbox input[type="checkbox"]', function () {
+                var _this = jQuery(this);
+                var _this_id = _this.attr('data-id');
+                if (_this.is(":checked")) {
+                    jQuery('#limted-pkgexp-con-' + _this_id).addClass('limted-disabled');
+                    jQuery('#unli_pkgexp_' + _this_id).val('on');
+                } else {
+                    jQuery('#limted-pkgexp-con-' + _this_id).removeClass('limted-disabled');
+                    jQuery('#unli_pkgexp_' + _this_id).val('');
+                }
+            });
             </script>
         </div>
         <?php
     }
 
-    public function update_package_product_meta($post_id = '')
-    {
+    public function update_package_product_meta($post_id = '') {
         global $post;
 
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
@@ -1839,7 +1361,7 @@ class Jobsearch_Packages
         if (!isset($_POST['post_title'])) {
             return false;
         }
-
+        
         //
         if (!isset($_POST['jobsearch_field_package_exfield_title'])) {
             update_post_meta($post_id, 'jobsearch_field_package_exfield_title', '');
@@ -1931,7 +1453,7 @@ class Jobsearch_Packages
             } else {
                 $price_amount = '0';
             }
-            $price_amount = (float)$price_amount;
+            $price_amount = (float) $price_amount;
             update_post_meta($product_id, '_regular_price', $price_amount);
             update_post_meta($product_id, '_price', $price_amount);
         }

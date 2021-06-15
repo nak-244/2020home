@@ -118,9 +118,6 @@ class SectionHeading extends Widget_Base
                     'view13' => __('Style 13', 'careerfy-frame'),
                     'view14' => __('Style 14', 'careerfy-frame'),
                     'view15' => __('Style 15', 'careerfy-frame'),
-                    'view16' => __('Style 16', 'careerfy-frame'),
-                    'view17' => __('Style 17', 'careerfy-frame'),
-                    'view18' => __('Style 18', 'careerfy-frame'),
                 ],
             ]
         );
@@ -225,7 +222,7 @@ class SectionHeading extends Widget_Base
             'hc_icon',
             [
                 'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICONS,
+                'type' => Controls_Manager::ICON,
                 'description' => __("This will apply to heading style 3 only.", "careerfy-frame"),
                 'condition' => [
                     'view' => array('view1', 'view2', 'view3', 'view4', 'view5')
@@ -245,7 +242,9 @@ class SectionHeading extends Widget_Base
                 'label' => __('Description Color', 'careerfy-frame'),
                 'type' => Controls_Manager::COLOR,
                 'description' => __("This will apply to the description only.", "careerfy-frame"),
-
+                'condition' => [
+                    'view' => array('view1', 'view2', 'view3', 'view4', 'view5', 'view7', 'view8', 'view9', 'view10', 'view11', 'view12', 'view13', 'view14', 'view15')
+                ],
             ]
         );
         $this->add_control(
@@ -273,25 +272,20 @@ class SectionHeading extends Widget_Base
     {
         global $random_id;
         $atts = $this->get_settings_for_display();
-        extract(shortcode_atts(array(
-            'view' => '',
-            'h_fancy_title' => '',
-            'h_title' => '',
-            'hc_title' => '',
-            'hc_title_clr' => '',
-            'hc_icon' => '',
-            'h_desc' => '',
-            'hc_dcolor' => '',
-            's_title' => '',
-            'num_title' => '',
-            's_title_clr' => '',
-            'desc_clr' => '',
-            'proc_num_clr' => '',
-            'css' => '',
-            'heading_img' => '',
-            'text_align' => '',
-        ), $atts));
-
+        $view = $atts['view'];
+        $h_title = $atts['h_title'];
+        $h_fancy_title = $atts['h_fancy_title'];
+        $hc_title = $atts['hc_title'];
+        $hc_title_clr = $atts['hc_title_clr'];
+        $hc_icon = $atts['hc_icon'];
+        $h_desc = $atts['h_desc'];
+        $hc_dcolor = $atts['hc_dcolor'];
+        $s_title = $atts['s_title'];
+        $num_title = $atts['num_title'];
+        $s_title_clr = $atts['s_title_clr'];
+        $desc_clr = $atts['desc_clr'];
+        $proc_num_clr = $atts['proc_num_clr'];
+        $heading_img = count($atts['heading_img']) > 0 ? $atts['heading_img']['url'] : '';
 
         $text_align = $atts['text_align'];
         ob_start();
@@ -349,7 +343,7 @@ class SectionHeading extends Widget_Base
             if ($text_align == "left") {
                 $content_align = 'careerfy-fancy-title-eleven-left';
             }
-            $heading_img = $heading_img != "" ? '<img src="' . $heading_img['url'] . '">' : "";
+            $heading_img = $heading_img != "" ? '<img src="' . $heading_img . '">' : "";
         } else if ($view == 'view9') {
             $hdng_class = 'careerfy-fancy-title-twelve';
         } else if ($view == 'view10') {
@@ -364,42 +358,9 @@ class SectionHeading extends Widget_Base
             $hdng_class = 'careerfy-fancy-title-seventeen';
         } else if ($view == 'view15') {
             $hdng_class = 'careerfy-fancy-title-eighteen';
-            $heading_img = $heading_img != "" ? '<img src="' . $heading_img['url'] . '">' : "";
-        } else if ($view == 'view16') {
-            $desc_clr = $desc_clr != "" ? 'style="color: ' . $desc_clr . '"' : '';
-            $hdng_class = 'careerfy-fancy-title-nineteen';
-        } else if ($view == 'view17') {
-            $hdng_class = 'careerfy-fancy-title-twenty';
-            $align_heading_class = $text_align != '' && $text_align == 'left' ? 'text-align-left' : '';
-        } else if ($view == 'view18') {
-            $hdng_class = 'careerfy-fancy-title-twentyone';
-            $align_heading_class = $text_align != '' && $text_align == 'left' ? 'text-align-left' : '';
-            $s_title_clr = $s_title_clr != "" ? 'style="color: ' . $s_title_clr . '"' : '';
+            $heading_img = $heading_img != "" ? '<img src="' . $heading_img . '">' : "";
         }
-        if ($view == 'view18') { ?>
-
-            <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?><?php echo($design_css_class) ?>">
-                <small <?php echo $s_title_clr ?>><?php echo $s_title ?></small>
-                <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
-                <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
-            </div>
-        <?php } else if ($view == 'view17') { ?>
-
-            <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?><?php echo($design_css_class) ?>">
-                <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
-                <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
-            </div>
-        <?php } else if ($view == 'view16') { ?>
-            <style>
-                .careerfy-fancy-title-nineteen h2:before {
-                    background-color: <?php echo $hc_title_clr ?>;
-                }
-            </style>
-            <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
-                <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
-                <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
-            </div>
-        <?php } else if ($view == 'view15') { ?>
+        if ($view == 'view15') { ?>
             <div class="<?php echo $hdng_class ?>">
                 <?php echo $heading_img ?>
                 <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
@@ -462,7 +423,7 @@ class SectionHeading extends Widget_Base
             <!-- Fancy Title Ten -->
         <?php } else if ($view != 'view6') { ?>
             <<?php echo($hdng_con) ?> class="<?php echo($hdng_class) ?><?php echo($design_css_class) ?>">
-            <?php echo($hc_icon != '' && $view == 'view3' ? '<i class="' . $hc_icon['value'] . '"></i>' : '') ?>
+            <?php echo($hc_icon != '' && $view == 'view3' ? '<i class="' . $hc_icon . '"></i>' : '') ?>
             <?php echo($h_fancy_title != '' && $view == 'view5' ? '<span>' . $h_fancy_title . '</span>' : '') ?>
 
             <h2><?php echo($h_title) ?><?php echo($hc_title != '' ? '<span' . $title_colr_style . '>' . $hc_title . '</span>' : '') ?></h2>
@@ -501,7 +462,179 @@ class SectionHeading extends Widget_Base
 
     protected function _content_template()
     {
+        global $random_id;
+        ?>
+        <#
+        var view = settings.view;
+        var h_title = settings.h_title;
+        var h_fancy_title = settings.h_fancy_title;
+        var hc_title = settings.hc_title;
+        var hc_title_clr = settings.hc_title_clr;
+        var hc_icon = settings.hc_icon;
+        var h_desc = settings.h_desc;
+        var hc_dcolor = settings.hc_dcolor;
+        var s_title = settings.s_title;
+        var num_title = settings.num_title;
+        var s_title_clr = settings.s_title_clr;
+        var desc_clr = settings.desc_clr;
+        var proc_num_clr = settings.proc_num_clr;
+        var heading_img = settings.heading_img != "" ? settings.heading_img.url : '';
+        var text_align = settings.text_align;
 
-    }
+        var design_css_class = '';
+
+
+        var hdng_con = 'section';
+        var hdng_class = 'careerfy-fancy-title';
+        if (view == 'view2') {
+        var hdng_class = 'careerfy-fancy-title careerfy-fancy-title-two';
+        hdng_con = 'div';
+        } else if (view == 'view3') {
+        var hdng_class = 'careerfy-fancy-title careerfy-fancy-title-three';
+        hdng_con = 'div';
+        } else if (view == 'view4') {
+        var hdng_class = 'careerfy-fancy-title careerfy-fancy-title-four';
+        hdng_con = 'div';
+        } else if (view == 'view5') {
+        var hdng_class = 'careerfy-fancy-title careerfy-fancy-title-six';
+        hdng_con = 'div';
+        } else if (view == 'view6') {
+        var hdng_class = 'careerfy-fancy-title-nine';
+        s_title_clr = s_title_clr != "" ? s_title_clr : '';
+        num_title = num_title != "" ? num_title : '';
+        h_title = h_title != "" ? h_title : '';
+        h_desc = h_desc != "" ? h_desc : '';
+        s_title = s_title != "" ? s_title : '';
+        proc_num_clr = proc_num_clr != "" ? proc_num_clr : '';
+        hc_title_clr = hc_title_clr != "" ? 'style="color:  hc_title_clr"' : '';
+        desc_clr = desc_clr != "" ? 'style="color: desc_clr"' : '';
+
+        } else if (view == 'view7') {
+        hdng_class = 'careerfy-fancy-title-ten';
+        hdng_con = 'div';
+        text_align = text_align != "" ? text_align : "center";
+        var content_align = "";
+        if (text_align == "left") {
+        content_align = 'careerfy-fancy-title-ten-left';
+        }
+        } else if (view == 'view8') {
+        hdng_class = 'careerfy-fancy-title-eleven';
+        hdng_con = 'div';
+        text_align = text_align != "" ? text_align : "center";
+        content_align = "";
+        if (text_align == "left") {
+        content_align = 'careerfy-fancy-title-eleven-left';
+        }
+        //heading_img = heading_img != "" ? '<img src="+heading_img">' : "";
+        } else if (view == 'view9') {
+        hdng_class = 'careerfy-fancy-title-twelve';
+        } else if (view == 'view10') {
+        hdng_class = 'careerfy-fancy-title-thirteen';
+        } else if (view == 'view11') {
+        hdng_class = 'careerfy-fancy-title-fourteen';
+        } else if (view == 'view12') {
+        hdng_class = 'careerfy-fancy-title-fifteen';
+        } else if (view == 'view13') {
+        hdng_class = 'careerfy-fancy-title-sixteen';
+        } else if (view == 'view14') {
+        hdng_class = 'careerfy-fancy-title-seventeen';
+        } else if (view == 'view15') {
+        hdng_class = 'careerfy-fancy-title-eighteen';
+        //heading_img = heading_img != "" ? '<img src="heading_img">' : "";
+        } #>
+
+       <# if (view == 'view15') { #>
+        <div class="{{{hdng_class}}}">
+            <# if(heading_img != ''){ #>
+            <img src="{{{heading_img}}}">
+            <# } #>
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view14') { #>
+        <div class="{{{hdng_class}}}">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+            <small class="active"></small>
+            <small></small>
+        </div>
+        <# } else if (view == 'view13') { #>
+        <div class="{{{hdng_class}}}">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view12') { #>
+
+        <div class="{{{hdng_class}}} style-heading-<?php echo $random_id ?>">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <style>
+            .style-heading-<?php echo $random_id ?>::before {
+                background-color: #5dce7d;
+            }
+        </style>
+        <# } else if (view == 'view11') { #>
+        <div class="{{{hdng_class}}}">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view10') { #>
+        <div class="{{{hdng_class}}}">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view9') { #>
+        <!-- Fancy Title -->
+        <div class="{{{hdng_class}}}">
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view8') { #>
+
+        <{{{hdng_con}}} class="{{{hdng_class}}} {{{content_align}}}">
+        <# if(heading_img != ''){ #>
+        <img src="{{{heading_img}}}">
+        <# } #>
+        <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+        <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } else if (view == 'view7') { #>
+        <!-- Fancy Title Ten -->
+        <{{{hdng_con}}} class="{{{hdng_class}}} {{{content_align}}}">
+        <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+        <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <!-- Fancy Title Ten -->
+        <# } else if (view != 'view6') { #>
+        <{{{hdng_con}}} class="{{{hdng_class}}} {{{content_align}}}">
+        <# hc_icon != '' && view == 'view3' ? '<i class="{{{hc_icon}}}"></i>' : '';
+        h_fancy_title != '' && view == 'view5' ? '<span>{{{h_fancy_title}}}</span>' : ''; #>
+        <h2>{{{h_title}}} <# hc_title != '' ? '<span style="color:{{{hc_title_clr}}}">{{{hc_title}}}</span>': '' #></h2>
+        <#
+        if(h_desc != ''){ #>
+        <p style="color:{{{hc_dcolor}}}">{{{h_desc}}}</p>
+        <# } #>
+        <# view == 'view4' ? '<span> <i class="fa fa-circle" style="color:{{{hc_dcolor}}}"></i> <i class="fa fa-circle circle-two-size" style="color:{{{hc_dcolor}}}"></i> <i class="fa fa-circle circle-three-size" style="color:{{{hc_dcolor}}}"></i> </span>' : '' #>
+        </{{{hdng_con}}}>
+        <# } else {  #>
+        <style>
+            .careerfy-fancy-title-nine .small-<?php echo $random_id ?>         {
+            background-color: {{{s_title_clr}}};
+            }
+
+            .careerfy-fancy-title-nine .small-<?php echo $random_id ?> {
+            color: {{{proc_num_clr}}};
+            }
+
+        </style>
+        <div class="{{{hdng_class}}}>
+    <small class="small-<?php echo $random_id ?>>{{{num_title}}}<strong style="color: {{{s_title_clr}}}>{{{s_title}}}"></strong></small>
+            <h2 style="color:{{{hc_title_clr}}}">{{{h_title}}}</h2>
+            <span style="color:{{{hc_dcolor}}}">{{{h_desc}}}</span>
+        </div>
+        <# } #>
+
+    <?php }
 
 }

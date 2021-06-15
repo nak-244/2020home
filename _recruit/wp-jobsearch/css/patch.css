@@ -146,6 +146,9 @@
 .jobsearch-login-box form .jobsearch-login-submit-btn {
   border-radius: 4px;
 }
+.jobsearch-banner-search ul li {
+  z-index: 100;
+}
 .directions-input-con input {
   height: 40px !important;
 }
@@ -178,6 +181,3 @@ body.fusion-button_size-large .jobsearch-employer-profile-form button.button {
 .jobsearch-drpzon-con .jobsearch-drpzon-btn {
   line-height: 1;
 }
-/* .jobsearch-banner-search ul li {
-  z-index: 100;
-} */

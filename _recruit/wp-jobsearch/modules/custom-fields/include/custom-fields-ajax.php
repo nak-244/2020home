@@ -30,12 +30,8 @@ class Jobsearch_CustomFieldAjax {
         $custom_all_fileds = $_POST['custom_all_fileds'];
         $custom_all_fileds_arr = explode(',', $custom_all_fileds);
         
-        if (isset($_POST['this_string']) && $_POST['this_string'] == 'post_ID') {
-            $this_string = 'post_ID';
-        } else {
-            $this_string = sanitize_title($_POST['this_string']);
-            $this_string = urldecode($this_string);
-        }
+        $this_string = sanitize_title($_POST['this_string']);
+        $this_string = urldecode($this_string);
         
         if (in_array(trim($this_string), $custom_all_fileds_arr) && count($custom_all_fileds_arr) > 1) {
             $this_string = $this_string . rand(1000000, 9999999);
@@ -118,11 +114,6 @@ class Jobsearch_CustomFieldAjax {
             $dependent_dropdown_html .= apply_filters('jobsearch_custom_field_dependent_dropdown_html', $dependent_dropdown_html, $global_custom_field_counter, '');
             $html .= $dependent_dropdown_html;
         }
-        if ($fieldtype == 'dependent_fields') {
-            $dependent_fields_html = '';
-            $dependent_fields_html .= apply_filters('jobsearch_custom_field_dependent_fields_html', $dependent_fields_html, $global_custom_field_counter, '');
-            $html .= $dependent_fields_html;
-        }
         if ($fieldtype == 'textarea') {
             $textarea_html = '';
             $textarea_html .= apply_filters('jobsearch_custom_field_textarea_html', $textarea_html, $global_custom_field_counter, '');
@@ -148,11 +139,6 @@ class Jobsearch_CustomFieldAjax {
             $range_html .= apply_filters('jobsearch_custom_field_range_html', $range_html, $global_custom_field_counter, '');
             $html .= $range_html;
         }
-        if ($fieldtype == 'company_benefits') {
-            $company_benefits_html = '';
-            $company_benefits_html .= apply_filters('jobsearch_custom_field_company_benefits_html', $company_benefits_html, $global_custom_field_counter, '');
-            $html .= $company_benefits_html;
-        }
         // action btns
         $html .= apply_filters('jobsearch_custom_field_actions_html', $li_rand_id, $global_custom_field_counter, $fieldtype);
         $html .= '</li>';
@@ -163,7 +149,7 @@ class Jobsearch_CustomFieldAjax {
     public function jobsearch_custom_fields_save_callback() {
         $post_data = $_POST;
         $post_data = empty($post_data) ? array() : $post_data;
-        $heading_counter = $textarea_counter = $dropdown_counter = $checkbox_counter = $date_counter = $email_counter = $upload_counter = $text_counter = $linkurl_counter = $video_counter = $number_counter = $dependent_dropdown_counter = $dependent_fields_counter = $range_counter = $salary_counter = $company_benefits = $error = 0;
+        $heading_counter = $textarea_counter = $dropdown_counter = $checkbox_counter = $date_counter = $email_counter = $upload_counter = $text_counter = $linkurl_counter = $video_counter = $number_counter = $dependent_dropdown_counter = $range_counter = $salary_counter = $error = 0;
         $custom_field_entity = $post_data['entitytype'];
         $error_msg = '';
         $custom_field_final_array = array();
@@ -256,7 +242,6 @@ class Jobsearch_CustomFieldAjax {
                             foreach ($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['value'][$custom_fields_id] as $option) {
                                 if ($option != '') {
                                     $option = ltrim(rtrim($option));
-                                    $option = str_replace(array('<', '>', '"', '\''), array('', '', '', ''), $option);
                                     if ($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter] != '') {
                                         $custom_field_array['options']['label'][] = isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter]) ? $_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter] : '';
                                         //$custom_field_array['options']['value'][] = isset($option) && $option != '' ? strtolower(str_replace(" ", "-", $option)) : '';
@@ -290,24 +275,6 @@ class Jobsearch_CustomFieldAjax {
                         
                         $dependent_dropdown_counter ++;
                         break;
-                    case('dependent_fields'):
-                        $custom_field_array = $this->jobsearch_custom_field_ready_array($dependent_fields_counter, $custom_fields_type, $custom_field_array);
-                        //var_dump($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options'][$custom_fields_id]);
-                        if (isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options'][$custom_fields_id]) && count($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options'][$custom_fields_id]) > 0) {
-                            $custom_field_array['options'] = array();
-                            $option_counter = 0;
-                            foreach ($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options'][$custom_fields_id] as $opt_rkey => $option) {
-                                $custom_field_array['options'][$opt_rkey] = $option;
-                                $option_counter ++;
-                            }
-
-                        } else {
-                            $error = 1;
-                            $error_msg .= esc_html__('Please select at least one option for the field.', 'wp-jobsearch') . "'<br/>";
-                        }
-                        
-                        $dependent_fields_counter ++;
-                        break;
                     case('range'):
                         $custom_field_array = $this->jobsearch_custom_field_ready_array($range_counter, $custom_fields_type, $custom_field_array);
                         $range_counter ++;
@@ -315,27 +282,6 @@ class Jobsearch_CustomFieldAjax {
                     case('salary'):
                         $custom_field_array = $this->jobsearch_custom_field_ready_array($salary_counter, $custom_fields_type, $custom_field_array);
                         $salary_counter ++;
-                        break;
-                    case('company_benefits'):
-                        $custom_field_array = $this->jobsearch_custom_field_ready_array($company_benefits, $custom_fields_type, $custom_field_array);
-                        if (isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['value'][$custom_fields_id]) && (strlen(implode($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['value'][$custom_fields_id])) != 0)) {
-                            $custom_field_array['options'] = array();
-                            $option_counter = 0;
-                            foreach ($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['value'][$custom_fields_id] as $option) {
-                                if ($option != '') {
-                                    $option = ltrim(rtrim($option));
-                                    $option = str_replace(array('<', '>', '"', '\''), array('', '', '', ''), $option);
-                                    if ($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter] != '') {
-                                        $custom_field_array['options']['icon'][] = isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['icon'][$custom_fields_id][$option_counter]) ? $_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['icon'][$custom_fields_id][$option_counter] : '';
-                                        $custom_field_array['options']['icon_group'][] = isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['icon_group'][$custom_fields_id][$option_counter]) ? $_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['icon_group'][$custom_fields_id][$option_counter] : '';
-                                        $custom_field_array['options']['label'][] = isset($_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter]) ? $_POST["jobsearch-custom-fields-{$custom_fields_type}"]['options']['label'][$custom_fields_id][$option_counter] : '';
-                                        $custom_field_array['options']['value'][] = isset($option) && $option != '' ? $option : '';
-                                    }
-                                }
-                                $option_counter ++;
-                            }
-                        }
-                        $company_benefits ++;
                         break;
                 }
                 $custom_field_final_array[$rand_numb] = $custom_field_array;
@@ -354,7 +300,7 @@ class Jobsearch_CustomFieldAjax {
     }
 
     public function jobsearch_custom_field_ready_array($array_counter = 0, $field_type = '', $custom_field_element_array = array()) {
-        $possible_element_fields = apply_filters('jobsearch_custom_fields_ready_array', array('non_reg_user', 'media_buttons', 'rich_editor', 'multi_files', 'field_type', 'numof_files', 'allow_types', 'file_size', 'link_target', 'public_visible', 'name', 'required', 'label', 'placeholder', 'classes', 'enable-search', 'enable-advsrch', 'icon', 'icon-group', 'multi', 'post-multi', 'collapse-search', 'date-format', 'min', 'laps', 'interval', 'min1', 'laps1', 'interval1', 'min2', 'laps2', 'interval2', 'min3', 'laps3', 'interval3', 'min4', 'laps4', 'interval4', 'min5', 'laps5', 'interval5', 'field-style', 'options'));
+        $possible_element_fields = apply_filters('jobsearch_custom_fields_ready_array', array('non_reg_user', 'media_buttons', 'multi_files', 'numof_files', 'allow_types', 'file_size', 'link_target', 'public_visible', 'name', 'required', 'label', 'placeholder', 'classes', 'enable-search', 'enable-advsrch', 'icon', 'icon-group', 'multi', 'post-multi', 'collapse-search', 'date-format', 'min', 'laps', 'interval', 'field-style', 'options'));
         $custom_field_element_array['type'] = $field_type;
         foreach ($possible_element_fields as $field) {
             if (isset($_POST["jobsearch-custom-fields-{$field_type}"][$field][$array_counter])) {
@@ -364,12 +310,8 @@ class Jobsearch_CustomFieldAjax {
                     if ($savname_field == '') {
                         $savname_field = $field_label . ' ' . rand(1000000, 9999999);
                     }
-                    if ($savname_field == 'post_ID') {
-                        $savname_field = 'post_ID';
-                    } else {
-                        $savname_field = sanitize_title($savname_field);
-                        $savname_field = urldecode($savname_field);
-                    }
+                    $savname_field = sanitize_title($savname_field);
+                    $savname_field = urldecode($savname_field);
                     $custom_field_element_array[$field] = $savname_field;
                 } else {
                     $custom_field_element_array[$field] = $_POST["jobsearch-custom-fields-{$field_type}"][$field][$array_counter];

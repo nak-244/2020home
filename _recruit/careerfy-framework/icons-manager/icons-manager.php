@@ -189,7 +189,7 @@ if (!class_exists('Careerfy_Icons_Manager')) {
             ?>
             <script>
                 jQuery(document).on('click', '.reset-iconsmnger-btn', function () {
-                    var icob_con = confirm('<?php echo esc_js(__('Warning! It will remove all icons group and set only default icons.', 'careerfy-frame')) ?>');
+                    var icob_con = confirm('<?php _e('Warning! It will remove all icons group and set only default icons.', 'careerfy-frame') ?>');
                     if (icob_con) {
                         var _this = jQuery(this);
                         var loader_con = _this.parent('div').find('span');
@@ -258,11 +258,8 @@ if (!class_exists('Careerfy_Icons_Manager')) {
             global $careerfy_icons_html_fields, $careerfy_icons_form_fields;
             $icons_groups = get_option('careerfy_icons_groups');
             if (!empty($icons_groups)) {
-                $footr_script_priority = 15;
                 foreach ($icons_groups as $icons_key => $icons_obj) {
 
-                    $icons_key_for_id = str_replace(array('.', ','), array('-', '-'), $icons_key);
-                    
                     $group_obj = $icons_groups[$icons_key];
                     $selection_path = $group_obj['url'];
                     $org_site_url = get_option('siteurl');
@@ -281,7 +278,7 @@ if (!class_exists('Careerfy_Icons_Manager')) {
                         <div class="postbox">
                             <h3 class="icon_font_name">
                                 <strong><?php echo str_replace(array('-', '_'), array(' ', ' '), $icons_key); ?></strong>
-                                <span class="fonts-count careerfy-count-icons" id="careerfy-count-<?php echo esc_html($icons_key_for_id); ?>">0</span>
+                                <span class="fonts-count careerfy-count-icons" id="careerfy-count-<?php echo esc_html($icons_key); ?>">0</span>
                                 <?php if ($icons_key != 'default') { ?>
                                     <span class="fonts-count careerfy-group-remove"><?php echo __('Delete', 'careerfy-frame'); ?></span>
                                     <input type="checkbox" id="enable_group<?php echo($icons_key) ?>" class="careerfy-icons-enable-group" data-group="<?php echo ($icons_key) ?>" <?php echo ($icons_obj['status'] == 'on' ? 'checked' : '') ?> value="<?php echo ($icons_obj['status']) ?>">
@@ -293,55 +290,36 @@ if (!class_exists('Careerfy_Icons_Manager')) {
                             echo '
                             <div class="inside">
                                 <div class="icon_actions"></div>
-                                <div class="icon_search icons_list_' . $icons_key_for_id . ' careerfy-icons-list">
-                                    <ul></ul>
+                                <div class="icon_search icons_list_' . $icons_key . ' careerfy-icons-list">
+                                    <ul>
+                                        <script>
+                                            jQuery(document).ready(function ($) {
+                                                var html_response  = "";
+                                                $.ajax({
+                                                    url: "' . $selection_path . '/selection.json",
+                                                    type: \'GET\',
+                                                    dataType: \'json\'
+                                                }).done(function (response) {
+                                                    var classPrefix = response.preferences.fontPref.prefix;
+                                                    jQuery("#careerfy-count-' . $icons_key . '").html(response.icons.length);
+                                                    $.each(response.icons, function (i, v) {
+                                                        var li_html = "";
+                                                        li_html += "<li><i class=\'";
+                                                        li_html += classPrefix+v.properties.name;
+                                                        li_html += "\'></i></li>";
+                                                        html_response   += li_html;
+                                                    });
+                                                    jQuery(".icons_list_' . $icons_key . ' ul").html(html_response);
+                                                });
+                                            });
+                                        </script>
+                                    </ul>
                                 </div>
                             </div>';
                             ?>
                         </div>
                     </div>
                     <?php
-                    $footr_script_priority++;
-                    $popup_args = array(
-                        'selection_path' => $selection_path,
-                        'icons_key' => $icons_key,
-                        'icons_key_for_id' => $icons_key_for_id,
-                    );
-                    add_action('admin_footer', function () use ($popup_args) {
-
-                        extract(shortcode_atts(array(
-                            'selection_path' => '',
-                            'icons_key' => '',
-                            'icons_key_for_id' => '',
-                        ), $popup_args));
-                        ?>
-                        <script type="text/javascript">
-                            jQuery(document).ready(function ($) {
-                                var html_response  = "";
-                                $.ajax({
-                                    url: "<?php echo ($selection_path) ?>/selection.json?ver=<?php echo rand(10000000, 999999999) ?>",
-                                    type: 'GET',
-                                    dataType: 'json'
-                                }).done(function (response) {
-                                    var classPrefix = response.preferences.fontPref.prefix;
-                                    //jQuery('body').append('<?php echo ($icons_key_for_id) ?>-' + 1445789900 + ' - ' + response.icons.length);
-                                    //alert(classPrefix);
-                                    //alert('<?php echo ($icons_key_for_id) ?>');
-                                    //alert(jQuery("#careerfy-count-<?php echo ($icons_key_for_id) ?>").html());
-                                    jQuery("#careerfy-count-<?php echo ($icons_key_for_id) ?>").html(response.icons.length);
-                                    $.each(response.icons, function (i, v) {
-                                        var li_html = "";
-                                        li_html += "<li><i class='";
-                                        li_html += classPrefix+v.properties.name;
-                                        li_html += "'></i></li>";
-                                        html_response   += li_html;
-                                    });
-                                    jQuery(".icons_list_<?php echo ($icons_key_for_id) ?> ul").html(html_response);
-                                });
-                            });
-                        </script>
-                        <?php
-                    }, $footr_script_priority, 1);
                 }
             }
         }

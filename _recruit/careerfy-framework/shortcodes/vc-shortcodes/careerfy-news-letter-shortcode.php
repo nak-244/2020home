@@ -12,7 +12,6 @@ function news_letter_shortcode($atts, $content)
         'news_letter_title' => '',
         'news_letter_desc' => '',
         'news_letter_list' => '',
-        'news_letter_list_multi' => '',
     ), $atts));
 
     $rand_numb = rand(1000000, 9999999);
@@ -97,30 +96,19 @@ function news_letter_shortcode($atts, $content)
             <div class="col-md-7">
                 <div class="careerfy-twenty-search-tabs">
                     <ul class="careerfy-search-twenty-tabs-nav">
-                        <?php
-                        $mailchimp_lists_items = explode(',', $news_letter_list_multi);
+                        <?php foreach ($mailchimp_lists['data'] as $index => $mail_list) {
+                            $active = $index + 1 == 1 ? 'active' : ''; ?>
+                            <li class="<?php echo $active; ?>">
+                                <a data-toggle="tab" data-type="jobsearch_employer"
+                                   data-id="<?php echo($mail_list['id']) ?>"
+                                   href="#home"
+                                   class="user-type-btn-sign-up change-mailchimp-list-item"><span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span></a>
 
-                        if (count($mailchimp_lists) > 0) {
-                        foreach ($mailchimp_lists['data'] as $index => $mail_list) {
-                            if (in_array($mail_list['id'], $mailchimp_lists_items)) {
-
-
-                                $active = $index + 1 == 1 ? 'active' : ''; ?>
-                                <li class="<?php echo $active; ?>">
-                                    <a data-toggle="tab" data-type="jobsearch_employer"
-                                       data-id="<?php echo($mail_list['id']) ?>"
-                                       href="#home"
-                                       class="user-type-btn-sign-up change-mailchimp-list-item">
-                                        <span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span>
-                                    </a>
-                                </li>
-                            <?php }
-                        }
-
-                        ?>
+                            </li>
+                        <?php } ?>
                     </ul>
                     <div class="tab-content">
-                        <form method="post" id="mcform_<?php echo intval($counter); ?>"
+                        <form method="post" id="registration-form-<?php echo absint($rand_numb) ?>"
                               action="javascript:careerfy_mailchimp_submit<?php echo intval($counter); ?>('<?php echo esc_js($counter); ?>','<?php echo admin_url('admin-ajax.php'); ?>')"
                               class="careerfy-twenty-loc-search-style2">
 
@@ -178,9 +166,6 @@ function news_letter_shortcode($atts, $content)
                                         id="newsletter_mess_success_<?php echo intval($counter); ?>"></span></p>
                         </div>
                     </div>
-                    <?php } else { ?>
-                        <h2><?php echo esc_html__("Please contact to administrator to set settings for Newsletter API", 'careerfy-frame'); ?></h2>
-                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -198,110 +183,91 @@ function news_letter_shortcode($atts, $content)
                     <?php } ?>
                 </div>
             </div>
-            <?php
-            $mailchimp_lists_items = explode(',', $news_letter_list_multi);
-            if (count($mailchimp_lists) > 0) { ?>
-                <div class="col-md-7">
-                    <div class="careerfy-twentyone-search-tabs">
-                        <ul class="careerfy-search-twentyone-tabs-nav">
-                            <?php
-
-                            if (count($mailchimp_lists) > 0) {
-                            foreach ($mailchimp_lists['data'] as $index => $mail_list) {
-                                if (in_array($mail_list['id'], $mailchimp_lists_items)) {
-                                    $active = $index + 1 == 1 ? 'active' : ''; ?>
-                                    <li class="<?php echo $active; ?>">
-                                        <a data-toggle="tab"
-                                           data-id="<?php echo($mail_list['id']) ?>"
-                                           href="#home" class="change-mailchimp-list-item"><i
-                                                    class="fa fa-black-tie"></i><span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span></a>
-                                    </li>
-                                <?php }
-                            }
-                            ?>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="home" class="tab-pane fade in active">
-                                <form method="post" id="mcform_<?php echo intval($counter); ?>"
-                                      action="javascript:careerfy_mailchimp_submit<?php echo intval($counter); ?>('<?php echo esc_js($counter); ?>','<?php echo admin_url('admin-ajax.php'); ?>')"
-                                      class="careerfy-twentyone-loc-search">
-                                    <div class="signup-hidden-inputs">
-                                        <input name="mc_fname" id="mc_fname<?php echo intval($counter); ?>"
-                                               placeholder="<?php echo esc_html__('First Name', 'careerfy-frame'); ?>"
-                                               type="hidden">
-                                        <input name="mc_lname" id="mc_lname<?php echo intval($counter); ?>" value=""
-                                               placeholder="<?php echo esc_html__('Last Name', 'careerfy-frame'); ?>"
-                                               type="hidden">
-                                        <input name="mc_lists[]" id="mc_lists<?php echo intval($counter); ?>"
-                                               value="<?php echo !empty($mailchimp_lists['data']) ? ($mailchimp_lists['data'][0]['id']) : ''; ?>"
-                                               placeholder="<?php echo esc_html__('MC Lists', 'careerfy-frame'); ?>"
-                                               type="hidden">
-                                    </div>
-
-                                    <div class="jobsearch_searchloc_div">
-                                        <input placeholder="<?php echo esc_html__('Email', 'careerfy-frame'); ?>"
-                                               id="mc_email<?php echo intval($counter); ?>"
-                                               type="text">
-                                    </div>
-
-                                    <input type="submit" value="<?php esc_html_e("Submit", 'careerfy-frame') ?>">
-
-                                </form>
-                                <div id="newsletter_error_div_<?php echo intval($counter); ?>" style="display:none"
-                                     class="alert alert-danger">
-                                    <button class="close" type="button"
-                                            onclick="hide_div('newsletter_error_div_<?php echo intval($counter); ?>')"
-                                            aria-hidden="true">×
-                                    </button>
-                                    <p>
-                                        <i class="icon-warning"></i>
-                                        <span id="newsletter_mess_error_<?php echo intval($counter); ?>"></span>
-                                    </p>
+            <div class="col-md-7">
+                <div class="careerfy-twentyone-search-tabs">
+                    <ul class="careerfy-search-twentyone-tabs-nav">
+                        <?php foreach ($mailchimp_lists['data'] as $index => $mail_list) {
+                            $active = $index + 1 == 1 ? 'active' : ''; ?>
+                            <li class="<?php echo $active; ?>">
+                                <a data-toggle="tab"
+                                   data-id="<?php echo($mail_list['id']) ?>"
+                                   href="#home" class="change-mailchimp-list-item"><i
+                                            class="fa fa-black-tie"></i><span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span></a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <form method="post" id="registration-form-<?php echo absint($rand_numb) ?>"
+                                  action="javascript:careerfy_mailchimp_submit<?php echo intval($counter); ?>('<?php echo esc_js($counter); ?>','<?php echo admin_url('admin-ajax.php'); ?>')"
+                                  class="careerfy-twentyone-loc-search">
+                                <div class="signup-hidden-inputs">
+                                    <input name="mc_fname" id="mc_fname<?php echo intval($counter); ?>"
+                                           placeholder="<?php echo esc_html__('First Name', 'careerfy-frame'); ?>"
+                                           type="hidden">
+                                    <input name="mc_lname" id="mc_lname<?php echo intval($counter); ?>" value=""
+                                           placeholder="<?php echo esc_html__('Last Name', 'careerfy-frame'); ?>"
+                                           type="hidden">
+                                    <input name="mc_lists[]" id="mc_lists<?php echo intval($counter); ?>"
+                                           value="<?php echo !empty($mailchimp_lists['data']) ? ($mailchimp_lists['data'][0]['id']) : ''; ?>"
+                                           placeholder="<?php echo esc_html__('MC Lists', 'careerfy-frame'); ?>"
+                                           type="hidden">
                                 </div>
-                                <div id="newsletter_success_div_<?php echo intval($counter); ?>" style="display:none"
-                                     class="alert alert-success">
-                                    <button class="close" type="button"
-                                            onclick="hide_div('newsletter_success_div_<?php echo intval($counter); ?>')"
-                                            aria-hidden="true">
-                                        ×
-                                    </button>
-                                    <p><i class="icon-checkmark"></i><span
-                                                id="newsletter_mess_success_<?php echo intval($counter); ?>"></span></p>
+
+                                <div class="jobsearch_searchloc_div">
+                                    <input placeholder="<?php echo esc_html__('Email', 'careerfy-frame'); ?>"
+                                           id="mc_email<?php echo intval($counter); ?>"
+                                           type="text">
                                 </div>
+
+                                <input type="submit" value="<?php esc_html_e("Submit", 'careerfy-frame') ?>">
+
+                            </form>
+                            <div id="newsletter_error_div_<?php echo intval($counter); ?>" style="display:none"
+                                 class="alert alert-danger">
+                                <button class="close" type="button"
+                                        onclick="hide_div('newsletter_error_div_<?php echo intval($counter); ?>')"
+                                        aria-hidden="true">×
+                                </button>
+                                <p>
+                                    <i class="icon-warning"></i>
+                                    <span id="newsletter_mess_error_<?php echo intval($counter); ?>"></span>
+                                </p>
+                            </div>
+                            <div id="newsletter_success_div_<?php echo intval($counter); ?>" style="display:none"
+                                 class="alert alert-success">
+                                <button class="close" type="button"
+                                        onclick="hide_div('newsletter_success_div_<?php echo intval($counter); ?>')"
+                                        aria-hidden="true">
+                                    ×
+                                </button>
+                                <p><i class="icon-checkmark"></i><span
+                                            id="newsletter_mess_success_<?php echo intval($counter); ?>"></span></p>
                             </div>
                         </div>
-                        <?php } ?>
                     </div>
                 </div>
-            <?php } else { ?>
-                <h2><?php echo esc_html__("Please contact to administrator to set settings for Newsletter API", 'careerfy-frame'); ?></h2>
-            <?php } ?>
+            </div>
         </div>
 
     <?php } else { ?>
         <div class="careerfy-twentytwo-search-tabs">
             <ul class="careerfy-search-twentytwo-tabs-nav">
-                <?php
-                $mailchimp_lists_items = explode(',', $news_letter_list_multi);
-                if (count($mailchimp_lists) > 0) {
-                    foreach ($mailchimp_lists['data'] as $index => $mail_list) {
-                        if (in_array($mail_list['id'], $mailchimp_lists_items)) {
-                            $active = $index + 1 == 1 ? 'active' : ''; ?>
-                            <li class="<?php echo $active; ?>">
-                                <a data-toggle="tab"
-                                   data-id="<?php echo($mail_list['id']) ?>"
-                                   href="#home" class="change-mailchimp-list-item">
-                                    <i class="fa fa-black-tie"></i><span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span></a>
-                            </li>
-                        <?php }
-                    }
-                }
-                ?>
+                <?php foreach ($mailchimp_lists['data'] as $index => $mail_list) {
+                    $active = $index + 1 == 1 ? 'active' : ''; ?>
+                    <li class="<?php echo $active; ?>">
+                        <a data-toggle="tab"
+                           data-id="<?php echo($mail_list['id']) ?>"
+                           href="#home" class="change-mailchimp-list-item"><i
+                                    class="fa fa-black-tie"></i><span><?php echo esc_html__($mail_list['name'], 'careerfy-frame') ?></span></a>
+                    </li>
+                <?php } ?>
+
             </ul>
 
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
-                    <form method="post" id="mcform_<?php echo intval($counter); ?>"
+                    <form method="post" id="registration-form-<?php echo absint($rand_numb) ?>"
                           action="javascript:careerfy_mailchimp_submit<?php echo intval($counter); ?>('<?php echo esc_js($counter); ?>','<?php echo admin_url('admin-ajax.php'); ?>')"
                           class="careerfy-twentytwo-loc-search-newsletter">
                         <div class="signup-hidden-inputs">
@@ -359,7 +325,7 @@ function news_letter_shortcode($atts, $content)
         </div>
     <?php }
     if (!empty($mailchimp_list)) { ?>
-        <script type="text/javascript">
+        <script>
             function careerfy_mailchimp_submit<?php echo intval($counter); ?>(counter, admin_url) {
                 'use strict';
                 var $ = jQuery;
@@ -400,9 +366,8 @@ function news_letter_shortcode($atts, $content)
     } else {
         echo '<p class="error-api">' . esc_html__('Please contact to administrator to set settings for Newsletter API', 'careerfy-frame') . '</p>';
     }
-    
 
-    if (count($mailchimp_lists) > 0 && ($view == 'style2' || $view == 'style3' || $view == 'style4')) { ?>
+    if (count($mailchimp_lists['data']) > 0 && ($view == 'style2' || $view == 'style3' || $view == 'style4')) { ?>
         <script type="text/javascript">
             jQuery(document).on('click', '.change-mailchimp-list-item', function () {
                 var _mailchimp_id = jQuery(this).attr('data-id'),

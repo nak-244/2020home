@@ -1,7 +1,5 @@
 <?php
-
 namespace CareerfyElementor\Widgets;
-
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
@@ -107,7 +105,7 @@ class ExploreJobs extends Widget_Base
         $pages = get_pages($args);
         if (!empty($pages)) {
             foreach ($pages as $page) {
-                $all_page[$page->ID] = $page->post_title;
+                $all_page[$page->ID] = $page->post_title ;
             }
         }
 
@@ -228,7 +226,7 @@ class ExploreJobs extends Widget_Base
             [
                 'label' => __('Result Page', 'careerfy-frame'),
                 'type' => Controls_Manager::SELECT2,
-                'default' => '',
+                'default' => 'jobs',
                 'options' => $all_page,
             ]
         );
@@ -237,7 +235,7 @@ class ExploreJobs extends Widget_Base
             [
                 'label' => __('Jobs by', 'careerfy-frame'),
                 'type' => Controls_Manager::SELECT2,
-                'default' => '',
+                'default' => 'jobs',
                 'description' => __("Select Sector.", "careerfy-frame"),
                 'options' => $cate_array,
                 'condition' => [
@@ -291,10 +289,12 @@ class ExploreJobs extends Widget_Base
         $this->end_controls_section();
     }
 
-    public static function load_more_explore_jobs($jobs_by_detail, $list_items_color, $list_view = '')
+
+    public static function load_more_explore_jobs($jobs_by_detail, $list_items_color)
     {
         global $jobsearch_plugin_options, $result_page, $jobs_by;
-        $job_slug;
+
+        $job_slug = '';
         if ($jobs_by == 'jobtype') {
             $job_slug = 'job_type';
         } else if ($jobs_by == 'skill') {
@@ -302,6 +302,7 @@ class ExploreJobs extends Widget_Base
         } else if ($jobs_by == 'sector') {
             $job_slug = 'sector_cat';
         }
+
         $to_result_page = $result_page;
         $joptions_search_page = isset($jobsearch_plugin_options['jobsearch_search_list_page']) ? $jobsearch_plugin_options['jobsearch_search_list_page'] : '';
         if ($joptions_search_page != '') {
@@ -310,76 +311,15 @@ class ExploreJobs extends Widget_Base
         if ($result_page <= 0 && $joptions_search_page > 0) {
             $to_result_page = $joptions_search_page;
         }
-        $list_view_icon = $list_view == 'style2' ? '<i class="careerfy-icon careerfy-next-long"></i>' : '';
+
         $to_result_page = absint($to_result_page);
-
-
         foreach ($jobs_by_detail as $data) {
             $cat_goto_link = add_query_arg(array($job_slug => $data->slug), get_permalink($to_result_page));
             $cat_goto_link = apply_filters('jobsearch_job_sector_cat_result_link', $cat_goto_link, $data->slug);
             ?>
             <li><a style="color: <?php echo $list_items_color ?>;"
-                   href="<?php echo($cat_goto_link) ?>"><?php echo($list_view_icon) ?><?php echo $data->name ?></a></li>
+                   href="<?php echo($cat_goto_link) ?>"><?php echo $data->name ?></a></li>
         <?php }
-    }
-
-    public static function load_more_top_companies($employers_posts, $list_items_color, $list_view = '')
-    {
-        $list_view_icon = $list_view == 'style2' ? '<i class="careerfy-icon careerfy-next-long"></i>' : '';
-
-        $list_items_color = $list_items_color != "" ? 'style="color: ' . $list_view . ' "' : "";
-        foreach ($employers_posts as $data) { ?>
-            <li><a <?php echo $list_items_color ?>
-                        href="<?php echo get_permalink($data->ID) ?>"><?php echo($list_view_icon) ?>
-                    &nbsp;<?php echo $data->post_title ?></a></li>
-        <?php }
-    }
-
-    public function load_more_top_comapnies_list()
-    {
-        $page_num = isset($_POST['page_num']) ? $_POST['page_num'] : '';
-        $employer_cat = isset($_POST['employer_cat']) ? $_POST['employer_cat'] : '';
-        $job_order = isset($_POST['job_order']) ? $_POST['job_order'] : '';
-        $jobs_numbers = isset($_POST['jobs_numbers']) ? $_POST['jobs_numbers'] : '';
-        $list_items_color = isset($_POST['list_items_color']) ? $_POST['list_items_color'] : '';
-        $list_view = isset($_POST['list_view']) ? $_POST['list_view'] : '';
-
-        $element_filter_arr = array();
-        $element_filter_arr[] = array(
-            'key' => 'jobsearch_field_employer_approved',
-            'value' => 'on',
-            'compare' => '=',
-        );
-
-        $args = array(
-            'posts_per_page' => $jobs_numbers,
-            'post_type' => 'employer',
-            'post_status' => 'publish',
-            'order' => $job_order,
-            //'paged' => $page_num,
-            'offset' => $page_num,
-            'orderby' => 'meta_value_num',
-            'meta_key' => 'jobsearch_field_employer_job_count',
-            'meta_query' => array(
-                $element_filter_arr,
-            ),
-        );
-        if ($employer_cat != '') {
-            $args['tax_query'][] = array(
-                'taxonomy' => 'sector',
-                'field' => 'slug',
-                'terms' => $employer_cat
-            );
-        }
-
-        $employers_query = new \WP_Query($args);
-        $employers_posts = $employers_query->posts;
-
-        ob_start();
-        self::load_more_top_companies($employers_posts, $list_items_color, $list_view);
-        $html = ob_get_clean();
-        echo json_encode(array('html' => $html));
-        wp_die();
     }
 
 
@@ -388,7 +328,6 @@ class ExploreJobs extends Widget_Base
         global $title_color, $list_items_color, $load_more, $list_view, $load_more_text, $result_page, $jobs_by;
         $atts = $this->get_settings_for_display();
         foreach ($atts['explore_job_item'] as $explore_jobs_atts) {
-
             $title_color = $explore_jobs_atts['jobs_by'];
             $jobs_numbers = $explore_jobs_atts['jobs_numbers'];
             $explore_job_title = $explore_jobs_atts['explore_job_title'];
@@ -396,7 +335,7 @@ class ExploreJobs extends Widget_Base
             $employer_cat = $explore_jobs_atts['employer_cat'];
             $result_page = $explore_jobs_atts['result_page'];
             $jobs_by = $explore_jobs_atts['jobs_by'];
-            $employers_posts = '';
+
             $totl_explore_jobs = '';
             $total_jobs = '';
             if ($jobs_by != 'employer') {
@@ -447,11 +386,13 @@ class ExploreJobs extends Widget_Base
                 $employers_query = new \WP_Query($args);
                 $totl_found_jobs = $employers_query->found_posts;
                 $employers_posts = $employers_query->posts;
-            }
 
+            }
             $title_color = $title_color != "" ? 'style="color: ' . $title_color . ' "' : "";
             $load_more_text = $load_more_text != "" ? $load_more_text : 'More Jobs';
             $rand_num = rand(10000000, 99909999);
+
+            ob_start();
 
             $list_items_view = '';
             if ($list_view == 'style1') {
@@ -479,16 +420,19 @@ class ExploreJobs extends Widget_Base
 
                 <div class="<?php echo $list_items_view_sec ?>">
                     <?php } ?>
+
                     <ul id="main-list-<?php echo($rand_num) ?>">
+
                         <?php if ($jobs_by != 'employer') {
+
                             if ($totl_explore_jobs > 0) { ?>
-                                <?php self::load_more_explore_jobs($jobs_by_detail, $list_items_color, $list_view); ?>
+                                <?php self::load_more_explore_jobs($jobs_by_detail, $list_items_color); ?>
                                 <?php if ($total_jobs >= $jobs_numbers && $load_more == 'yes') { ?>
                                     <li class="morejobs-link"><a
                                                 href="javascript:void(0)" class="load-more-<?php echo $rand_num ?>"
                                                 data-tpages="<?php echo $totl_explore_jobs ?>"
                                                 list-style="<?php echo $list_items_color ?>"
-                                                data-totalJobs="<?php echo $total_jobs ?>"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?><?php echo $list_view == 'style1' ? '<i class="fa fa-angle-double-right"></i>' : ''; ?></a>
+                                                data-totalJobs="<?php echo $total_jobs ?>"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?></a>
                                     </li>
                                 <?php }
                             } else { ?>
@@ -499,7 +443,8 @@ class ExploreJobs extends Widget_Base
 
                             if ($totl_found_jobs > 0) {
 
-                                self::load_more_top_companies($employers_posts, $list_items_color, $list_view);
+                                self::load_more_top_companies($employers_posts, $list_items_color);
+
                                 if ($totl_found_jobs >= $jobs_numbers && $load_more == 'yes') { ?>
                                     <li class="morejobs-link"><a
                                                 href="javascript:void(0)"
@@ -507,7 +452,7 @@ class ExploreJobs extends Widget_Base
                                                 data-tpages="<?php echo $totl_found_jobs ?>"
                                                 list-item-color="<?php echo $list_items_color ?>"
                                                 jobs-results="<?php echo $jobs_numbers ?>"
-                                                data-gtopage="2"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?><?php echo $list_view == 'style1' ? '<i class="fa fa-angle-double-right"></i>' : ''; ?></a>
+                                                data-gtopage="2"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?></a>
                                     </li>
                                 <?php }
 
@@ -602,7 +547,6 @@ class ExploreJobs extends Widget_Base
                                     employer_cat: '<?php echo($employer_cat) ?>',
                                     employer_order: '<?php echo($job_order) ?>',
                                     jobs_numbers: '<?php echo($jobs_numbers) ?>',
-                                    list_view: '<?php echo($list_view) ?>',
                                     list_items_color: list_items_color,
                                     action: 'jobsearch_load_more_top_companies_list'
                                 },
@@ -634,6 +578,8 @@ class ExploreJobs extends Widget_Base
             <?php }
         }
 
+        $html = ob_get_clean();
+        echo $html;
 
     }
 
@@ -642,7 +588,6 @@ class ExploreJobs extends Widget_Base
         global $title_color, $list_items_color, $load_more, $list_view, $load_more_text;
         $atts = $this->get_settings_for_display();
         $title_color = $atts['title_color'];
-        $list_view = $atts['list_view'];
         $list_items_color = $atts['list_items_color'];
         $btn_color = $atts['btn_color'];
         $button_text = $atts['button_text'];
@@ -650,26 +595,31 @@ class ExploreJobs extends Widget_Base
         $btn_text_color = $atts['btn_text_color'];
         $load_more = $atts['load_more'];
         $load_more_text = $atts['load_more_text'];
+        ob_start();
 
-        $html = '<div class="row">' . $this->careerfy_explore_jobs_item() . ' ';
+        $html = '
+        <div class="row">
+            ' . $this->careerfy_explore_jobs_item() . '';
 
         if ($list_view == 'style2') {
             if ($button_text != "") {
                 $html .= '<div class="col-md-12" >
                <div class="careerfy-thirteen-browse-alljobs-btn" > <a href = "' . $button_url . '" > ' . $button_text . '</a > </div >
-         </div>';
+        
+        </div>';
             }
 
         } else {
 
             if ($button_text != "") {
                 $html .= '<div class="col-md-12" >
-                    <div class="careerfy-fifteen-browse-btn"> <a href = "' . $button_url . '" > ' . $button_text . '</a > </div >
-                </div>';
+               <div class="careerfy-fifteen-browse-btn" > <a href = "' . $button_url . '" > ' . $button_text . '</a > </div >
+           
+        </div>';
             }
 
         }
-        $html .= '</div>';
+        $html .='</div>';
 
 
         if ($list_view == 'style2') {
@@ -690,7 +640,7 @@ class ExploreJobs extends Widget_Base
                  }
         </style>' . "\n";
         }
-
+        $html = ob_get_clean();
         echo $html;
     }
 

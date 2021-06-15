@@ -169,87 +169,6 @@ function jobsearch_dashboard_read_file_url(input) {
     }
 }
 
-jQuery(document).on('change', '#user_avatar', function () {
-    jobsearch_dashboard_read_file_url(this);
-});
-
-function jobsearch_dashboard_emp_avatar_url(input) {
-
-    if (input.files && input.files[0]) {
-
-        var loader_con = jQuery('#employer_user_avatar').parents('figcaption').find('.fileUpLoader');
-
-        var img_file = input.files[0];
-        var img_size = img_file.size;
-        var pphot_size_allow = jobsearch_dashboard_vars.pphot_size_allow;
-        pphot_size_allow = parseInt(pphot_size_allow);
-
-        img_size = parseFloat(img_size / 1024).toFixed(2);
-
-        if (img_size <= pphot_size_allow) {
-            loader_con.html('<i class="fa fa-refresh fa-spin"></i>');
-            
-            var imag_reader = new FileReader();
-            imag_reader.readAsDataURL(img_file);
-            imag_reader.onload = function (e) {
-
-                var obj_image = new Image();
-
-                //Set the Base64 string return from FileReader as source.
-                obj_image.src = e.target.result;
-
-                //Validate the File Height and Width.
-                obj_image.onload = function () {
-                    var img_height = this.height;
-                    var img_width = this.width;
-                    
-                    if (parseInt(img_height) > 250 || parseInt(img_width) > 250) {
-                        alert(jobsearch_dashboard_vars.empphot_higwid_err);
-                        loader_con.html('');
-                        return false;
-                    }
-                    
-                    var formData = new FormData();
-                    formData.append('avatar_file', img_file);
-                    formData.append('action', 'jobsearch_dashboard_updating_user_avatar_img');
-
-                    var request = $.ajax({
-                        url: jobsearch_dashboard_vars.ajax_url,
-                        method: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        dataType: "json"
-                    });
-                    request.done(function (response) {
-                        if (typeof response.err_msg !== 'undefined' && response.err_msg != '') {
-                            loader_con.html(response.err_msg);
-                            return false;
-                        }
-                        if (typeof response.imgUrl !== 'undefined') {
-                            jQuery('#com-img-holder').find('img').attr('src', response.imgUrl);
-                            jQuery('.user-dashthumb-remove').show();
-                        }
-                        loader_con.html('');
-                    });
-
-                    request.fail(function (jqXHR, textStatus) {
-                        loader_con.html(jobsearch_dashboard_vars.error_msg);
-                        loader_con.html('');
-                    });
-                }
-            }
-
-        } else {
-            alert(jobsearch_dashboard_vars.pphot_size_err);
-        }
-    }
-}
-
-jQuery(document).on('change', '#employer_user_avatar', function () {
-    jobsearch_dashboard_emp_avatar_url(this);
-});
-
 jQuery(document).on('change', '.opt_notific_setcheckbtn', function () {
     var _this = jQuery(this),
             this_loder = _this.parents('.jobsearch-onoffswitch-outer').find('.opt-notific-lodr'),
@@ -291,25 +210,6 @@ jQuery(document).on('change', '.opt_notific_setcheckbtn', function () {
     return false;
 });
 
-jQuery(document).on('click', '.jobsearch-pckg-mordetail', function () {
-    var _this = jQuery(this);
-    var this_id = _this.attr('data-id');
-    if (_this.hasClass('open-detbox')) {
-        jQuery('#packge-detail-box' + this_id).slideUp();
-        _this.removeClass('open-detbox');
-        _this.html(_this.attr('data-mtxt') + ' <i class="fa fa-angle-right"></i>');
-    } else {
-        jQuery('.packge-detail-sepbox').hide();
-        jQuery('#packge-detail-box' + this_id).slideDown();
-        
-        jQuery('.jobsearch-pckg-mordetail').removeClass('open-detbox');
-        jQuery('.jobsearch-pckg-mordetail').html(_this.attr('data-mtxt') + ' <i class="fa fa-angle-right"></i>');
-        
-        _this.addClass('open-detbox');
-        _this.html(_this.attr('data-ctxt') + ' <i class="fa fa-angle-up"></i>');
-    }
-});
-
 jQuery(document).on('click', '.notifics-showlist-tobtn', function () {
     jQuery(this).hide();
     jQuery('.notifics-showsetings-tobtn').removeAttr('style');
@@ -329,12 +229,12 @@ jQuery(document).on('click', '.readmore-notific-btn', function () {
     var this_id = _this.attr('data-id');
     var readmore_txt = _this.attr('data-readm');
     //var readless_txt = _this.attr('data-readl');
-    
+
     var readmode_type = 'readin_more';
     if (_this.hasClass('btn-readless-mode')) {
         readmode_type = 'readin_less';
     }
-    
+
     var this_txt = _this.html();
 
     _this.html('<i class="fa fa-refresh fa-spin"></i>');
@@ -383,7 +283,7 @@ jQuery(document).on('click', '.close-notific-item', function () {
             this_loder = _this.find('i'),
             this_loder_clas = 'fa fa-close',
             this_id = _this.attr('data-id');
-    
+
     if (!_this.hasClass('ajax-loadin')) {
         _this.addClass('ajax-loadin');
         this_loder.attr('class', 'fa fa-refresh fa-spin');
@@ -419,17 +319,16 @@ jQuery(document).on('click', '.close-notific-item', function () {
     return false;
 });
 
+jQuery(document).on('change', '#user_avatar', function () {
+    jobsearch_dashboard_read_file_url(this);
+});
+
 jQuery(document).on('click', '.jobsearch-userdel-profilebtn', function () {
     jobsearch_modal_popup_open('JobSearchModalUserProfileDel');
 });
 
 jQuery(document).on('click', '.jobsearch-userdel-profile', function () {
 
-    var this_form = jQuery(this).parents('.jobsearch-user-profiledel-pop');
-    var get_terr_val = jobsearch_accept_terms_cond_pop(this_form);
-    if (get_terr_val != 'yes') {
-        return false;
-    }
     var loader_con = jQuery(this).parents('.profile-del-con').find('.loader-con');
     var msg_con = jQuery(this).parents('.profile-del-con').find('.msge-con');
 
@@ -778,7 +677,7 @@ jQuery(document).on('click', '.jobsearch-trash-job', function () {
     var _this = jQuery(this);
     var this_id = _this.attr('data-id');
     if (this_id > 0) {
-        var conf = confirm(jobsearch_dashboard_vars.are_you_sure);
+        var conf = confirm('Are you sure!');
         if (conf) {
             _this.removeClass('jobsearch-icon');
             _this.removeClass('jobsearch-trash-job');
@@ -802,9 +701,7 @@ jQuery(document).on('click', '.jobsearch-trash-job', function () {
                     return false;
                 }
                 if (typeof response.msg !== 'undefined' && response.msg == 'deleted') {
-                    _this.parents('.jobsearch-mangjobs-list-inner').find('.jobsearch-recent-applicants-nav').fadeOut();
-                    _this.parents('.jobsearch-mangjobs-list-inner').find('.jobsearch-managejobs-tbody').fadeOut();
-                    window.location.reload();
+                    _this.parents('.jobsearch-managejobs-tbody').fadeOut();
                 }
             });
 
@@ -819,7 +716,7 @@ jQuery(document).on('click', '.jobsearch-del-user-cv', function () {
     var _this = jQuery(this);
     var this_id = _this.attr('data-id');
     if (this_id != '') {
-        var conf = confirm(jobsearch_dashboard_vars.are_you_sure);
+        var conf = confirm('Are you sure!');
         if (conf) {
             _this.find('i').attr('class', 'fa fa-refresh fa-spin');
             var request = jQuery.ajax({
@@ -977,9 +874,7 @@ jQuery(document).on('click', '#add-education-btn', function (e) {
     var this_loader = _this.parent('li').find('.edu-loding-msg');
 
     var title = jQuery('#add-edu-title');
-    var start_date = jQuery('#add-edu-date-start');
-    var end_date = jQuery('#add-edu-date-end');
-    var present_date = jQuery('#add-edu-date-prsent');
+    var year = jQuery('#add-edu-year');
     var institute = jQuery('#add-edu-institute');
     var desc = jQuery('#add-edu-desc');
 
@@ -992,9 +887,7 @@ jQuery(document).on('click', '#add-education-btn', function (e) {
         method: "POST",
         data: {
             title: title.val(),
-            start_date: start_date.val(),
-            end_date: end_date.val(),
-            present_date: present_date.val(),
+            year: year.val(),
             institute: institute.val(),
             desc: desc.val(),
             action: 'jobsearch_add_resume_education_to_list',
@@ -1020,8 +913,6 @@ jQuery(document).on('click', '#add-education-btn', function (e) {
             }
 
             title.val('');
-            start_date.val('');
-            end_date.val('');
             institute.val('');
             desc.val('');
 
@@ -1038,8 +929,6 @@ jQuery(document).on('click', '#add-education-btn', function (e) {
             }
 
             title.val('');
-            start_date.val('');
-            end_date.val('');
             institute.val('');
             desc.val('');
 
@@ -1198,79 +1087,6 @@ jQuery(document).on('click', '#add-resume-skills-btn', function (e) {
 
             title.val('');
             skill_percentage.val('');
-
-            return false;
-        }
-    });
-
-    request.fail(function (jqXHR, textStatus) {
-        this_loader.html(jobsearch_dashboard_vars.error_msg);
-        this_loader.css({'background-color': '#e40000'});
-    });
-});
-
-jQuery(document).on('click', '#add-resume-langs-btn', function (e) {
-    e.preventDefault();
-    var _this = jQuery(this);
-    var this_pcon = _this.parents('.jobsearch-add-resume-item-popup');
-    jobsearch_validate_dashboard_form(this_pcon);
-
-    var this_loader = _this.parent('li').find('.langs-loding-msg');
-
-    var title = jQuery('#add-lang-title');
-    var lang_level = jQuery('#add-lang-level');
-    var lang_percentage = jQuery('#add-lang-percentage');
-
-    this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-    this_loader.css({'background-color': '#32cd32'});
-    this_loader.show();
-
-    var request = jQuery.ajax({
-        url: jobsearch_dashboard_vars.ajax_url,
-        method: "POST",
-        data: {
-            title: title.val(),
-            lang_level: lang_level.val(),
-            lang_percentage: lang_percentage.val(),
-            action: 'jobsearch_add_resume_lang_to_list',
-        },
-        dataType: "json"
-    });
-
-    request.done(function (response) {
-        if (typeof response.error !== 'undefined' && response.error == '1') {
-            //
-            this_loader.html(response.msg);
-            this_loader.css({'background-color': '#e40000'});
-            return false;
-        }
-        if (typeof response.apender_msg !== 'undefined' && response.apender_msg != '') {
-            this_loader.append(response.apender_msg);
-
-            if (typeof response.html !== 'undefined' && response.html != '') {
-                jQuery('#jobsearch-resume-langs-con').find('>ul').append(response.html);
-                jobsearch_cand_dash_resume_odd_workings_clbk();
-            } else {
-                return false;
-            }
-
-            title.val('');
-            lang_percentage.val('');
-
-            return false;
-        }
-        if (typeof response.msg !== 'undefined' && response.msg != '') {
-            this_loader.html(response.msg);
-
-            if (typeof response.html !== 'undefined' && response.html != '') {
-                jQuery('#jobsearch-resume-langs-con').find('>ul').append(response.html);
-                jobsearch_cand_dash_resume_odd_workings_clbk();
-            } else {
-                return false;
-            }
-
-            title.val('');
-            lang_percentage.val('');
 
             return false;
         }
@@ -1653,11 +1469,9 @@ function jobsearch_dashboard_read_portfolio_file_url(input) {
                 if (typeof response.img_url !== 'undefined') {
                     _this.parents('.upload-img-holder-sec').find('img').attr('src', response.img_url);
                     if (_this.parents('.upload-img-holder-sec').find('#add-portfolio-img-input').length > 0) {
-                        _this.parents('.upload-img-holder-sec').find('#add-portfolio-img-input').val(response.img_id);
-                    } else if (_this.parents('.upload-img-holder-sec').find('#add-portfolio-img-input-upopup').length > 0) {
-                        _this.parents('.upload-img-holder-sec').find('#add-portfolio-img-input-upopup').val(response.img_id);
+                        _this.parents('.upload-img-holder-sec').find('#add-portfolio-img-input').val(response.img_url);
                     } else if (_this.parents('.upload-img-holder-sec').find('.img-upload-save-field').length > 0) {
-                        _this.parents('.upload-img-holder-sec').find('.img-upload-save-field').val(response.img_id);
+                        _this.parents('.upload-img-holder-sec').find('.img-upload-save-field').val(response.img_url);
                     }
                 }
                 loader_con.html('');
@@ -1737,7 +1551,7 @@ jQuery(document).on('click', '.upload-port-img-btn', function () {
 });
 
 //
-jQuery(document).on('click', ".jobsearch-resume-addbtn", function () {
+jQuery(".jobsearch-resume-addbtn").click(function () {
     var _this = jQuery(this);
     if (_this.hasClass('jobsearch-portfolio-add-btn')) {
         var total_ports = _this.parents('.jobsearch-candidate-resume-wrap').find('.jobsearch-portfolios-list-con > li').length;
@@ -1806,8 +1620,8 @@ function jobsearch_update_resume_items(_this) {
         update_con = main_parent.find('>figure');
         var title_val = main_parent.find('input[name^="jobsearch_field_portfolio_title"]').val();
         update_con.find('> figcaption span').html(title_val);
-        //var img_val = main_parent.find('input[name^="jobsearch_field_portfolio_image"]').val();
-        //update_con.find('>a>span').css({'background-image': 'url(' + img_val + ')'});
+        var img_val = main_parent.find('input[name^="jobsearch_field_portfolio_image"]').val();
+        update_con.find('>a>span').css({'background-image': 'url(' + img_val + ')'});
     } else if (_this.parents('li.resume-list-item').hasClass('resume-list-skill')) {
         update_con = main_parent.find('.jobsearch-add-skills-wrap');
         var title_val = main_parent.find('input[name^="jobsearch_field_skill_title"]').val();
@@ -1919,12 +1733,12 @@ jQuery(document).on('click', '#upload-more-gal-imgs', function () {
 
 jQuery(document).on('click', '.gal-item .el-remove', function () {
     var _this = jQuery(this);
-    
+
     var img_id = _this.attr('data-id');
-    
+
     var orig_icon = 'el-remove jobsearch-icon jobsearch-rubbish';
     var loder_icon = 'fa fa-refresh fa-spin';
-    
+
     _this.removeClass(orig_icon).addClass(loder_icon);
     var request = jQuery.ajax({
         url: jobsearch_dashboard_vars.ajax_url,
@@ -1963,17 +1777,17 @@ jQuery(document).on('click', '.gal-item .el-remove', function () {
 jQuery(document).on('click', '#select-all-job-app', function () {
     var _this = jQuery(this);
     if (_this.is(':checked')) {
-        jQuery('input[type="checkbox"][id^="app_candidate_sel"]').prop('checked', true);
-        jQuery('input[type="checkbox"][id^="app_candidate_sel"]').trigger('change');
+        jQuery('input[type="checkbox"][name*="app_candidate_sel"]').attr('checked', true);
+        jQuery('input[type="checkbox"][name*="app_candidate_sel"]').trigger('change');
     } else {
-        jQuery('input[type="checkbox"][id^="app_candidate_sel"]').prop('checked', false);
-        jQuery('input[type="checkbox"][id^="app_candidate_sel"]').trigger('change');
+        jQuery('input[type="checkbox"][name*="app_candidate_sel"]').attr('checked', false);
+        jQuery('input[type="checkbox"][name*="app_candidate_sel"]').trigger('change');
     }
 });
 
 jQuery(document).on('change', 'input[type="checkbox"][name*="app_candidate_sel"]', function () {
     var checked_box_count = jQuery('input[type="checkbox"][name*="app_candidate_sel"]:checked').length;
-    if (checked_box_count > 0) {
+    if (checked_box_count > 1) {
         jQuery('#sort-more-field-sec').show();
     } else {
         jQuery('#sort-more-field-sec').hide();
@@ -2039,12 +1853,6 @@ jQuery(document).on('click', '.applicantto-email-submit-btn', function (e) {
     var _employer_id = _this.attr('data-eid');
 
     var this_form = _this.parents('form');
-    
-    var get_terr_val = jobsearch_accept_terms_cond_pop(this_form);
-    if (get_terr_val != 'yes') {
-        return false;
-    }
-    
     var this_loader = this_form.find('.loader-box-' + _this_rand);
     var this_msg_con = this_form.find('.message-box-' + _this_rand);
 
@@ -2119,15 +1927,9 @@ jQuery(document).on('click', '.applicantto-email-submit-btn', function (e) {
 jQuery(document).on('click', '.multi-applicantsto-email-submit', function (e) {
     e.preventDefault();
     var _this = jQuery(this);
-    var this_form = _this.parents('form');
     var _job_id = _this.attr('data-jid');
     var _employer_id = _this.attr('data-eid');
 
-    var get_terr_val = jobsearch_accept_terms_cond_pop(this_form);
-    if (get_terr_val != 'yes') {
-        return false;
-    }
-    
     var _selected_apps_str = '';
     var _selected_apps_arr = [];
     var _selected_apps = jQuery('input[type="checkbox"][name*="app_candidate_sel"]:checked');
@@ -2141,6 +1943,7 @@ jQuery(document).on('click', '.multi-applicantsto-email-submit', function (e) {
     }
 
     if (_selected_apps_str != '') {
+        var this_form = _this.parents('form');
         var this_loader = this_form.find('.loader-box-' + _job_id);
         var this_msg_con = this_form.find('.message-box-' + _job_id);
 
@@ -2213,103 +2016,6 @@ jQuery(document).on('click', '.multi-applicantsto-email-submit', function (e) {
     }
 });
 
-jQuery(document).on('click', '.multi-instamatchcands-email-submit', function (e) {
-    e.preventDefault();
-    var _this = jQuery(this);
-    var this_form = _this.parents('form');
-    var _job_id = _this.attr('data-jid');
-    var _employer_id = _this.attr('data-eid');
-    
-    var get_terr_val = jobsearch_accept_terms_cond_pop(this_form);
-    if (get_terr_val != 'yes') {
-        return false;
-    }
-
-    var _selected_apps_str = '';
-    var _selected_apps_arr = [];
-    var _selected_apps = jQuery('input[type="checkbox"][name*="app_candidate_sel"]:checked');
-    _selected_apps.each(function (index, element) {
-        if (jQuery(this).val() != '') {
-            _selected_apps_arr.push(jQuery(this).val());
-        }
-    });
-    if (_selected_apps_arr.length > 0) {
-        _selected_apps_str = _selected_apps_arr.join(",");
-    }
-
-    if (_selected_apps_str != '') {
-        var this_loader = this_form.find('.loader-box-' + _job_id);
-        var this_msg_con = this_form.find('.message-box-' + _job_id);
-
-        var email_subject = this_form.find('input[name="send_message_subject"]');
-        var email_content = this_form.find('textarea[name="send_message_content"]');
-
-        var error = 0;
-        if (email_subject.val() == '') {
-            error = 1;
-            email_subject.css({"border": "1px solid #ff0000"});
-        } else {
-            email_subject.css({"border": "1px solid #d3dade"});
-        }
-        if (email_content.val() == '') {
-            error = 1;
-            email_content.css({"border": "1px solid #ff0000"});
-        } else {
-            email_content.css({"border": "1px solid #d3dade"});
-        }
-
-        if (error == 0) {
-
-            this_msg_con.hide();
-            this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-            var request = jQuery.ajax({
-                url: jobsearch_dashboard_vars.ajax_url,
-                method: "POST",
-                data: {
-                    _job_id: _job_id,
-                    _employer_id: _employer_id,
-                    _candidate_ids: _selected_apps_str,
-                    email_subject: email_subject.val(),
-                    email_content: email_content.val(),
-                    action: 'jobsearch_send_email_to_multi_instamatchs_by_employer',
-                },
-                dataType: "json"
-            });
-
-            request.done(function (response) {
-                var msg_before = '';
-                var msg_after = '';
-                if (typeof response.error !== 'undefined') {
-                    if (response.error == '1') {
-                        msg_before = '<div class="alert alert-danger"><i class="fa fa-times"></i> ';
-                        msg_after = '</div>';
-                    } else if (response.error == '0') {
-                        msg_before = '<div class="alert alert-success"><i class="fa fa-check"></i> ';
-                        msg_after = '</div>';
-                    }
-                }
-                if (typeof response.msg !== 'undefined') {
-                    this_msg_con.html(msg_before + response.msg + msg_after);
-                    this_msg_con.slideDown();
-                    if (typeof response.error !== 'undefined' && response.error == '0') {
-                        email_subject.val('');
-                        email_content.val('');
-                        this_form.find('ul.email-fields-list').slideUp();
-                    }
-                } else {
-                    this_msg_con.html(jobsearch_job_application.error_msg);
-                }
-                this_loader.html('');
-
-            });
-
-            request.fail(function (jqXHR, textStatus) {
-                this_loader.html(jobsearch_dashboard_vars.error_msg);
-            });
-        }
-    }
-});
-
 jQuery(document).on('click', '.shortlist-cand-to-intrview', function (e) {
     e.preventDefault();
     var _this = jQuery(this);
@@ -2336,7 +2042,6 @@ jQuery(document).on('click', '.shortlist-cand-to-intrview', function (e) {
             if (typeof response.msg !== 'undefined' && typeof response.error !== 'undefined' && response.error == '0') {
                 this_msg_con.html(response.msg);
                 _this.removeClass('ajax-enable');
-                window.location.reload(true);
             }
             this_loader.html('');
         });
@@ -2566,92 +2271,6 @@ jQuery(document).on('click', '.apps-view-btn', function () {
     view_input.parent('form').submit();
 });
 
-jQuery(document).on('click', '.move-cand-from-instamatch', function (e) {
-    e.preventDefault();
-    var _this = jQuery(this);
-    var _job_id = _this.attr('data-jid');
-    var _candidate_id = _this.attr('data-cid');
-
-    var this_loader = _this.find('.app-loader');
-    var this_msg_con = _this;
-
-    if (_this.hasClass('ajax-enable')) {
-        this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-        var request = jQuery.ajax({
-            url: jobsearch_dashboard_vars.ajax_url,
-            method: "POST",
-            data: {
-                _job_id: _job_id,
-                _candidate_id: _candidate_id,
-                action: 'jobsearch_job_instamatch_moveto_applicant',
-            },
-            dataType: "json"
-        });
-
-        request.done(function (response) {
-            if (typeof response.msg !== 'undefined' && typeof response.error !== 'undefined' && response.error == '0') {
-                window.location.reload(true);
-                _this.removeClass('ajax-enable');
-                return false;
-            }
-            this_loader.html('');
-        });
-
-        request.fail(function (jqXHR, textStatus) {
-            this_loader.html('');
-        });
-    }
-});
-
-jQuery(document).on('click', '.move-instacands-to-applics', function (e) {
-    e.preventDefault();
-    var _this = jQuery(this);
-    var _job_id = _this.attr('data-jid');
-
-    var _selected_apps_str = '';
-    var _selected_apps_arr = [];
-    var _selected_apps = jQuery('input[type="checkbox"][name*="app_candidate_sel"]:checked');
-    _selected_apps.each(function (index, element) {
-        if (jQuery(this).val() != '') {
-            _selected_apps_arr.push(jQuery(this).val());
-        }
-    });
-    if (_selected_apps_arr.length > 0) {
-        _selected_apps_str = _selected_apps_arr.join(",");
-    }
-
-    var this_loader = _this.find('.app-loader');
-    var this_msg_con = _this;
-
-    if (_this.hasClass('ajax-enable')) {
-        this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
-        var request = jQuery.ajax({
-            url: jobsearch_dashboard_vars.ajax_url,
-            method: "POST",
-            data: {
-                _job_id: _job_id,
-                _candidate_ids: _selected_apps_str,
-                action: 'jobsearch_multi_move_instamatch_to_apps',
-            },
-            dataType: "json"
-        });
-
-        request.done(function (response) {
-            if (typeof response.msg !== 'undefined' && typeof response.error !== 'undefined' && response.error == '0') {
-                this_msg_con.html('<i class="fa fa-user-plus"></i> ' + response.msg + ' &nbsp;<span class="app-loader"><i class="fa fa-refresh fa-spin"></i></span>');
-                _this.removeClass('ajax-enable');
-                window.location.reload(true);
-                return false;
-            }
-            this_loader.html('');
-        });
-
-        request.fail(function (jqXHR, textStatus) {
-            this_loader.html('');
-        });
-    }
-});
-
 function jobsearch_is_valid_phone_number(that) {
     var val = that.value;
     var element = jQuery(that);
@@ -2664,15 +2283,15 @@ function jobsearch_is_valid_phone_number(that) {
 }
 
 jQuery(document).on('click', '.jobsearch-feat-job-form input[type=checkbox]', function () {
-    
+
     var _this = jQuery(this);
     var this_con = _this.parents('.jobsearch-feat-job-form');
     this_con.find('input[type=checkbox]:checked').prop('checked', false);
     _this.prop('checked', true);
-    
+
     var checkout_btn = this_con.find('.jobsearch-feature-pkg-buybtn');
     var feat_job_btn = this_con.find('.jobsearch-feature-pkg-alpurbtn');
-    
+
     if (_this.attr('name') == 'alpur_feature_pkg') {
         checkout_btn.hide();
         feat_job_btn.removeAttr('style');
@@ -2711,7 +2330,7 @@ jQuery(document).on('click', '.jobsearch-feature-pkg-alpurbtn', function () {
 
         var msg_before = '';
         var msg_after = '';
-        
+
         if (typeof response.msg !== 'undefined' && typeof response.error !== 'undefined' && response.error == '1') {
             msg_before = '<div class="alert alert-danger"><i class="fa fa-times"></i> ';
             msg_after = '</div>';
@@ -3020,7 +2639,7 @@ jQuery(document).on('click', '.emp-memb-removebtn', function (e) {
     var msg_loader = _this.find('i');
     var msg_lodr_class = msg_loader.attr('class');
 
-    var conf = confirm(jobsearch_dashboard_vars.are_you_sure);
+    var conf = confirm('Are you sure!');
     if (conf) {
         msg_loader.attr('class', 'fa fa-refresh fa-spin');
 
@@ -3140,7 +2759,7 @@ jQuery(document).on('change', 'select[name="all_jobs_wapps_selctor"]', function 
     var emp_id = jQuery('.jobsearch-allaplicants-holder').attr('data-eid');
     var usr_id = jQuery('.jobsearch-allaplicants-holder').attr('data-uid');
     var _this = jQuery(this),
-            loaderr = _this.parents('.allapps-jobselct-con').find('span'),
+            loaderr = _this.parent('.allapps-jobselct-con').find('span'),
             job_id = _this.val(),
             appender_con = jQuery('.jobsearch-all-aplicantslst'),
             ajax_url = jobsearch_plugin_vars.ajax_url;
@@ -3566,71 +3185,4 @@ jQuery(document).on('click', '.jobsearch-duplict-cusjob', function () {
             _this.attr('class', this_classes);
         });
     }
-});
-
-jQuery('.jobsearch-applics-filterbtn').click(function () {
-    if (!jQuery('.jobsearch-applics-filterscon').hasClass('animate-filters-open')) {
-        //jQuery('.jobsearch-applics-filterscon').removeAttr('style');
-        jQuery('.jobsearch-applics-filterscon').addClass('animate-filters-open');
-    }
-});
-
-jQuery('.applicfilters-sideclose-btn').click(function () {
-    jQuery('.jobsearch-applics-filterscon').removeClass('animate-filters-open');
-    //jQuery('.jobsearch-applics-filterscon').hide();
-});
-
-jQuery('.email-detailbox-btn').on('click', function () {
-    var _this = jQuery(this);
-    var email_id = _this.attr('data-id');
-    var ststr = _this.attr('data-ststr');
-    var ajax_url = jobsearch_plugin_vars.ajax_url;
-    jobsearch_modal_popup_open('JobSearchModalEmailLog' + email_id);
-    jQuery('#email-status-' + email_id).html(ststr);
-
-    jQuery.ajax({
-        url: ajax_url,
-        method: "POST",
-        data: {
-            email_id: email_id,
-            action: 'jobsearch_userdash_change_email_read_status',
-        },
-        dataType: "json"
-    });
-});
-
-jQuery('.user-email-field').on('change', function () {
-    var _this = jQuery(this);
-    var email_val = _this.val();
-    var this_parent = _this.parent('li');
-    var loder_con = this_parent.find('.chk-loder');
-    var msg_con = this_parent.find('.email-chek-msg');
-    
-    var ajax_url = jobsearch_plugin_vars.ajax_url;
-    msg_con.hide();
-    loder_con.html('<i class="fa fa-refresh fa-spin"></i>');
-    var request = jQuery.ajax({
-        url: ajax_url,
-        method: "POST",
-        data: {
-            email: email_val,
-            action: 'jobsearch_user_change_email_check_avail',
-        },
-        dataType: "json"
-    });
-    request.done(function (response) {
-        if ('undefined' !== typeof response.msg && response.msg != '') {
-            msg_con.removeAttr('style');
-            if (response.error == '1') {
-                msg_con.html('<span class="error-msg">' + response.msg + '</span>');
-            } else {
-                msg_con.html('<span class="success-msg">' + response.msg + '</span>');
-            }
-        }
-        loder_con.html('');
-    });
-
-    request.fail(function (jqXHR, textStatus) {
-        loder_con.html('');
-    });
 });

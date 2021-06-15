@@ -113,14 +113,14 @@ function careerfy_section_heading_shortcode($atts)
     }
     if ($view == 'view18') { ?>
 
-        <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?>">
             <small <?php echo $s_title_clr ?>><?php echo $s_title ?></small>
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
     <?php } else if ($view == 'view17') { ?>
 
-        <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?> <?php echo $align_heading_class ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
@@ -130,30 +130,30 @@ function careerfy_section_heading_shortcode($atts)
                 background-color: <?php echo $hc_title_clr ?>;
             }
         </style>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
         </div>
     <?php } else if ($view == 'view15') { ?>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <?php echo $heading_img ?>
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
     <?php } else if ($view == 'view14') { ?>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
             <small class="active"></small>
             <small></small>
         </div>
     <?php } else if ($view == 'view13') { ?>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
     <?php } else if ($view == 'view12') { ?>
-        <div class="<?php echo $hdng_class ?> style-heading-<?php echo $random_id ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?> style-heading-<?php echo $random_id ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
@@ -163,26 +163,26 @@ function careerfy_section_heading_shortcode($atts)
             }
         </style>
     <?php } else if ($view == 'view11') { ?>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
 
     <?php } else if ($view == 'view10') { ?>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
     <?php } else if ($view == 'view9') { ?>
         <!-- Fancy Title -->
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
             <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
         </div>
 
     <?php } else if ($view == 'view8') { ?>
         <!-- Fancy Title -->
-        <<?php echo $hdng_con ?> class="<?php echo $hdng_class ?><?php echo $content_align ?><?php echo($design_css_class) ?>">
+        <<?php echo $hdng_con ?> class="<?php echo $hdng_class ?><?php echo $content_align ?>">
         <?php echo $heading_img ?>
         <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
         <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
@@ -190,7 +190,7 @@ function careerfy_section_heading_shortcode($atts)
 
     <?php } else if ($view == 'view7') { ?>
         <!-- Fancy Title Ten -->
-        <<?php echo $hdng_con ?> class="<?php echo($hdng_class) ?><?php echo $content_align ?><?php echo($design_css_class) ?>">
+        <<?php echo $hdng_con ?> class="<?php echo($hdng_class) ?><?php echo $content_align ?>">
         <h2 <?php echo $title_colr_style ?>><?php echo $h_title ?></h2>
         <span <?php echo $desc_colr_style ?>><?php echo $h_desc ?></span>
         </div>
@@ -223,7 +223,7 @@ function careerfy_section_heading_shortcode($atts)
             }
 
         </style>
-        <div class="<?php echo $hdng_class ?><?php echo($design_css_class) ?>">
+        <div class="<?php echo $hdng_class ?>">
             <small class="small-<?php echo $random_id ?>"><?php echo $num_title ?>. <strong
                         style="color: <?php echo $s_title_clr ?>"><?php echo $s_title ?></strong></small>
             <h2 <?php echo $hc_title_clr ?>><?php echo $h_title ?></h2>

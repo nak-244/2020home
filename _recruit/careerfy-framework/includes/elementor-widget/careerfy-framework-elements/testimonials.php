@@ -259,7 +259,7 @@ class testimonials extends Widget_Base
         ), $atts));
 
         foreach ($atts['careerfy_testimonial_item'] as $info) {
-
+           
             $img = $info['img'] != '' ? $info['img']['url'] : '';
             $desc = $info['desc'];
             $title = $info['title'];
@@ -708,7 +708,7 @@ class testimonials extends Widget_Base
 
             <div class="careerfy-testimonial-section">
                 <div class="row">
-                    <?php echo($img != '' ? '<aside class="col-md-5" style="background:url(' . $img . '); background-repeat: no-repeat; background-size:cover; background-position: center;"></aside>' : '') ?>
+                    <?php echo($img != '' ? '<aside class="col-md-5"> <img src="' . $img . '" alt=""> </aside>' : '') ?>
                     <aside class="col-md-7">
                         <div class="careerfy-testimonial-slider">
                             <?php echo $this->careerfy_testimonial_item_shortcode() ?>

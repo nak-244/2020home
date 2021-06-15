@@ -99,7 +99,7 @@ if (!class_exists('ReduxFramework_jobsearch_ads_banner')) {
                 $def_ad_groups['group_title'] = $ad_group_titles;
                 $def_ad_groups['group_sort'] = $ad_group_sorts;
                 $def_ad_groups['group_visible_ads'] = $ad_group_visible_adss;
-                //$JobsearchReduxFramework->ReduxFramework->set('ad_banner_groups', $def_ad_groups);
+                $JobsearchReduxFramework->ReduxFramework->set('ad_banner_groups', $def_ad_groups);
             }
             $groups_value = isset($jobsearch_plugin_options['ad_banner_groups']) ? $jobsearch_plugin_options['ad_banner_groups'] : '';
 

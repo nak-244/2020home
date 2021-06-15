@@ -72,11 +72,6 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                     'function_callback' => array($this, 'get_candidate_name'),
                 ),
                 array(
-                    'var' => '{user_job_title}',
-                    'display_text' => esc_html__('Candidate Job Title', 'wp-jobsearch'),
-                    'function_callback' => array($this, 'get_user_job_title'),
-                ),
-                array(
                     'var' => '{user_phone}',
                     'display_text' => esc_html__('Candidate Phone', 'wp-jobsearch'),
                     'function_callback' => array($this, 'get_user_phone'),
@@ -85,11 +80,6 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                     'var' => '{profile_link}',
                     'display_text' => esc_html__('Candidate profile link', 'wp-jobsearch'),
                     'function_callback' => array($this, 'get_candidate_profile_link'),
-                ),
-                array(
-                    'var' => '{cand_cover_letter}',
-                    'display_text' => esc_html__('Candidate Cover Letter', 'wp-jobsearch'),
-                    'function_callback' => array($this, 'get_cand_cover_letter'),
                 ),
                 array(
                     'var' => '{job_posted_by}',
@@ -117,13 +107,11 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
 
         public function jobsearch_job_applied_to_employer_callback($user = '', $job_id = '') {
 
-            global $sitepress, $jobsearch_plugin_options, $jobsearch_glob_userobj;
+            global $sitepress, $jobsearch_plugin_options;
             $lang_code = '';
             if ( function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') ) {
                 $lang_code = $sitepress->get_current_language();
             }
-            
-            $jobsearch_glob_userobj = $user;
             
             $this->user = $user;
             $this->job_id = $job_id;
@@ -144,7 +132,7 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                 // getting template fields
                 $subject = (isset($template['subject']) && $template['subject'] != '' ) ? $template['subject'] : __('Job Approved', 'wp-jobsearch');
                 $subject = JobSearch_plugin::jobsearch_replace_variables($subject, $this->codes);
-
+                
                 $from = (isset($sender_detail_header) && $sender_detail_header != '') ? $sender_detail_header : esc_attr($blogname) . ' <' . $admin_email . '>';
                 $recipients = (isset($template['recipients']) && $template['recipients'] != '') ? $template['recipients'] : $this->get_job_added_email();
                 $recipients = apply_filters('jobsearch_job_aplyto_emp_email_recipients', $recipients, $job_id);
@@ -233,7 +221,6 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                         }
                     }
                 }
-                
                 //
                 //var_dump($att_file_id);
                 $user_email = $user->user_email;
@@ -250,7 +237,7 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                     'email_type' => $email_type,
                     'class_obj' => $this, // temprary comment
                 );
-                if (isset($att_file_id) && is_numeric($att_file_id) && $att_file_id > 0 && get_post_type($att_file_id) == 'attachment') {
+                if (isset($att_file_id) && $att_file_id > 0 && get_post_type($att_file_id) == 'attachment') {
                     $att_file_path = get_attached_file($att_file_id);
                     //var_dump($att_file_path);
                     if ($att_file_path != '') {
@@ -363,36 +350,8 @@ if (!class_exists('jobsearch_job_applied_to_employer_template')) {
                 $phone_number = get_post_meta($candidate_id, 'jobsearch_field_user_phone', true);
             }
             $phone_number = $phone_number != '' ? $phone_number : '-';
-
-            return $phone_number;
-        }
-
-        public function get_user_job_title() {
-            $user_id = $this->user->ID;
-            $user_job_title = '-';
-            $user_is_candidate = jobsearch_user_is_candidate($user_id);
-            if ($user_is_candidate) {
-                $candidate_id = jobsearch_get_user_candidate_id($user_id);
-                $user_job_title = get_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', true);
-            }
-            $user_job_title = $user_job_title != '' ? $user_job_title : '-';
             
-            return $user_job_title;
-        }
-
-        public function get_cand_cover_letter() {
-
-            $user_id = $this->user->ID;
-            $user_is_candidate = jobsearch_user_is_candidate($user_id);
-            $ret_value = '';
-            if ($user_is_candidate) {
-                $candidate_id = jobsearch_get_user_candidate_id($user_id);
-                $ret_value = get_post_meta($candidate_id, 'jobsearch_field_resume_cover_letter', true);
-            }
-            if ($ret_value == '') {
-                $ret_value = '-';
-            }
-            return $ret_value;
+            return $phone_number;
         }
 
         public function get_job_added_employer_logo() {

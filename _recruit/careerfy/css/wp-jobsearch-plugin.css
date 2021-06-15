@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
 .careerfy-typo-wrap * {
+    margin: 0;
+    padding: 0;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -186,11 +188,6 @@
 .categories-list ul li span {
     font-size: 12px;
 }
-.categories-list ul li img {
-    width: 50px;
-    display: inline-block;
-    margin: 12px 0px 28px 0px;
-}
 .careerfy-plain-btn {
     float: left;
     width: 100%;
@@ -244,7 +241,6 @@
     text-align: center;
     width: 119px;
     padding: 20px;
-    overflow: hidden;
 }
 .careerfy-featured-listing-text h2 {
     font-size: 16px;
@@ -469,6 +465,16 @@
     height: 3px;
     background-color: #e0e0e0;
     border-radius: 100%;
+}
+.careerfy-job-location {
+    float: left;
+    color: #999999;
+    font-size: 12px;
+}
+.careerfy-job-location i {
+    font-size: 11px;
+    color: #999999;
+    margin-right: 5px;
 }
 .careerfy-job-like {
     float: right;
@@ -906,12 +912,6 @@
 .careerfy-jobdetail-services ul li {
     list-style: none;
     margin-bottom: 24px;
-}
-.careerfy-jobdetail-services ul li[class*="careerfy-column-"] {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
-    margin-right: -4px;
 }
 .careerfy-jobdetail-services i {
     font-size: 32px;
@@ -1370,7 +1370,7 @@
     padding: 27px 29px 15px 29px;
     background-color: #ffffff;
 }
-.careerfy-gallery,
+.careerfy-gallery,.careerfy-simple-gallery ul li a,
 .careerfy-simple-gallery ul li a img {
     float: left;
     width: 100%;
@@ -2481,7 +2481,6 @@
     border: 1px solid #ececec;
     position: relative;
     padding: 24px 22px 24px 22px;
-    overflow: hidden;
 }
 .careerfy-candidate-grid-thumb {
     display: inline-block;
@@ -2553,8 +2552,6 @@
     padding: 40px 40px;
     text-align: center;
     margin-bottom: 21px;
-    overflow: hidden;
-    position: relative;
 }
 .jobsearch_candidate_info figure {
     display: inline-block;
@@ -3678,14 +3675,7 @@ body.careerfy-modal-active{
 }
 .careerfy-employer ul li                   { list-style: none; }
 .careerfy-employer > ul > li               { margin-bottom: 20px; }
-.careerfy-employer.careerfy-employer-grid ul { margin: 0px -15px; }
-.careerfy-employer.careerfy-employer-grid ul > li {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
-    margin-right: -4px;
-    padding: 0px 15px;
-}
+.careerfy-employer.careerfy-employer-grid ul > li               { float: none; display: inline-block; vertical-align: top; margin-right: -4px; }
 /* Employer Grid */
 .careerfy-employer-grid-wrap,
 .careerfy-employer-grid figure {
@@ -3695,7 +3685,6 @@ body.careerfy-modal-active{
 .careerfy-employer-grid-wrap {
     border: 1px solid #ececec;
     padding: 20px 20px 18px 20px;
-    position: relative;
 }
 .careerfy-employer-grid figure { margin: 0px 0px 25px 0px; }
 .careerfy-employer-grid-image {
@@ -3798,7 +3787,6 @@ body.careerfy-modal-active{
     border: 1px solid #ececec;
     position: relative;
     padding: 24px 22px 24px 22px;
-    overflow: hidden;
 }
 .careerfy-candidate-grid-thumb {
     display: inline-block;
@@ -3836,8 +3824,7 @@ body.careerfy-modal-active{
 .careerfy-candidate-grid figure figcaption p a a { color: #13b5ea; }
 .careerfy-candidate-grid-option li a {
     color: #999999;
-    display: inline-block;
-    margin: 1px 0px 0px 5px;
+    float: right;
 }
 .careerfy-candidate-grid figure figcaption span {
     font-size: 12px;
@@ -3920,7 +3907,6 @@ body.careerfy-modal-active{
     padding: 44px 40px;
     border-bottom: 1px solid #efefef;
     height: 190px;
-    overflow: hidden;
 }
 .careerfy-jobtype-label {
     position: absolute;
@@ -3996,6 +3982,7 @@ body.careerfy-modal-active{
 }
 .careerfy-job-location i {
     font-size: 11px;
+    color: #999999;
     margin-right: 5px;
 }
 .careerfy-job-like i { margin: 0px; }
@@ -4110,18 +4097,6 @@ body.careerfy-modal-active{
     border-radius: 0px 0px 0px 80px;
     text-align: center;
     padding: 7px 0px 0px 12px;
-}
-.careerfy-jobli-medium3 {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    color: #ffffff !important;
-    background-color: #ffb14a;
-    width: 30px;
-    height: 33px;
-    border-radius: 0px 0px 0px 80px;
-    text-align: center;
-    padding: 0px 0px 0px 9px;
 }
 .careerfy-joblisting-plain .careerfy-joblisting-plain-wrap {
     position: relative; }
@@ -4242,24 +4217,24 @@ body.careerfy-modal-active{
 .urgntpkg-detilbadge {
     display: inline-block !important;
     padding: 4px 10px;
-    background-color: #d72c2c;
+    background-color: #ffb607;
     line-height: 1;
     border-radius: 40px;
     color: #ffffff !important;
-    font-size: 12px !important;
+    font-size: 12px;
     width: auto !important;
 }
 .urgntpkg-detilbadge i {
     margin-right: 2px; }
-.urgntpkg-candv1,.urgntpkg-jobv1 {
+.urgntpkg-candv1 {
     position: absolute;
-    left: -21px;
-    top: 8px;
-    font-size: 13px !important;
-    background-color: #d72c2c;
-    color: #ffffff !important;
-    padding: 5px 26px;
+    left: -27px;
+    top: 13px;
+    background-color: #ffb14a;
+    color: #ffffff;
+    padding: 5px 22px;
     line-height: 1;
+    text-transform: uppercase;
     z-index: 1;
     -webkit-transform: rotate(-40deg);
        -moz-transform: rotate(-40deg);
@@ -4275,9 +4250,3 @@ body.careerfy-modal-active{
 .careerfy-candidatedetail-content3 .careerfy-description {
     margin-bottom: 0px; }
 .careerfy-candidate-grid  .slick-slide { padding: 0px 15px; }
-.careerfy-featured-candidates-grid .urgntpkg-detilbadge {
-    margin-bottom: 10px; }
-.jobsearch_box_candidate_info .urgntpkg-candv1 {
-    left: -23px;
-    top: 4px;
-}

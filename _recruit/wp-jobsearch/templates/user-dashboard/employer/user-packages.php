@@ -63,7 +63,6 @@ if ($employer_id > 0) {
             $pkgs_query = new WP_Query($args);
             $total_pkgs = $pkgs_query->found_posts;
             if ($pkgs_query->have_posts()) {
-                $detail_boxes_html = '';
                 ob_start();
                 ?>
                 <div class="jobsearch-packages-list-holder">
@@ -72,9 +71,11 @@ if ($employer_id > 0) {
                             <div class="jobsearch-table-row">
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Order ID', 'wp-jobsearch') ?></div>
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Package', 'wp-jobsearch') ?></div>
-                                <div class="jobsearch-table-cell"><?php esc_html_e('Expiry', 'wp-jobsearch') ?></div>
+                                <div class="jobsearch-table-cell"><?php echo apply_filters('jobsearch_emp_dash_pkg_job_num_label', esc_html__('Total', 'wp-jobsearch')) ?></div>
+                                <div class="jobsearch-table-cell"><?php esc_html_e('Used', 'wp-jobsearch') ?></div>
+                                <div class="jobsearch-table-cell"><?php esc_html_e('Remaining', 'wp-jobsearch') ?></div>
+                                <div class="jobsearch-table-cell"><?php esc_html_e('Package Expiry', 'wp-jobsearch') ?></div>
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Status', 'wp-jobsearch') ?></div>
-                                <div class="jobsearch-table-cell">&nbsp;</div>
                             </div>
                         </div>
                         <?php
@@ -83,7 +84,6 @@ if ($employer_id > 0) {
                             $pkg_order_id = get_the_ID();
                             $pkg_order_name = get_post_meta($pkg_order_id, 'package_name', true);
 
-                            $pkg_order_expiry = get_post_meta($pkg_order_id, 'package_expiry_timestamp', true);
                             //
                             $pkg_type = get_post_meta($pkg_order_id, 'package_type', true);
                             
@@ -146,50 +146,6 @@ if ($employer_id > 0) {
                                     $remaining_cvs = '-';
                                 }
 
-                            } else if ($pkg_type == 'employer_profile') {
-                                
-                                $total_jobs = get_post_meta($pkg_order_id, 'emprof_num_jobs', true);
-                                $unlimited_numjobs = get_post_meta($pkg_order_id, 'unlimited_numjobs', true);
-                                if ($unlimited_numjobs == 'yes') {
-                                    $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');
-                                }
-                                //
-                                $total_fjobs = get_post_meta($pkg_order_id, 'emprof_num_fjobs', true);
-                                $unlimited_numfjobs = get_post_meta($pkg_order_id, 'unlimited_numfjobs', true);
-                                if ($unlimited_numfjobs == 'yes') {
-                                    $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
-                                }
-                                //
-                                $total_cvs = get_post_meta($pkg_order_id, 'emprof_num_cvs', true);
-                                $unlimited_numcvs = get_post_meta($pkg_order_id, 'unlimited_numcvs', true);
-                                if ($unlimited_numcvs == 'yes') {
-                                    $total_cvs = esc_html__('Unlimited', 'wp-jobsearch');
-                                }
-
-                                $job_exp_dur = get_post_meta($pkg_order_id, 'emprofjob_expiry_time', true);
-                                $job_exp_dur_unit = get_post_meta($pkg_order_id, 'emprofjob_expiry_time_unit', true);
-
-                                $used_jobs = jobsearch_emprofpckg_order_used_jobs($pkg_order_id);
-                                $remaining_jobs = jobsearch_emprofpckg_order_remaining_jobs($pkg_order_id);
-                                if ($unlimited_numjobs == 'yes') {
-                                    $used_jobs = '-';
-                                    $remaining_jobs = '-';
-                                }
-                                //
-                                $used_fjobs = jobsearch_emprofpckg_order_used_fjobs($pkg_order_id);
-                                $remaining_fjobs = jobsearch_emprofpckg_order_remaining_fjobs($pkg_order_id);
-                                if ($unlimited_numfjobs == 'yes') {
-                                    $used_fjobs = '-';
-                                    $remaining_fjobs = '-';
-                                }
-                                //
-                                $used_cvs = jobsearch_emprofpckg_order_used_cvs($pkg_order_id);
-                                $remaining_cvs = jobsearch_emprofpckg_order_remaining_cvs($pkg_order_id);
-                                if ($unlimited_numcvs == 'yes') {
-                                    $used_cvs = '-';
-                                    $remaining_cvs = '-';
-                                }
-
                             } else if ($pkg_type == 'featured_jobs') {
                                 $total_jobs = get_post_meta($pkg_order_id, 'num_of_fjobs', true);
                                 
@@ -207,21 +163,6 @@ if ($employer_id > 0) {
                                     $used_jobs = '-';
                                     $remaining_jobs = '-';
                                 }
-                                
-                                //
-                                $total_fjobs = get_post_meta($pkg_order_id, 'feat_job_credits', true);
-                                $unlimited_numfcrs = get_post_meta($pkg_order_id, 'unlimited_fjobcrs', true);
-                                if ($unlimited_numfcrs == 'yes') {
-                                    $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
-                                }
-                                
-                                $used_fjobs = jobsearch_pckg_order_used_featjob_credits($pkg_order_id);
-                                $remaining_fjobs = jobsearch_pckg_order_remain_featjob_credits($pkg_order_id);
-                                if ($unlimited_numfcrs == 'yes') {
-                                    $used_fjobs = '-';
-                                    $remaining_fjobs = '-';
-                                }
-                                
                             } else {
                                 $total_jobs = get_post_meta($pkg_order_id, 'num_of_jobs', true);
                                 
@@ -260,21 +201,13 @@ if ($employer_id > 0) {
                                     $status_txt = esc_html__('Expired', 'wp-jobsearch');
                                     $status_class = 'jobsearch-packages-pending';
                                 }
-                            } else if ($pkg_type == 'job') {
+                            } else {
                                 if (jobsearch_pckg_order_is_expired($pkg_order_id)) {
                                     $status_txt = esc_html__('Expired', 'wp-jobsearch');
                                     $status_class = 'jobsearch-packages-pending';
                                 }
                                 $status_txt = apply_filters('jobsearch_emp_dash_jobpkgs_list_status_txt', $status_txt, $pkg_order_id);
                                 $status_class = apply_filters('jobsearch_emp_dash_jobpkgs_list_status_class', $status_class, $pkg_order_id);
-                            } else if ($pkg_type == 'emp_allin_one') {
-                                $allin_jobs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id);
-                                $allin_fjobs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id, 'fjobs');
-                                $allin_cvs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id, 'cvs');
-                                if ($allin_jobs_pkgexpire && $allin_fjobs_pkgexpire && $allin_cvs_pkgexpire) {
-                                    $status_txt = esc_html__('Expired', 'wp-jobsearch');
-                                    $status_class = 'jobsearch-packages-pending';
-                                }
                             }
                             if ($pkg_type == 'promote_profile') {
                                 $status_txt = esc_html__('Active', 'wp-jobsearch');
@@ -295,10 +228,10 @@ if ($employer_id > 0) {
                                 }
                             }
                             if ($pkg_type == 'employer_profile') {
-                                $emprof_jobs_pkgexpire = jobsearch_emprofpckg_order_is_expired($pkg_order_id);
-                                $emprof_fjobs_pkgexpire = jobsearch_emprofpckg_order_is_expired($pkg_order_id, 'fjobs');
-                                $emprof_cvs_pkgexpire = jobsearch_emprofpckg_order_is_expired($pkg_order_id, 'cvs');
-                                if ($emprof_jobs_pkgexpire && $emprof_fjobs_pkgexpire && $emprof_cvs_pkgexpire) {
+                                $status_txt = esc_html__('Active', 'wp-jobsearch');
+                                $status_class = '';
+
+                                if (jobsearch_emp_profile_pkg_is_expired($pkg_order_id)) {
                                     $status_txt = esc_html__('Expired', 'wp-jobsearch');
                                     $status_class = 'jobsearch-packages-pending';
                                 }
@@ -318,220 +251,122 @@ if ($employer_id > 0) {
                                         ?>
                                     </div>
                                     <?php
-                                    if ($unlimited_pkg == 'yes') {
+                                    if ($pkg_type == 'emp_allin_one') {
+                                        $allin_jobs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id);
+                                        $allin_fjobs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id, 'fjobs');
+                                        $allin_cvs_pkgexpire = jobsearch_allinpckg_order_is_expired($pkg_order_id, 'cvs');
+                                        
+                                        $allin_jobs_pkgstats = esc_html__('Active', 'wp-jobsearch');
+                                        $allin_fjobs_pkgstats = esc_html__('Active', 'wp-jobsearch');
+                                        $allin_cvs_pkgstats = esc_html__('Active', 'wp-jobsearch');
+                                        $allin_jobs_statsclas = 'pkg-active';
+                                        $allin_fjobs_statsclas = 'pkg-active';
+                                        $allin_cvs_statsclas = 'pkg-active';
+                                        
+                                        if ($allin_jobs_pkgexpire) {
+                                            $allin_jobs_pkgstats = esc_html__('Expired', 'wp-jobsearch');
+                                            $allin_jobs_statsclas = 'pkg-expire';
+                                        }
+                                        if ($allin_fjobs_pkgexpire) {
+                                            $allin_fjobs_pkgstats = esc_html__('Expired', 'wp-jobsearch');
+                                            $allin_fjobs_statsclas = 'pkg-expire';
+                                        }
+                                        if ($allin_cvs_pkgexpire) {
+                                            $allin_cvs_pkgstats = esc_html__('Expired', 'wp-jobsearch');
+                                            $allin_cvs_statsclas = 'pkg-expire';
+                                        }
+                                        
+                                        $jobs_pkgsts_str = sprintf(__('Status: %s'), '<em class="' . $allin_jobs_statsclas . '">' . $allin_jobs_pkgstats . '</em>');
+                                        $fjobs_pkgsts_str = sprintf(__('Status: %s'), '<em class="' . $allin_fjobs_statsclas . '">' . $allin_fjobs_pkgstats . '</em>');
+                                        $cvs_pkgsts_str = sprintf(__('Status: %s'), '<em class="' . $allin_cvs_statsclas . '">' . $allin_cvs_pkgstats . '</em>');
                                         ?>
-                                        <div class="jobsearch-table-cell"><?php esc_html_e('Never', 'wp-jobsearch'); ?></div>
+                                        <div class="jobsearch-table-cell jobsearch-detailpkg-celcol">
+                                            <div class="pkg-item-detail">
+                                                <span class="itm-labl"><?php esc_html_e('Normal Jobs:') ?></span>
+                                                <?php
+                                                if ($unlimited_numjobs == 'yes') {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_jobs) ?>, <?php echo ($jobs_pkgsts_str) ?></span>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_jobs) ?>, <?php printf(__('Used: <strong>%s</strong>'), $used_jobs) ?>, <?php printf(__('Remaining: <strong>%s</strong>'), $remaining_jobs) ?>, <?php echo ($jobs_pkgsts_str) ?></span>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <div class="pkg-item-detail">
+                                                <span class="itm-labl"><?php esc_html_e('Featured Jobs:') ?></span>
+                                                <?php
+                                                if ($unlimited_numfjobs == 'yes') {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_fjobs) ?>, <?php echo ($fjobs_pkgsts_str) ?></span>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_fjobs) ?>, <?php printf(__('Used: <strong>%s</strong>'), $used_fjobs) ?>, <?php printf(__('Remaining: <strong>%s</strong>'), $remaining_fjobs) ?>, <?php echo ($fjobs_pkgsts_str) ?></span>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <div class="pkg-item-detail">
+                                                <span class="itm-labl"><?php esc_html_e('CVs:') ?></span>
+                                                <?php
+                                                if ($unlimited_numcvs == 'yes') {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_cvs) ?>, <?php echo ($cvs_pkgsts_str) ?></span>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <span class="itm-val"><?php printf(__('Total: <strong>%s</strong>'), $total_cvs) ?>, <?php printf(__('Used: <strong>%s</strong>'), $used_cvs) ?>, <?php printf(__('Remaining: <strong>%s</strong>'), $remaining_cvs) ?>, <?php echo ($cvs_pkgsts_str) ?></span>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <div class="pkg-item-expiresin">
+                                                <?php
+                                                $pkg_expires_in = absint($pkg_exp_dur) . ' ' . jobsearch_get_duration_unit_str($pkg_exp_dur_unit);
+                                                if ($unlimited_pkg == 'yes') {
+                                                    esc_html_e('Package Expire: Never', 'wp-jobsearch');
+                                                } else {
+                                                    printf(esc_html__('Package Expire in: %s', 'wp-jobsearch'), $pkg_expires_in);
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    } else if ($pkg_type == 'cv') {
+                                        ?>
+                                        <div class="jobsearch-table-cell"><?php echo ($total_cvs) ?></div>
+                                        <div class="jobsearch-table-cell"><?php echo ($used_cvs) ?></div>
+                                        <div class="jobsearch-table-cell"><?php echo ($remaining_cvs) ?></div>
                                         <?php
                                     } else {
                                         ?>
-                                        <div class="jobsearch-table-cell"><?php echo absint($pkg_exp_dur) . ' ' . jobsearch_get_duration_unit_str($pkg_exp_dur_unit) ?></div>
+                                        <div class="jobsearch-table-cell"><?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_ttjobs', $total_jobs, $pkg_order_id) ?></div>
+                                        <div class="jobsearch-table-cell"><?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_uujobs', $used_jobs, $pkg_order_id) ?></div>
+                                        <div class="jobsearch-table-cell"><?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_rrjobs', $remaining_jobs, $pkg_order_id) ?></div>
+                                        <?php
+                                    }
+                                    if ($pkg_type != 'emp_allin_one') {
+                                        if ($unlimited_pkg == 'yes') {
+                                            ?>
+                                            <div class="jobsearch-table-cell"><?php esc_html_e('Never', 'wp-jobsearch'); ?></div>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <div class="jobsearch-table-cell"><?php echo absint($pkg_exp_dur) . ' ' . jobsearch_get_duration_unit_str($pkg_exp_dur_unit) ?></div>
+                                            <?php
+                                        }
+                                        ?>
+                                        <div class="jobsearch-table-cell">
+                                            <i class="fa fa-circle <?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_pstatus', $status_class, $pkg_order_id) ?>"></i> <?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_pstatext', $status_txt, $pkg_order_id) ?>
+                                        </div>
                                         <?php
                                     }
                                     ?>
-                                    <div class="jobsearch-table-cell">
-                                        <i class="fa fa-circle <?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_pstatus', $status_class, $pkg_order_id) ?>"></i> <?php echo apply_filters('jobsearch_emp_dash_pkgs_inlist_pstatext', $status_txt, $pkg_order_id) ?>
-                                    </div>
-                                    <div class="jobsearch-table-cell"><a href="javascript:void(0);" class="jobsearch-pckg-mordetail" data-id="<?php echo ($pkg_order_id) ?>" data-mtxt="<?php esc_html_e('More detail', 'wp-jobsearch'); ?>" data-ctxt="<?php esc_html_e('Close', 'wp-jobsearch'); ?>"><?php esc_html_e('More detail', 'wp-jobsearch'); ?> <i class="fa fa-angle-right"></i></a></div>
-                                </div>
-                                <div id="packge-detail-box<?php echo ($pkg_order_id) ?>" class="packge-detail-sepbox" style="display: none;">
-                                    <table class="packge-detail-table">
-                                        <tbody>
-                                            <?php
-                                            if ($pkg_type == 'cv') {
-                                                ?>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('CVs', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numcvs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_cvs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_cvs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_cvs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <?php
-                                            } else if ($pkg_type == 'featured_jobs') {
-                                                ?>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Jobs you can post', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numfjobs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_jobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_jobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_jobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Featured job credits', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numfcrs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_fjobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_fjobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_fjobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <?php
-                                            } else if ($pkg_type == 'emp_allin_one') {
-                                                ?>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Jobs you can post', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numjobs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_jobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_jobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_jobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Featured job credits', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numfjobs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_fjobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_fjobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_fjobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Download candidate CVs from database', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numcvs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_cvs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_cvs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_cvs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <?php
-                                            } else if ($pkg_type == 'employer_profile') {
-                                                ?>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Jobs you can post', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numjobs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_jobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_jobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_jobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Featured job credits', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numfjobs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_fjobs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_fjobs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_fjobs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Download candidate CVs from database', 'wp-jobsearch'); ?></td>
-                                                    <?php
-                                                    if ($unlimited_numcvs == 'yes') {
-                                                        ?>
-                                                        <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_cvs) ?></td>
-                                                        <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_cvs) ?></td>
-                                                        <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_cvs) ?></td>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </tr>
-                                                <?php
-                                            } else if ($pkg_type == 'job') {
-                                                ?>
-                                                <tr class="pakcge-itm-stats">
-                                                    <td class="pakcge-one-hding"><?php esc_html_e('Jobs', 'wp-jobsearch'); ?></td>
-                                                    <td><?php printf(__('Total: %s', 'wp-jobsearch'), apply_filters('jobsearch_emp_dash_pkgs_inlist_ttjobs', $total_jobs, $pkg_order_id)) ?></td>
-                                                    <td><?php printf(__('Used: %s', 'wp-jobsearch'), apply_filters('jobsearch_emp_dash_pkgs_inlist_uujobs', $used_jobs, $pkg_order_id)) ?></td>
-                                                    <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), apply_filters('jobsearch_emp_dash_pkgs_inlist_rrjobs', $remaining_jobs, $pkg_order_id)) ?></td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            ?>
-                                            <tr class="pakcge-itm-footr">
-                                                <td class="pakcge-active-date" colspan="2">
-                                                    <div class="date-sec">
-                                                        <i class="jobsearch-icon jobsearch-calendar"></i> 
-                                                        <?php
-                                                        printf(esc_html__('Purchase Date: %s', 'wp-jobsearch'), get_the_date());
-                                                        ?>
-                                                    </div>
-                                                </td>
-                                                <td class="pakcge-expiry-date" colspan="2">
-                                                    <div class="date-sec">
-                                                        <i class="jobsearch-icon jobsearch-calendar"></i> 
-                                                        <?php
-                                                        $pkg_expires_date = $pkg_order_expiry > 0 ? date_i18n(get_option('date_format'), $pkg_order_expiry) : '';
-                                                        if ($unlimited_pkg == 'yes') {
-                                                            esc_html_e('Never Expire', 'wp-jobsearch');
-                                                        } else {
-                                                            printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), $pkg_expires_date);
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
-                            
                             <?php
                         endwhile;
                         wp_reset_postdata();
@@ -550,7 +385,6 @@ if ($employer_id > 0) {
                 }
                 $pkgs_html = ob_get_clean();
                 echo apply_filters('jobsearch_empdash_pckges_list_html', $pkgs_html);
-                
             } else {
                 ?>
                 <p><?php esc_html_e('No record found.', 'wp-jobsearch') ?></p>

@@ -5,7 +5,6 @@
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
  */
-
 use WP_Jobsearch\Candidate_Profile_Restriction;
 
 if (!class_exists('JobSearch_plugin')) {
@@ -70,12 +69,7 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
     if (is_user_logged_in()) {
         $cur_user_id = get_current_user_id();
         $cur_user_obj = wp_get_current_user();
-        if (jobsearch_user_isemp_member($cur_user_id)) {
-            $employer_id = jobsearch_user_isemp_member($cur_user_id);
-            $cur_user_id = jobsearch_get_employer_user_id($employer_id);
-        } else {
-            $employer_id = jobsearch_get_user_employer_id($cur_user_id);
-        }
+        $employer_id = jobsearch_get_user_employer_id($cur_user_id);
         $ucandidate_id = jobsearch_get_user_candidate_id($cur_user_id);
         $employer_dbstatus = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
         if ($employer_id > 0 && $employer_dbstatus == 'on') {
@@ -108,13 +102,7 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
             }
             //
             if ($restrict_candidates_for_users == 'register_resume') {
-                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg($cur_user_id);
-                if (!$user_cv_pkg) {
-                    $user_cv_pkg = jobsearch_allin_first_pkg_subscribed($cur_user_id, 'cvs');
-                }
-                if (!$user_cv_pkg) {
-                    $user_cv_pkg = jobsearch_emprof_first_pkg_subscribed($cur_user_id, 'cvs');
-                }
+                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg();
                 if ($user_cv_pkg) {
                     $view_candidate = true;
                 } else {
@@ -132,8 +120,6 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
         } else if (in_array('administrator', (array)$cur_user_obj->roles)) {
             $view_candidate = true;
         } else if ($ucandidate_id > 0 && $ucandidate_id == $candidate_id) {
-            $view_candidate = true;
-        } else if ($restrict_candidates_for_users == 'register_empcand' && ($ucandidate_id > 0 || $employer_id > 0)) {
             $view_candidate = true;
         }
     }
@@ -160,7 +146,7 @@ $candidate_content = apply_filters('the_content', $candidate_content);
 $candidate_join_date = isset($candidate_obj->post_date) ? $candidate_obj->post_date : '';
 $candidate_jobtitle = get_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', true);
 $candidate_address = get_post_meta($candidate_id, 'jobsearch_field_location_address', true);
-if (function_exists('jobsearch_post_city_contry_txtstr')) {
+if (function_exists('jobsearch_post_city_contry_txtstr') ) {
     $candidate_address = jobsearch_post_city_contry_txtstr($candidate_id, $loc_view_country, $loc_view_state, $loc_view_city, $cand_det_full_address_switch);
 }
 $user_facebook_url = get_post_meta($candidate_id, 'jobsearch_field_user_facebook_url', true);
@@ -227,13 +213,6 @@ if (isset($subheader_candidate_bg_color['rgba'])) {
     $subheader_bg_color = $subheader_candidate_bg_color['rgba'];
 }
 
-$sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
-$sectors = wp_get_post_terms($candidate_id, 'sector');
-$candidate_sector = isset($sectors[0]->name) ? $sectors[0]->name : '';
-$candidate_sector_id = isset($sectors[0]->term_id) ? $sectors[0]->term_id : '';
-$term_fields = get_term_meta($candidate_sector_id, 'careerfy_frame_cat_fields', true);
-$term_icon = isset($term_fields['icon']) ? $term_fields['icon'] : '';
-
 if ($view_candidate) {
     ?>
     <!-- SubHeader -->
@@ -241,8 +220,7 @@ if ($view_candidate) {
 
         <!-- SubHeader Style7 Top -->
         <div class="careerfy-subheader-style7-top"<?php echo($candidate_cover_image_src_style_str); ?>>
-            <span class="careerfy-light-transparent"
-                  style="background: <?php echo !empty($subheader_bg_color) ? $subheader_bg_color : 'rgb(48, 56, 68, 0.50)' ?>"></span>
+            <span class="careerfy-light-transparent" style="background: <?php echo $subheader_bg_color ?>"></span>
             <div class="container">
                 <div class="row">
                     <div class="careerfy-column-12">
@@ -258,11 +236,9 @@ if ($view_candidate) {
         <div class="careerfy-breadcrumb-style7">
             <div class="container">
                 <ul>
-                    <li>
-                        <a href="<?php echo home_url($candidate_id); ?>"><?php echo esc_html__('Home', 'careerfy') ?> </a>
-                    </li>
+                    <li><a href="<?php echo home_url($candidate_id); ?>">Home</a></li>
                     <li><a href="<?php echo esc_url($result_page); ?>"><?php echo get_the_title($page_id); ?></a></li>
-                    <?php
+                    <?php 
                     if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|sector', 'detail_page')) {
                         echo($sector_str);
                     }
@@ -288,8 +264,6 @@ if ($view_candidate) {
                     $restrict_img_url = isset($restrict_img['url']) ? $restrict_img['url'] : '';
                     $restrict_cv_pckgs = isset($jobsearch_plugin_options['restrict_cv_packages']) ? $jobsearch_plugin_options['restrict_cv_packages'] : '';
                     $restrict_msg = isset($jobsearch_plugin_options['restrict_cand_msg']) && $jobsearch_plugin_options['restrict_cand_msg'] != '' ? $jobsearch_plugin_options['restrict_cand_msg'] : esc_html__('The Page is Restricted only for Subscribed Employers', 'careerfy');
-
-                    $op_emp_register_allow = isset($jobsearch_plugin_options['login_employer_register']) ? $jobsearch_plugin_options['login_employer_register'] : '';
                     ?>
                     <div class="jobsearch-column-12">
                         <div class="restrict-candidate-sec">
@@ -324,16 +298,9 @@ if ($view_candidate) {
                                     <a href="javascript:void(0);" class="jobsearch-open-signin-tab"><i
                                                 class="jobsearch-icon jobsearch-user"></i><?php esc_html_e('Login', 'careerfy') ?>
                                     </a>
-                                    <?php
-                                    if ($op_emp_register_allow != 'no') {
-                                        ?>
-                                        <a href="javascript:void(0);"
-                                           class="jobsearch-open-register-tab company-register-tab"><i
-                                                    class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'careerfy') ?>
-                                        </a>
-                                        <?php
-                                    }
-                                    ?>
+                                    <a href="javascript:void(0);" class="jobsearch-open-register-tab"><i
+                                                class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'careerfy') ?>
+                                    </a>
                                 </div>
                                 <?php
                             }
@@ -446,20 +413,23 @@ if ($view_candidate) {
                                     ?>
                                     <?php
                                     if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                        echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_listv1');
+                                        echo jobsearch_cand_urgent_pkg_iconlab($candidate_id);
                                     }
                                     ?>
                                     <?php
                                     $show_disp_name = apply_filters('jobsearch_candidate_detail_content_top_displayname', $user_displayname, $candidate_id);
-
+                                    
                                     if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img', 'detail_page')) {
                                         ?>
                                         <img src="<?php echo($user_def_avatar_url) ?>" alt="">
-                                    <?php } ?>
+                                        <?php
+                                    }
+                                    ?>
                                     <figcaption>
                                         <h2><?php echo($show_disp_name); ?></h2>
                                         <?php
-                                        if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title', 'detail_page')) { ?>
+                                        if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title', 'detail_page')) {
+                                            ?>
                                             <p><?php echo($candidate_jobtitle) ?></p>
                                             <?php
                                         }
@@ -469,19 +439,11 @@ if ($view_candidate) {
                                             if (!$cand_profile_restrict::cand_field_is_locked('address_defields', 'detail_page')) {
                                                 if ($candidate_address != '' && $all_location_allow == 'on') {
                                                     ?>
-                                                    <li>
-                                                        <strong><?php echo esc_html__('Location:', 'careerfy'); ?></strong>
+                                                    <li><strong><?php echo esc_html__('Location:', 'careerfy'); ?></strong>
                                                     </li>
                                                     <li><?php echo($candidate_address) ?></li>
                                                     <?php
                                                 }
-                                            }
-                                            if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|sector', 'detail_page')) {
-                                                if ($candidate_sector != '' && $sectors_enable_switch == 'on') { ?>
-                                                    <li><strong><?php echo esc_html__('Sector:', 'careerfy') ?></strong>
-                                                    </li>
-                                                    <li><?php echo apply_filters('jobsearch_gew_wout_anchr_sector_str_html', $candidate_sector, $candidate_id); ?></li>
-                                                <?php }
                                             }
                                             if ($candidate_join_date != '') {
                                                 //$candidate_join_date = jobsearch_time_elapsed_string($candidate_join_date, '');
@@ -489,7 +451,7 @@ if ($view_candidate) {
                                                 <li>
                                                     <strong><?php echo esc_html__('Profile Created:', 'careerfy'); ?></strong>
                                                 </li>
-                                                <li><?php echo esc_html(human_time_diff(strtotime($candidate_join_date), current_time('timestamp'))) . esc_html__(' ago', 'careerfy'); ?></li>
+                                                <li><?php echo esc_html(human_time_diff(strtotime($candidate_join_date), current_time('timestamp'))) . ' ago'; ?></li>
                                                 <?php
                                             }
                                             ?>
@@ -512,40 +474,28 @@ if ($view_candidate) {
                                                     <?php
                                                     if ($user_facebook_url != '' && $cand_alow_fb_smm == 'on') {
                                                         ?>
-                                                        <li>
-                                                            <a href="<?php echo jobsearch_esc_html(esc_url($user_facebook_url)) ?>"
-                                                               target="_blank"
-                                                               data-original-title="facebook"
-                                                               class="fa fa-facebook"></a>
+                                                        <li><a href="<?php echo($user_facebook_url) ?>"
+                                                               data-original-title="facebook" class="fa fa-facebook"></a>
                                                         </li>
                                                         <?php
                                                     }
                                                     if ($user_twitter_url != '' && $cand_alow_twt_smm == 'on') {
                                                         ?>
-                                                        <li>
-                                                            <a href="<?php echo jobsearch_esc_html(esc_url($user_twitter_url)) ?>"
-                                                               target="_blank"
-                                                               data-original-title="twitter" class="fa fa-twitter"></a>
-                                                        </li>
+                                                        <li><a href="<?php echo($user_twitter_url) ?>"
+                                                               data-original-title="twitter" class="fa fa-twitter"></a></li>
                                                         <?php
                                                     }
                                                     if ($user_linkedin_url != '' && $cand_alow_linkd_smm == 'on') {
                                                         ?>
-                                                        <li>
-                                                            <a href="<?php echo jobsearch_esc_html(esc_url($user_linkedin_url)) ?>"
-                                                               target="_blank"
-                                                               data-original-title="linkedin"
-                                                               class="fa fa-linkedin"></a>
+                                                        <li><a href="<?php echo($user_linkedin_url) ?>"
+                                                               data-original-title="linkedin" class="fa fa-linkedin"></a>
                                                         </li>
                                                         <?php
                                                     }
                                                     if ($user_dribbble_url != '' && $cand_alow_dribbb_smm == 'on') {
                                                         ?>
-                                                        <li>
-                                                            <a href="<?php echo jobsearch_esc_html(esc_url($user_dribbble_url)) ?>"
-                                                               target="_blank"
-                                                               data-original-title="dribbble"
-                                                               class="fa fa-dribbble"></a>
+                                                        <li><a href="<?php echo($user_dribbble_url) ?>"
+                                                               data-original-title="dribbble" class="fa fa-dribbble"></a>
                                                         </li>
                                                         <?php
                                                     }
@@ -572,8 +522,7 @@ if ($view_candidate) {
                                                                 if ($field_title_val != '' && $cand_dynm_social != '') {
                                                                     ?>
                                                                     <li>
-                                                                        <a href="<?php echo esc_url($cand_dynm_social) ?>"
-                                                                           target="_blank" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
+                                                                        <a href="<?php echo($cand_dynm_social) ?>" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
                                                                            class="<?php echo($field_icon) ?>"></a></li>
                                                                     <?php
                                                                 }
@@ -605,14 +554,14 @@ if ($view_candidate) {
                                     ?>
                                     <div class="careerfy-jobdetail-content careerfy-candidatedetail-content3">
                                         <div class="careerfy-content-title">
-                                            <h2><?php esc_html_e('Description', 'careerfy') ?></h2></div>
+                                            <h2><?php esc_html_e('Candidate Description', 'careerfy') ?></h2></div>
                                         <div class="careerfy-description">
                                             <?php echo($candidate_content) ?>
                                         </div>
                                     </div>
                                     <?php
                                 }
-                            }
+                            }                            
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view3',
@@ -631,18 +580,14 @@ if ($view_candidate) {
                                     <?php
                                 }
                             }
-
+                            
                             //
-
+                            
                             if (!$cand_profile_restrict::cand_field_is_locked('edu_defields', 'detail_page')) {
                                 $exfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_title', true);
                                 $exfield_list_val = get_post_meta($candidate_id, 'jobsearch_field_education_description', true);
                                 $education_academyfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_academy', true);
                                 $education_yearfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_year', true);
-                                $education_start_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_start_date', true);
-                                $education_end_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_end_date', true);
-                                $education_prsnt_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_date_prsnt', true);
-                                $edu_start_metaexist = metadata_exists('post', $candidate_id, 'jobsearch_field_education_start_date');
 
                                 ob_start();
                                 if (!empty($exfield_list)) {
@@ -659,33 +604,13 @@ if ($view_candidate) {
                                                     $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                                                     $education_academyfield_val = isset($education_academyfield_list[$exfield_counter]) ? $education_academyfield_list[$exfield_counter] : '';
                                                     $education_yearfield_val = isset($education_yearfield_list[$exfield_counter]) ? $education_yearfield_list[$exfield_counter] : '';
-                                                    $education_start_datefield_val = isset($education_start_datefield_list[$exfield_counter]) ? $education_start_datefield_list[$exfield_counter] : '';
-                                                    $education_end_datefield_val = isset($education_end_datefield_list[$exfield_counter]) ? $education_end_datefield_list[$exfield_counter] : '';
-                                                    $education_prsnt_datefield_val = isset($education_prsnt_datefield_list[$exfield_counter]) ? $education_prsnt_datefield_list[$exfield_counter] : '';
                                                     ?>
                                                     <li class="careerfy-column-12">
                                                         <div class="careerfy-candidate-timeline-two-text">
-                                                            <span><?php echo jobsearch_esc_html($education_academyfield_val) ?>
-                                                                <?php
-                                                                if ($edu_start_metaexist) {
-                                                                    if ($education_prsnt_datefield_val == 'on') {
-                                                                        ?>
-                                                                        <small><?php echo ($education_start_datefield_val != '' ? date('Y', strtotime($education_start_datefield_val)) : '') . (' - ') . esc_html__('Present', 'wp-jobsearch') ?></small>
-                                                                        <?php
-                                                                    } else {
-                                                                        ?>
-                                                                        <small><?php echo ($education_start_datefield_val != '' ? date('Y', strtotime($education_start_datefield_val)) : '') . ($education_end_datefield_val != '' ? ' - ' . date('Y', strtotime($education_end_datefield_val)) : '') ?></small>
-                                                                        <?php
-                                                                    }
-                                                                } else {
-                                                                    ?>
-                                                                    <small><?php echo jobsearch_esc_html($education_yearfield_val) ?></small>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </span>
-                                                            <h2><a><?php echo jobsearch_esc_html($exfield) ?></a></h2>
-                                                            <p><?php echo jobsearch_esc_html($exfield_val) ?></p>
+                                                            <span><?php echo($education_academyfield_val) ?>
+                                                                <small><?php echo($education_yearfield_val) ?></small></span>
+                                                            <h2><a><?php echo($exfield) ?></a></h2>
+                                                            <p><?php echo($exfield_val) ?></p>
                                                         </div>
                                                     </li>
                                                     <?php
@@ -750,9 +675,8 @@ if ($view_candidate) {
                                                                     <?php
                                                                 }
                                                                 ?>
-                                                                <h2><a><?php echo jobsearch_esc_html($exfield) ?></a>
-                                                                </h2>
-                                                                <p><?php echo jobsearch_esc_html($exfield_val) ?></p>
+                                                                <h2><a><?php echo($exfield) ?></a></h2>
+                                                                <p><?php echo($exfield_val) ?></p>
                                                             </div>
 
 
@@ -793,7 +717,7 @@ if ($view_candidate) {
                                                 ?>
                                                 <div class="careerfy_progressbar_two_wrap">
                                                     <div class="careerfy_progressbar_two"
-                                                         data-width='<?php echo($skill_percentagefield_val) ?>'><?php echo jobsearch_esc_html($exfield) ?></div>
+                                                         data-width='<?php echo($skill_percentagefield_val) ?>'><?php echo($exfield) ?></div>
                                                 </div>
                                                 <script>
                                                     jQuery(document).ready(function ($) {
@@ -833,7 +757,6 @@ if ($view_candidate) {
                                         <div class="careerfy-candidatedetail-content3 careerfy-simple-gallery-main">
                                             <div class="careerfy-candidate-title"><h2><i
                                                             class="jobsearch-icon jobsearch-briefcase"></i> <?php esc_html_e('Portfolio', 'careerfy') ?>
-                                                    sdsds
                                                 </h2></div>
                                             <div class="careerfy-gallery careerfy-simple-gallery candidate_portfolio">
                                                 <ul class="careerfy-row">
@@ -854,7 +777,12 @@ if ($view_candidate) {
                                                                 $portfolio_vurl .= '?autoplay=1';
                                                             }
                                                         }
-                                                        $port_thumb_img = jobsearch_get_cand_portimg_url($candidate_id, $portfolio_img, 'large');
+                                                        $port_thumb_img = $portfolio_img;
+                                                        if ($portfolio_img != '') {
+                                                            $attach_id = jobsearch_get_attachment_id_from_url($portfolio_img);
+                                                            $port_thumb_image = wp_get_attachment_image_src($attach_id, 'large');
+                                                            $port_thumb_img = isset($port_thumb_image[0]) && esc_url($port_thumb_image[0]) != '' ? $port_thumb_image[0] : $portfolio_img;
+                                                        }
 
                                                         $col_class = 'careerfy-column-4';
                                                         if ($exfield_counter == 0) {
@@ -864,26 +792,12 @@ if ($view_candidate) {
                                                         }
                                                         ?>
                                                         <li class="<?php echo($col_class) ?>">
-                                                            <figure>
-                                                                <span class="grid-item-thumb">
-                                                                    <small style="background-image: url('<?php echo($port_thumb_img) ?>');"></small>
-                                                                </span>
-                                                                <figcaption>
-                                                                    <div class="img-icons">
-                                                                        <a href="<?php echo($portfolio_vurl != '' ? $portfolio_vurl : $port_thumb_img) ?>"
-                                                                           class="<?php echo($portfolio_vurl != '' ? 'fancybox-video' : 'fancybox-galimg') ?>"
-                                                                           title="<?php echo($exfield) ?>" <?php echo($portfolio_vurl != '' ? 'data-fancybox-type="iframe"' : '') ?>
-                                                                           data-fancybox-group="group"><i
-                                                                                    class="<?php echo($portfolio_vurl != '' ? 'fa fa-play' : 'fa fa-image') ?>"></i></a>
-                                                                        <?php
-                                                                        if ($portfolio_url != '') { ?>
-                                                                            <a href="<?php echo($portfolio_url) ?>"
-                                                                               target="_blank"><i
-                                                                                        class="fa fa-chain"></i></a>
-                                                                        <?php } ?>
-                                                                    </div>
-                                                                </figcaption>
-                                                            </figure>
+                                                            <a href="<?php echo($portfolio_vurl != '' ? $portfolio_vurl : $portfolio_img) ?>"
+                                                               class="<?php echo($portfolio_vurl != '' ? 'fancybox-video' : 'fancybox-galimg') ?>"
+                                                               title="<?php echo($exfield) ?>" <?php echo($portfolio_vurl != '' ? 'data-fancybox-type="iframe"' : '') ?>
+                                                               data-fancybox-group="group">
+                                                                <img src="<?php echo($portfolio_img) ?>" alt="">
+                                                            </a>
                                                         </li>
                                                         <?php
                                                         $exfield_counter++;
@@ -924,12 +838,11 @@ if ($view_candidate) {
                                                         ?>
                                                         <li class="careerfy-column-12">
                                                             <div class="careerfy-candidate-timeline-two-text">
-                                                                <span><?php echo jobsearch_esc_html($exfield) ?>
-                                                                    <small><?php echo jobsearch_esc_html($award_yearfield_val) ?></small></span>
-                                                                <h2>
-                                                                    <a href="javascript:void(0)"><?php echo jobsearch_esc_html($exfield) ?></a>
+                                                                <span><?php echo($exfield) ?>
+                                                                    <small><?php echo($award_yearfield_val) ?></small></span>
+                                                                <h2><a href="javascript:void(0)"><?php echo($exfield) ?></a>
                                                                 </h2>
-                                                                <p><?php echo jobsearch_esc_html($exfield_val) ?></p>
+                                                                <p><?php echo($exfield_val) ?></p>
                                                             </div>
                                                         </li>
                                                         <?php
@@ -949,7 +862,7 @@ if ($view_candidate) {
                                 'position' => 'aftr_awards',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-
+                            
                             if ($candidates_reviews == 'on') {
                                 ?>
                                 <div class="careerfy-candidatedetail-content3">
@@ -998,30 +911,13 @@ if ($view_candidate) {
                                 }
                             }
 
-                            //
-                            if (function_exists('jobsearch_candidate_detail_whatsapp_btn')) {
-                                jobsearch_candidate_detail_whatsapp_btn($candidate_id, 'view_3');
-                            }
-                            //
-                            $cand_chat_args = array('candidate_id' => $candidate_id, 'class' => 'widget');
-                            do_action('jobsearch_chat_with_candidate', $cand_chat_args);
-                            $map_switch_arr = isset($jobsearch_plugin_options['jobsearch-detail-map-switch']) ? $jobsearch_plugin_options['jobsearch-detail-map-switch'] : '';
-                            $detail_map = is_array($map_switch_arr) && in_array('candidate', $map_switch_arr) ? 'on' : '';
-                            if (!$cand_profile_restrict::cand_field_is_locked('address_defields', 'detail_page') && $detail_map == 'on') {
-                                ?>
-                                <div class="jobsearch_side_box jobsearch_box_map">
-                                    <?php jobsearch_google_map_with_directions($candidate_id); ?>
-                                </div>
-                                <?php
-                            }
-
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view3',
                                 'position' => 'b4_cntct',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-
+                            
                             if (!$cand_profile_restrict::cand_field_is_locked('contactfrm_defields', 'detail_page')) {
                                 $cand_det_contact_form = isset($jobsearch_plugin_options['cand_det_contact_form']) ? $jobsearch_plugin_options['cand_det_contact_form'] : '';
                                 if ($cand_det_contact_form == 'on') {
@@ -1030,24 +926,6 @@ if ($view_candidate) {
                                     <div class="widget widget_contact_form">
                                         <?php
                                         $cnt_counter = rand(1000000, 9999999);
-                                        $cnt__cand_wout_log = isset($jobsearch_plugin_options['cand_cntct_wout_login']) ? $jobsearch_plugin_options['cand_cntct_wout_login'] : '';
-
-                                        $cur_user_name = '';
-                                        $cur_user_email = '';
-                                        $field_readonly = false;
-                                        if (is_user_logged_in()) {
-                                            if ($cnt__cand_wout_log != 'on') {
-                                                $field_readonly = true;
-                                            }
-                                            $cur_user_id = get_current_user_id();
-                                            $cur_user_obj = wp_get_current_user();
-                                            $cur_user_name = isset($cur_user_obj->display_name) ? $cur_user_obj->display_name : '';
-                                            $cur_user_email = isset($cur_user_obj->user_email) ? $cur_user_obj->user_email : '';
-                                            if (jobsearch_user_is_employer($cur_user_id)) {
-                                                $cnt_emp_id = jobsearch_get_user_employer_id($cur_user_id);
-                                                $cur_user_name = get_the_title($cnt_emp_id);
-                                            }
-                                        }
                                         ?>
                                         <div class="careerfy-widget-title">
                                             <h2><?php esc_html_e('Contact Form', 'careerfy') ?></h2></div>
@@ -1058,16 +936,14 @@ if ($view_candidate) {
                                                     <label><?php esc_html_e('User Name:', 'careerfy') ?></label>
                                                     <input name="u_name"
                                                            placeholder="<?php esc_html_e('Enter Your Name', 'careerfy') ?>"
-                                                           type="text" <?php echo($field_readonly ? 'readonly' : '') ?>
-                                                           value="<?php echo($cur_user_name) ?>">
+                                                           type="text">
                                                     <i class="jobsearch-icon jobsearch-user"></i>
                                                 </li>
                                                 <li>
                                                     <label><?php esc_html_e('Email Address:', 'careerfy') ?></label>
                                                     <input name="u_email"
                                                            placeholder="<?php esc_html_e('Enter Your Email Address', 'careerfy') ?>"
-                                                           type="text" <?php echo($field_readonly ? 'readonly' : '') ?>
-                                                           value="<?php echo($cur_user_email) ?>">
+                                                           type="text">
                                                     <i class="jobsearch-icon jobsearch-mail"></i>
                                                 </li>
                                                 <li>
@@ -1133,7 +1009,10 @@ if ($view_candidate) {
                                     echo apply_filters('jobsearch_candidate_detail_cntct_frm_html', $cand_cntct_form, $candidate_id);
                                 }
                             }
-
+                            //
+                            if (function_exists('jobsearch_candidate_detail_whatsapp_btn')) {
+                                jobsearch_candidate_detail_whatsapp_btn($candidate_id, 'view_3');
+                            }
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view3',

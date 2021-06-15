@@ -12,4 +12,3 @@ include plugin_dir_path(dirname(__FILE__)) . 'shortcode-builder/shortcodes/login
 include plugin_dir_path(dirname(__FILE__)) . 'shortcode-builder/shortcodes/post-new-job.php';
 include plugin_dir_path(dirname(__FILE__)) . 'shortcode-builder/shortcodes/advance-search.php';
 include plugin_dir_path(dirname(__FILE__)) . 'shortcode-builder/shortcodes/embeddable-jobs.php';
-include plugin_dir_path(dirname(__FILE__)) . 'shortcode-builder/shortcodes/banner-advertisement.php';

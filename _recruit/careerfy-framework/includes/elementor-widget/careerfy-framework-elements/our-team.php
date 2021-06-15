@@ -218,7 +218,19 @@ class OurTeam extends Widget_Base
                 ob_start();
                 ?>
                 <li class="jobsearch-column-3">
-
+                    <script>
+                        jQuery(document).ready(function () {
+                            jQuery('a[id^="fancybox_notes"]').fancybox({
+                                'titlePosition': 'inside',
+                                'transitionIn': 'elastic',
+                                'transitionOut': 'elastic',
+                                'width': 400,
+                                'height': 250,
+                                'padding': 40,
+                                'autoSize': false
+                            });
+                        });
+                    </script>
                     <figure>
                         <a id="fancybox_notes<?php echo($rand_id); ?>" href="#notes<?php echo($rand_id); ?>"
                            class="jobsearch-candidate-grid-thumb">
@@ -304,19 +316,7 @@ class OurTeam extends Widget_Base
         wp_enqueue_script('careerfy-slick-slider');
         ob_start();
         if ($team_style == 'style2') { ?>
-            <script>
-                jQuery(document).ready(function () {
-                    jQuery('a[id^="fancybox_notes"]').fancybox({
-                        'titlePosition': 'inside',
-                        'transitionIn': 'elastic',
-                        'transitionOut': 'elastic',
-                        'width': 400,
-                        'height': 250,
-                        'padding': 40,
-                        'autoSize': false
-                    });
-                });
-            </script>
+
             <div class="jobsearch-candidate jobsearch-candidate-grid team-style-two">
                 <ul class="jobsearch-row">
                     <?php echo $this->careerfy_our_team_item_shortcode() ?>

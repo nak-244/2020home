@@ -35,7 +35,7 @@ if (!class_exists('Jobsearch_Shortlist')) {
             add_action('wp_enqueue_scripts', array($this, 'jobsearch_shortlist_enqueue_scripts'), 10);
         }
 
-
+// <a href="#" class="widget_jobdetail_three_apply_btn"><i class="careerfy-icon careerfy-heart"></i> Save this Job</a>
         public function jobsearch_shortlist_enqueue_scripts()
         {
             global $sitepress;
@@ -46,37 +46,13 @@ if (!class_exists('Jobsearch_Shortlist')) {
                 $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
             }
 
-            $is_page = is_page();
-            $page_content = '';
-            if ($is_page) {
-                $page_id = get_the_ID();
-                $page_post = get_post($page_id);
-                $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
-            }
-            $is_jobs_elemnt_page = $is_cands_elemnt_page = $is_emps_elemnt_page = false;
-            if (strpos($page_content, 'job_short_counter')) {
-                $is_jobs_elemnt_page = true;
-            }
-            if (strpos($page_content, 'candidate_short_counter')) {
-                $is_cands_elemnt_page = true;
-            }
-            if (strpos($page_content, 'employer_short_counter')) {
-                $is_emps_elemnt_page = true;
-            }
-
             // Enqueue JS 
             wp_register_script('jobsearch-shortlist-functions-script', plugins_url('assets/js/shortlist-functions.js', __FILE__), '', '', true);
             wp_localize_script('jobsearch-shortlist-functions-script', 'jobsearch_shortlist_vars', array(
                 'admin_url' => $admin_ajax_url,
                 'plugin_url' => jobsearch_plugin_get_url(),
             ));
-
-            if ($is_page && (has_shortcode($page_content, 'jobsearch_job_shortcode') || $is_jobs_elemnt_page)) {
-                wp_enqueue_script('jobsearch-shortlist-functions-script');
-            }
-            if (is_singular('job')) {
-                wp_enqueue_script('jobsearch-shortlist-functions-script');
-            }
+            wp_enqueue_script('jobsearch-shortlist-functions-script');
         }
 
         /**
@@ -103,7 +79,8 @@ if (!class_exists('Jobsearch_Shortlist')) {
                 if (!is_user_logged_in()) { ?>
                     <a href="javascript:void(0);" class="<?php echo($anchor_class); ?> jobsearch-open-signin-tab"><i
                                 class="<?php echo $before_icon; ?>"></i> <?php echo($before_label); ?></a>
-                <?php } else {
+                    <?php
+                } else {
                     $user_id = get_current_user_id();
                     $user_is_candidate = jobsearch_user_is_candidate($user_id);
                     $candidate_fav_jobs_list = array();
@@ -112,6 +89,8 @@ if (!class_exists('Jobsearch_Shortlist')) {
                         $candidate_fav_jobs_list = get_post_meta($candidate_id, 'jobsearch_fav_jobs_list', true);
                         $candidate_fav_jobs_list = explode(',', $candidate_fav_jobs_list);
                     }
+
+
                     ?>
                     <a href="javascript:void(0);" data-after-label="<?php echo($after_label); ?>" data-view="job3"
                        class="<?php echo in_array($job_id, $candidate_fav_jobs_list) ? '' : 'jobsearch-add-job-to-favourite' ?> <?php echo($anchor_class); ?>"
@@ -127,8 +106,7 @@ if (!class_exists('Jobsearch_Shortlist')) {
             } elseif ($view == 'job_detail') {
                 if (!is_user_logged_in()) { ?>
                     <a href="javascript:void(0);"
-                       class="shortlist_job_btn jobsearch-open-signin-tab"><i
-                                class="<?php echo $before_icon; ?>"></i><?php echo($before_label); ?></a>
+                       class="shortlist_job_btn jobsearch-open-signin-tab"><?php echo($before_label); ?></a>
                 <?php } else {
 
                     $user_id = get_current_user_id();
@@ -144,7 +122,7 @@ if (!class_exists('Jobsearch_Shortlist')) {
                        class="shortlist_job_btn <?php echo in_array($job_id, $candidate_fav_jobs_list) ? '' : 'jobsearch-add-job-to-favourite' ?>"
                        data-id="<?php echo($job_id); ?>" data-before-icon="<?php echo($before_icon); ?>"
                        data-after-icon="<?php echo($after_icon); ?>">
-                        <?php echo '<i class="' . $before_icon . '"></i>';
+                        <?php echo '<i class=""></i>';
                         echo in_array($job_id, $candidate_fav_jobs_list) ? ($after_label) : ($before_label); ?>
                     </a>
                     <span class="job-to-fav-msg-con"></span>
@@ -177,7 +155,7 @@ if (!class_exists('Jobsearch_Shortlist')) {
                     </a>
                     <span class="job-to-fav-msg-con"></span>
                 <?php } ?>
-            <?php } else if ($view == 'job_detail_5') {
+            <?php } else if($view == 'job_detail_5'){
 
                 if (!is_user_logged_in()) { ?>
                     <a href="javascript:void(0);" class="<?php echo($anchor_class); ?> jobsearch-open-signin-tab"><i

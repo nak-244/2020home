@@ -50,18 +50,6 @@ $jobsearch_builder_shortcodes['employer_listings'] = array(
                 'yes' => esc_html__('Yes', 'wp-jobsearch'),
             )
         ),
-        'employer_filters_sortby' => array(
-            'type' => 'select',
-            'label' => esc_html__('Filters Sort by', 'wp-jobsearch'),
-            'desc' => esc_html__('Set filters sorting.', 'wp-jobsearch'),
-            'options' => array(
-                'default' => esc_html__('Default', 'wp-jobsearch'),
-                'asc' => esc_html__('Ascending', 'wp-jobsearch'),
-                'desc' => esc_html__('Descending', 'wp-jobsearch'),
-                'alpha' => esc_html__('Alphabetical', 'wp-jobsearch'),
-                'count' => esc_html__('Highest Count', 'wp-jobsearch'),
-            )
-        ),
         'employer_filters_loc' => array(
             'type' => 'select',
             'label' => esc_html__('Locations Filter', 'wp-jobsearch'),

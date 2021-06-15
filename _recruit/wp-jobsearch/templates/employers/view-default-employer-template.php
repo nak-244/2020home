@@ -170,6 +170,7 @@ $http_request = jobsearch_server_protocol();
                     <div class="jobsearch-table-layer">
                         <?php echo jobsearch_member_promote_profile_iconlab($employer_id, 'employer_list') ?>
                         <div class="jobsearch-table-row">
+
                             <?php if ($post_thumbnail_src != '') { ?>
                                 <div class="jobsearch-table-cell">
                                     <figure>
@@ -179,23 +180,25 @@ $http_request = jobsearch_server_protocol();
                                     </figure>
                                 </div>
                             <?php } ?>
+
                             <div class="jobsearch-table-cell">
                                 <?php
+
                                 if (!empty($sector_str) && $sectors_enable_switch == 'on') {
-                                    echo ($sector_str);
+                                    echo force_balance_tags($sector_str);
                                 }
                                 ob_start();
                                 ?>
                                 <h2 class="jobsearch-pst-title">
                                     <a href="<?php echo esc_url(get_permalink($employer_id)); ?>">
-                                        <?php echo jobsearch_esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
+                                        <?php echo esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
                                     </a>
                                 </h2>
                                 <?php
                                 $emptitle_html = ob_get_clean();
                                 echo apply_filters('jobsearch_employer_listin_emptitle', $emptitle_html, $employer_id, $jobsearch_split_map_title_limit);
                                 if (!empty($get_employer_location) && $all_location_allow == 'on') {  ?>
-                                    <span><i class="fa fa-map-marker"></i><?php echo ($get_employer_location); ?></span>
+                                    <span><i class="fa fa-map-marker"></i><?php echo esc_html($get_employer_location); ?></span>
                                     <?php
                                 }
                                 ?>
@@ -222,7 +225,7 @@ $http_request = jobsearch_server_protocol();
                                         ?>
                                     </ul>
 
-                                    <a href="<?php echo esc_url(get_permalink($employer_id)); ?>" class="jobsearch-employer-thumblist-size"><?php echo jobsearch_esc_html($jobsearch_employer_team_count); ?><?php echo esc_html__('team size', 'wp-jobsearch'); ?></a>
+                                    <a href="<?php echo esc_url(get_permalink($employer_id)); ?>" class="jobsearch-employer-thumblist-size"><?php echo esc_html($jobsearch_employer_team_count); ?><?php echo esc_html__('team size', 'wp-jobsearch'); ?></a>
                                 <?php } else { ?>
                                     &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                     <?php
@@ -240,12 +243,12 @@ $http_request = jobsearch_server_protocol();
                             ob_start();
                             if ($jobsearch_employer_job_count > 0) {
                                 ?>
-                                <a href="<?php echo esc_url(get_permalink($employer_id)); ?>" class="jobsearch-employer-list-btn"><?php echo jobsearch_esc_html($jobsearch_employer_job_count_str); ?> </a>
+                                <a href="<?php echo esc_url(get_permalink($employer_id)); ?>" class="jobsearch-employer-list-btn"><?php echo esc_html($jobsearch_employer_job_count_str); ?> </a>
                                 <?php
                             }
                             $opn_vacn_html = ob_get_clean();
                             echo apply_filters('jobsearch_employer_totl_job_openings_vacn', $opn_vacn_html, $employer_id, $jobsearch_employer_job_count);
-
+                            
                             $follow_btn_args = array(
                                 'employer_id' => $employer_id,
                                 'before_label' => esc_html__('Follow', 'wp-jobsearch'),
@@ -254,7 +257,7 @@ $http_request = jobsearch_server_protocol();
                             );
                             do_action('jobsearch_employer_followin_btn', $follow_btn_args);
                             $rite_btns_html = ob_get_clean();
-
+                            
                             if ($rite_btns_html != '') {
                                 ?>
                                 <div class="jobsearch-table-cell">

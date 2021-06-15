@@ -58,15 +58,6 @@ $jobsearch_builder_shortcodes['job_listings'] = array(
                 'yes' => esc_html__('Yes', 'wp-jobsearch'),
             )
         ),
-        'quick_apply_job' => array(
-            'type' => 'select',
-            'label' => esc_html__('Quick Apply job', 'wp-jobsearch'),
-            'desc' => esc_html__('By setting this option, when user will click on job title or image pop-up will be appear from the side.', 'wp-jobsearch'),
-            'options' => array(
-                'off' => esc_html__('No', 'wp-jobsearch'),
-                'on' => esc_html__('Yes', 'wp-jobsearch'),
-            )
-        ),
         'job_loc_listing' => array(
             'type' => 'multi_checkbox',
             'label' => esc_html__('Locations in listing', 'wp-jobsearch'),
@@ -102,18 +93,6 @@ $jobsearch_builder_shortcodes['job_listings'] = array(
             'options' => array(
                 'no' => esc_html__('No', 'wp-jobsearch'),
                 'yes' => esc_html__('Yes', 'wp-jobsearch'),
-            )
-        ),
-        'job_filters_sortby' => array(
-            'type' => 'select',
-            'label' => esc_html__('Filters Sort by', 'wp-jobsearch'),
-            'desc' => esc_html__('Set filters sorting.', 'wp-jobsearch'),
-            'options' => array(
-                'default' => esc_html__('Default', 'wp-jobsearch'),
-                'asc' => esc_html__('Ascending', 'wp-jobsearch'),
-                'desc' => esc_html__('Descending', 'wp-jobsearch'),
-                'alpha' => esc_html__('Alphabetical', 'wp-jobsearch'),
-                'count' => esc_html__('Highest Count', 'wp-jobsearch'),
             )
         ),
         'job_filters_keyword' => array(
