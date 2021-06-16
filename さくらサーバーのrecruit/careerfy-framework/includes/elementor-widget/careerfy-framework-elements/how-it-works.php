@@ -107,7 +107,7 @@ class HowItWorks extends Widget_Base
             [
                 'label' => __('Image Description', 'careerfy-frame'),
                 'type' => Controls_Manager::TEXTAREA,
-                'description' => __('Description will show below Image.','careerfy-frame'),
+                'description' => __('Description will show below Image.', 'careerfy-frame'),
             ]
         );
 
@@ -124,22 +124,6 @@ class HowItWorks extends Widget_Base
             [
                 'label' => __('Description', 'careerfy-frame'),
                 'type' => Controls_Manager::TEXTAREA,
-            ]
-        );
-
-        $this->add_control(
-            'step_1_icon',
-            [
-                'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICON,
-            ]
-        );
-
-        $this->add_control(
-            'step_1_icon_color',
-            [
-                'label' => __('Icon Color', 'careerfy-frame'),
-                'type' => Controls_Manager::COLOR,
             ]
         );
 
@@ -161,11 +145,20 @@ class HowItWorks extends Widget_Base
             ]
         );
 
+
+        $this->add_control(
+            'step_2_icon',
+            [
+                'label' => __('Icon', 'careerfy-frame'),
+                'type' => Controls_Manager::ICONS,
+                'description' => __('', 'careerfy-frame'),
+            ]
+        );
         $this->add_control(
             'step_2_icon_color',
             [
                 'label' => __('Icon Color', 'careerfy-frame'),
-                'type' => Controls_Manager::ICON,
+                'type' => Controls_Manager::COLOR,
                 'description' => __('Icon color will only effect on style 2.', 'careerfy-frame'),
             ]
         );
@@ -331,7 +324,6 @@ class HowItWorks extends Widget_Base
         }
 
 
-
         if (!empty($step_1_title)) {
             ?>
             <li class="col-md-12">
@@ -353,7 +345,7 @@ class HowItWorks extends Widget_Base
             <figure>
                 <a href="#"><img src="<?php echo $step_2_image ?>" alt=""></a>
                 <figcaption>
-                    <span><i class="careerfy-icon <?php echo $step_2_icon ?>" <?php echo $carrerfy_step_2_icon_color ?>></i><?php echo esc_html__('Let’s Connect!', 'careerfy-frame') ?></span>
+                    <span><i class="careerfy-icon <?php echo $step_2_icon['value'] ?>" <?php echo $carrerfy_step_2_icon_color ?>></i><?php echo esc_html__($step_2_image_desc) ?></span>
                 </figcaption>
             </figure>
             <div class="careerfy-howit-works-text">

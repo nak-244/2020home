@@ -27,7 +27,6 @@ class Jobsearch_CustomField {
         $flag = false;
         if ((isset($_GET['page']) && $_GET['page'] == 'jobsearch-candidate-fields')) {
             $flag = true;
-
         }
 
         if ((isset($_GET['page']) && $_GET['page'] == 'jobsearch-job-fields')) {
@@ -53,14 +52,36 @@ class Jobsearch_CustomField {
     }
 
     static function load_files() {
+        include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/dependent-fields-structure.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/dependent-fields-rendering.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/dependent-fields-search-filters.php';
         include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/custom-fields-ajax.php';
         include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/custom-fields-html.php';
         include plugin_dir_path(dirname(__FILE__)) . 'custom-fields/include/custom-fields-load.php';
     }
 
+    public function customfield_admin_enqueue_scripts() {
+        wp_register_style('jobsearch-custom-field-sortable-app-css', jobsearch_plugin_get_url('modules/custom-fields/css/custom-field.css'), array(), '');
+        wp_register_script('jobsearch-custom-field', jobsearch_plugin_get_url('modules/custom-fields/js/custom-field-functions.js'), array('jquery'), '', true);
+        // Localize the script
+        $jobsearch_customfield_common_arr = array(
+            'plugin_url' => jobsearch_plugin_get_url(),
+            'ajax_url' => admin_url('admin-ajax.php'),
+        );
+        wp_localize_script('jobsearch-custom-field', 'jobsearch_customfield_common_vars', $jobsearch_customfield_common_arr);
+
+        wp_register_script('jobsearch-custom-field-sortable-sortable', jobsearch_plugin_get_url('modules/custom-fields/js/sortable.js'), array('jquery'), '', true);
+        wp_register_script('jobsearch-custom-field-sortable-app', jobsearch_plugin_get_url('modules/custom-fields/js/app.js'), array('jquery'), '', true);
+
+        // for range slider
+        wp_register_script('jquery-ui', jobsearch_plugin_get_url('admin/js/jquery-ui.js'), array(), JobSearch_plugin::get_version(), false);
+        wp_enqueue_style('jquery-ui', jobsearch_plugin_get_url('admin/css/jquery-ui.css'));
+    }
+
     public function jobsearch_load_custom_fields_callback($custom_field_entity) {
         global $pagenow;
         $get_cfields_page = isset($_GET['page']) ? $_GET['page'] : '';
+        wp_enqueue_script('jobsearch-custom-field');
         wp_enqueue_style('jobsearch-custom-field-sortable-app-css');
         wp_enqueue_script('jobsearch-custom-field-sortable-sortable');
         wp_enqueue_script('jobsearch-custom-field-sortable-app');
@@ -85,17 +106,18 @@ class Jobsearch_CustomField {
                         <li><i class="dashicons dashicons-yes" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="checkbox" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Checkbox', 'wp-jobsearch'); ?>"><?php echo esc_html('Checkbox', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-arrow-down-alt" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="dropdown" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Dropdown', 'wp-jobsearch'); ?>"><?php echo esc_html('Dropdown', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-networking" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="dependent_dropdown" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Dependent Dropdown', 'wp-jobsearch'); ?>"><?php echo esc_html('Dependent Dropdown', 'wp-jobsearch'); ?></a></li>
+                        <li><i class="dashicons dashicons-admin-multisite" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="dependent_fields" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Dependent Fields', 'wp-jobsearch'); ?>"><?php echo esc_html('Dependent Fields', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-editor-alignleft" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="textarea" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Textarea', 'wp-jobsearch'); ?>"><?php echo esc_html('Textarea', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-email-alt" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="email" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Email', 'wp-jobsearch'); ?>"><?php echo esc_html('Email', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-editor-ol" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="number" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Number', 'wp-jobsearch'); ?>"><?php echo esc_html('Number', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-calendar-alt" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="date" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Date', 'wp-jobsearch'); ?>"><?php echo esc_html('Date', 'wp-jobsearch'); ?></a></li>
                         <li><i class="dashicons dashicons-image-flip-horizontal" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="range" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Range', 'wp-jobsearch'); ?>"><?php echo esc_html('Range', 'wp-jobsearch'); ?></a></li>
-                        <?php
-                        if ($get_cfields_page == 'jobsearch-job-fields' || $get_cfields_page == 'jobsearch-candidate-fields') {
-                            ?>
+                        <?php if ($get_cfields_page == 'jobsearch-job-fields' || $get_cfields_page == 'jobsearch-candidate-fields') { ?>
                             <li><i class="dashicons dashicons-vault" aria-hidden="true"></i> <a class="jobsearch-custom-field-add-field" data-fieldtype="salary" data-randid="<?php echo absint($rand_id); ?>" href="javascript:void(0);" data-fieldlabel="<?php echo esc_html('Salary (For Search)', 'wp-jobsearch'); ?>"><?php echo esc_html('Salary (For Search)', 'wp-jobsearch'); ?></a></li>
                             <?php
                         }
+                        
+                        echo apply_filters('jobsearch_bk_custom_fields_itms_list_after', '', $rand_id);
                         ?>
                     </ul>
                 </div>
@@ -175,11 +197,20 @@ class Jobsearch_CustomField {
 
                                         $count_node ++;
                                         $output .= apply_filters('jobsearch_custom_field_dependent_dropdown_html', '', $count_node, $custom_field_saved_data);
+                                    } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "dependent_fields") {
+
+                                        $count_node ++;
+                                        $output .= apply_filters('jobsearch_custom_field_dependent_fields_html', '', $count_node, $custom_field_saved_data);
                                     } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "heading") {
 
                                         $count_node ++;
                                         $output .= apply_filters('jobsearch_custom_field_heading_html', '', $count_node, $custom_field_saved_data);
+                                    } elseif (isset($custom_field_saved_data['type']) && $custom_field_saved_data['type'] == "company_benefits") {
+
+                                        $count_node ++;
+                                        $output .= apply_filters('jobsearch_custom_field_company_benefits_html', '', $count_node, $custom_field_saved_data);
                                     }
+                                    
                                     $output .= apply_filters('jobsearch_custom_field_actions_html', $li_rand_id, $count_node, $custom_field_saved_data['type']);
                                     $output .= '</li>';
                                 }
@@ -240,7 +271,6 @@ class Jobsearch_CustomField {
                         },
                         console = window.console;
 
-
                 if (!console.log) {
                     console.log = function () {
                         alert([].join.apply(arguments, ' '));
@@ -248,7 +278,7 @@ class Jobsearch_CustomField {
                 }
                 Sortable.create(byId('foo<?php echo absint($rand_id); ?>'), {
                     group: "words",
-                    handle: ".field-intro",
+                    handle: ".field-msort-handle",
                     animation: 150,
                     store: {
                         get: function (sortable) {
@@ -282,24 +312,6 @@ class Jobsearch_CustomField {
             });
         </script>
         <?php
-    }
-
-    public function customfield_admin_enqueue_scripts() {
-        wp_register_style('jobsearch-custom-field-sortable-app-css', jobsearch_plugin_get_url('modules/custom-fields/css/custom-field.css'), array(), '');
-        wp_register_script('jobsearch-custom-field', jobsearch_plugin_get_url('modules/custom-fields/js/custom-field-functions.js'), array('jquery'), '', true);
-        // Localize the script
-        $jobsearch_customfield_common_arr = array(
-            'plugin_url' => jobsearch_plugin_get_url(),
-            'ajax_url' => admin_url('admin-ajax.php'),
-        );
-        wp_localize_script('jobsearch-custom-field', 'jobsearch_customfield_common_vars', $jobsearch_customfield_common_arr);
-        wp_enqueue_script('jobsearch-custom-field');
-        wp_register_script('jobsearch-custom-field-sortable-sortable', jobsearch_plugin_get_url('modules/custom-fields/js/sortable.js'), array('jquery'), '', true);
-        wp_register_script('jobsearch-custom-field-sortable-app', jobsearch_plugin_get_url('modules/custom-fields/js/app.js'), array('jquery'), '', true);
-
-        // for range slider
-        wp_register_script('jquery-ui', jobsearch_plugin_get_url('admin/js/jquery-ui.js'), array(), JobSearch_plugin::get_version(), false);
-        wp_enqueue_style('jquery-ui', jobsearch_plugin_get_url('admin/css/jquery-ui.css'));
     }
 
 }

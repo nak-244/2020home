@@ -92,18 +92,35 @@ function careerfy_advance_search_shortcode($atts, $content)
     }
 
     $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-
-    if ($location_map_type == 'mapbox') {
-        wp_enqueue_script('jobsearch-mapbox');
-        wp_enqueue_script('jobsearch-mapbox-geocoder');
-        wp_enqueue_script('mapbox-geocoder-polyfill');
-        wp_enqueue_script('mapbox-geocoder-polyfillauto');
-    }
+    $top_search_radius = isset($jobsearch_plugin_options['top_search_radius']) ? $jobsearch_plugin_options['top_search_radius'] : '';
+    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : 500;
 
     ob_start();
     if (class_exists('JobSearch_plugin')) {
-        if ($view == 'view20') { ?>
-            <div class="careerfy-twentytwo-search">
+        wp_enqueue_script('datetimepicker-script');
+        if ($view == 'view20') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show' ) {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
+            <div class="careerfy-twentytwo-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
 
                 <?php if (!empty($small_search_title)) { ?>
                     <small class="careerfy-twentytwo-search-tag" <?php echo($adv_search_title_color) ?>><?php echo($small_search_title) ?>
@@ -136,190 +153,201 @@ function careerfy_advance_search_shortcode($atts, $content)
                         <div id="home" class="tab-pane fade in active">
                             <form method="get" action="<?php echo(get_permalink($result_page)); ?>"
                                   class="careerfy-twentytwo-loc-search">
-
-                                <?php
-                                if ($keyword_field == 'show') {
-                                    if ($autofill_keyword == 'yes') {
-                                        wp_enqueue_script('jobsearch-search-box-sugg');
-                                    }
-                                    ?>
-
-                                    <i class="careerfy-icon careerfy-search"></i>
-                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                               name="search_title" data-type="job" type="text">
-                                        <span class="sugg-search-loader"></span>
-                                    </div>
-
-                                <?php } ?>
-                                <?php
-
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
-
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-
-                                    <div class="careerfy-select-style">
-                                        <select name="sector_cat" class="selectize-select">
-                                            <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                            <?php
-                                            foreach ($all_sectors as $term_sector) { ?>
-                                                <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-
-                                <?php } ?>
-                                <?php if ($location_field == 'show') {
-                                    if ($autofill_location == 'yes') {
-                                        if ($location_map_type == 'mapbox') {
-                                            wp_enqueue_script('jobsearch-mapbox');
-                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                            wp_enqueue_script('mapbox-geocoder-polyfill');
-                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                        } else {
-                                            wp_enqueue_script('jobsearch-google-map');
-                                        }
-                                        wp_enqueue_script('jobsearch-location-autocomplete');
-                                    }
-                                    ob_start();
-                                    ?>
-                                    <div class="jobsearch_searchloc_div">
-                                        <?php
-                                        if ($autofill_location == 'yes') {
-                                            ?>
-                                            <span class="loc-loader"></span>
-                                            <i class="careerfy-icon careerfy-pin"></i>
-                                            <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                   autocomplete="off"
-                                                   class="jobsearch_search_location_field"
-                                                   type="text">
-                                            <input type="hidden"
-                                                   class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                   name="location">
-                                        <?php } else { ?>
-                                            <i class="careerfy-icon careerfy-pin"></i>
-                                            <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                   class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                   name="location" type="text">
-                                            <?php
-                                        }
-                                        //
-                                        if ($auto_geo_location == 'yes') {
-                                            ?>
-                                            <a href="javascript:void(0);" class="geolction-btn"
-                                               onclick="JobsearchGetClientLocation()"><i
-                                                        class="careerfy-icon careerfy-location"></i></a>
-                                            <?php
-                                        }
-                                        ?>
-                                    </div>
-
+                                <ul>
                                     <?php
-                                    $srchfield_html = ob_get_clean();
-                                    echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
-                                } ?>
+                                    if ($keyword_field == 'show') {
+                                        if ($autofill_keyword == 'yes') {
+                                            wp_enqueue_script('jobsearch-search-box-sugg');
+                                        } ?>
+                                        <li>
+                                            <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                       name="search_title" data-type="job" type="text">
+                                                <span class="sugg-search-loader"></span>
+                                            </div>
+                                        </li>
+                                    <?php }
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                        <li>
+                                            <div class="careerfy-select-style">
+                                                <select name="sector_cat" class="selectize-select">
+                                                    <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                </select>
+                                            </div>
+                                        </li>
+                                    <?php }
+                                    if ($location_field == 'show') {
+                                        if ($autofill_location == 'yes') {
+                                            if ($location_map_type == 'mapbox') {
+                                                wp_enqueue_script('jobsearch-mapbox');
+                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                            } else {
+                                                wp_enqueue_script('jobsearch-google-map');
+                                            }
+                                            wp_enqueue_script('jobsearch-location-autocomplete');
+                                        }
+                                        ob_start();
+                                        ?>
+                                        <li>
+                                            <div class="jobsearch_searchloc_div">
+                                                <?php
+                                                if ($autofill_location == 'yes') { ?>
+                                                    <span class="loc-loader"></span>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           autocomplete="off"
+                                                           class="jobsearch_search_location_field"
+                                                           type="text">
+                                                    <input type="hidden"
+                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location">
+                                                <?php } else { ?>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location" type="text">
+                                                    <?php
+                                                }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+                                                //
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"
+                                                       onclick="JobsearchGetClientLocation()"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php } ?>
+                                            </div>
+                                        </li>
+                                        <?php
+                                        $srchfield_html = ob_get_clean();
+                                        echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
+                                    } ?>
+                                    <li> <input type="submit" value="<?php esc_html_e("", 'careerfy-frame') ?>">
+                                        <i class="careerfy-icon careerfy-search-o"></i></li>
+                                </ul>
 
-                                <input type="submit" value="<?php esc_html_e("", 'careerfy-frame') ?>">
-                                <i class="careerfy-icon careerfy-search"></i>
 
                             </form>
                         </div>
                         <div id="menu1" class="tab-pane fade">
                             <form method="get" action="<?php echo(get_permalink($result_page_3)); ?>"
                                   class="careerfy-twentytwo-loc-search">
-
-                                <?php if ($keyword_field == 'show') { ?>
-
-
-                                    <?php if ($autofill_keyword == 'yes') {
-                                        wp_enqueue_script('jobsearch-search-box-sugg');
-                                    } ?>
-                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                               name="search_title" data-type="job" type="text">
-                                        <span class="sugg-search-loader"></span>
-                                    </div>
-
-                                <?php } ?>
-                                <?php
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-
-                                    <div class="careerfy-select-style">
-                                        <select name="sector_cat" class="selectize-select">
-                                            <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                            <?php
-                                            foreach ($all_sectors as $term_sector) { ?>
-                                                <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-
-                                <?php } ?>
-                                <?php if ($location_field == 'show') {
-                                    if ($autofill_location == 'yes') {
-                                        if ($location_map_type == 'mapbox') {
-                                            wp_enqueue_script('jobsearch-mapbox');
-                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                            wp_enqueue_script('mapbox-geocoder-polyfill');
-                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                        } else {
-                                            wp_enqueue_script('jobsearch-google-map');
-                                        }
-                                        wp_enqueue_script('jobsearch-location-autocomplete');
-                                    }
-                                    ob_start();
-                                    ?>
-
-                                    <div class="jobsearch_searchloc_div">
-                                        <?php
-                                        if ($autofill_location == 'yes') {
-                                            ?>
-                                            <span class="loc-loader"></span>
-                                            <i class="careerfy-icon careerfy-pin"></i>
-                                            <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                   autocomplete="off"
-                                                   class="jobsearch_search_location_field"
-                                                   type="text">
-                                            <input type="hidden"
-                                                   class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                   name="location">
-                                        <?php } else { ?>
-                                            <i class="careerfy-icon careerfy-pin"></i>
-                                            <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                   class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                   name="location" type="text">
-                                        <?php }
-
-                                        if ($auto_geo_location == 'yes') { ?>
-                                            <a href="javascript:void(0);" class="geolction-btn"
-                                               onclick="JobsearchGetClientLocation()"><i
-                                                        class="careerfy-icon careerfy-location"></i></a>
-                                        <?php } ?>
-                                    </div>
-
+                                <ul>
                                     <?php
-                                    $srchfield_html = ob_get_clean();
-                                    echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
-                                } ?>
-
-                                <input type="submit" value="<?php esc_html_e("", 'careerfy-frame') ?>">
-                                <i class="careerfy-icon careerfy-search"></i>
+                                    if ($keyword_field == 'show') {
+                                        if ($autofill_keyword == 'yes') {
+                                            wp_enqueue_script('jobsearch-search-box-sugg');
+                                        } ?>
+                                        <li>
+                                            <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                       name="search_title" data-type="job" type="text">
+                                                <span class="sugg-search-loader"></span>
+                                            </div>
+                                        </li>
+                                    <?php }
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                        <li>
+                                            <div class="careerfy-select-style">
+                                                <select name="sector_cat" class="selectize-select">
+                                                    <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                </select>
+                                            </div>
+                                        </li>
+                                    <?php }
+                                    if ($location_field == 'show') {
+                                        if ($autofill_location == 'yes') {
+                                            if ($location_map_type == 'mapbox') {
+                                                wp_enqueue_script('jobsearch-mapbox');
+                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                            } else {
+                                                wp_enqueue_script('jobsearch-google-map');
+                                            }
+                                            wp_enqueue_script('jobsearch-location-autocomplete');
+                                        }
+                                        ob_start();
+                                        ?>
+                                        <li>
+                                            <div class="jobsearch_searchloc_div">
+                                                <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+                                                if ($autofill_location == 'yes') { ?>
+                                                    <span class="loc-loader"></span>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           autocomplete="off"
+                                                           class="jobsearch_search_location_field"
+                                                           type="text">
+                                                    <input type="hidden"
+                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location">
+                                                <?php } else { ?>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location" type="text">
+                                                    <?php
+                                                }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+                                                //
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"
+                                                       onclick="JobsearchGetClientLocation()"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php } ?>
+                                            </div>
+                                        </li>
+                                        <?php
+                                        $srchfield_html = ob_get_clean();
+                                        echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
+                                    } ?>
+                                    <li><input type="submit" value="<?php esc_html_e("", 'careerfy-frame') ?>">
+                                        <i class="careerfy-icon careerfy-search-o"></i></li>
+                                </ul>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-        <?php } else if ($view == 'view19') { ?>
+        <?php } else if ($view == 'view19') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
 
-            <div class="careerfy-twentyone-search">
+            <div class="careerfy-twentyone-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                 <div class="careerfy-twentyone-search-inner">
                     <?php if (!empty($small_search_title)) { ?>
                         <small class="careerfy-twentyone-search-tag" <?php echo($adv_search_title_color) ?>><?php echo($small_search_title) ?></small>
@@ -355,183 +383,175 @@ function careerfy_advance_search_shortcode($atts, $content)
                             <div id="home" class="tab-pane fade in active">
                                 <form method="get" action="<?php echo(get_permalink($result_page)); ?>"
                                       class="careerfy-twentyone-loc-search">
-
-                                    <?php
-                                    if ($keyword_field == 'show') {
-                                        if ($autofill_keyword == 'yes') {
-                                            wp_enqueue_script('jobsearch-search-box-sugg');
-                                        }
-                                        ?>
-
-                                        <i class="careerfy-icon careerfy-search"></i>
-                                        <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                            <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                   name="search_title" data-type="job" type="text">
-                                            <span class="sugg-search-loader"></span>
-                                        </div>
-
-                                    <?php } ?>
-                                    <?php
-
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
-
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-
-                                        <div class="careerfy-select-style">
-                                            <select name="sector_cat" class="selectize-select">
-                                                <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) { ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-
-                                    <?php } ?>
-                                    <?php if ($location_field == 'show') {
-                                        if ($autofill_location == 'yes') {
-                                            if ($location_map_type == 'mapbox') {
-                                                wp_enqueue_script('jobsearch-mapbox');
-                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                                wp_enqueue_script('mapbox-geocoder-polyfill');
-                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                            } else {
-                                                wp_enqueue_script('jobsearch-google-map');
-                                            }
-                                            wp_enqueue_script('jobsearch-location-autocomplete');
-                                        }
-                                        ob_start();
-                                        ?>
-                                        <div class="jobsearch_searchloc_div">
-                                            <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
-                                                <span class="loc-loader"></span>
-                                                <i class="careerfy-icon careerfy-pin"></i>
-                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                       autocomplete="off"
-                                                       class="jobsearch_search_location_field"
-                                                       type="text">
-                                                <input type="hidden"
-                                                       class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                       name="location">
-                                            <?php } else { ?>
-                                                <i class="careerfy-icon careerfy-pin"></i>
-                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                       class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                       name="location" type="text">
-                                                <?php
-                                            }
-                                            //
-                                            if ($auto_geo_location == 'yes') {
-                                                ?>
-                                                <a href="javascript:void(0);" class="geolction-btn"
-                                                   onclick="JobsearchGetClientLocation()"><i
-                                                            class="careerfy-icon careerfy-location"></i></a>
-                                                <?php
+                                    <ul>
+                                        <?php if ($keyword_field == 'show') {
+                                            if ($autofill_keyword == 'yes') {
+                                                wp_enqueue_script('jobsearch-search-box-sugg');
                                             }
                                             ?>
-                                        </div>
+                                            <li>
+                                                <i class="careerfy-icon careerfy-search-o"></i>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div class="careerfy-select-style">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if ($location_field == 'show') {
+                                            if ($autofill_location == 'yes') {
+                                                if ($location_map_type == 'mapbox') {
+                                                    wp_enqueue_script('jobsearch-mapbox');
+                                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                } else {
+                                                    wp_enqueue_script('jobsearch-google-map');
+                                                }
+                                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                            }
+                                            ob_start();
+                                            ?>
+                                            <li>
+                                                <div class="jobsearch_searchloc_div">
+                                                    <?php
+                                                    if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                        echo get_radius_tooltip();
+                                                    }
+                                                    if ($autofill_location == 'yes') {
+                                                        ?>
+                                                        <span class="loc-loader"></span>
+                                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                               autocomplete="off"
+                                                               class="jobsearch_search_location_field"
+                                                               type="text">
+                                                        <input type="hidden"
+                                                               class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                               name="location">
+                                                    <?php } else {
+                                                        if ($auto_geo_location == 'no') { ?>
+                                                            <i class="careerfy-icon careerfy-pin-line"></i>
+                                                        <?php } ?>
+                                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                               class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                               name="location" type="text">
+                                                        <?php
+                                                    }
+                                                    //
 
-                                        <?php
-                                        $srchfield_html = ob_get_clean();
-                                        echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
-                                    } ?>
+                                                    if ($auto_geo_location == 'yes') {
+                                                        ?>
+                                                        <a href="javascript:void(0);" class="geolction-btn"
+                                                           onclick="JobsearchGetClientLocation()"><i
+                                                                    class="careerfy-icon careerfy-location"></i></a>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </div>
+
+                                            </li>
+                                            <?php
+                                            $srchfield_html = ob_get_clean();
+                                            echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
+                                        } ?>
+                                    </ul>
 
                                     <input type="submit" value="<?php esc_html_e("Search", 'careerfy-frame') ?>">
-
-
                                 </form>
                             </div>
                             <div id="menu1" class="tab-pane fade">
                                 <form method="get" action="<?php echo(get_permalink($result_page_3)); ?>"
                                       class="careerfy-twentyone-loc-search">
-
-                                    <?php if ($keyword_field == 'show') { ?>
-
-
-                                        <?php if ($autofill_keyword == 'yes') {
-                                            wp_enqueue_script('jobsearch-search-box-sugg');
-                                        } ?>
-                                        <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                            <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                   name="search_title" data-type="job" type="text">
-                                            <span class="sugg-search-loader"></span>
-                                        </div>
-
-                                    <?php } ?>
-                                    <?php
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-
-                                        <div class="careerfy-select-style">
-                                            <select name="sector_cat" class="selectize-select">
-                                                <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) { ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-
-                                    <?php } ?>
-                                    <?php if ($location_field == 'show') {
-                                        if ($autofill_location == 'yes') {
-                                            if ($location_map_type == 'mapbox') {
-                                                wp_enqueue_script('jobsearch-mapbox');
-                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                                wp_enqueue_script('mapbox-geocoder-polyfill');
-                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                            } else {
-                                                wp_enqueue_script('jobsearch-google-map');
-                                            }
-                                            wp_enqueue_script('jobsearch-location-autocomplete');
-                                        }
-                                        ob_start();
-                                        ?>
-
-                                        <div class="jobsearch_searchloc_div">
-                                            <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
-                                                <span class="loc-loader"></span>
-                                                <i class="careerfy-icon careerfy-pin"></i>
-                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                       autocomplete="off"
-                                                       class="jobsearch_search_location_field"
-                                                       type="text">
-                                                <input type="hidden"
-                                                       class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                       name="location">
-                                            <?php } else { ?>
-                                                <i class="careerfy-icon careerfy-pin"></i>
-                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                       class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                       name="location" type="text">
-                                                <?php
-                                            }
-                                            //
-                                            if ($auto_geo_location == 'yes') {
-                                                ?>
-                                                <a href="javascript:void(0);" class="geolction-btn"
-                                                   onclick="JobsearchGetClientLocation()"><i
-                                                            class="careerfy-icon careerfy-location"></i></a>
-                                                <?php
+                                    <ul>
+                                        <?php if ($keyword_field == 'show') {
+                                            if ($autofill_keyword == 'yes') {
+                                                wp_enqueue_script('jobsearch-search-box-sugg');
                                             }
                                             ?>
-                                        </div>
+                                            <li>
+                                                <i class="careerfy-icon careerfy-search-o"></i>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div class="careerfy-select-style">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if ($location_field == 'show') {
+                                            if ($autofill_location == 'yes') {
+                                                if ($location_map_type == 'mapbox') {
+                                                    wp_enqueue_script('jobsearch-mapbox');
+                                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                } else {
+                                                    wp_enqueue_script('jobsearch-google-map');
+                                                }
+                                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                            }
+                                            ob_start();
+                                            ?>
+                                            <li>
+                                                <div class="jobsearch_searchloc_div">
+                                                    <?php
+                                                    if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                        echo get_radius_tooltip();
+                                                    }
+                                                    if ($autofill_location == 'yes') { ?>
+                                                        <span class="loc-loader"></span>
+                                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                               autocomplete="off"
+                                                               class="jobsearch_search_location_field"
+                                                               type="text">
+                                                        <input type="hidden"
+                                                               class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                               name="location">
+                                                    <?php } else {
+                                                        if ($auto_geo_location == 'no') { ?>
+                                                            <i class="careerfy-icon careerfy-pin-line"></i>
+                                                        <?php } ?>
+                                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                               class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                               name="location" type="text">
+                                                        <?php
+                                                    }
+                                                    //
 
-                                        <?php
-                                        $srchfield_html = ob_get_clean();
-                                        echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
-                                    } ?>
-
+                                                    if ($auto_geo_location == 'yes') {
+                                                        ?>
+                                                        <a href="javascript:void(0);" class="geolction-btn"
+                                                           onclick="JobsearchGetClientLocation()"><i
+                                                                    class="careerfy-icon careerfy-location"></i></a>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </li>
+                                            <?php
+                                            $srchfield_html = ob_get_clean();
+                                            echo apply_filters('jobsearch_careerfy_advance_search_sh_frmloc', $srchfield_html);
+                                        } ?>
+                                    </ul>
                                     <input type="submit" value="<?php esc_html_e("Search", 'careerfy-frame') ?>">
 
                                 </form>
@@ -540,8 +560,30 @@ function careerfy_advance_search_shortcode($atts, $content)
                     </div>
                 </div>
             </div>
-        <?php } else if ($view == 'view18') { ?>
-            <div class="careerfy-twenty-search">
+        <?php } else if ($view == 'view18') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
+            <div class="careerfy-twenty-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                 <?php if (!empty($small_search_title)) { ?>
                     <small class="careerfy-twenty-search-tag"><?php echo($small_search_title) ?></small>
                 <?php } ?>
@@ -557,11 +599,11 @@ function careerfy_advance_search_shortcode($atts, $content)
                     <ul class="careerfy-search-twenty-tabs-nav">
                         <li class="active">
                             <a data-toggle="tab"
-                               href="#home"><span><?php echo esc_html__("I'am looking for animal care", "careerfy-frame") ?></span></a>
+                               href="#home"><span><?php echo esc_html__("looking for animal care", "careerfy-frame") ?></span></a>
                         </li>
 
                         <li><a data-toggle="tab"
-                               href="#menu1"><span><?php echo esc_html__("I'am looking for a job", "careerfy-frame") ?></span></a>
+                               href="#menu1"><span><?php echo esc_html__("looking for a job", "careerfy-frame") ?></span></a>
                         </li>
 
                     </ul>
@@ -576,30 +618,21 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             wp_enqueue_script('jobsearch-search-box-sugg');
                                         }
                                         ?>
-                                        <li><i class="careerfy-icon careerfy-search"></i>
+                                        <li><i class="careerfy-icon careerfy-search-o"></i>
                                             <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                                 <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
                                                        name="search_title" data-type="job" type="text">
                                                 <span class="sugg-search-loader"></span>
                                             </div>
                                         </li>
-                                    <?php } ?>
-                                    <?php
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
+                                    <?php }
 
-
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                         <li>
                                             <div class="careerfy-select-style">
                                                 <select name="sector_cat" class="selectize-select">
                                                     <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                    <?php
-                                                    foreach ($all_sectors as $term_sector) { ?>
-                                                        <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php } ?>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                                 </select>
                                             </div>
 
@@ -622,33 +655,38 @@ function careerfy_advance_search_shortcode($atts, $content)
                                         <li>
                                             <div class="jobsearch_searchloc_div">
                                                 <?php
-                                                if ($autofill_location == 'yes') {
-                                                    ?>
+                                                if ($autofill_location == 'yes') { ?>
+
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
                                                            type="text">
+                                                    <?php if ($auto_geo_location == 'no') { ?>
+                                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                                    <?php } ?>
                                                     <input type="hidden"
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
                                                 <?php } else { ?>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
+                                                    <?php if ($auto_geo_location == 'no') { ?>
+                                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                                    <?php } ?>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
                                                     <?php
                                                 }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
                                                 //
-                                                if ($auto_geo_location == 'yes') {
-                                                    ?>
+
+                                                if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
                                                                 class="careerfy-icon careerfy-location"></i></a>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php } ?>
                                             </div>
                                         </li>
                                         <?php
@@ -658,7 +696,7 @@ function careerfy_advance_search_shortcode($atts, $content)
 
                                     <li class="careerfy-twenty-loc-submit"><input type="submit"
                                                                                   value="<?php esc_html_e("", 'careerfy-frame') ?>">
-                                        <i class="careerfy-icon careerfy-search"></i>
+                                        <i class="careerfy-icon careerfy-search-o"></i>
                                     </li>
                                 </ul>
                             </form>
@@ -682,25 +720,19 @@ function careerfy_advance_search_shortcode($atts, $content)
                                         </li>
                                     <?php } ?>
                                     <?php
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
+
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                         <li>
                                             <div class="careerfy-select-style">
                                                 <select name="sector_cat" class="selectize-select">
                                                     <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                    <?php
-                                                    foreach ($all_sectors as $term_sector) { ?>
-                                                        <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php } ?>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                                 </select>
                                             </div>
 
                                         </li>
-                                    <?php } ?>
-                                    <?php if ($location_field == 'show') {
+                                    <?php }
+                                    if ($location_field == 'show') {
                                         if ($autofill_location == 'yes') {
                                             if ($location_map_type == 'mapbox') {
                                                 wp_enqueue_script('jobsearch-mapbox');
@@ -712,15 +744,18 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             }
                                             wp_enqueue_script('jobsearch-location-autocomplete');
                                         }
+
                                         ob_start();
                                         ?>
                                         <li>
                                             <div class="jobsearch_searchloc_div">
                                                 <?php
-                                                if ($autofill_location == 'yes') {
-                                                    ?>
+                                                if ($autofill_location == 'yes') { ?>
+
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
+                                                    <?php if ($auto_geo_location == 'no') { ?>
+                                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                                    <?php } ?>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
@@ -729,15 +764,20 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
                                                 <?php } else { ?>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
+                                                    <?php if ($auto_geo_location == 'no') { ?>
+                                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                                    <?php } ?>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
                                                     <?php
                                                 }
                                                 //
-                                                if ($auto_geo_location == 'yes') {
-                                                    ?>
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                   echo get_radius_tooltip();
+                                                }
+
+                                                if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
                                                                 class="careerfy-icon careerfy-location"></i></a>
@@ -752,7 +792,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     } ?>
                                     <li class="careerfy-twenty-loc-submit">
                                         <input type="submit" value="<?php esc_html_e("", 'careerfy-frame') ?>">
-                                        <i class="careerfy-icon careerfy-search"></i>
+                                        <i class="careerfy-icon careerfy-search-o"></i>
                                     </li>
 
                                 </ul>
@@ -762,9 +802,30 @@ function careerfy_advance_search_shortcode($atts, $content)
                 </div>
             </div>
 
-        <?php } else if ($view == 'view17') { ?>
+        <?php } else if ($view == 'view17') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
 
-            <div class="careerfy-nineteen-search">
+            <div class="careerfy-nineteen-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                 <?php if ($srch_title != '') { ?>
                     <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
                 <?php }
@@ -796,56 +857,47 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             wp_enqueue_script('jobsearch-search-box-sugg');
                                         }
                                         ?>
-                                        <li><i class="careerfy-icon careerfy-search"></i>
+                                        <li><i class="careerfy-icon careerfy-search-o"></i>
                                             <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                                 <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
                                                        name="search_title" data-type="job" type="text">
                                                 <span class="sugg-search-loader"></span>
                                             </div>
                                         </li>
-                                    <?php } ?>
-                                    <?php
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
-
-
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
+                                    <?php }
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                         <li>
+
                                             <div class="careerfy-select-style">
                                                 <select name="sector_cat" class="selectize-select">
                                                     <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                    <?php
-                                                    foreach ($all_sectors as $term_sector) { ?>
-                                                        <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php } ?>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                                 </select>
                                             </div>
 
                                         </li>
-                                    <?php } ?>
-                                    <?php if ($location_field == 'show') {
-                                        if ($autofill_location == 'yes') {
-                                            if ($location_map_type == 'mapbox') {
-                                                wp_enqueue_script('jobsearch-mapbox');
-                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                                wp_enqueue_script('mapbox-geocoder-polyfill');
-                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                            } else {
-                                                wp_enqueue_script('jobsearch-google-map');
-                                            }
-                                            wp_enqueue_script('jobsearch-location-autocomplete');
-                                        }
+                                    <?php }
+                                    if ($location_field == 'show') {
                                         ob_start();
                                         ?>
                                         <li>
                                             <div class="jobsearch_searchloc_div">
                                                 <?php
                                                 if ($autofill_location == 'yes') {
-                                                    ?>
+                                                    if ($autofill_location == 'yes') {
+                                                        if ($location_map_type == 'mapbox') {
+                                                            wp_enqueue_script('jobsearch-mapbox');
+                                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                        } else {
+                                                            wp_enqueue_script('jobsearch-google-map');
+                                                        }
+                                                        wp_enqueue_script('jobsearch-location-autocomplete');
+                                                    } ?>
+
+
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
@@ -854,21 +906,27 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
                                                 <?php } else { ?>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
                                                     <?php
                                                 }
-                                                //
-                                                if ($auto_geo_location == 'yes') {
-                                                    ?>
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn">
+                                                        <i class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
                                                                 class="careerfy-icon careerfy-location"></i></a>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php } ?>
                                             </div>
                                         </li>
                                         <?php
@@ -888,7 +946,6 @@ function careerfy_advance_search_shortcode($atts, $content)
                                 <ul>
                                     <?php if ($keyword_field == 'show') { ?>
                                         <li>
-
                                             <?php if ($autofill_keyword == 'yes') {
                                                 wp_enqueue_script('jobsearch-search-box-sugg');
                                             } ?>
@@ -901,45 +958,41 @@ function careerfy_advance_search_shortcode($atts, $content)
                                         </li>
                                     <?php } ?>
                                     <?php
-                                    $all_sectors = get_terms(array(
-                                        'taxonomy' => 'sector',
-                                        'hide_empty' => false,
-                                    ));
-                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
+
+                                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                         <li>
                                             <div class="careerfy-select-style">
                                                 <select name="sector_cat" class="selectize-select">
                                                     <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                    <?php
-                                                    foreach ($all_sectors as $term_sector) { ?>
-                                                        <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php } ?>
+                                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                                 </select>
                                             </div>
 
                                         </li>
                                     <?php } ?>
                                     <?php if ($location_field == 'show') {
-                                        if ($autofill_location == 'yes') {
-                                            if ($location_map_type == 'mapbox') {
-                                                wp_enqueue_script('jobsearch-mapbox');
-                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
-                                                wp_enqueue_script('mapbox-geocoder-polyfill');
-                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
-                                            } else {
-                                                wp_enqueue_script('jobsearch-google-map');
-                                            }
-                                            wp_enqueue_script('jobsearch-location-autocomplete');
-                                        }
                                         ob_start();
                                         ?>
                                         <li>
                                             <div class="jobsearch_searchloc_div">
                                                 <?php
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
                                                 if ($autofill_location == 'yes') {
-                                                    ?>
+                                                    if ($autofill_location == 'yes') {
+                                                        if ($location_map_type == 'mapbox') {
+                                                            wp_enqueue_script('jobsearch-mapbox');
+                                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                        } else {
+                                                            wp_enqueue_script('jobsearch-google-map');
+                                                        }
+                                                        wp_enqueue_script('jobsearch-location-autocomplete');
+                                                    } ?>
+
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
@@ -948,15 +1001,18 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
                                                 <?php } else { ?>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
                                                     <?php
                                                 }
+
                                                 //
-                                                if ($auto_geo_location == 'yes') {
-                                                    ?>
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
                                                                 class="careerfy-icon careerfy-location"></i></a>
@@ -1016,103 +1072,382 @@ function careerfy_advance_search_shortcode($atts, $content)
             </div>
 
 
-        <?php } else if ($view == 'view16') { ?>
+        <?php } else if ($view == 'view16') {
+            $rand = rand(99, 100);
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
             <!-- Banner -->
             <h1><?php echo $srch_title ?></h1>
             <br>
             <p><?php echo $srch_desc ?></p>
             <br>
-            <form class="careerfy-banner-twelve-search" method="get"
+            <form class="careerfy-banner-twelve-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>"
+                  method="get"
                   action="<?php echo(get_permalink($result_page)); ?>">
-                <i class="careerfy-icon careerfy-search"></i>
-                <?php if ($keyword_field == 'show') {
-                    if ($autofill_keyword == 'yes') {
-                        wp_enqueue_script('jobsearch-search-box-sugg');
-                    }
+
+                <ul class="careerfy-twelve-fields">
+                    <?php if ($keyword_field == 'show') { ?>
+                        <li>
+                            <div class="careerfy-twelve-search-wrapper <?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+
+                                <?php if ($autofill_keyword == 'yes') {
+                                    wp_enqueue_script('jobsearch-search-box-sugg');
+                                }
+                                ?>
+                                <i class="careerfy-icon careerfy-search-o"></i>
+                                <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                       name="search_title" data-type="job" type="text">
+                                <span class="sugg-search-loader"></span>
+                            </div>
+                        </li>
+                    <?php }
+                    if ($location_field == 'show') { ?>
+                        <li>
+                            <?php
+                            if ($autofill_location == 'yes') {
+                                if ($location_map_type == 'mapbox') {
+                                    wp_enqueue_script('jobsearch-mapbox');
+                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                } else {
+                                    wp_enqueue_script('jobsearch-google-map');
+                                }
+                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                ?>
+                                <div class="careerfy-tooltip-radius-wrapper jobsearch_searchloc_div">
+                                    <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                        echo get_radius_tooltip();
+                                    } ?>
+                                    <i class="careerfy-icon careerfy-pin-line"></i>
+                                    <span class="loc-loader"></span>
+                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                           autocomplete="off"
+                                           class="jobsearch_search_location_field"
+                                           type="text">
+                                    <input type="hidden"
+                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                           name="location">
+                                    <?php if ($auto_geo_location == 'yes') { ?>
+                                        <a href="javascript:void(0);" class="geolction-btn"
+                                           onclick="JobsearchGetClientLocation()"><i
+                                                    class="careerfy-icon careerfy-location"></i></a>
+                                    <?php } ?>
+                                </div>
+                            <?php } else { ?>
+                                <div class="careerfy-tooltip-radius-wrapper jobsearch_searchloc_div">
+                                    <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                        echo get_radius_tooltip();
+                                    } ?>
+                                    <i class="careerfy-icon careerfy-pin-line"></i>
+                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                           name="location" type="text">
+                                    <?php
+                                    if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                        <a href="javascript:void(0);" class="geolction-btn"><i
+                                                    class="careerfy-icon careerfy-location"></i></a>
+                                    <?php }
+                                    if ($auto_geo_location == 'yes') { ?>
+                                        <a href="javascript:void(0);" class="geolction-btn"
+                                           onclick="JobsearchGetClientLocation()"><i
+                                                    class="careerfy-icon careerfy-location"></i></a>
+                                    <?php } ?>
+                                </div>
+
+                            <?php } ?>
+                        </li>
+                    <?php }
                     ?>
-                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                               name="search_title" data-type="job" type="text">
-                        <span class="sugg-search-loader"></span>
-                    </div>
-                <?php } ?>
-                <input type="submit" value="<?php echo esc_html__('Find Jobs', 'careerfy-frame') ?>">
+                    <?php
+                    if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                        <li>
+                            <div class="careerfy-select-style">
+                                <select name="sector_cat" class="selectize-select">
+                                    <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                    <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                </select>
+                            </div>
+                        </li>
+                    <?php } ?>
+                    <li><input type="submit" value="<?php echo esc_html__('Find Jobs', 'careerfy-frame') ?>"></li>
+                </ul>
+
+                <div class="clearfix"></div>
+                <?php
+                if (count($job_types) > 0) {
+                    foreach ($job_types as $key => $job_types_info) { ?>
+                        <div class="careerfy-eighteen-search-radio">
+                            <input type="radio" name="job_type"
+                                   value="<?php echo esc_html__($job_types_info->slug, 'careerfy-frame') ?>"
+                                   id="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>"
+                                   class="form-radio"
+                                   checked="">
+                            <label for="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>" <?php echo $adv_search_link_color ?> ><?php echo esc_html__($job_types_info->name, 'careerfy-frame') ?></label>
+                        </div>
+                    <?php }
+                } ?>
+
             </form>
 
 
             <!-- Banner -->
-        <?php } else if ($view == 'view15') { ?>
-            <div class="careerfy-eighteen-banner">
+        <?php } else if ($view == 'view15') {
+            $rand = rand(99, 100);
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
+            <div class="careerfy-eighteen-banner <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                 <span class="careerfy-eighteen-banner-transparent"></span>
                 <h1><?php echo $srch_title ?></h1>
                 <span><?php echo $srch_desc ?></span>
                 <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
-                    <?php if ($keyword_field == 'show') {
-                        if ($autofill_keyword == 'yes') {
-                            wp_enqueue_script('jobsearch-search-box-sugg');
-                        }
-                        ?>
-                        <div class="careerfy-eighteen-banner-title <?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                            <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                   name="search_title" data-type="job" type="text">
-                            <span class="sugg-search-loader"></span>
-                        </div>
-                    <?php } ?>
-                    <div class="clearfix"></div>
-                    <?php foreach ($job_types as $job_types_info) { ?>
-                        <div class="careerfy-eighteen-search-radio">
-                            <input type="radio" name="job_type"
-                                   value="<?php echo esc_html__($job_types_info->slug, 'careerfy-frame') ?>"
-                                   id="radio-one" class="form-radio"
-                                   checked="">
-                            <label for="radio-one" <?php echo $adv_search_link_color ?> ><?php echo esc_html__($job_types_info->name, 'careerfy-frame') ?></label>
-                        </div>
-                    <?php } ?>
-                    <input type="submit" value="<?php echo esc_html__('Search', 'careerfy-frame') ?>">
-                </form>
-            </div>
-        <?php } else if ($view == 'view14') { ?>
-            <div class="careerfy-seventeen-search">
-                <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
-                    <ul>
-                        <li>
-                            <?php if ($keyword_field == 'show') {
-                                if ($autofill_keyword == 'yes') {
-                                    wp_enqueue_script('jobsearch-search-box-sugg');
-                                }
-                                ?>
-                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                    <ul class="careerfy-eighteen-fields">
+                        <?php if ($keyword_field == 'show') { ?>
+                            <li>
+                                <div class="careerfy-eighteen-banner-title <?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                    <?php
+                                    if ($autofill_keyword == 'yes') {
+                                        wp_enqueue_script('jobsearch-search-box-sugg');
+                                    }
+                                    ?>
                                     <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
                                            name="search_title" data-type="job" type="text">
                                     <span class="sugg-search-loader"></span>
                                 </div>
-                            <?php }
+                            </li>
+                        <?php }
 
-                            if ($autofill_location == 'yes') { ?>
-                                <span class="loc-loader"></span>
-                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                       autocomplete="off"
-                                       class="jobsearch_search_location_field"
-                                       type="text">
-                                <input type="hidden"
-                                       class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                       name="location">
-                            <?php } else { ?>
-                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                       class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                       name="location" type="text">
+                        if ($location_field == 'show') { ?>
+                            <li>
+                                <?php if ($autofill_location == 'yes') {
+                                    if ($location_map_type == 'mapbox') {
+                                        wp_enqueue_script('jobsearch-mapbox');
+                                        wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                        wp_enqueue_script('mapbox-geocoder-polyfill');
+                                        wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                    } else {
+                                        wp_enqueue_script('jobsearch-google-map');
+                                    }
+                                    wp_enqueue_script('jobsearch-location-autocomplete');
+                                    ?>
+                                    <div class="careerfy-tooltip-radius-wrapper jobsearch_searchloc_div">
+                                        <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                            echo get_radius_tooltip();
+                                        } ?>
+
+                                        <span class="loc-loader"></span>
+                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                               autocomplete="off"
+                                               class="jobsearch_search_location_field"
+                                               type="text">
+                                        <input type="hidden"
+                                               class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location">
+                                        <?php if ($auto_geo_location == 'yes') { ?>
+                                            <a href="javascript:void(0);" class="geolction-btn"
+                                               onclick="JobsearchGetClientLocation()"><i
+                                                        class="careerfy-icon careerfy-location"></i></a>
+                                        <?php } ?>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="careerfy-tooltip-radius-wrapper">
+                                        <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                            echo get_radius_tooltip();
+                                        } ?>
+
+                                        <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                               class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location" type="text">
+                                        <?php
+                                        if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                            <a href="javascript:void(0);" class="geolction-btn"><i
+                                                        class="careerfy-icon careerfy-location"></i></a>
+                                        <?php }
+                                        if ($auto_geo_location == 'yes') { ?>
+                                            <a href="javascript:void(0);" class="geolction-btn"
+                                               onclick="JobsearchGetClientLocation()"><i
+                                                        class="careerfy-icon careerfy-location"></i></a>
+                                        <?php } ?>
+                                    </div>
+
+                                <?php } ?>
+                            </li>
+                        <?php } ?>
+                        <?php
+                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                            <li>
+                                <div class="careerfy-select-style">
+                                    <select name="sector_cat" class="selectize-select">
+                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                    </select>
+                                </div>
+                            </li>
+                        <?php } ?>
+                        <li><input type="submit" value="<?php echo esc_html__('Search', 'careerfy-frame') ?>"></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                    <?php
+                    if (count($job_types) > 0) {
+                        foreach ($job_types as $key => $job_types_info) { ?>
+                            <div class="careerfy-eighteen-search-radio">
+                                <input type="radio" name="job_type"
+                                       value="<?php echo esc_html__($job_types_info->slug, 'careerfy-frame') ?>"
+                                       id="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>"
+                                       class="form-radio"
+                                       checked="">
+                                <label for="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>" <?php echo $adv_search_link_color ?> ><?php echo esc_html__($job_types_info->name, 'careerfy-frame') ?></label>
+                            </div>
+                        <?php }
+                    } ?>
+
+                </form>
+            </div>
+        <?php } else if ($view == 'view14') {
+            $rand = rand(99, 100);
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
+            <div class="careerfy-seventeen-search <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
+                <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
+                    <ul>
+                        <li>
+                            <ul class="careerfy-seventeen-search-list">
                                 <?php
-                            } ?>
+                                if ($keyword_field == 'show') {
+                                    if ($autofill_keyword == 'yes') {
+                                        wp_enqueue_script('jobsearch-search-box-sugg');
+                                    } ?>
+                                    <li>
+                                        <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                            <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                   name="search_title" data-type="job" type="text">
+                                            <span class="sugg-search-loader"></span>
+                                        </div>
+                                    </li>
+                                <?php }
+
+                                if ($location_field == 'show') { ?>
+                                    <li>
+                                        <div class="jobsearch_searchloc_div">
+                                            <?php if ($autofill_location == 'yes') {
+                                                if ($location_map_type == 'mapbox') {
+                                                    wp_enqueue_script('jobsearch-mapbox');
+                                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                } else {
+                                                    wp_enqueue_script('jobsearch-google-map');
+                                                }
+                                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                                ?>
+                                                <span class="loc-loader"></span>
+                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                       autocomplete="off"
+                                                       class="jobsearch_search_location_field"
+                                                       type="text">
+                                                <input type="hidden"
+                                                       class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                       name="location">
+                                            <?php } else { ?>
+                                                <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                       class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                       name="location" type="text">
+                                            <?php }
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
+                                            if ($auto_geo_location == 'yes') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"
+                                                   onclick="JobsearchGetClientLocation()"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php } ?>
+
+                                        </div>
+                                    </li>
+                                <?php } ?>
+                                <?php
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                    <li>
+                                        <div class="careerfy-select-style">
+                                            <select name="sector_cat" class="selectize-select">
+                                                <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                            </select>
+                                        </div>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         </li>
                         <li>
-                            <span><?php echo esc_html__('Filter:', 'careerfy-frame') ?></span>
                             <?php foreach ($job_types as $job_types_info) { ?>
                                 <div class="careerfy-seventeen-search-radio">
                                     <input type="radio" name="job_type"
                                            value="<?php echo esc_html__($job_types_info->slug, 'careerfy-frame') ?>"
-                                           id="radio-one"
+                                           id="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>"
                                            class="form-radio" <?php echo $adv_search_link_color ?>>
-                                    <label for="radio-one"><?php echo esc_html__($job_types_info->name, 'careerfy-frame') ?></label>
+                                    <label for="radio-<?php echo($job_types_info->slug) ?>-<?php echo($rand) ?>"><?php echo esc_html__($job_types_info->name, 'careerfy-frame') ?></label>
                                 </div>
                             <?php } ?>
                             <input type="submit" value="<?php echo esc_html__('Search', 'careerfy-frame') ?>">
@@ -1120,128 +1455,318 @@ function careerfy_advance_search_shortcode($atts, $content)
                     </ul>
                 </form>
             </div>
-        <?php } else if ($view == 'view13') { ?>
-            <div class="careerfy-sixteen-banner">
-                <div class="container">
-                    <?php if ($srch_title != '') { ?>
-                        <h1 <?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
-                    <?php }
-                    if ($srch_desc != '') { ?>
-                        <span <?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></span>
-                    <?php } ?>
-                    <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
-                        <?php if ($keyword_field == 'show') {
-                            if ($autofill_keyword == 'yes') {
-                                wp_enqueue_script('jobsearch-search-box-sugg');
-                            } ?>
-                            <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                       name="search_title" data-type="job" type="text">
-                                <span class="sugg-search-loader"></span>
-                            </div>
+        <?php } else if ($view == 'view13') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+                'number' => 3,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+            ?>
+
+            <div class="careerfy-sixteen-banner <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
+                <?php if ($srch_title != '') { ?>
+                    <h1 <?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
+                <?php }
+                if ($srch_desc != '') { ?>
+                    <span <?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></span>
+                <?php } ?>
+                <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
+                    <ul>
+                        <?php if ($keyword_field == 'show') { ?>
+                            <li>
+                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                    <?php
+                                    if ($autofill_keyword == 'yes') {
+                                        wp_enqueue_script('jobsearch-search-box-sugg');
+                                    } ?>
+                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                           name="search_title" data-type="job" type="text">
+                                    <span class="sugg-search-loader"></span>
+                                </div>
+                            </li>
                         <?php } ?>
-                        <input type="submit" value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
-                    </form>
-                    <div class="clearfix"></div>
+                        <?php if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                            <li>
+                                <div class="careerfy-select-style">
+                                    <select name="sector_cat" class="selectize-select">
+                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                    </select>
+                                </div>
+                            </li>
+                        <?php } ?>
+                        <?php if ($location_field == 'show') { ?>
+                            <li>
+                                <?php if ($autofill_location == 'yes') {
+                                    if ($location_map_type == 'mapbox') {
+                                        wp_enqueue_script('jobsearch-mapbox');
+                                        wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                        wp_enqueue_script('mapbox-geocoder-polyfill');
+                                        wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                    } else {
+                                        wp_enqueue_script('jobsearch-google-map');
+                                    }
+                                    wp_enqueue_script('jobsearch-location-autocomplete'); ?>
+                                    <div class="careerfy-tooltip-radius-wrapper jobsearch_searchloc_div">
+                                        <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                            echo get_radius_tooltip();
+                                        } ?>
+
+                                        <span class="loc-loader"></span>
+                                        <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                               autocomplete="off"
+                                               class="jobsearch_search_location_field"
+                                               type="text">
+                                        <input type="hidden"
+                                               class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location">
+                                        <?php if ($auto_geo_location == 'yes') { ?>
+                                            <a href="javascript:void(0);" class="geolction-btn"
+                                               onclick="JobsearchGetClientLocation()"><i
+                                                        class="careerfy-icon careerfy-location"></i></a>
+                                        <?php } ?>
+                                    </div>
+
+                                <?php } else { ?>
+                                    <div class="careerfy-tooltip-radius-wrapper jobsearch_searchloc_div">
+                                        <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                           echo get_radius_tooltip();
+                                        } ?>
+
+                                        <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                               class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location" type="text">
+                                        <i class="careerfy-sixteen-banner-search-icon careerfy-icon careerfy-gps"></i>
+                                        <?php if ($auto_geo_location == 'yes') { ?>
+                                            <a href="javascript:void(0);" class="geolction-btn"
+                                               onclick="JobsearchGetClientLocation()"><i
+                                                        class="careerfy-icon careerfy-location"></i></a>
+                                        <?php } ?>
+                                    </div>
+
+                                <?php } ?>
+                            </li>
+                        <?php } ?>
+                        <li><input type="submit" value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>"></li>
+                    </ul>
+                </form>
+                <div class="clearfix"></div>
+                <?php
+                $to_result_page = $result_page;
+                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                     <div class="careerfy-sixteen-banner-tags">
                         <small><?php echo esc_html__('Popular Keywords', 'careerfy-frame') ?></small>
                         <?php
-                        $all_sectors = get_terms(array(
-                            'taxonomy' => 'sector',
-                            'hide_empty' => false,
-                            'number' => 3,
-                        ));
+                        ob_start();
+                        foreach ($all_sectors as $term_sector) {
+                            $term_fields = get_term_meta($term_sector->term_id, 'careerfy_frame_cat_fields', true);
+                            $term_icon = isset($term_fields['icon']) ? $term_fields['icon'] : '';
+                            $term_color = isset($term_fields['color']) ? $term_fields['color'] : '';
+                            $term_image = isset($term_fields['image']) ? $term_fields['image'] : '';
 
-                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
-                            ob_start();
-                            foreach ($all_sectors as $term_sector) { ?>
-                                <a href="<?php echo($term_sector->term_id) ?>"><?php echo($term_sector->name) ?></a>
-                            <?php }
-                            $srchfield_html = ob_get_clean();
-                            echo apply_filters('jobsearch_careerfy_advance_search_sh_frmcat', $srchfield_html, $all_sectors);
-                        } ?>
-
+                            $cat_goto_link = add_query_arg(array('sector_cat' => $term_sector->slug), get_permalink($to_result_page));
+                            $cat_goto_link = apply_filters('jobsearch_job_sector_cat_result_link', $cat_goto_link, $term_sector->slug);
+                            ?>
+                            <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?></a>
+                        <?php }
+                        $srchfield_html = ob_get_clean();
+                        echo apply_filters('jobsearch_careerfy_advance_search_sh_frmcat', $srchfield_html, $all_sectors);
+                        ?>
                     </div>
-                </div>
+                <?php } ?>
             </div>
-        <?php } else if ($view == 'view12') { ?>
+        <?php } else if ($view == 'view12') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            ?>
             <style>
                 .banner-bg-img-<?php echo $rand_num ?> {
                     background: url("<?php echo $bg_img ?>") no-repeat;
                 }
 
             </style>
-            <div class="careerfy-fifteen-banner">
-                <div class="container">
-                    <div class="careerfy-fifteen-banner-inner banner-bg-img-<?php echo $rand_num ?>">
-                        <?php if ($srch_title != '') { ?>
-                            <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
-                        <?php }
-                        if ($srch_desc != '') { ?>
-                            <span class="careerfy-fifteen-banner-description" <?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></span>
-                        <?php } ?>
-                        <div class="careerfy-fifteen-banner-tabs">
-                            <ul class="careerfy-banner-eleven-tabs-nav">
-                                <li class="active"><a data-toggle="tab"
-                                                      href="#home"><?php echo esc_html__('Find a Job', 'careerfy-frame') ?></a>
-                                </li>
-                                <?php
-                                ob_start();
-                                ?>
-                                <li><a data-toggle="tab"
-                                       href="#menu1"><?php echo esc_html__('Find a Candidate', 'careerfy-frame') ?></a>
-                                </li>
-                                <?php
-                                $html = ob_get_clean();
-                                echo apply_filters('careerfy_adv_srch_sh_view12_findcand_tab', $html);
-                                ?>
-                            </ul>
-                            <div class="tab-content">
-                                <div id="home" class="tab-pane fade in active">
-                                    <form method="get" action="<?php echo(get_permalink($result_page)); ?>"
-                                          class="careerfy-fifteen-banner-search">
-                                        <ul>
+            <div class="careerfy-fifteen-banner <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
+                <div class="careerfy-fifteen-banner-inner banner-bg-img-<?php echo $rand_num ?>">
+                    <?php if ($srch_title != '') { ?>
+                        <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
+                    <?php }
+                    if ($srch_desc != '') { ?>
+                        <span class="careerfy-fifteen-banner-description" <?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></span>
+                    <?php } ?>
+                    <div class="careerfy-fifteen-banner-tabs">
+                        <ul class="careerfy-banner-eleven-tabs-nav">
+                            <li class="active"><a data-toggle="tab"
+                                                  href="#home"><?php echo esc_html__('Find a Job', 'careerfy-frame') ?></a>
+                            </li>
+                            <?php
+                            ob_start();
+                            ?>
+                            <li><a data-toggle="tab"
+                                   href="#menu1"><?php echo esc_html__('Find a Candidate', 'careerfy-frame') ?></a>
+                            </li>
+                            <?php
+                            $html = ob_get_clean();
+                            echo apply_filters('careerfy_adv_srch_sh_view12_findcand_tab', $html);
+                            ?>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade in active">
+                                <form method="get" action="<?php echo(get_permalink($result_page)); ?>"
+                                      class="careerfy-fifteen-banner-search">
+                                    <ul>
+                                        <?php if ($keyword_field == 'show') { ?>
                                             <li>
-                                                <?php if ($keyword_field == 'show') {
-                                                    if ($autofill_keyword == 'yes') {
-                                                        wp_enqueue_script('jobsearch-search-box-sugg');
+                                                <?php
+                                                if ($autofill_keyword == 'yes') {
+                                                    wp_enqueue_script('jobsearch-search-box-sugg');
+                                                }
+                                                ?>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div
+                                            </li>
+                                        <?php }
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div class="">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php }
+                                        if ($location_field == 'show') { ?>
+                                            <li>
+                                                <?php
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+
+                                                   echo get_radius_tooltip();
+                                                }
+
+                                                if ($autofill_location == 'yes') {
+                                                    if ($location_map_type == 'mapbox') {
+                                                        wp_enqueue_script('jobsearch-mapbox');
+                                                        wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                        wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                        wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                    } else {
+                                                        wp_enqueue_script('jobsearch-google-map');
                                                     }
+                                                    wp_enqueue_script('jobsearch-location-autocomplete'); ?>
+
+                                                    <span class="loc-loader"></span>
+                                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                                           autocomplete="off"
+                                                           class="jobsearch_search_location_field"
+                                                           type="text">
+                                                    <input type="hidden"
+                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location">
+                                                <?php } else { ?>
+                                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location" type="text">
+                                                <?php }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"
+                                                       onclick="JobsearchGetClientLocation()"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php } ?>
+                                            </li>
+                                        <?php } ?>
+                                        <li><input type="submit"
+                                                   value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <form method="get" action="<?php echo(get_permalink($result_page_3)); ?>"
+                                      class="careerfy-fifteen-banner-search">
+                                    <ul>
+                                        <?php if ($keyword_field == 'show') { ?>
+                                            <li>
+                                                <?php if ($autofill_keyword == 'yes') {
+                                                    wp_enqueue_script('jobsearch-search-box-sugg');
+                                                } ?>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php }
+
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div class="">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php }
+                                        if ($location_field == 'show') { ?>
+                                            <li>
+                                                <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+
+                                                if ($autofill_location == 'yes') {
+                                                    if ($location_map_type == 'mapbox') {
+                                                        wp_enqueue_script('jobsearch-mapbox');
+                                                        wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                        wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                        wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                    } else {
+                                                        wp_enqueue_script('jobsearch-google-map');
+                                                    }
+                                                    wp_enqueue_script('jobsearch-location-autocomplete');
                                                     ?>
-                                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                               name="search_title" data-type="job" type="text">
-                                                        <span class="sugg-search-loader"></span>
-                                                    </div>
-                                                <?php } ?>
-                                            </li>
-                                            <li>
-                                                <?php
-
-                                                $all_sectors = get_terms(array(
-                                                    'taxonomy' => 'sector',
-                                                    'hide_empty' => false,
-                                                ));
-                                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-                                                    <div class="careerfy-select-style">
-                                                        <select name="sector_cat" class="selectize-select">
-                                                            <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                            <?php
-                                                            foreach ($all_sectors as $term_sector) { ?>
-                                                                <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                <?php } ?>
-                                            </li>
-                                            <li>
-                                                <?php
-                                                if ($autofill_location == 'yes') { ?>
                                                     <span class="loc-loader"></span>
                                                     <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
                                                            type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
                                                     <input type="hidden"
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
@@ -1249,149 +1774,213 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                     <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
-                                                    <?php
-                                                } ?>
 
-                                            </li>
-                                            <li><input type="submit"
-                                                       value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
-                                <div id="menu1" class="tab-pane fade">
-                                    <form method="get" action="<?php echo(get_permalink($result_page_3)); ?>"
-                                          class="careerfy-fifteen-banner-search">
-                                        <ul>
-                                            <li>
-                                                <?php if ($keyword_field == 'show') {
-                                                    if ($autofill_keyword == 'yes') {
-                                                        wp_enqueue_script('jobsearch-search-box-sugg');
-                                                    } ?>
-                                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                               name="search_title" data-type="job" type="text">
-                                                        <span class="sugg-search-loader"></span>
-                                                    </div>
+                                                <?php }
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"
+                                                       onclick="JobsearchGetClientLocation()"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
                                                 <?php } ?>
                                             </li>
-                                            <li>
-                                                <?php
-                                                $all_sectors = get_terms(array(
-                                                    'taxonomy' => 'sector',
-                                                    'hide_empty' => false,
-                                                ));
-                                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') { ?>
-                                                    <div class="careerfy-select-style">
-                                                        <select name="sector_cat" class="selectize-select">
-                                                            <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                            <?php
-                                                            foreach ($all_sectors as $term_sector) { ?>
-                                                                <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                <?php } ?>
-                                            </li>
-                                            <li>
-                                                <?php
-                                                if ($autofill_location == 'yes') { ?>
-                                                    <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
-                                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
-                                                           autocomplete="off"
-                                                           class="jobsearch_search_location_field"
-                                                           type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
-                                                    <input type="hidden"
-                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                           name="location">
-                                                <?php } else { ?>
-                                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
-                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                           name="location" type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
-                                                    <?php
-                                                } ?>
-                                            </li>
-                                            <li><input type="submit"
-                                                       value="<?php esc_html_e("Find Job", 'careerfy-frame') ?>">
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
+                                        <?php } ?>
+                                        <li><input type="submit"
+                                                   value="<?php esc_html_e("Find Job", 'careerfy-frame') ?>">
+                                        </li>
+                                    </ul>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-        <?php } else if ($view == 'view11') { ?>
+        <?php } else if ($view == 'view11') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
+
+            ?>
             <!-- Banner -->
-            <div class="careerfy-fourteen-banner">
+            <div class="careerfy-fourteen-banner <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                 <span class="careerfy-fourteen-banner-transparent"></span>
                 <div class="careerfy-fourteen-caption">
-                    <div class="container">
-                        <?php if ($srch_title != '') { ?>
-                            <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
-                        <?php }
-                        if ($srch_desc != '') { ?>
-                            <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
-                        <?php } ?>
-                        <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
-                            <?php if ($keyword_field == 'show') {
-                            if ($autofill_keyword == 'yes') {
-                                wp_enqueue_script('jobsearch-search-box-sugg');
+                    <?php if ($srch_title != '') { ?>
+                        <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
+                    <?php }
+                    if ($srch_desc != '') { ?>
+                        <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
+                    <?php } ?>
+                    <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
+                        <ul class="careerfy-fourteen-fields">
+                            <?php if ($keyword_field == 'show') { ?>
+                                <li>
+                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                        <?php
+                                        if ($autofill_keyword == 'yes') {
+                                            wp_enqueue_script('jobsearch-search-box-sugg');
+                                        } ?>
+                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                               name="search_title" data-type="job" type="text">
+                                        <span class="sugg-search-loader"></span>
+                                    </div>
+                                </li>
+                            <?php }
+                            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                <li>
+                                    <div class="careerfy-select-style">
+                                        <select name="sector_cat" class="selectize-select">
+                                            <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                            <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                        </select>
+                                    </div>
+                                </li>
+                            <?php }
+                            if ($location_field == 'show') { ?>
+                                <li>
+                                    <?php
+                                    if ($autofill_location == 'yes') {
+                                        if ($location_map_type == 'mapbox') {
+                                            wp_enqueue_script('jobsearch-mapbox');
+                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                            wp_enqueue_script('mapbox-geocoder-polyfill');
+                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                        } else {
+                                            wp_enqueue_script('jobsearch-google-map');
+                                        }
+                                        wp_enqueue_script('jobsearch-location-autocomplete');
+                                        ?>
+                                        <div class="careerfy-tooltip-radius-wrapper">
+                                            <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+
+                                                echo get_radius_tooltip();
+                                            } ?>
+
+                                            <span class="loc-loader"></span>
+                                            <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                                   autocomplete="off"
+                                                   class="jobsearch_search_location_field"
+                                                   type="text">
+                                            <input type="hidden"
+                                                   class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                   name="location">
+                                            <?php
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
+                                            if ($auto_geo_location == 'yes') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"
+                                                   onclick="JobsearchGetClientLocation()"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php } ?>
+                                        </div>
+                                    <?php } else { ?>
+
+                                        <div class="careerfy-tooltip-radius-wrapper">
+                                            <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                               echo get_radius_tooltip();
+                                            } ?>
+                                            <span class="loc-loader"></span>
+                                            <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                                   class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                   name="location" type="text">
+
+                                            <?php
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
+                                            if ($auto_geo_location == 'yes') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"
+                                                   onclick="JobsearchGetClientLocation()"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php } ?>
+                                        </div>
+
+                                    <?php } ?>
+                                </li>
+                            <?php } ?>
+                            <li><input type="submit" value="<?php echo esc_html_e('Find Jobs', 'careerfy-frame') ?>">
+                            </li>
+                        </ul>
+                        <a href="<?php echo get_permalink($result_page) ?>"
+                           class="careerfy-fourteen-caption-btn"><?php esc_html_e('+ Advance Search', 'careerfy-frame') ?></a>
+
+                    </form>
+
+                    <?php
+            if (function_exists('vc_param_group_parse_atts')) {
+                $adv_banner_images = vc_param_group_parse_atts($adv_banner_images);
+            }
+                    if (count($adv_banner_images) > 1) { ?>
+                        <ul>
+                            <?php
+                            $_exf_counter = 0;
+                            foreach ($adv_banner_images as $adv_banner_image) { ?>
+                                <li><a href="<?php echo $adv_banner_image['img_link'] ?>"><img
+                                                src="<?php echo $adv_banner_image['banner_img'] ?>" alt=""></a>
+                                </li>
+                                <?php
+                                $_exf_counter++;
                             }
                             ?>
-                            <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                       name="search_title" data-type="job" type="text">
-                                <span class="sugg-search-loader"></span>
-                                <?php } ?>
-                            </div>
-                            <input type="submit" value="<?php echo esc_html_e('Find Jobs', 'careerfy-frame') ?>">
-                            <?php if (get_permalink($result_page) != "") { ?>
-                                <a href="<?php echo get_permalink($result_page) ?>"
-                                   class="careerfy-fourteen-caption-btn"><?php esc_html_e('+ Advance Search', 'careerfy-frame') ?></a>
-                            <?php } ?>
-                        </form>
+                        </ul>
+                    <?php } ?>
 
-                        <?php
-                        $adv_banner_images = vc_param_group_parse_atts($adv_banner_images);
-                        if (!empty($adv_banner_images)) { ?>
-                            <ul>
-                                <?php
-                                $_exf_counter = 0;
-                                foreach ($adv_banner_images as $adv_banner_image) { ?>
-                                    <li><a href="<?php echo $adv_banner_image['img_link'] ?>"><img
-                                                    src="<?php echo $adv_banner_image['banner_img'] ?>" alt=""></a>
-                                    </li>
-                                    <?php
-                                    $_exf_counter++;
-                                }
-                                ?>
-                            </ul>
-                        <?php } ?>
-                    </div>
                 </div>
             </div>
             <!-- Banner -->
-        <?php } else if ($view == 'view10') { ?>
+        <?php } else if ($view == 'view10') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            ?>
             <!-- Banner -->
             <div class="careerfy-thirteen-banner">
-                <span class="careerfy-thirteen-banner-transparent"></span>
-                <div class="careerfy-thirteen-banner-search">
+                <div class="careerfy-thirteen-banner-search <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>">
                     <form method="get" action="<?php echo(get_permalink($result_page)); ?>">
                         <ul>
                             <?php
                             if ($keyword_field == 'show') {
                                 if ($autofill_keyword == 'yes') {
                                     wp_enqueue_script('jobsearch-search-box-sugg');
-                                }
-                                ?>
-                                <li><i class="careerfy-icon careerfy-search"></i>
+                                } ?>
+                                <li><i class="careerfy-icon careerfy-search-o"></i>
                                     <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                         <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
                                                name="search_title" data-type="job" type="text">
@@ -1399,55 +1988,60 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     </div>
                                 </li>
                             <?php }
-                            $all_sectors = get_terms(array(
-                                'taxonomy' => 'sector',
-                                'hide_empty' => false,
-                            ));
-                            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
-                                ?>
+
+                            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                 <li>
                                     <div class="careerfy-select-style">
                                         <select name="sector_cat" class="selectize-select">
                                             <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                            <?php
-                                            foreach ($all_sectors as $term_sector) {
-                                                ?>
-                                                <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                <?php
-                                            }
-                                            ?>
+                                            <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                         </select>
                                     </div>
                                 </li>
                             <?php } ?>
-                            <li>
-                                <?php
-                                if ($autofill_location == 'yes') { ?>
-                                    <i class="careerfy-icon careerfy-pin"></i>
-                                    <span class="loc-loader"></span>
-                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
-                                           autocomplete="off"
-                                           class="jobsearch_search_location_field"
-                                           type="text">
-                                    <i class="careerfy-thirteen-banner-search-icon careerfy-icon careerfy-gps-o"></i>
-                                    <input type="hidden"
-                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                           name="location">
-                                <?php } else { ?>
-                                    <i class="careerfy-icon careerfy-pin"></i>
-                                    <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
-                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                           name="location" type="text">
-                                    <i class="careerfy-thirteen-banner-search-icon careerfy-icon careerfy-gps"></i>
+                            <?php if ($location_field == 'show') { ?>
+                                <li>
                                     <?php
-                                } ?>
+                                    if ($autofill_location == 'yes') {
 
-                            </li>
-                            <?php if ($radius_field == 'show') { ?>
-                                <li class="careerfy-thirteen-banner-radius">
+                                        if ($autofill_location == 'yes') {
+                                            if ($location_map_type == 'mapbox') {
+                                                wp_enqueue_script('jobsearch-mapbox');
+                                                wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                            } else {
+                                                wp_enqueue_script('jobsearch-google-map');
+                                            }
+                                            wp_enqueue_script('jobsearch-location-autocomplete');
+                                        } ?>
+
+
+                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                        <span class="loc-loader"></span>
+                                        <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                               autocomplete="off"
+                                               class="jobsearch_search_location_field"
+                                               type="text">
+                                        <input type="hidden"
+                                               class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location">
+                                    <?php } else { ?>
+                                        <i class="careerfy-icon careerfy-pin-line"></i>
+                                        <input placeholder="<?php esc_html_e('City State or zip', 'careerfy-frame') ?>"
+                                               class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                               name="location" type="text">
+
+                                    <?php } ?>
+
+                                </li>
+                            <?php } ?>
+                            <?php if ($top_search_radius == 'yes' && $radius_field == 'show') { ?>
+                                <li>
                                     <input name="loc_radius"
                                            placeholder="<?php esc_html_e('Radius', 'careerfy-frame') ?>" value=""
                                            type="text">
+                                    <i class="careerfy-icon careerfy-gps-o"></i>
                                 </li>
                             <?php } ?>
                             <li><input type="submit" value="<?php esc_html_e("Search Job", 'careerfy-frame') ?>">
@@ -1458,125 +2052,107 @@ function careerfy_advance_search_shortcode($atts, $content)
                 </div>
             </div>
             <!-- Banner -->
-        <?php } else if ($view == 'view9') { ?>
+        <?php } else if ($view == 'view9') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            ?>
             <!-- Banner -->
             <div class="careerfy-banner-eleven">
-                <div class="container">
-                    <div class="careerfy-banner-eleven-tabs">
-                        <?php
-                        if ($srch_title != '') {
-                            ?>
-                            <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
-                            <?php
-                        }
-                        if ($srch_desc != '') {
-                            ?>
-                            <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
-                            <?php
-                        }
+                <div class="careerfy-banner-eleven-tabs">
+                    <?php
+                    if ($srch_title != '') {
                         ?>
-                        <ul class="careerfy-banner-eleven-tabs-nav">
-                            <li class="active"><a data-toggle="tab"
-                                                  href="#home"><?php esc_html_e("Jobs", 'careerfy-frame') ?></a>
-                            </li>
-                            <li><a data-toggle="tab"
-                                   href="#menu1"><?php esc_html_e("Employers", 'careerfy-frame') ?></a></li>
-                            <li><a data-toggle="tab"
-                                   href="#menu2"><?php esc_html_e("Candidates", 'careerfy-frame') ?></a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="home" class="tab-pane fade in active">
-                                <div class="careerfy-banner-eleven-search">
-                                    <form method="get"
-                                          action="<?php echo(get_permalink($result_page)); ?>">
-                                        <ul>
-                                            <?php
-                                            if ($keyword_field == 'show') {
-                                                if ($autofill_keyword == 'yes') {
-                                                    wp_enqueue_script('jobsearch-search-box-sugg');
-                                                }
-                                                ?>
-                                                <li><i class="careerfy-icon careerfy-search"></i>
-                                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                               name="search_title" data-type="job" type="text">
-                                                        <span class="sugg-search-loader"></span>
-                                                    </div>
-                                                </li>
-                                                <?php
-                                            } ?>
+                        <h1<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h1>
+                        <?php
+                    }
+                    if ($srch_desc != '') {
+                        ?>
+                        <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
+                        <?php
+                    }
+                    ?>
+                    <ul class="careerfy-banner-eleven-tabs-nav">
+                        <li class="active"><a data-toggle="tab"
+                                              href="#home"><?php esc_html_e("Jobs", 'careerfy-frame') ?></a>
+                        </li>
+                        <li><a data-toggle="tab"
+                               href="#menu1"><?php esc_html_e("Employers", 'careerfy-frame') ?></a></li>
+                        <li><a data-toggle="tab"
+                               href="#menu2"><?php esc_html_e("Candidates", 'careerfy-frame') ?></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <div class="careerfy-banner-eleven-search <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?> ">
+                                <form method="get"
+                                      action="<?php echo(get_permalink($result_page)); ?>">
+                                    <ul>
+                                        <?php
+                                        if ($keyword_field == 'show') {
+                                            if ($autofill_keyword == 'yes') {
+                                                wp_enqueue_script('jobsearch-search-box-sugg');
+                                            }
+                                            ?>
+                                            <li><i class="careerfy-icon careerfy-search-o"></i>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php }
+
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                                             <li>
-                                                <?php
-                                                if ($autofill_location == 'yes') { ?>
-                                                    <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
-                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                           autocomplete="off"
-                                                           class="jobsearch_search_location_field"
-                                                           type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
-                                                    <input type="hidden"
-                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                           name="location">
-                                                    <?php
+
+                                                <div class="">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                            <?php
+                                        }
+                                        if ($location_field == 'show') {
+                                            if ($autofill_location == 'yes') {
+                                                if ($location_map_type == 'mapbox') {
+                                                    wp_enqueue_script('jobsearch-mapbox');
+                                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
                                                 } else {
-                                                    ?>
-                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
-                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
-                                                           name="location" type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
-                                                    <?php
+                                                    wp_enqueue_script('jobsearch-google-map');
                                                 }
-                                                //
-                                                if ($auto_geo_location == 'yes') { ?>
-                                                    <a href="javascript:void(0);" class="geolction-btn"
-                                                       onclick="JobsearchGetClientLocation()"><i
-                                                                class="careerfy-icon careerfy-gps"></i></a>
-                                                <?php } ?>
-                                            </li>
-                                            <li><input type="submit"
-                                                       value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
-                                <?php if ($txt_below_forms_1 != '') { ?>
-                                    <div class="careerfy-fileupload-banner">
-                                        <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_1 ?> </span>
-                                        <input class="careerfy-upload">
-                                    </div>
-                                <?php } ?>
-                            </div>
-                            <div id="menu1" class="tab-pane fade">
-                                <div class="careerfy-banner-eleven-search">
-                                    <form method="get"
-                                          action="<?php echo(get_permalink($result_page_2)); ?>">
-                                        <ul>
-                                            <?php
-                                            if ($keyword_field == 'show') {
-                                                if ($autofill_keyword == 'yes') {
-                                                    wp_enqueue_script('jobsearch-search-box-sugg');
-                                                }
-                                                ?>
-                                                <li><i class="careerfy-icon careerfy-search"></i>
-                                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                               name="search_title" data-type="job" type="text">
-                                                        <span class="sugg-search-loader"></span>
-                                                    </div>
-                                                </li>
-                                                <?php
-                                            } ?>
+                                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                            }
+                                            ?>
                                             <li>
                                                 <?php
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                   echo get_radius_tooltip();
+                                                }
                                                 if ($autofill_location == 'yes') { ?>
+
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
+                                                    <i class="careerfy-icon careerfy-pin-line"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
                                                            type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
                                                     <input type="hidden"
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
@@ -1584,108 +2160,249 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
+                                                    <i class="careerfy-icon careerfy-location"></i>
                                                     <?php
                                                 }
                                                 //
+
                                                 if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
-                                                                class="careerfy-icon careerfy-gps"></i></a>
+                                                                class="careerfy-icon careerfy-location"></i></a>
                                                 <?php } ?>
                                             </li>
-                                            <li><input type="submit"
-                                                       value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
-                                <?php if ($txt_below_forms_2 != '') { ?>
-                                    <div class="careerfy-fileupload-banner">
-                                        <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_2 ?> </span>
-                                        <input class="careerfy-upload">
-                                    </div>
-                                <?php } ?>
+                                        <?php } ?>
+                                        <li><input type="submit"
+                                                   value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
+                                        </li>
+                                    </ul>
+                                </form>
                             </div>
-                            <div id="menu2" class="tab-pane fade">
-                                <div class="careerfy-banner-eleven-search">
-                                    <form method="get"
-                                          action="<?php echo(get_permalink($result_page_3)); ?>">
-                                        <ul>
-                                            <?php
-                                            if ($keyword_field == 'show') {
-                                                if ($autofill_keyword == 'yes') {
-                                                    wp_enqueue_script('jobsearch-search-box-sugg');
-                                                }
-                                                ?>
-                                                <li><i class="careerfy-icon careerfy-search"></i>
-                                                    <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
-                                                        <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
-                                                               name="search_title" data-type="job" type="text">
-                                                        <span class="sugg-search-loader"></span>
-                                                    </div>
-                                                </li>
-                                                <?php
-                                            } ?>
+                            <?php if ($txt_below_forms_1 != '') { ?>
+                                <div class="careerfy-fileupload-banner">
+                                    <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_1 ?> </span>
+                                    <input class="careerfy-upload">
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div id="menu1" class="tab-pane fade">
+                            <div class="careerfy-banner-eleven-search">
+                                <form method="get"
+                                      action="<?php echo(get_permalink($result_page_2)); ?>">
+                                    <ul>
+                                        <?php
+                                        if ($keyword_field == 'show') {
+                                            if ($autofill_keyword == 'yes') {
+                                                wp_enqueue_script('jobsearch-search-box-sugg');
+                                            }
+                                            ?>
+                                            <li><i class="careerfy-icon careerfy-search-o"></i>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php }
+                                        $all_sectors = get_terms(array(
+                                            'taxonomy' => 'sector',
+                                            'hide_empty' => false,
+                                        ));
+
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div>
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if ($location_field == 'show') { ?>
                                             <li>
                                                 <?php
                                                 if ($autofill_location == 'yes') {
-                                                    ?>
+                                                    if ($autofill_location == 'yes') {
+                                                        if ($location_map_type == 'mapbox') {
+                                                            wp_enqueue_script('jobsearch-mapbox');
+                                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                        } else {
+                                                            wp_enqueue_script('jobsearch-google-map');
+                                                        }
+                                                        wp_enqueue_script('jobsearch-location-autocomplete');
+                                                    }
+                                                    if ($top_search_radius == 'yes') {
+                                                        echo get_radius_tooltip();
+                                                    } ?>
                                                     <span class="loc-loader"></span>
-                                                    <i class="careerfy-icon careerfy-pin"></i>
+                                                    <i class="careerfy-icon careerfy-pin-line"></i>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            autocomplete="off"
                                                            class="jobsearch_search_location_field"
                                                            type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
                                                     <input type="hidden"
                                                            class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location">
-                                                    <?php
-                                                } else {
-                                                    ?>
+                                                <?php } else { ?>
                                                     <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
                                                            class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                            name="location" type="text">
-                                                    <i class="careerfy-icon careerfy-gps"></i>
+                                                    <i class="careerfy-icon careerfy-location"></i>
                                                     <?php
                                                 }
                                                 //
+
                                                 if ($auto_geo_location == 'yes') { ?>
                                                     <a href="javascript:void(0);" class="geolction-btn"
                                                        onclick="JobsearchGetClientLocation()"><i
-                                                                class="careerfy-icon careerfy-gps"></i></a>
+                                                                class="careerfy-icon careerfy-location"></i></a>
                                                 <?php } ?>
                                             </li>
-                                            <li><input type="submit"
-                                                       value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
-                                <?php if ($txt_below_forms_3 != '') { ?>
-                                    <div class="careerfy-fileupload-banner">
-                                        <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_3 ?> </span>
-                                        <input class="careerfy-upload">
-                                    </div>
-                                <?php } ?>
+                                        <?php } ?>
+                                        <li><input type="submit"
+                                                   value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
+                                        </li>
+                                    </ul>
+                                </form>
                             </div>
+                            <?php if ($txt_below_forms_2 != '') { ?>
+                                <div class="careerfy-fileupload-banner">
+                                    <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_2 ?> </span>
+                                    <input class="careerfy-upload">
+                                </div>
+                            <?php } ?>
                         </div>
+                        <div id="menu2" class="tab-pane fade">
+                            <div class="careerfy-banner-eleven-search">
+                                <form method="get"
+                                      action="<?php echo(get_permalink($result_page_3)); ?>">
+                                    <ul>
+                                        <?php
+                                        if ($keyword_field == 'show') {
+                                            if ($autofill_keyword == 'yes') {
+                                                wp_enqueue_script('jobsearch-search-box-sugg');
+                                            }
+                                            ?>
+                                            <li>
+                                                <i class="careerfy-icon careerfy-search-o"></i>
+                                                <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
+                                                    <input placeholder="<?php esc_html_e('Keywords or Title', 'careerfy-frame') ?>"
+                                                           name="search_title" data-type="job" type="text">
+                                                    <span class="sugg-search-loader"></span>
+                                                </div>
+                                            </li>
+                                        <?php }
+                                        $all_sectors = get_terms(array(
+                                            'taxonomy' => 'sector',
+                                            'hide_empty' => false,
+                                        ));
 
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                            <li>
+                                                <div class="careerfy-select-style">
+                                                    <select name="sector_cat" class="selectize-select">
+                                                        <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        <?php } ?>
+                                        <?php if ($location_field == 'show') {
+                                            if ($autofill_location == 'yes') {
+                                                if ($location_map_type == 'mapbox') {
+                                                    wp_enqueue_script('jobsearch-mapbox');
+                                                    wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfill');
+                                                    wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                                } else {
+                                                    wp_enqueue_script('jobsearch-google-map');
+                                                }
+                                                wp_enqueue_script('jobsearch-location-autocomplete');
+                                            }
+                                            ?>
+                                            <li>
+                                                <?php
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                    echo get_radius_tooltip();
+                                                }
+                                                if ($autofill_location == 'yes') { ?>
+
+                                                    <span class="loc-loader"></span>
+                                                    <i class="careerfy-icon careerfy-pin-line"></i>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           autocomplete="off"
+                                                           class="jobsearch_search_location_field"
+                                                           type="text">
+                                                    <input type="hidden"
+                                                           class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location">
+                                                <?php } else { ?>
+                                                    <input placeholder="<?php esc_html_e('Location', 'careerfy-frame') ?>"
+                                                           class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                           name="location" type="text">
+                                                    <?php
+                                                }
+                                                //
+                                                if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php }
+                                                if ($auto_geo_location == 'yes') { ?>
+                                                    <a href="javascript:void(0);" class="geolction-btn"
+                                                       onclick="JobsearchGetClientLocation()"><i
+                                                                class="careerfy-icon careerfy-location"></i></a>
+                                                <?php } ?>
+                                            </li>
+                                        <?php } ?>
+                                        <li><input type="submit"
+                                                   value="<?php esc_html_e("Find Jobs", 'careerfy-frame') ?>">
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <?php if ($txt_below_forms_3 != '') { ?>
+                                <div class="careerfy-fileupload-banner">
+                                    <span><i class="careerfy-icon careerfy-upload"></i><?php echo $txt_below_forms_3 ?> </span>
+                                    <input class="careerfy-upload">
+                                </div>
+                            <?php } ?>
+                        </div>
                     </div>
+
                 </div>
             </div>
             <!-- Banner -->
-        <?php } else if ($view == 'view8') { ?>
+        <?php } else if ($view == 'view8') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            ?>
             <!-- Main Section -->
             <div class="careerfy-main-section careerfy-search-ten-full">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="careerfy-search-ten">
                             <?php
-                            if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                            if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                                 ?>
-                                <form class="careerfy-banner-search-ten" method="get"
+                                <form class="careerfy-banner-search-ten <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>"
+                                      method="get"
                                       action="<?php echo(get_permalink($result_page)); ?>">
                                     <ul class="careerfy-search-ten-grid">
                                         <?php
@@ -1698,7 +2415,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                                     <input placeholder="<?php esc_html_e('Job Title, Keywords, or Phrase', 'careerfy-frame') ?>"
                                                            name="search_title" data-type="job" type="text">
-                                                    <i class="careerfy-icon careerfy-edit"></i>
+
                                                     <span class="sugg-search-loader"></span>
                                                 </div>
                                             </li>
@@ -1720,6 +2437,9 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             <li>
                                                 <div class="jobsearch_searchloc_div">
                                                     <?php
+                                                    if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                        echo get_radius_tooltip();
+                                                    }
                                                     if ($autofill_location == 'yes') {
                                                         ?>
                                                         <span class="loc-loader"></span>
@@ -1727,7 +2447,6 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                                autocomplete="off"
                                                                class="jobsearch_search_location_field"
                                                                type="text">
-                                                        <i class="careerfy-icon careerfy-gps"></i>
                                                         <input type="hidden"
                                                                class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                                name="location">
@@ -1737,15 +2456,19 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                         <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                                class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                                name="location" type="text">
-                                                        <i class="careerfy-icon careerfy-gps"></i>
+                                                        <i class="careerfy-icon careerfy-location"></i>
                                                         <?php
                                                     }
                                                     //
+                                                    if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                        <a href="javascript:void(0);" class="geolction-btn"><i
+                                                                    class="careerfy-icon careerfy-location"></i></a>
+                                                    <?php }
                                                     if ($auto_geo_location == 'yes') {
                                                         ?>
                                                         <a href="javascript:void(0);" class="geolction-btn"
                                                            onclick="JobsearchGetClientLocation()"><i
-                                                                    class="careerfy-icon careerfy-gps"></i></a>
+                                                                    class="careerfy-icon careerfy-location"></i></a>
                                                         <?php
                                                     }
                                                     ?>
@@ -1753,24 +2476,15 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             </li>
                                             <?php
                                         }
-                                        $all_sectors = get_terms(array(
-                                            'taxonomy' => 'sector',
-                                            'hide_empty' => false,
-                                        ));
 
-                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+
+                                        if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                             ?>
                                             <li>
-                                                <div class="careerfy-select-style">
+                                                <div>
                                                     <select name="sector_cat" class="selectize-select">
                                                         <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                        <?php
-                                                        foreach ($all_sectors as $term_sector) {
-                                                            ?>
-                                                            <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                            <?php
-                                                        }
-                                                        ?>
+                                                        <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                                     </select>
                                                 </div>
                                             </li>
@@ -1779,7 +2493,7 @@ function careerfy_advance_search_shortcode($atts, $content)
 
                                         <li>
                                             <label>
-                                                <i class="careerfy-icon careerfy-search"></i>
+                                                <i class="careerfy-icon careerfy-search-o"></i>
                                                 <input type="submit"
                                                        value="<?php esc_html_e("Search Job", 'careerfy-frame') ?>">
                                             </label>
@@ -1808,9 +2522,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             }
                                             ?>
                                         </ul>
-                                        <?php
-                                    }
-                                    ?>
+                                    <?php } ?>
                                     <a href="<?php echo(get_permalink($result_page)); ?>"
                                        class="careerfy-search-ten-list-btn"><?php echo esc_html__('Advance Search', 'careerfy-frame') ?></a>
                                 </form>
@@ -1823,8 +2535,28 @@ function careerfy_advance_search_shortcode($atts, $content)
             <!-- Main Section -->
 
         <?php } else if ($view == 'view7') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+            $all_fields_class = '';
+            if ($location_field == 'show' && (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') && $keyword_field == 'show') {
+                $all_fields_class = 'all-searches-on';
+            }
             ?>
-            <div class="careerfy-search-eight-wrap <?php echo($design_css_class) ?>">
+            <div class="careerfy-search-eight-wrap  <?php echo($design_css_class) ?>">
                 <div class="careerfy-adv-wrap">
                     <?php
                     if ($srch_title != '') {
@@ -1855,42 +2587,18 @@ function careerfy_advance_search_shortcode($atts, $content)
                         ?>
                     </div>
                     <?php
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                         ?>
 
-                        <form class="careerfy-banner-search-eight" method="get"
+                        <form class="careerfy-banner-search-eight <?php echo($all_fields_class) ?> <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>"
+                              method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
                             <ul>
                                 <?php
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
-
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
-                                    ?>
-                                    <li>
-                                        <div class="careerfy-select-style">
-                                            <select name="sector_cat" class="selectize-select">
-                                                <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </li>
-                                    <?php
-                                }
-
                                 if ($keyword_field == 'show') {
                                     if ($autofill_keyword == 'yes') {
                                         wp_enqueue_script('jobsearch-search-box-sugg');
-                                    }
-                                    ?>
+                                    } ?>
                                     <li>
                                         <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                             <input placeholder="<?php esc_html_e('Job Title, Keywords, or Phrase', 'careerfy-frame') ?>"
@@ -1898,43 +2606,112 @@ function careerfy_advance_search_shortcode($atts, $content)
                                             <span class="sugg-search-loader"></span>
                                         </div>
                                     </li>
-                                    <?php
-                                }
-                                ?>
+                                <?php }
+                                if ($location_field == 'show') {
+                                    if ($autofill_location == 'yes') {
+                                        if ($location_map_type == 'mapbox') {
+                                            wp_enqueue_script('jobsearch-mapbox');
+                                            wp_enqueue_script('jobsearch-mapbox-geocoder');
+                                            wp_enqueue_script('mapbox-geocoder-polyfill');
+                                            wp_enqueue_script('mapbox-geocoder-polyfillauto');
+                                        } else {
+                                            wp_enqueue_script('jobsearch-google-map');
+                                        }
+                                        wp_enqueue_script('jobsearch-location-autocomplete');
+                                    }
+                                    ?>
+                                    <li>
+                                        <div class="jobsearch_searchloc_div">
+                                            <?php
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+                                            if ($autofill_location == 'yes') {
+                                                ?>
+                                                <span class="loc-loader"></span>
+                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
+                                                       autocomplete="off"
+                                                       class="jobsearch_search_location_field"
+                                                       type="text">
+                                                <input type="hidden"
+                                                       class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                       name="location">
+                                            <?php } else { ?>
+                                                <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
+                                                       class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
+                                                       name="location" type="text">
+                                                <?php
+                                            }
+                                            //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
+                                            if ($auto_geo_location == 'yes') {
+                                                ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"
+                                                   onclick="JobsearchGetClientLocation()"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </li>
+                                <?php }
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
+                                    <li>
+                                        <div class="careerfy-select-style">
+                                            <select name="sector_cat" class="selectize-select">
+                                                <option value=""><?php esc_html_e('Categories', 'careerfy-frame') ?></option>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
+                                            </select>
+                                        </div>
+                                    </li>
+                                <?php } ?>
+
+
                                 <li><input type="submit" value="<?php esc_html_e("Let's Go", 'careerfy-frame') ?>">
                                 </li>
                             </ul>
                         </form>
-                        <?php
-                    }
-                    ?>
-
+                    <?php } ?>
                 </div>
-
             </div>
             <?php
         } elseif ($view == 'view6') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
             ?>
             <div class="careerfy-search-seven-wrap <?php echo($design_css_class) ?>">
 
                 <div class="careerfy-adv-wrap">
                     <?php
-                    if ($srch_title != '') {
-                        ?>
+                    if ($srch_title != '') { ?>
                         <h2<?php echo($adv_search_title_color) ?>><?php echo($srch_title) ?></h2>
                         <?php
                     }
-                    if ($srch_desc != '') {
-                        ?>
+                    if ($srch_desc != '') { ?>
                         <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
-                        <?php
-                    }
-                    ?>
+                    <?php } ?>
                     <?php
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
-                        ?>
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
 
-                        <form class="careerfy-banner-search-seven" <?php echo $transparent_bg_color; ?> method="get"
+                        <form class="careerfy-banner-search-seven <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>" <?php echo $transparent_bg_color; ?>
+                              method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
                             <ul>
                                 <?php
@@ -1944,6 +2721,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     }
                                     ?>
                                     <li>
+                                        <i class="careerfy-icon careerfy-search-o"></i>
                                         <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                             <input placeholder="<?php esc_html_e('Job Title, Keywords, or Phrase', 'careerfy-frame') ?>"
                                                    name="search_title" data-type="job" type="text">
@@ -1968,8 +2746,11 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     <li>
                                         <div class="jobsearch_searchloc_div">
                                             <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+                                            if ($autofill_location == 'yes') { ?>
+                                                <i class="careerfy-icon careerfy-pin-line"></i>
                                                 <span class="loc-loader"></span>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        autocomplete="off" class="jobsearch_search_location_field"
@@ -1977,15 +2758,18 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <input type="hidden"
                                                        class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location">
-                                                <?php
-                                            } else {
-                                                ?>
+                                            <?php } else { ?>
+                                                <i class="careerfy-icon careerfy-pin-line"></i>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location" type="text">
                                                 <?php
                                             }
                                             //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
                                             if ($auto_geo_location == 'yes') {
                                                 ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
@@ -1998,31 +2782,22 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     </li>
                                     <?php
                                 }
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ?>
                                     <li>
-                                        <div class="careerfy-select-style">
+                                        <div class="">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
                                     <?php
                                 }
                                 ?>
-                                <li><i class="careerfy-icon careerfy-search"></i><input type="submit" value=""></li>
+                                <li><i class="careerfy-icon careerfy-search-o"></i><input type="submit" value=""></li>
                             </ul>
                         </form>
                         <?php
@@ -2033,14 +2808,31 @@ function careerfy_advance_search_shortcode($atts, $content)
             </div>
             <?php
         } elseif ($view == 'view5') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
             ?>
             <div class="careerfy-search-six-wrap <?php echo($design_css_class) ?>">
 
                 <div class="careerfy-adv-wrap">
                     <?php
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                         ?>
-                        <form class="careerfy-banner-search-six" <?php echo $transparent_bg_color; ?> method="get"
+                        <form class="careerfy-banner-search-six <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>" <?php echo $transparent_bg_color; ?>
+                              method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
                             <?php
                             if ($srch_title != '') {
@@ -2086,6 +2878,9 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     <li>
                                         <div class="jobsearch_searchloc_div">
                                             <?php
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
                                             if ($autofill_location == 'yes') {
                                                 ?>
                                                 <span class="loc-loader"></span>
@@ -2104,6 +2899,10 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <?php
                                             }
                                             //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
                                             if ($auto_geo_location == 'yes') {
                                                 ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
@@ -2116,31 +2915,22 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     </li>
                                     <?php
                                 }
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ?>
                                     <li>
-                                        <div class="careerfy-select-style">
+                                        <div class="">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
                                     <?php
                                 }
                                 ?>
-                                <li><i class="careerfy-icon careerfy-search"></i><input type="submit"
+                                <li><i class="careerfy-icon careerfy-search-o"></i><input type="submit"
                                                                                         value="<?php esc_html_e('Search Jobs', 'careerfy-frame') ?>">
                                 </li>
                             </ul>
@@ -2155,14 +2945,31 @@ function careerfy_advance_search_shortcode($atts, $content)
             </div>
             <?php
         } elseif ($view == 'view4') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
             ?>
             <div class="careerfy-search-four-wrap <?php echo($design_css_class) ?>">
 
                 <div class="careerfy-adv-wrap">
                     <?php
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                         ?>
-                        <form class="careerfy-banner-search-four" method="get"
+                        <form class="careerfy-banner-search-four <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>"
+                              method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
                             <?php
                             if ($srch_title != '') {
@@ -2207,7 +3014,9 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     ?>
                                     <li>
                                         <div class="jobsearch_searchloc_div">
-                                            <?php
+                                            <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
                                             if ($autofill_location == 'yes') {
                                                 ?>
                                                 <span class="loc-loader"></span>
@@ -2226,6 +3035,10 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <?php
                                             }
                                             //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
                                             if ($auto_geo_location == 'yes') {
                                                 ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
@@ -2238,24 +3051,15 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     </li>
                                     <?php
                                 }
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ?>
                                     <li>
-                                        <div class="careerfy-select-style">
+                                        <div class="">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
@@ -2300,8 +3104,24 @@ function careerfy_advance_search_shortcode($atts, $content)
             </div>
             <?php
         } else if ($view == 'view3') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
             ?>
-            <div class="careerfy-banner-three careerfy-typo-wrap <?php echo($design_css_class) ?>">
+            <div class="careerfy-banner-three careerfy-typo-wrap <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?> <?php echo($design_css_class) ?>">
                 <div class="careerfy-bannerthree-caption">
                     <?php
                     if ($srch_title != '') {
@@ -2317,7 +3137,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                     ?>
                     <div class="clearfix"></div>
                     <?php
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                         ?>
                         <form class="careerfy-banner-search-three" method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
@@ -2352,9 +3172,11 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     ?>
                                     <li>
                                         <div class="jobsearch_searchloc_div">
-                                            <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
+                                            <?php if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+
+                                            if ($autofill_location == 'yes') { ?>
                                                 <span class="loc-loader"></span>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        autocomplete="off" class="jobsearch_search_location_field"
@@ -2362,15 +3184,17 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <input type="hidden"
                                                        class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location">
-                                                <?php
-                                            } else {
-                                                ?>
+                                            <?php } else { ?>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location" type="text">
                                                 <?php
                                             }
                                             //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
                                             if ($auto_geo_location == 'yes') {
                                                 ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
@@ -2383,31 +3207,22 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     </li>
                                     <?php
                                 }
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ?>
                                     <li>
-                                        <div class="careerfy-select-style">
+                                        <div class="">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
                                     <?php
                                 }
                                 ?>
-                                <li><i class="careerfy-icon careerfy-search"></i> <input type="submit"
+                                <li><i class="careerfy-icon careerfy-search-o"></i> <input type="submit"
                                                                                          value="<?php esc_html_e('Find', 'careerfy-frame') ?>">
                                 </li>
                             </ul>
@@ -2437,9 +3252,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                 <li>
                                     <a href="<?php echo add_query_arg(array('sector_cat' => $term_sector->slug), get_permalink($result_page)); ?>"<?php echo($adv_search_link_color) ?>><?php echo($term_sector->name) ?></a>
                                 </li>
-                                <?php
-                            }
-                            ?>
+                            <?php } ?>
                         </ul>
                         <?php
                     }
@@ -2448,6 +3261,24 @@ function careerfy_advance_search_shortcode($atts, $content)
             </div>
             <?php
         } else if ($view == 'view2') {
+            $without_loc_class = 'search-loc-off';
+            if ($location_field == 'show') {
+                $without_loc_class = '';
+            }
+            $all_sectors = get_terms(array(
+                'taxonomy' => 'sector',
+                'hide_empty' => false,
+            ));
+
+            $without_sectr_class = 'search-cat-off';
+            if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
+                $without_sectr_class = '';
+            }
+            $without_keyword_class = 'search-keyword-off';
+            if ($keyword_field == 'show') {
+                $without_keyword_class = '';
+            }
+
             ?>
             <div class="careerfy-banner-two careerfy-typo-wrap <?php echo($design_css_class) ?>">
                 <div class="careerfy-banner-caption">
@@ -2463,17 +3294,16 @@ function careerfy_advance_search_shortcode($atts, $content)
                         <?php
                     }
                     //
-                    if ($btn1_txt != '') {
-                        ?>
+                    if ($btn1_txt != '') { ?>
                         <div class="clearfix"></div>
                         <a href="<?php echo($btn1_url); ?>"
                            class="careerfy-banner-two-btn"<?php echo($button_style) ?>><?php echo($btn_1_icon != '' ? '<i class="' . $btn_1_icon . '"></i>' : '') ?><?php echo($btn1_txt); ?></a>
                         <?php
                     }
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
-                        ?>
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') { ?>
                         <div class="clearfix"></div>
-                        <form class="careerfy-banner-search-two" method="get"
+                        <form class="careerfy-banner-search-two <?php echo($without_keyword_class) ?> <?php echo($without_sectr_class) ?> <?php echo($without_loc_class) ?>"
+                              method="get"
                               action="<?php echo(get_permalink($result_page)); ?>">
                             <ul>
                                 <?php
@@ -2483,7 +3313,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     }
                                     ?>
                                     <li>
-                                        <i class="careerfy-icon careerfy-search"></i>
+                                        <i class="careerfy-icon careerfy-search-o"></i>
                                         <div class="<?php echo($autofill_keyword == 'yes' ? 'jobsearch-sugges-search' : '') ?>">
                                             <input placeholder="<?php esc_html_e('Job Title, Keywords, or Phrase', 'careerfy-frame') ?>"
                                                    name="search_title" data-type="job" type="text">
@@ -2508,8 +3338,11 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     <li>
                                         <div class="jobsearch_searchloc_div">
                                             <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+                                            if ($autofill_location == 'yes') { ?>
+                                                <i class="careerfy-icon careerfy-pin-line"></i>
                                                 <span class="loc-loader"></span>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        autocomplete="off" class="jobsearch_search_location_field"
@@ -2517,60 +3350,47 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <input type="hidden"
                                                        class="loc_search_keyword <?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location">
-                                                <?php
-                                            } else {
-                                                ?>
+                                            <?php } else { ?>
+                                                <i class="careerfy-icon careerfy-pin-line"></i>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        class="<?php echo($auto_geo_location == 'yes' ? 'srch_autogeo_location' : '') ?>"
                                                        name="location" type="text">
                                                 <?php
                                             }
                                             //
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
                                             if ($auto_geo_location == 'yes') {
                                                 ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
                                                    onclick="JobsearchGetClientLocation()"><i
                                                             class="careerfy-icon careerfy-location"></i></a>
-                                                <?php
-                                            }
-                                            ?>
+                                            <?php } ?>
                                         </div>
                                     </li>
                                     <?php
                                 }
-                                $all_sectors = get_terms(array(
-                                    'taxonomy' => 'sector',
-                                    'hide_empty' => false,
-                                ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ?>
                                     <li>
                                         <i class="careerfy-icon careerfy-folder"></i>
-                                        <div class="careerfy-select-style">
+                                        <div class="">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
-                                    <?php
-                                }
-                                ?>
+                                <?php } ?>
                                 <li><input type="submit"
                                            value="<?php esc_html_e('Search Jobs', 'careerfy-frame') ?>">
                                 </li>
                             </ul>
                         </form>
-                        <?php
-                    }
-                    ?>
+                    <?php } ?>
                 </div>
             </div>
         <?php } else { ?>
@@ -2587,11 +3407,10 @@ function careerfy_advance_search_shortcode($atts, $content)
                         <p<?php echo($adv_search_paragraph_color) ?>><?php echo($srch_desc) ?></p>
                         <?php
                     }
-                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show') {
+                    if ($keyword_field == 'show' || $location_field == 'show' || $category_field == 'show' && $sectors_enable_switch == 'on') {
                         ?>
-                        <form class="careerfy-banner-search" method="get"
-                              action="<?php echo(get_permalink($result_page)); ?>">
-                            <ul>
+                        <form class="careerfy-banner-search" method="get" action="<?php echo(get_permalink($result_page)); ?>">
+                            <ul class="<?php echo apply_filters('careerfy_adv_srch_view1_ul_class', 'careerfy-jobs-srchul', $atts) ?>">
                                 <?php
                                 if ($keyword_field == 'show') {
                                     if ($autofill_keyword == 'yes') {
@@ -2626,9 +3445,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     ?>
                                     <li>
                                         <div class="jobsearch_searchloc_div">
-                                            <?php
-                                            if ($autofill_location == 'yes') {
-                                                ?>
+                                            <?php if ($autofill_location == 'yes') { ?>
                                                 <span class="loc-loader"></span>
                                                 <input placeholder="<?php esc_html_e('City, State or ZIP', 'careerfy-frame') ?>"
                                                        autocomplete="off" class="jobsearch_search_location_field"
@@ -2645,8 +3462,15 @@ function careerfy_advance_search_shortcode($atts, $content)
                                                 <?php
                                             }
                                             //
-                                            if ($auto_geo_location == 'yes') {
-                                                ?>
+
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show') {
+                                                echo get_radius_tooltip();
+                                            }
+                                            if ($top_search_radius == 'yes' && $radius_field == 'show' && $auto_geo_location == 'no') { ?>
+                                                <a href="javascript:void(0);" class="geolction-btn"><i
+                                                            class="careerfy-icon careerfy-location"></i></a>
+                                            <?php }
+                                            if ($auto_geo_location == 'yes') { ?>
                                                 <a href="javascript:void(0);" class="geolction-btn"
                                                    onclick="JobsearchGetClientLocation()"><i
                                                             class="careerfy-icon careerfy-location"></i></a>
@@ -2664,19 +3488,13 @@ function careerfy_advance_search_shortcode($atts, $content)
                                     'hide_empty' => false,
                                 ));
 
-                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show') {
+                                if (!empty($all_sectors) && !is_wp_error($all_sectors) && $category_field == 'show' && $sectors_enable_switch == 'on') {
                                     ob_start(); ?>
                                     <li>
                                         <div class="careerfy-select-style">
                                             <select name="sector_cat" class="selectize-select">
                                                 <option value=""><?php esc_html_e('Select Sector', 'careerfy-frame') ?></option>
-                                                <?php
-                                                foreach ($all_sectors as $term_sector) {
-                                                    ?>
-                                                    <option value="<?php echo urldecode($term_sector->slug) ?>"><?php echo($term_sector->name) ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+                                                <?php echo jobsearch_sector_terms_hierarchical(0, $all_sectors, '', 0, 0, ''); ?>
                                             </select>
                                         </div>
                                     </li>
@@ -2686,7 +3504,7 @@ function careerfy_advance_search_shortcode($atts, $content)
                                 }
                                 ?>
                                 <li class="careerfy-banner-submit"><input type="submit" value=""> <i
-                                            class="careerfy-icon careerfy-search"></i></li>
+                                            class="careerfy-icon careerfy-search-o"></i></li>
                             </ul>
                         </form>
                     <?php } ?>
@@ -2716,6 +3534,25 @@ function careerfy_advance_search_shortcode($atts, $content)
             <?php
         }
     }
+    $html = ob_get_clean();
+    return $html;
+}
+
+function get_radius_tooltip()
+{
+    global $jobsearch_plugin_options;
+    $top_search_def_radius = isset($jobsearch_plugin_options['top_search_def_radius']) ? $jobsearch_plugin_options['top_search_def_radius'] : 50;
+    $top_search_max_radius = isset($jobsearch_plugin_options['top_search_max_radius']) ? $jobsearch_plugin_options['top_search_max_radius'] : 500;
+    $def_radius_unit = isset($jobsearch_plugin_options['top_search_radius_unit']) ? $jobsearch_plugin_options['top_search_radius_unit'] : '';
+    ob_start(); ?>
+    <div class="careerfy-radius-tooltip">
+        <label><?php echo esc_html__('Radius', 'careerfy-frame') ?>
+            ( <?php echo esc_html__($def_radius_unit, 'careerfy-frame') ?>
+            )</label><input
+                type="number" name="loc_radius"
+                value="<?php echo($top_search_def_radius) ?>"
+                max="<?php echo($top_search_max_radius) ?>"></div>
+    <?php
     $html = ob_get_clean();
     return $html;
 }

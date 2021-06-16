@@ -3,7 +3,6 @@ jQuery(document).ready(function ($) {
     // demo login
     $(document).on('click', '.jobsearch-demo-login-btn', function () {
         var _this = jQuery(this);
-
         var user_type = 'candidate';
         var icon_class = 'jobsearch-icon jobsearch-user';
         if (_this.hasClass('employer-login-btn')) {
@@ -142,20 +141,35 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '.user-type-chose-btn', function () {
         var this_type = $(this).attr('data-type');
-        if (this_type == 'jobsearch_employer') {
+        if (this_type != 'jobsearch_employer' && this_type != 'jobsearch_candidate') {
             $('.user-candidate-spec-field').slideUp();
-            $('.user-employer-spec-field').slideDown();
-            $('.employer-cus-field').slideDown();
-            $('.candidate-cus-field').slideUp();
-            $('.jobsearch-register-form').find('.jobsearch-box-title-sub').slideUp();
-            $('.jobsearch-register-form').find('.jobsearch-login-media').slideUp();
-        } else {
-            $('.user-candidate-spec-field').slideDown();
             $('.user-employer-spec-field').slideUp();
             $('.employer-cus-field').slideUp();
-            $('.candidate-cus-field').slideDown();
-            $('.jobsearch-register-form').find('.jobsearch-box-title-sub').slideDown();
-            $('.jobsearch-register-form').find('.jobsearch-login-media').slideDown();
+            $('.candidate-cus-field').slideUp();
+            
+            $('.' + this_type + '-spec-field').slideDown();
+        } else {
+            if (this_type == 'jobsearch_employer') {
+                $('.user-candidate-spec-field').slideUp();
+                $('.user-employer-spec-field').slideDown();
+                $('.employer-cus-field').slideDown();
+                $('.candidate-cus-field').slideUp();
+                
+                $('.jobsearch_recruiter-spec-field').slideUp();
+                
+                $('.jobsearch-register-form').find('.jobsearch-box-title-sub').slideUp();
+                $('.jobsearch-register-form').find('.jobsearch-login-media').slideUp();
+            } else {
+                $('.user-candidate-spec-field').slideDown();
+                $('.user-employer-spec-field').slideUp();
+                $('.employer-cus-field').slideUp();
+                $('.candidate-cus-field').slideDown();
+                
+                $('.jobsearch_recruiter-spec-field').slideUp();
+                
+                $('.jobsearch-register-form').find('.jobsearch-box-title-sub').slideDown();
+                $('.jobsearch-register-form').find('.jobsearch-login-media').slideDown();
+            }
         }
         $(this).parents('.jobsearch-user-type-choose').find('li').removeClass('active');
         $(this).parent('li').addClass('active');
@@ -163,16 +177,28 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', 'input[type="radio"][name="pt_user_role"]', function () {
-        if ($(this).val() == 'jobsearch_employer') {
+        var this_type = $(this).val();
+        if (this_type != 'jobsearch_employer' && this_type != 'jobsearch_candidate') {
             $('.user-candidate-spec-field').slideUp();
-            $('.user-employer-spec-field').slideDown();
-            $('.employer-cus-field').slideDown();
-            $('.candidate-cus-field').slideUp();
-        } else {
-            $('.user-candidate-spec-field').slideDown();
             $('.user-employer-spec-field').slideUp();
             $('.employer-cus-field').slideUp();
-            $('.candidate-cus-field').slideDown();
+            $('.candidate-cus-field').slideUp();
+            
+            $('.' + this_type + '-spec-field').slideDown();
+        } else {
+            if (this_type == 'jobsearch_employer') {
+                $('.user-candidate-spec-field').slideUp();
+                $('.user-employer-spec-field').slideDown();
+                $('.employer-cus-field').slideDown();
+                $('.candidate-cus-field').slideUp();
+                $('.jobsearch_recruiter-spec-field').slideUp();
+            } else {
+                $('.user-candidate-spec-field').slideDown();
+                $('.user-employer-spec-field').slideUp();
+                $('.employer-cus-field').slideUp();
+                $('.candidate-cus-field').slideDown();
+                $('.jobsearch_recruiter-spec-field').slideUp();
+            }
         }
     });
 
@@ -191,14 +217,20 @@ jQuery(document).ready(function ($) {
         _this.attr('disabled', 'disabled');
         loader_con.show();
         loader_con.html('<i class="fa fa-refresh fa-spin"></i>');
-        $.post(jobsearch_login_register_common_vars.ajax_url, reset_password_form.serialize(), function (data) {
+        
+        var reset_password_form_o = $('#reset-password-form-' + this_id)[0];
+        var formData = new FormData(reset_password_form_o);
 
-            var obj = $.parseJSON(data);
-            msg_con.html(obj.message);
-            // if(obj.error == false){
-            // $('#pt-user-modal .modal-dialog').addClass('loading');
-            // $('#pt-user-modal').modal('hide');
-            // }
+        var request = $.ajax({
+            url: jobsearch_login_register_common_vars.ajax_url,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType: "json"
+        });
+        request.done(function (response) {
+            msg_con.html(response.message);
 
             msg_con.slideDown('slow');
 
@@ -209,6 +241,12 @@ jQuery(document).ready(function ($) {
             loader_con.html('');
 
             button.html(btn_html);
+        });
+        request.fail(function (jqXHR, textStatus) {
+            _this.removeClass('disabled-btn');
+            _this.removeAttr('disabled');
+            loader_con.hide();
+            loader_con.html('');
         });
     });
     // end reset password
@@ -232,6 +270,7 @@ jQuery(document).ready(function ($) {
         
         var first_name = registration_form.find('input[name=pt_user_fname]');
         var last_name = registration_form.find('input[name=pt_user_lname]');
+        var user_email = registration_form.find('input[name=pt_user_email]');
         
         var cv_file = registration_form.find('input[name="candidate_cv_file"]');
         
@@ -319,6 +358,8 @@ jQuery(document).ready(function ($) {
                                     loader_con.html('');
                                     jQuery('.jobsearch-modal').removeClass('fade-in').addClass('fade');
                                     jQuery('body').removeClass('jobsearch-modal-active');
+                                    jQuery('#JobSearchModalAccountActivationForm').find('input[name="user_email"]').val(user_email.val());
+                                    jQuery('#JobSearchModalAccountActivationForm').find('input[name="user_email"]').attr('value', user_email.val());
                                     jobsearch_modal_popup_open('JobSearchModalAccountActivationForm');
                                     clearInterval(closePopOpnVrify);
                                 }, 2000);
@@ -345,6 +386,10 @@ jQuery(document).on('click', '.jobsearch-resend-accactbtn', function (e) {
     var user_login = _this.attr('data-login');
     _this.find('i').remove();
     var _this_html = _this.html();
+    //
+    var thisemail_err_con = _this.parents('.login-reg-errors').find('.email-exceed-err');
+    thisemail_err_con.hide();
+    //
     _this.html(_this_html + '&nbsp;<i class="fa fa-refresh fa-spin"></i>');
     var request = jQuery.ajax({
         url: jobsearch_plugin_vars.ajax_url,
@@ -361,7 +406,13 @@ jQuery(document).on('click', '.jobsearch-resend-accactbtn', function (e) {
             _this.html(_this_html + '&nbsp;<i class="fa fa-check"></i>');
             window.location.reload(true);
         } else {
-            _this.html(_this_html + '&nbsp;<i class="fa fa-times"></i>');
+            _this.html(_this_html + '<i class="fa fa-times"></i>');
+            if (thisemail_err_con.length > 0) {
+                thisemail_err_con.html(response.msg);
+            } else {
+                _this.parents('.login-reg-errors').append('<div class="alert alert-danger email-exceed-err">' + response.msg + '</div>');
+            }
+            thisemail_err_con.removeAttr('style');
         }
     });
 
@@ -419,10 +470,10 @@ jQuery(document).on('click', '.user-passreset-submit-btn', function (e) {
             var msg_after = '';
             if (typeof response.error !== 'undefined') {
                 if (response.error == '1') {
-                    msg_before = '<div class="alert alert-danger"><i class="fa fa-times"></i> ';
+                    msg_before = '<div class="alert alert-danger"><i class="fa fa-times"></i>';
                     msg_after = '</div>';
                 } else if (response.error == '0') {
-                    msg_before = '<div class="alert alert-success"><i class="fa fa-check"></i> ';
+                    msg_before = '<div class="alert alert-success"><i class="fa fa-check"></i>';
                     msg_after = '</div>';
                 }
             }

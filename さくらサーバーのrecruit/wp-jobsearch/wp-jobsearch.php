@@ -12,7 +12,7 @@
  * Plugin Name:       WP JobSearch
  * Plugin URI:        http://eyecix.com/plugins/jobsearch/
  * Description:       WP JobSearch plugin is a complete recruitment solution.
- * Version:           1.4.5
+ * Version:           1.6.2
  * Author:            Eyecix
  * Author URI:        http://themeforest.net/user/eyecix/portfolio
  * License:           GPL-2.0+
@@ -28,7 +28,6 @@ add_action('init', 'jobsearch_create_user_roles', 5);
 
 function jobsearch_create_user_roles()
 {
-
     // create user role for user
     add_role(
         'jobsearch_candidate', esc_html('JobSearch Candidate'), array(

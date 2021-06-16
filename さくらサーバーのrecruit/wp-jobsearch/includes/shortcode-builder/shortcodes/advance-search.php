@@ -55,6 +55,15 @@ $params_arr['cat_field'] = array(
         'hide' => esc_html__('Hide', 'wp-jobsearch'),
     )
 );
+$params_arr['job_type_field'] = array(
+    'type' => 'select',
+    'label' => esc_html__('Job Type Field', 'wp-jobsearch'),
+    'desc' => esc_html__("Show/Hide Job Type Field.", 'wp-jobsearch'),
+    'options' => array(
+        'show' => esc_html__('Show', 'wp-jobsearch'),
+        'hide' => esc_html__('Hide', 'wp-jobsearch'),
+    )
+);
 $params_arr['loc_field'] = array(
     'type' => 'select',
     'label' => esc_html__('Locations Field', 'wp-jobsearch'),
@@ -62,6 +71,15 @@ $params_arr['loc_field'] = array(
     'options' => array(
         'show' => esc_html__('Show', 'wp-jobsearch'),
         'hide' => esc_html__('Hide', 'wp-jobsearch'),
+    )
+);
+$params_arr['loc_type'] = array(
+    'type' => 'select',
+    'label' => esc_html__('Locations Field Type', 'wp-jobsearch'),
+    'desc' => esc_html__("Select Location Field Type.", 'wp-jobsearch'),
+    'options' => array(
+        'dropdown' => esc_html__('Dropdown Fields', 'wp-jobsearch'),
+        'input' => esc_html__('User Input Field', 'wp-jobsearch'),
     )
 );
 $params_arr['loc_field1'] = array(

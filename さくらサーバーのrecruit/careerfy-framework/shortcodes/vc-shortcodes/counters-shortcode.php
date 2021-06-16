@@ -48,7 +48,6 @@ function careerfy_counters_shortcode($atts, $content = '')
 }
 
 add_shortcode('careerfy_counters_item', 'careerfy_counters_item_shortcode');
-
 function careerfy_counters_item_shortcode($atts)
 {
     global $view, $counter_icon_color, $counter_number_color, $counter_title_color;

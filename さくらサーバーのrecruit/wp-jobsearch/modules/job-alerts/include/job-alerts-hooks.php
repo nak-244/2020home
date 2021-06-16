@@ -11,20 +11,23 @@ if (!defined('ABSPATH')) {
 }
 
 // main plugin class
-class JobSearch_Job_Alerts_Hooks {
+class JobSearch_Job_Alerts_Hooks
+{
 
 // hook things up
-    public function __construct() {
+    public function __construct()
+    {
 
         add_filter('redux/options/jobsearch_plugin_options/sections', array($this, 'plugin_option_fields'));
-
         //
         add_action('jobsearch_jobs_listing_filters_before', array($this, 'frontend_before_filters_ui_callback'), 10, 1);
         //
         add_action('jobsearch_jobs_listing_before', array($this, 'frontend_before_listings_ui_callback'), 10, 1);
+        add_action('jobsearch_jobs_listing_after', array($this, 'frontend_after_listings_ui_callback'), 10, 1);
+        //
+        add_action('jobsearch_jobs_listing_quick_detail_before', array($this, 'frontend_before_listings_quick_detail_ui_callback'), 10, 1);
 
         add_action('jobsearch_after_jobs_listing_content', array($this, 'after_jobs_listing_callback'), 10, 2);
-
         //
         add_action('wp_ajax_jobsearch_create_job_alert', array($this, 'create_job_alert_callback'));
         add_action('wp_ajax_nopriv_jobsearch_create_job_alert', array($this, 'create_job_alert_callback'));
@@ -53,21 +56,22 @@ class JobSearch_Job_Alerts_Hooks {
         add_action('wp_ajax_nopriv_jobsearch_unsubscribe_job_alert', array($this, 'unsubscribe_job_alert'));
 
         add_action('wp_ajax_jobsearch_user_job_alert_delete', array($this, 'remove_job_alert'));
-        
+
         add_action('wp_ajax_jobsearch_jobsearch_alert_tags_update', array($this, 'job_alert_criteria_selist'));
         add_action('wp_ajax_nopriv_jobsearch_jobsearch_alert_tags_update', array($this, 'job_alert_criteria_selist'));
 
         add_action('wp_footer', array($this, 'job_alert_popup'), 20);
     }
 
-    public function plugin_option_fields($sections) {
+    public function plugin_option_fields($sections)
+    {
 
         $sections[] = array(
             'title' => __('Job Alerts Settings', 'wp-jobsearch'),
             'id' => 'job-alerts-settings',
             'desc' => '',
             'icon' => 'el el-bell',
-            'fields' => array(
+            'fields' => apply_filters('jobsearch_jobalerts_settoptions_fields', array(
                 array(
                     'id' => 'job_alerts_switch',
                     'type' => 'button_set',
@@ -172,6 +176,18 @@ class JobSearch_Job_Alerts_Hooks {
                     'default' => 'off',
                 ),
                 array(
+                    'id' => 'job_alerts_frequency_hourly',
+                    'type' => 'button_set',
+                    'title' => __('Hourly', 'wp-jobsearch'),
+                    'subtitle' => __('Do you want to allow users to set alert frequency to hourly?', 'wp-jobsearch'),
+                    'desc' => '',
+                    'options' => array(
+                        'on' => __('Yes', 'wp-jobsearch'),
+                        'off' => __('No', 'wp-jobsearch'),
+                    ),
+                    'default' => 'off',
+                ),
+                array(
                     'id' => 'job_alerts_frequency_never',
                     'type' => 'button_set',
                     'title' => __('Never', 'wp-jobsearch'),
@@ -245,16 +261,18 @@ class JobSearch_Job_Alerts_Hooks {
                     ),
                     'default' => 'on',
                 ),
-            ),
+            )),
         );
         return $sections;
     }
 
-    public function array_insert($array, $values, $offset) {
+    public function array_insert($array, $values, $offset)
+    {
         return array_slice($array, 0, $offset, true) + $values + array_slice($array, $offset, NULL, true);
     }
 
-    public function vc_shortcode_params_add($params = array()) {
+    public function vc_shortcode_params_add($params = array())
+    {
         global $jobsearch_plugin_options;
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
 
@@ -269,6 +287,18 @@ class JobSearch_Job_Alerts_Hooks {
                         esc_html__("Yes", "wp-jobsearch") => 'yes',
                     ),
                     'description' => esc_html__("Show/hide job alerts section at top of listings.", "wp-jobsearch"),
+                    'group' => esc_html__("Filters Settings", "wp-jobsearch"),
+                ),
+                array(
+                    'type' => 'dropdown',
+                    'heading' => esc_html__("Job Alerts Bottom", "wp-jobsearch"),
+                    'param_name' => 'job_alerts_bottom',
+                    'value' => array(
+                        esc_html__("No", "wp-jobsearch") => 'no',
+                        esc_html__("Yes", "wp-jobsearch") => 'yes',
+                    ),
+                    'description' => esc_html__("Show/hide job alerts section at bottom of listings.", "wp-jobsearch"),
+                    'group' => esc_html__("Filters Settings", "wp-jobsearch"),
                 ),
                 array(
                     'type' => 'dropdown',
@@ -288,7 +318,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $params;
     }
 
-    public function editor_shortcode_params_add($params = array()) {
+    public function editor_shortcode_params_add($params = array())
+    {
         global $jobsearch_plugin_options;
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
 
@@ -310,7 +341,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $params;
     }
 
-    public function editor_shortcode_top_params_add($params = array()) {
+    public function editor_shortcode_top_params_add($params = array())
+    {
         global $jobsearch_plugin_options;
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
 
@@ -325,6 +357,15 @@ class JobSearch_Job_Alerts_Hooks {
                         'yes' => esc_html__('Yes', 'wp-jobsearch'),
                     )
                 ),
+                'job_alerts_bottom' => array(
+                    'type' => 'select',
+                    'label' => esc_html__('Job Alerts Botttom', 'wp-jobsearch'),
+                    'desc' => esc_html__('Show/hide job alerts section at bottom of listings.', 'wp-jobsearch'),
+                    'options' => array(
+                        'no' => esc_html__('No', 'wp-jobsearch'),
+                        'yes' => esc_html__('Yes', 'wp-jobsearch'),
+                    )
+                ),
             );
             $params = $this->array_insert($params, $new_element, 2);
         }
@@ -332,7 +373,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $params;
     }
 
-    public function dashboard_menu_items_ext($html = '', $get_tab = '', $page_url = '') {
+    public function dashboard_menu_items_ext($html = '', $get_tab = '', $page_url = '')
+    {
         global $jobsearch_plugin_options;
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
 
@@ -343,7 +385,7 @@ class JobSearch_Job_Alerts_Hooks {
             $is_employer = jobsearch_user_is_employer($user_id);
             if (!$is_employer) {
                 ?>
-                <li<?php echo ($get_tab == 'job-alerts' ? ' class="active"' : '') ?>>
+                <li<?php echo($get_tab == 'job-alerts' ? ' class="active"' : '') ?>>
                     <a href="<?php echo add_query_arg(array('tab' => 'job-alerts'), $page_url) ?>">
                         <i class="jobsearch-icon jobsearch-alarm"></i>
                         <?php esc_html_e('Job Alerts', 'wp-jobsearch') ?>
@@ -357,7 +399,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $html;
     }
 
-    public function dashboard_menu_items_inopts_arr($opts_arr = array()) {
+    public function dashboard_menu_items_inopts_arr($opts_arr = array())
+    {
         $jobsearch__options = get_option('jobsearch_plugin_options');
         $job_alerts_switch = isset($jobsearch__options['job_alerts_switch']) ? $jobsearch__options['job_alerts_switch'] : '';
 
@@ -368,7 +411,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $opts_arr;
     }
 
-    public function dashboard_menu_items_inopts_swch_arr($opts_arr = array()) {
+    public function dashboard_menu_items_inopts_swch_arr($opts_arr = array())
+    {
         $jobsearch__options = get_option('jobsearch_plugin_options');
         $job_alerts_switch = isset($jobsearch__options['job_alerts_switch']) ? $jobsearch__options['job_alerts_switch'] : '';
 
@@ -379,7 +423,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $opts_arr;
     }
 
-    public function dashboard_menu_items_in_fmenu($opts_item = '', $cand_menu_item, $get_tab, $page_url, $candidate_id) {
+    public function dashboard_menu_items_in_fmenu($opts_item = '', $cand_menu_item, $get_tab, $page_url, $candidate_id)
+    {
         $jobsearch__options = get_option('jobsearch_plugin_options');
         $job_alerts_switch = isset($jobsearch__options['job_alerts_switch']) ? $jobsearch__options['job_alerts_switch'] : '';
 
@@ -387,14 +432,15 @@ class JobSearch_Job_Alerts_Hooks {
 
         if ($job_alerts_switch == 'on') {
             $dashmenu_links_cand = isset($jobsearch__options['cand_dashbord_menu']) ? $jobsearch__options['cand_dashbord_menu'] : '';
+            $dashmenu_links_cand = apply_filters('jobsearch_cand_dashbord_menu_items_arr', $dashmenu_links_cand);
             ob_start();
             $link_item_switch = isset($dashmenu_links_cand['job_alerts']) ? $dashmenu_links_cand['job_alerts'] : '';
             if ($cand_menu_item == 'job_alerts' && $link_item_switch == '1') {
                 ?>
-                <li<?php echo ($get_tab == 'job_alerts' ? ' class="active"' : '') ?>>
+                <li<?php echo($get_tab == 'job_alerts' ? ' class="active"' : '') ?>>
                     <?php
                     if ($user_pkg_limits::cand_field_is_locked('dashtab_fields|job_alerts')) {
-                        echo ($user_pkg_limits::dashtab_locked_html('job-alerts', 'jobsearch-icon jobsearch-alarm', esc_html__('Job Alerts', 'wp-jobsearch')));
+                        echo($user_pkg_limits::dashtab_locked_html('job-alerts', 'jobsearch-icon jobsearch-alarm', esc_html__('Job Alerts', 'wp-jobsearch')));
                     } else {
                         ?>
                         <a href="<?php echo add_query_arg(array('tab' => 'job-alerts'), $page_url) ?>">
@@ -413,13 +459,18 @@ class JobSearch_Job_Alerts_Hooks {
         return $opts_item;
     }
 
-    public function dashboard_tab_content_add($html = '', $get_tab = '') {
+    public function dashboard_tab_content_add($html = '', $get_tab = '')
+    {
         global $jobsearch_plugin_options, $Jobsearch_User_Dashboard_Settings;
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
 
         $user_id = get_current_user_id();
         $is_employer = jobsearch_user_is_employer($user_id);
-        if ($job_alerts_switch == 'on' && $get_tab == 'job-alerts' && !$is_employer) {
+        
+        $dashmenu_links_cand = isset($jobsearch_plugin_options['cand_dashbord_menu']) ? $jobsearch_plugin_options['cand_dashbord_menu'] : '';
+        $dashmenu_links_cand = apply_filters('jobsearch_cand_dashbord_menu_items_arr', $dashmenu_links_cand);
+        
+        if ($job_alerts_switch == 'on' && $get_tab == 'job-alerts' && !$is_employer && isset($dashmenu_links_cand['job_alerts']) && $dashmenu_links_cand['job_alerts'] == '1') {
             wp_enqueue_script('jobsearch-job-alerts-scripts');
             $user_id = get_current_user_id();
             $page_id = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
@@ -453,37 +504,42 @@ class JobSearch_Job_Alerts_Hooks {
                             ?>
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th><?php esc_html_e('Title', 'wp-jobsearch') ?></th>
-                                        <th><?php esc_html_e('Criteria', 'wp-jobsearch') ?></th>
-                                        <th><?php esc_html_e('Created Date', 'wp-jobsearch') ?></th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th><?php esc_html_e('Title', 'wp-jobsearch') ?></th>
+                                    <th><?php esc_html_e('Criteria', 'wp-jobsearch') ?></th>
+                                    <th><?php esc_html_e('Created Date', 'wp-jobsearch') ?></th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    while ($job_alerts->have_posts()) : $job_alerts->the_post();
+                                <?php
+                                while ($job_alerts->have_posts()) : $job_alerts->the_post();
 
-                                        $alert_id = get_the_ID();
+                                    $alert_id = get_the_ID();
 
-                                        $search_criteria = get_post_meta($alert_id, 'jobsearch_field_alert_query', true);
-                                        $alert_page_url = get_post_meta($alert_id, 'jobsearch_field_alert_page_url', true);
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <span><?php echo get_the_title($alert_id) ?></span>
-                                            </td>
-                                            <td><?php echo $this->alert_criteria_breakdown($search_criteria) ?></td>
-                                            <td><?php echo get_the_date() ?></td>
-                                            <td>
-                                                <a href="javascript:void(0);" class="jobsearch-savedjobs-links jobsearch-del-user-job-alert" data-id="<?php echo ($alert_id) ?>"><i class="jobsearch-icon jobsearch-rubbish"></i></a>
-                                                <a href="<?php echo ($alert_page_url) ?>" class="jobsearch-savedjobs-links"><i class="jobsearch-icon jobsearch-view"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    endwhile;
-                                    wp_reset_postdata();
+                                    $search_criteria = get_post_meta($alert_id, 'jobsearch_field_alert_query', true);
+                                    $alert_page_url = get_post_meta($alert_id, 'jobsearch_field_alert_page_url', true);
                                     ?>
+                                    <tr>
+                                        <td>
+                                            <span><?php echo get_the_title($alert_id) ?></span>
+                                        </td>
+                                        <td><?php echo $this->alert_criteria_breakdown($search_criteria) ?></td>
+                                        <td><?php echo get_the_date() ?></td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                               class="jobsearch-savedjobs-links jobsearch-del-user-job-alert"
+                                               data-id="<?php echo($alert_id) ?>"><i
+                                                        class="jobsearch-icon jobsearch-rubbish"></i></a>
+                                            <a href="<?php echo($alert_page_url) ?>"
+                                               class="jobsearch-savedjobs-links"><i
+                                                        class="jobsearch-icon jobsearch-view"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                endwhile;
+                                wp_reset_postdata();
+                                ?>
                                 </tbody>
                             </table>
                             <?php
@@ -510,23 +566,44 @@ class JobSearch_Job_Alerts_Hooks {
         return $html;
     }
 
-    public function after_jobs_listing_callback($jobs_query, $sort_by) {
+    public function after_jobs_listing_callback($jobs_query, $sort_by)
+    {
         echo '<div class="jobs_query" style="display:none;">' . json_encode($jobs_query) . '</div>';
-    }
+    } //
 
     public function frontend_before_listings_ui_callback($args = array()) {
+        global $jobsearch_plugin_options;
+
+        $sh_atts = isset($args['sh_atts']) ? $args['sh_atts'] : '';
+        $job_alerts_param = isset($sh_atts['job_alerts_top']) ? $sh_atts['job_alerts_top'] : '';
+
+        if ($job_alerts_param == 'yes') {
+            $this->frontend_full_listings_ui($args);
+        }
+    }
+
+    public function frontend_after_listings_ui_callback($args = array()) {
+        global $jobsearch_plugin_options;
+
+        $sh_atts = isset($args['sh_atts']) ? $args['sh_atts'] : '';
+        $job_alerts_param = isset($sh_atts['job_alerts_bottom']) ? $sh_atts['job_alerts_bottom'] : '';
+
+        if ($job_alerts_param == 'yes') {
+            $this->frontend_full_listings_ui($args);
+        }
+    }
+    
+    public function frontend_full_listings_ui() {
         global $jobsearch_plugin_options;
 
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
         $for_login_only = isset($jobsearch_plugin_options['save_alerts_withlogin']) ? $jobsearch_plugin_options['save_alerts_withlogin'] : '';
 
-        $sh_atts = isset($args['sh_atts']) ? $args['sh_atts'] : '';
-        $job_alerts_param = isset($sh_atts['job_alerts_top']) ? $sh_atts['job_alerts_top'] : '';
-
-        if ($job_alerts_param == 'yes' && $job_alerts_switch == 'on') {
+        if ($job_alerts_switch == 'on') {
             wp_enqueue_script('jobsearch-job-alerts-scripts');
 
             $frequencies = array(
+                'job_alerts_frequency_hourly' => esc_html__('Hourly', 'wp-jobsearch'),
                 'job_alerts_frequency_daily' => esc_html__('Daily', 'wp-jobsearch'),
                 'job_alerts_frequency_weekly' => esc_html__('Weekly', 'wp-jobsearch'),
                 'job_alerts_frequency_fortnightly' => esc_html__('Fortnightly', 'wp-jobsearch'),
@@ -535,6 +612,7 @@ class JobSearch_Job_Alerts_Hooks {
                 'job_alerts_frequency_annually' => esc_html__('Annually', 'wp-jobsearch'),
                 'job_alerts_frequency_never' => esc_html__('Never', 'wp-jobsearch'),
             );
+            $frequencies = apply_filters('jobsearch_job_alert_frequencies_list', $frequencies);
             $options_str = '';
             $is_one_checked = false;
             $checked = 'checked="checked"';
@@ -577,15 +655,15 @@ class JobSearch_Job_Alerts_Hooks {
                         </li>
                     </ul>
                 </div>' . (
-            strlen($options_str) == 0 ? '' : (
+                strlen($options_str) == 0 ? '' : (
                     '<div class="alert-frequency">
                             <ul class="jobsearch-checkbox">
                             ' . $options_str . '
                             </ul>
                         </div>'
-                    )
-            ) .
-            '<div class="validation error" style="display:none;">
+                )
+                ) .
+                '<div class="validation error" style="display:none;">
                     <label for="alerts-email-top"></label>
                 </div>
             </div>
@@ -594,7 +672,139 @@ class JobSearch_Job_Alerts_Hooks {
         }
     }
 
-    public function alert_criteria_breakdown($criteria) {
+    public function frontend_before_listings_quick_detail_ui_callback($args = array())
+    {
+        global $jobsearch_plugin_options;
+
+        $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
+        $for_login_only = isset($jobsearch_plugin_options['save_alerts_withlogin']) ? $jobsearch_plugin_options['save_alerts_withlogin'] : '';
+
+        $sh_atts = isset($args['sh_atts']) ? $args['sh_atts'] : '';
+
+        $job_alerts_param = isset($sh_atts['job_alerts_top']) ? $sh_atts['job_alerts_top'] : '';
+
+        if ($job_alerts_param == 'yes' && $job_alerts_switch == 'on') {
+            wp_enqueue_script('jobsearch-job-alerts-scripts');
+
+            $frequencies = array(
+                'job_alerts_frequency_hourly' => esc_html__('Hourly', 'wp-jobsearch'),
+                'job_alerts_frequency_daily' => esc_html__('Daily', 'wp-jobsearch'),
+                'job_alerts_frequency_weekly' => esc_html__('Weekly', 'wp-jobsearch'),
+                'job_alerts_frequency_fortnightly' => esc_html__('Fortnightly', 'wp-jobsearch'),
+                'job_alerts_frequency_monthly' => esc_html__('Monthly', 'wp-jobsearch'),
+                'job_alerts_frequency_biannually' => esc_html__('Biannually', 'wp-jobsearch'),
+                'job_alerts_frequency_annually' => esc_html__('Annually', 'wp-jobsearch'),
+                'job_alerts_frequency_never' => esc_html__('Never', 'wp-jobsearch'),
+            );
+            $frequencies = apply_filters('jobsearch_job_alert_frequencies_list', $frequencies);
+            $options_str = '';
+            $is_one_checked = false;
+            $checked = 'checked="checked"';
+            foreach ($frequencies as $frequency => $label) {
+
+                $rand_id = rand(10000000, 99999999);
+                if (isset($jobsearch_plugin_options[$frequency]) && 'on' == $jobsearch_plugin_options[$frequency]) {
+                    $options_str .= '<li><input id="frequency' . $rand_id . '" name="alert-frequency" class="radio-frequency" maxlength="75" type="radio" value="' . ($frequency) . '" ' . $checked . '> <label for="frequency' . $rand_id . '"><span></span>' . $label . '</label></li>';
+                    if (false == $is_one_checked) {
+                        $checked = '';
+                        $is_one_checked = true;
+                    }
+                }
+            }
+
+            $user = wp_get_current_user();
+            $disabled = '';
+            $email = '';
+            if ($user->ID > 0) {
+                $email = $user->user_email;
+                $disabled = ' disabled="disabled"';
+            }
+            echo '
+            <div class="jobsearch-alert-in-content job-alerts-sec jobsearch-alert-quick-detail">
+            <div class="email-me-top">
+                <button class="email-jobs-top jobsearch-create-alert"><i class="fa fa-envelope"></i> ' . esc_html__('Create Alert', 'wp-jobsearch') . '</button>
+            </div>
+            <div class="jobsearch-search-filter-wrap jobsearch-without-toggle jobsearch-add-padding">
+            <div class="job-alert-box job-alert job-alert-container-top">
+                <div class="alerts-fields">
+                    <ul>
+                        <li>
+                            <input name="alerts-name" placeholder="' . esc_html__('Job alert name...', 'wp-jobsearch') . '" class="name-input-top" maxlength="75" type="text">
+                        </li>
+                        <li>
+                            <input type="email" class="email-input-top alerts-email" placeholder=' . esc_html__("example@email.com", 'wp-jobsearch') . ' name="alerts-email" value="' . $email . '" ' . $disabled . '>
+                        </li>
+                        <li>
+                            <button class="jobalert-submit' . ($for_login_only == 'on' && !is_user_logged_in() ? ' jobalert-save-withlogin' : '') . '" type="submit">' . esc_html__('Create Alert', 'wp-jobsearch') . '</button>
+                        </li>
+                    </ul>
+                </div>' . (
+                strlen($options_str) == 0 ? '' : (
+                    '<div class="alert-frequency">
+                            <ul class="jobsearch-checkbox">
+                            ' . $options_str . '
+                            </ul>
+                        </div>'
+                )
+                ) .
+                '<div class="validation error" style="display:none;">
+                    <label for="alerts-email-top"></label>
+                </div>
+            </div>
+            </div>
+            </div>';
+        }
+    }
+    
+    public function beautify_item_key_name($item_key) {
+        
+        if (preg_match("/location1/i", $item_key) || preg_match("/location_1/i", $item_key)) {
+            $item_key = esc_html__('Country', 'wp-jobsearch');
+        }
+        if (preg_match("/location2/i", $item_key) || preg_match("/location_2/i", $item_key)) {
+            $item_key = esc_html__('State', 'wp-jobsearch');
+        }
+        if (preg_match("/location3/i", $item_key) || preg_match("/location_3/i", $item_key)) {
+            $item_key = esc_html__('City', 'wp-jobsearch');
+        }
+        if (preg_match("/sector_cat/i", $item_key)) {
+            $item_key = esc_html__('Sector', 'wp-jobsearch');
+        }
+        if (preg_match("/jobsearch_field_job_salary_type/i", $item_key)) {
+            $item_key = esc_html__('Salary Type', 'wp-jobsearch');
+        } else if (preg_match("/job_salary/i", $item_key)) {
+            $item_key = esc_html__('Salary', 'wp-jobsearch');
+        }
+        if (preg_match("/job_industries/i", $item_key)) {
+            $item_key = esc_html__('Industries', 'wp-jobsearch');
+        }
+        
+        $item_key = ucfirst(str_replace(array('-', '_'), array(' ', ' '), $item_key));
+        
+        return $item_key;
+    }
+
+    public function alert_criteria_breakdown($criteria)
+    {
+        global $jobsearch_plugin_options, $sitepress;
+        $lang_code = '';
+        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+            $lang_code = $sitepress->get_current_language();
+        }
+        
+        $cusfileds_names_arr = array();
+        $jobsearch_post_cus_fields = get_option('jobsearch_custom_field_job');
+        if (is_array($jobsearch_post_cus_fields) && sizeof($jobsearch_post_cus_fields) > 0) {
+            foreach ($jobsearch_post_cus_fields as $acus_key => $cus_field) {
+                $f_custf_name = isset($cus_field['name']) ? $cus_field['name'] : '';
+                $f_custf_type = isset($cus_field['type']) ? $cus_field['type'] : '';
+                
+                if ($f_custf_type == 'checkbox' || $f_custf_type == 'dropdown') {
+                    $cusfileds_names_arr[$acus_key] = $f_custf_name;
+                }
+            }
+        }
+        
         $html = '';
         $items_html = '';
         if ($criteria != '') {
@@ -602,21 +812,114 @@ class JobSearch_Job_Alerts_Hooks {
             $criteria_arr = explode('&', $criteria);
             if (!empty($criteria_arr)) {
                 $criteria_arr = array_unique($criteria_arr);
+                $criteria_arr = apply_filters('jobsearch_dash_alert_criteria_list', $criteria_arr);
                 foreach ($criteria_arr as $crite_item) {
+                    //echo ($crite_item); echo '<br>';
                     $item_expl = explode('=', $crite_item);
                     if (isset($item_expl[0]) && isset($item_expl[1]) && $item_expl[0] != '' && $item_expl[1] != '') {
                         $item_key = $item_expl[0];
+                        $item_key_exclude = apply_filters('jobsearch_is_jobalert_query_exclude_key', false, $item_key);
+                        if ($item_key_exclude) {
+                            continue;
+                        }
                         $item_val = $item_expl[1];
+                        if ($item_key == 'sector_cat') {
+                            $sector_catobj = get_term_by('slug', $item_val, 'sector');
+                            if (isset($sector_catobj->name)) {
+                                $item_val = $sector_catobj->name;
+                            }
+                        }
+                        if (in_array($item_key, $cusfileds_names_arr)) {
+                            $cusobj_key = array_search($item_key, $cusfileds_names_arr);
+                            $cus_field_objarr = $jobsearch_post_cus_fields[$cusobj_key];
+                            $item_key = isset($cus_field_objarr['label']) ? $cus_field_objarr['label'] : $item_key;
+                            $f_custf_type = isset($cus_field_objarr['type']) ? $cus_field_objarr['type'] : '';
+                            $field_put_val = $item_val;
+                            if ($f_custf_type == 'dropdown') {
+                                $drop_down_arr = array();
+                                $cut_field_flag = 0;
+                                foreach ($cus_field_objarr['options']['value'] as $key => $cus_field_options_value) {
+
+                                    $drop_down_arr[$cus_field_options_value] = (apply_filters('wpml_translate_single_string', $cus_field_objarr['options']['label'][$cut_field_flag], 'Custom Fields', 'Dropdown Option Label - ' . $cus_field_objarr['options']['label'][$cut_field_flag], $lang_code));
+                                    $cut_field_flag++;
+                                }
+                                if (is_array($field_put_val) && !empty($field_put_val)) {
+                                    $field_put_valarr = array();
+                                    foreach ($field_put_val as $fil_putval) {
+                                        if (isset($drop_down_arr[$fil_putval]) && $drop_down_arr[$fil_putval] != '') {
+                                            $field_put_valarr[] = $drop_down_arr[$fil_putval];
+                                        }
+                                    }
+                                    $item_val = implode(', ', $field_put_valarr);
+                                } else {
+                                    if (isset($drop_down_arr[$field_put_val]) && $drop_down_arr[$field_put_val] != '') {
+                                        $item_val = $drop_down_arr[$field_put_val];
+                                    }
+                                }
+                            } else if ($f_custf_type == 'checkbox') {
+                                $drop_down_arr = array();
+                                $cut_field_flag = 0;
+                                foreach ($cus_field_objarr['options']['value'] as $key => $cus_field_options_value) {
+
+                                    $drop_down_arr[$cus_field_options_value] = (apply_filters('wpml_translate_single_string', $cus_field_objarr['options']['label'][$cut_field_flag], 'Custom Fields', 'Checkbox Option Label - ' . $cus_field_objarr['options']['label'][$cut_field_flag], $lang_code));
+                                    $cut_field_flag++;
+                                }
+                                if (is_array($field_put_val) && !empty($field_put_val)) {
+                                    $field_put_valarr = array();
+                                    foreach ($field_put_val as $fil_putval) {
+                                        if (isset($drop_down_arr[$fil_putval]) && $drop_down_arr[$fil_putval] != '') {
+                                            $field_put_valarr[] = $drop_down_arr[$fil_putval];
+                                        }
+                                    }
+                                    $item_val = implode(', ', $field_put_valarr);
+                                } else {
+                                    if (isset($drop_down_arr[$field_put_val]) && $drop_down_arr[$field_put_val] != '') {
+                                        $item_val = $drop_down_arr[$field_put_val];
+                                    }
+                                }
+                            }
+                        }
+                        if ($item_key == 'job_type') {
+                            if (is_array($item_val)) {
+                                $termnames_arr = array();
+                                foreach ($item_val as $itmval_slug) {
+                                    $sector_catobj = get_term_by('slug', $itmval_slug, 'jobtype');
+                                    if (isset($sector_catobj->name)) {
+                                        $termnames_arr[] = $sector_catobj->name;
+                                    }
+                                }
+                                $item_val = implode(', ', $termnames_arr);
+                            } else {
+                                $sector_catobj = get_term_by('slug', $item_val, 'jobtype');
+                                if (isset($sector_catobj->name)) {
+                                    $item_val = $sector_catobj->name;
+                                }
+                            }
+                        }
+                        if ($item_key == 'job_salary_type') {
+                            $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
+                            if (!empty($job_salary_types)) {
+                                $slar_type_count = 1;
+                                foreach ($job_salary_types as $job_salary_typ) {
+                                    $job_salary_typ = apply_filters('wpml_translate_single_string', $job_salary_typ, 'JobSearch Options', 'Salary Type - ' . $job_salary_typ, $lang_code);
+                                    if ($item_val == 'type_' . $slar_type_count) {
+                                        $item_val = $job_salary_typ;
+                                    }
+                                    $slar_type_count++;
+                                }
+                            }
+                        }
+                        $item_key = $this->beautify_item_key_name($item_key);
                         if (!in_array($item_key, $disalow_keys)) {
                             if (strpos($item_val, 'job_alerts_frequency_') !== false) {
                                 $item_val = str_replace('job_alerts_frequency_', '', $item_val);
                             }
-                            $items_html .= '<li>' . $item_key . '=' . $item_val . '</li>';
+                            $items_html .= '<li>' . $item_key . ': ' . $item_val . '</li>';
                         }
                     }
                 }
                 if ($items_html != '') {
-                    $html .= '<ul>' . $items_html . '</ul>' . "\n";
+                    $html .= '<ul class="jobalert-criteria-con">' . $items_html . '</ul>' . "\n";
                 }
             }
             //
@@ -624,7 +927,8 @@ class JobSearch_Job_Alerts_Hooks {
         return $html;
     }
 
-    public function frontend_before_filters_ui_callback($args = array()) {
+    public function frontend_before_filters_ui_callback($args = array())
+    {
         global $jobsearch_plugin_options;
 
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
@@ -637,6 +941,7 @@ class JobSearch_Job_Alerts_Hooks {
             wp_enqueue_script('jobsearch-job-alerts-scripts');
 
             $frequencies = array(
+                'job_alerts_frequency_hourly' => esc_html__('Hourly', 'wp-jobsearch'),
                 'job_alerts_frequency_daily' => esc_html__('Daily', 'wp-jobsearch'),
                 'job_alerts_frequency_weekly' => esc_html__('Weekly', 'wp-jobsearch'),
                 'job_alerts_frequency_fortnightly' => esc_html__('Fortnightly', 'wp-jobsearch'),
@@ -645,6 +950,7 @@ class JobSearch_Job_Alerts_Hooks {
                 'job_alerts_frequency_annually' => esc_html__('Annually', 'wp-jobsearch'),
                 'job_alerts_frequency_never' => esc_html__('Never', 'wp-jobsearch'),
             );
+            $frequencies = apply_filters('jobsearch_job_alert_frequencies_list', $frequencies);
             $options_str = '';
             $is_one_checked = false;
             $checked = 'checked="checked"';
@@ -678,15 +984,15 @@ class JobSearch_Job_Alerts_Hooks {
                         <input name="alerts-name" placeholder="' . esc_html__('Job alert name...', 'wp-jobsearch') . '" class="name-input-top" maxlength="75" type="text">
                         <input type="email" class="email-input-top alerts-email" placeholder=' . esc_html__("example@email.com", 'wp-jobsearch') . ' name="alerts-email" value="' . $email . '" ' . $disabled . '>
                     </div>' . (
-            strlen($options_str) == 0 ? '' : (
+                strlen($options_str) == 0 ? '' : (
                     '<div class="alert-frequency">
                             <ul class="jobsearch-checkbox">
                             ' . $options_str . '
                             </ul>
                         </div>'
-                    )
-            ) .
-            '<div class="validation error" style="display:none;">
+                )
+                ) .
+                '<div class="validation error" style="display:none;">
                     <label for="alerts-email-top"></label>
                 </div>
                 <button class="jobalert-submit' . ($for_login_only == 'on' && !is_user_logged_in() ? ' jobalert-save-withlogin' : '') . '" type="submit">' . esc_html__('Create Alert', 'wp-jobsearch') . '</button>
@@ -696,14 +1002,16 @@ class JobSearch_Job_Alerts_Hooks {
         }
     }
 
-    public function job_alert_criteria_selist() {
+    public function job_alert_criteria_selist()
+    {
         $tags_list = array();
-        
+
         if (isset($_REQUEST['search_title']) && $_REQUEST['search_title'] != '') {
             $job_search_title = $_REQUEST['search_title'];
+            $job_search_title = jobsearch_esc_html($job_search_title);
             $tags_list['search_title'] = $job_search_title;
         }
-        
+
         $loc_val = '';
         if (isset($_REQUEST['location']) && $_REQUEST['location'] != '') {
             $loc_val = $_REQUEST['location'];
@@ -717,6 +1025,7 @@ class JobSearch_Job_Alerts_Hooks {
                 $loc_val = $_REQUEST['location_location3'] . ', ' . $loc_val;
             }
         }
+        $loc_val = jobsearch_esc_html($loc_val);
         if ($loc_val != '') {
             $tags_list['location'] = $loc_val;
         }
@@ -727,6 +1036,10 @@ class JobSearch_Job_Alerts_Hooks {
         if (isset($_REQUEST['job_type']) && $_REQUEST['job_type'] != '') {
             $job_type = $_REQUEST['job_type'];
             $tags_list['job_type'] = $job_type;
+        }
+        if (isset($_REQUEST['get_job_industries']) && $_REQUEST['get_job_industries'] != '') {
+            $job_industry = $_REQUEST['get_job_industries'];
+            $tags_list['industries'] = $job_industry;
         }
 
         //
@@ -744,6 +1057,8 @@ class JobSearch_Job_Alerts_Hooks {
             }
         }
         
+        $tags_list = apply_filters('jobsearch_alertpop_top_tags_arr', $tags_list);
+
         ob_start();
         if (!empty($tags_list)) {
             ?>
@@ -751,22 +1066,21 @@ class JobSearch_Job_Alerts_Hooks {
                 <ul class="filtration-tags">
                     <?php
                     foreach ($tags_list as $qry_var => $qry_val) {
+                        if (is_array($qry_val)) {
+                            $qry_val = implode(', ', $qry_val);
+                        }
                         ?>
                         <li>
-                            <a title="<?php echo ucwords(str_replace(array("+", "-", "_"), " ", $qry_var)) ?>"><?php echo ($qry_val) ?></a>
+                            <a title="<?php echo ucwords(str_replace(array("+", "-", "_"), " ", $qry_var)) ?>"><?php echo jobsearch_esc_html($qry_val) ?></a>
                         </li>
-                        <?php
-                    }
-                    ?>
+                    <?php } ?>
                 </ul>
             </div>
             <?php
         }
-        ?>
-          
-        <?php
-        $html = ob_get_clean();
         
+        $html = ob_get_clean();
+
         if (isset($_POST['jobsearch_alert_tagsup']) && $_POST['jobsearch_alert_tagsup'] == '1') {
             echo json_encode(array('html' => $html));
             die;
@@ -774,7 +1088,8 @@ class JobSearch_Job_Alerts_Hooks {
         echo $html;
     }
 
-    public function job_alert_popup() {
+    public function job_alert_popup()
+    {
 
         global $jobsearch_plugin_options, $jobsearch_jobalertfiltrs_html;
 
@@ -789,6 +1104,7 @@ class JobSearch_Job_Alerts_Hooks {
         if ($job_alerts_switch == 'on' && $to_add_popup) {
 
             $frequencies = array(
+                'job_alerts_frequency_hourly' => esc_html__('Hourly', 'wp-jobsearch'),
                 'job_alerts_frequency_daily' => esc_html__('Daily', 'wp-jobsearch'),
                 'job_alerts_frequency_weekly' => esc_html__('Weekly', 'wp-jobsearch'),
                 'job_alerts_frequency_fortnightly' => esc_html__('Fortnightly', 'wp-jobsearch'),
@@ -797,21 +1113,6 @@ class JobSearch_Job_Alerts_Hooks {
                 'job_alerts_frequency_annually' => esc_html__('Annually', 'wp-jobsearch'),
                 'job_alerts_frequency_never' => esc_html__('Never', 'wp-jobsearch'),
             );
-
-            $options_str = '';
-            $is_one_checked = false;
-            $freq_checked = 'checked="checked"';
-            foreach ($frequencies as $frequency => $freq_label) {
-
-                $freq_rand_id = rand(10000000, 99999999);
-                if (isset($jobsearch_plugin_options[$frequency]) && 'on' == $jobsearch_plugin_options[$frequency]) {
-                    $options_str .= '<li><input id="frequency' . $freq_rand_id . '" name="alert-frequency" class="radio-frequency" maxlength="75" type="radio" value="' . ($frequency) . '" ' . $freq_checked . '> <label for="frequency' . $freq_rand_id . '"><span></span>' . $freq_label . '</label></li>';
-                    if (false == $is_one_checked) {
-                        $freq_checked = '';
-                        $is_one_checked = true;
-                    }
-                }
-            }
             ?>
             <div class="jobsearch-modal jobalerts_modal_popup fade" id="JobSearchModalJobAlertsSelect">
                 <div class="modal-inner-area">&nbsp;</div>
@@ -828,17 +1129,18 @@ class JobSearch_Job_Alerts_Hooks {
                             <form id="popup_alert_filtrsform" method="post">
                                 <div id="popup_alert_filtrscon" class="popup-jobfilters-con">
                                     <?php
-                                    echo ($jobsearch_jobalertfiltrs_html);
+                                    echo($jobsearch_jobalertfiltrs_html);
                                     ?>
                                 </div>
                                 <div class="alret-submitbtn-con">
                                     <input type="hidden" name="alerts_name" value="">
                                     <input type="hidden" name="alerts_email" value="">
                                     <input type="hidden" name="action" value="jobsearch_create_job_alert">
-                                    <a href="javascript:void(0);" class="jobsearch-savejobalrts-sbtn"><?php esc_html_e('Save Jobs Alert', 'wp-jobsearch') ?></a>
+                                    <a href="javascript:void(0);"
+                                       class="jobsearch-savejobalrts-sbtn"><?php esc_html_e('Save Jobs Alert', 'wp-jobsearch') ?></a>
                                     <div class="falrets-msg"></div>
                                 </div>
-                            </form>    
+                            </form>
                         </div>
 
                     </div>
@@ -848,7 +1150,8 @@ class JobSearch_Job_Alerts_Hooks {
         }
     }
 
-    public function create_job_alert_callback() {
+    public function create_job_alert_callback()
+    {
 
         global $sitepress, $jobsearch_plugin_options;
 
@@ -860,25 +1163,42 @@ class JobSearch_Job_Alerts_Hooks {
         $email = sanitize_text_field($_POST['alerts_email']);
         $name = sanitize_text_field($_POST['alerts_name']);
         $location = sanitize_text_field($_POST['window_location']);
-        
+
         $page_url = explode('?', $location);
         $page_url = isset($page_url[0]) ? $page_url[0] : '';
-        
+
         //$query = end(explode('?', $location));
         $all_posts_data = $_POST;
-        if (isset($all_posts_data['alert_frequency'])) { unset($all_posts_data['alert_frequency']); }
-        if (isset($all_posts_data['alerts_name'])) { unset($all_posts_data['alerts_name']); }
-        if (isset($all_posts_data['alerts_email'])) { unset($all_posts_data['alerts_email']); }
-        if (isset($all_posts_data['action'])) { unset($all_posts_data['action']); }
-        if (isset($all_posts_data['window_location'])) { unset($all_posts_data['window_location']); }
-        if (isset($all_posts_data['search_query'])) { unset($all_posts_data['search_query']); }
-        if (isset($all_posts_data['job_shatts_str'])) { unset($all_posts_data['job_shatts_str']); }
-        
+        if (isset($all_posts_data['alert_frequency'])) {
+            unset($all_posts_data['alert_frequency']);
+        }
+        if (isset($all_posts_data['alerts_name'])) {
+            unset($all_posts_data['alerts_name']);
+        }
+        if (isset($all_posts_data['alerts_email'])) {
+            unset($all_posts_data['alerts_email']);
+        }
+        if (isset($all_posts_data['action'])) {
+            unset($all_posts_data['action']);
+        }
+        if (isset($all_posts_data['window_location'])) {
+            unset($all_posts_data['window_location']);
+        }
+        if (isset($all_posts_data['search_query'])) {
+            unset($all_posts_data['search_query']);
+        }
+        if (isset($all_posts_data['job_shatts_str'])) {
+            unset($all_posts_data['job_shatts_str']);
+        }
+
         $post_d_query = '';
         $post_page_query = '';
         $post_dcounter = 1;
         $post_p_dcounter = 1;
         foreach ($all_posts_data as $postd_key => $postd_val) {
+            if (is_array($postd_val)) {
+                $postd_val = implode(',', $postd_val);
+            }
             $post_d_query .= ($post_dcounter > 1 ? '&' : '') . $postd_key . '=' . $postd_val;
             if ($postd_val != '') {
                 $post_page_query .= ($post_p_dcounter > 1 ? '&' : '') . $postd_key . '=' . $postd_val;
@@ -890,7 +1210,7 @@ class JobSearch_Job_Alerts_Hooks {
         if ($post_page_query != '') {
             $page_url = $page_url . '?' . $post_page_query . '&ajax_filter=true';
         }
-        
+
         $frequency = sanitize_text_field($_POST['alert_frequency']);
         if ($frequency != '' && strpos($frequency, 'job_alerts_frequency_') !== false) {
             $frequency = str_replace('job_alerts_frequency_', 'alert_', $frequency);
@@ -964,6 +1284,7 @@ class JobSearch_Job_Alerts_Hooks {
             );
             $obj_query = new WP_Query($args);
             $count = $obj_query->post_count;
+            do_action('jobsearch_before_job_alert_create_byuser', $jobs_query);
             if ($count > 0) {
                 $return = array('success' => false, "message" => esc_html__("Alert already exists with this criteria", 'wp-jobsearch'));
             } else {
@@ -1000,6 +1321,27 @@ class JobSearch_Job_Alerts_Hooks {
 
                 // Query.
                 update_post_meta($job_alert_id, 'jobsearch_field_alert_jobs_query', stripslashes($jobs_query));
+                
+                $jobsearch_post_cus_fields = get_option('jobsearch_custom_field_job');
+                if (is_array($jobsearch_post_cus_fields) && sizeof($jobsearch_post_cus_fields) > 0) {
+                    foreach ($jobsearch_post_cus_fields as $cus_field) {
+                        if ($cus_field['type'] == 'salary') {
+                            $query_str_var_name = 'jobsearch_field_job_salary';
+                            $str_salary_type_name = 'job_salary_type';
+                            if (isset($_REQUEST[$str_salary_type_name]) && !empty($_REQUEST[$str_salary_type_name])) {
+                                update_post_meta($job_alert_id, $str_salary_type_name, $_REQUEST[$str_salary_type_name]);
+                            }
+                        } else {
+                            $f_custf_name = isset($cus_field['name']) ? $cus_field['name'] : '';
+                            $query_str_var_name = trim(str_replace(' ', '', $f_custf_name));
+                        }
+                        if (isset($_REQUEST[$query_str_var_name]) && !empty($_REQUEST[$query_str_var_name])) {
+                            update_post_meta($job_alert_id, $query_str_var_name, $_REQUEST[$query_str_var_name]);
+                        }
+                    }
+                }
+                
+                do_action('jobsearch_after_jobalert_save_by_user', $job_alert_id);
 
                 $return = array('success' => true, "message" => esc_html__("Job alert successfully added.", 'wp-jobsearch'));
             }
@@ -1008,7 +1350,8 @@ class JobSearch_Job_Alerts_Hooks {
         wp_die();
     }
 
-    public function unsubscribe_job_alert() {
+    public function unsubscribe_job_alert()
+    {
         if (isset($_REQUEST['jaid'])) {
             $job_alert_id = sanitize_text_field($_REQUEST['jaid']);
             $post_data = get_post($job_alert_id);
@@ -1022,7 +1365,8 @@ class JobSearch_Job_Alerts_Hooks {
         die();
     }
 
-    public function remove_job_alert() {
+    public function remove_job_alert()
+    {
         if (isset($_REQUEST['alert_id'])) {
             if (jobsearch_candidate_not_allow_to_mod()) {
                 $msg = esc_html__('You are not allowed to delete this.', 'wp-jobsearch');
@@ -1046,5 +1390,5 @@ class JobSearch_Job_Alerts_Hooks {
 }
 
 // Class JobSearch_Job_Alerts_Hooks
-$JobSearch_Job_Alerts_Hooks_obj = new JobSearch_Job_Alerts_Hooks();
 global $JobSearch_Job_Alerts_Hooks_obj;
+$JobSearch_Job_Alerts_Hooks_obj = new JobSearch_Job_Alerts_Hooks();

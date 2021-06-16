@@ -45,6 +45,8 @@ $job_apps_count_switch = isset($jobsearch_plugin_options['job_detail_apps_count'
 $job_views_count_switch = isset($jobsearch_plugin_options['job_detail_views_count']) ? $jobsearch_plugin_options['job_detail_views_count'] : '';
 $job_shortlistbtn_switch = isset($jobsearch_plugin_options['job_detail_shrtlist_btn']) ? $jobsearch_plugin_options['job_detail_shrtlist_btn'] : '';
 $captcha_switch = isset($jobsearch_plugin_options['captcha_switch']) ? $jobsearch_plugin_options['captcha_switch'] : '';
+$job_det_contact_form = isset($jobsearch_plugin_options['job_det_contact_form']) ? $jobsearch_plugin_options['job_det_contact_form'] : '';
+
 while (have_posts()) : the_post();
     $post_id = $post->ID;
 
@@ -57,10 +59,13 @@ while (have_posts()) : the_post();
     $application_deadline = get_post_meta($post_id, 'jobsearch_field_job_application_deadline_date', true);
     $jobsearch_job_posted = get_post_meta($post_id, 'jobsearch_field_job_publish_date', true);
 
+    $locations_lat = get_post_meta($post_id, 'jobsearch_field_location_lat', true);
+    $locations_lng = get_post_meta($post_id, 'jobsearch_field_location_lng', true);
+
     $job_max_salary = get_post_meta($post_id, 'jobsearch_field_job_max_salary', true);
     $job_salary_sep = get_post_meta($post_id, 'jobsearch_field_job_salary_sep', true);
     $job_salary_deci = get_post_meta($post_id, 'jobsearch_field_job_salary_deci', true);
-    
+
     $job_max_salary = jobsearch_job_offered_salary($post_id);
 
     $postby_emp_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
@@ -72,8 +77,8 @@ while (have_posts()) : the_post();
     }
     $get_job_location = get_post_meta($post_id, 'jobsearch_field_location_address', true);
     $job_city_title = '';
-    if (function_exists('jobsearch_post_city_contry_txtstr') ) {
-        $job_city_title = jobsearch_post_city_contry_txtstr($post_id, $loc_view_country, $loc_view_state, $loc_view_city,$job_det_full_address_switch);
+    if (function_exists('jobsearch_post_city_contry_txtstr')) {
+        $job_city_title = jobsearch_post_city_contry_txtstr($post_id, $loc_view_country, $loc_view_state, $loc_view_city, $job_det_full_address_switch);
     }
     if ($job_city_title != '') {
         $get_job_location = $job_city_title;
@@ -91,6 +96,8 @@ while (have_posts()) : the_post();
     $job_salary = jobsearch_job_offered_salary($post_id);
     $job_applicants_list = get_post_meta($post_id, 'jobsearch_job_applicants_list', true);
     $job_applicants_list = jobsearch_is_post_ids_array($job_applicants_list, 'candidate');
+    $jobsearch_job_featured = get_post_meta($job_id, 'jobsearch_field_job_featured', true);
+
     if (empty($job_applicants_list)) {
         $job_applicants_list = array();
     }
@@ -101,9 +108,9 @@ while (have_posts()) : the_post();
     if (isset($subheader_employer_bg_color['rgba'])) {
         $subheader_bg_color = $subheader_employer_bg_color['rgba'];
     }
-    ?>  
+    ?>
 
-    <div class="careerfy-jobdetail-four-list" <?php echo ($employer_cover_image_src_style_str); ?>>
+    <div class="careerfy-jobdetail-four-list" <?php echo($employer_cover_image_src_style_str); ?>>
         <span class="careerfy-jobdetail-four-transparent" style="background: <?php echo $subheader_bg_color ?>"></span>
         <div class="container">
             <div class="row">
@@ -113,10 +120,13 @@ while (have_posts()) : the_post();
                         <figure>
                             <?php
                             if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                                jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid');
+                                jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_listv1');
                             }
                             ?>
                             <a href="#"><img src="<?php echo esc_url($post_thumbnail_src) ?>" alt=""></a>
+                            <?php if ($jobsearch_job_featured == 'on') { ?>
+                                <span class="careerfy-jobli-medium3"><i class="fa fa-star"></i></span>
+                            <?php } ?>
                         </figure>
                     <?php }
                     ?>
@@ -132,15 +142,29 @@ while (have_posts()) : the_post();
                             <?php
                         }
                         ?>
-                        <span class="careerfy-jobdetail-four-list-status color"><?php echo esc_html__('Offered Salary', 'careerfy'); ?> : <?php echo ($job_max_salary); ?></span>
+                        <span class="careerfy-jobdetail-four-list-status color"><?php echo esc_html__('Offered Salary', 'careerfy'); ?> : <?php echo($job_max_salary); ?></span>
                         <h1><?php echo get_the_title($post_id); ?></h1>
                         <ul class="careerfy-jobdetail-four-options">
 
                             <?php
-                            if (!empty($get_job_location) && $all_location_allow == 'on') {
-                                $google_mapurl = 'https://www.google.com/maps/search/' . $get_job_location;
+                            if ((!empty($get_job_location) || ($locations_lat != '' && $locations_lng != '')) && $all_location_allow == 'on') {
+                                $view_map_loc = urlencode($get_job_location);
+                                if ($locations_lat != '' && $locations_lng != '') {
+                                    $view_map_loc = urlencode($locations_lat . ',' . $locations_lng);
+                                }
+                                $google_mapurl = 'https://www.google.com/maps/search/' . $view_map_loc;
                                 ?>
-                                <li><i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?> <a href="<?php echo esc_url($google_mapurl); ?>" target="_blank" class="careerfy-jobdetail-view"><?php echo esc_html__('View on Map', 'careerfy') ?></a></li>
+                                <li>
+                                    <?php
+                                    if (!empty($get_job_location)) {
+                                        ?>
+                                        <i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?>
+                                        <?php
+                                    }
+                                    ?>
+                                    <a href="<?php echo($google_mapurl); ?>" target="_blank"
+                                       class="careerfy-jobdetail-view"><?php echo esc_html__('View on Map', 'wp-jobsearch') ?></a>
+                                </li>
                                 <?php
                             }
 
@@ -166,16 +190,24 @@ while (have_posts()) : the_post();
                             }
                             if ($job_views_count_switch == 'on') {
                                 ?>
-                                <li><a href="#"><i class="careerfy-icon careerfy-view"></i> <?php echo esc_html__('Views ', 'careerfy'); ?><?php echo absint($job_views_count); ?></a></li>
+                                <li><a href="#"><i
+                                                class="careerfy-icon careerfy-view"></i> <?php echo esc_html__('Views ', 'careerfy'); ?><?php echo absint($job_views_count); ?>
+                                    </a></li>
                                 <?php
                             }
                             if (isset($jobsearch_job_posted_formated) && !empty($jobsearch_job_posted_formated)) {
-                                ?><li><i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Posted Date ', 'careerfy'); ?>: <?php echo esc_html($jobsearch_job_posted_formated); ?></li><?php
-                                }
-                                if (isset($jobsearch_last_date_formated) && !empty($jobsearch_last_date_formated)) {
-                                    ?><li><i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Last Date ', 'careerfy'); ?>: <?php echo esc_html($jobsearch_last_date_formated); ?></li><?php
-                                }
-                                ?>   
+                                ?>
+                                <li>
+                                <i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Posted Date ', 'careerfy'); ?>
+                                : <?php echo esc_html($jobsearch_job_posted_formated); ?></li><?php
+                            }
+                            if (isset($jobsearch_last_date_formated) && !empty($jobsearch_last_date_formated)) {
+                                ?>
+                                <li>
+                                <i class="careerfy-icon careerfy-calendar"></i> <?php echo esc_html__('Last Date ', 'careerfy'); ?>
+                                : <?php echo esc_html($jobsearch_last_date_formated); ?></li><?php
+                            }
+                            ?>
                         </ul>
                         <?php
                         $popup_args = array(
@@ -186,10 +218,14 @@ while (have_posts()) : the_post();
                         if ($social_share_allow == 'on') { ?>
                             <ul class="careerfy-jobdetail-four-media">
                                 <li><span><?php echo esc_html__('Share this Job ', 'careerfy') ?>:</span></li>
-                                <li><a href="javascript:void(0);" data-original-title="twitter" class="fa fa-twitter addthis_button_twitter"></a></li>
-                                <li><a href="javascript:void(0);" data-original-title="facebook" class="fa fa-facebook-f addthis_button_facebook"></a></li>
-                                <li><a href="javascript:void(0);" data-original-title="linkedin" class="fa fa-linkedin addthis_button_linkedin"></a></li>
-                                <li><a href="javascript:void(0);" data-original-title="share_more" class="jobsearch-icon jobsearch-plus addthis_button_compact"></a></li>
+                                <li><a href="javascript:void(0);" data-original-title="twitter"
+                                       class="fa fa-twitter addthis_button_twitter"></a></li>
+                                <li><a href="javascript:void(0);" data-original-title="facebook"
+                                       class="fa fa-facebook-f addthis_button_facebook"></a></li>
+                                <li><a href="javascript:void(0);" data-original-title="linkedin"
+                                       class="fa fa-linkedin addthis_button_linkedin"></a></li>
+                                <li><a href="javascript:void(0);" data-original-title="share_more"
+                                       class="jobsearch-icon jobsearch-plus addthis_button_compact"></a></li>
                             </ul>
                             <?php
                         }
@@ -222,7 +258,8 @@ while (have_posts()) : the_post();
 
                                     ob_start();
                                     ?>
-                                    <div class="careerfy-content-title"><h2><?php echo esc_html__('Job Description', 'careerfy') ?></h2></div>
+                                    <div class="careerfy-content-title">
+                                        <h2><?php echo esc_html__('Job Description', 'careerfy') ?></h2></div>
                                     <div class="jobsearch-description">
                                         <?php
                                         echo force_balance_tags($job_content);
@@ -233,21 +270,22 @@ while (have_posts()) : the_post();
                                     echo apply_filters('jobsearch_job_detail_content_detail', $job_det_output, $job_id);
                                     //
                                     echo apply_filters('jobsearch_job_defdetail_after_detcont_html', '', $job_id, 'filter', 'view4');
-                                    
+
                                     $ad_args = array(
                                         'post_type' => 'job',
                                         'view' => 'view4',
                                         'position' => 'aftr_desc',
                                     );
                                     jobsearch_detail_common_ad_code($ad_args);
-                                    
+
                                     //
                                     $job_attachments_switch = isset($jobsearch_plugin_options['job_attachments']) ? $jobsearch_plugin_options['job_attachments'] : '';
                                     if ($job_attachments_switch == 'on') {
                                         $all_attach_files = get_post_meta($job_id, 'jobsearch_field_job_attachment_files', true);
                                         if (!empty($all_attach_files)) {
                                             ?>
-                                            <div class="jobsearch-content-title"><h2><?php esc_html_e('Attached Files', 'careerfy') ?></h2></div>
+                                            <div class="jobsearch-content-title">
+                                                <h2><?php esc_html_e('Attached Files', 'careerfy') ?></h2></div>
                                             <div class="jobsearch-file-attach-sec">
                                                 <ul class="jobsearch-row">
                                                     <?php
@@ -271,8 +309,15 @@ while (have_posts()) : the_post();
                                                         ?>
                                                         <li class="jobsearch-column-4">
                                                             <div class="file-container">
-                                                                <a href="<?php echo ($_attach_file) ?>" download="<?php echo ($attach_name) ?>" class="file-download-icon"><i class="<?php echo ($file_icon) ?>"></i> <?php echo ($attach_name) ?></a>
-                                                                <a href="<?php echo ($_attach_file) ?>" download="<?php echo ($attach_name) ?>" class="file-download-btn"><?php esc_html_e('Download', 'careerfy') ?> <i class="jobsearch-icon jobsearch-download-arrow"></i></a>
+                                                                <a href="<?php echo($_attach_file) ?>"
+                                                                   download="<?php echo($attach_name) ?>"
+                                                                   class="file-download-icon"><i
+                                                                            class="<?php echo($file_icon) ?>"></i> <?php echo($attach_name) ?>
+                                                                </a>
+                                                                <a href="<?php echo($_attach_file) ?>"
+                                                                   download="<?php echo($attach_name) ?>"
+                                                                   class="file-download-btn"><?php esc_html_e('Download', 'careerfy') ?>
+                                                                    <i class="jobsearch-icon jobsearch-download-arrow"></i></a>
                                                             </div>
                                                         </li>
                                                         <?php
@@ -328,7 +373,7 @@ while (have_posts()) : the_post();
                                     <ul>
                                         <?php
                                         echo force_balance_tags($cus_fields['content']);
-                                        ?> 
+                                        ?>
                                     </ul>
                                 </div>
                                 <!-- Widget Detail Services -->
@@ -336,7 +381,7 @@ while (have_posts()) : the_post();
                             }
                             $job_fields_output = ob_get_clean();
                             echo apply_filters('jobsearch_job_detail_content_fields', $job_fields_output, $job_id);
-                            
+
                             $ad_args = array(
                                 'post_type' => 'job',
                                 'view' => 'view4',
@@ -355,89 +400,33 @@ while (have_posts()) : the_post();
                                 }
                             }
                             if ($job_map) {
-                                ?>    
+                                ?>
                                 <div class="jobsearch_side_box jobsearch_box_map">
                                     <?php jobsearch_google_map_with_directions($job_id); ?>
                                 </div>
 
                                 <?php
                             }
-                            
+
                             $ad_args = array(
                                 'post_type' => 'job',
                                 'view' => 'view4',
                                 'position' => 'aftr_map',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            
+
                             $send_message_form_rand = rand(1000, 99999);
                             $current_user = wp_get_current_user();
                             $user_id = get_current_user_id();
                             $user_displayname = isset($current_user->display_name) ? $current_user->display_name : '';
                             $user_displayname = apply_filters('jobsearch_user_display_name', $user_displayname, $current_user);
-                            ?>
-                            <div class="jobsearch_side_box jobsearch_box_contact_form">
-                                <form method="post" id="jobsearch_send_message_form<?php echo esc_html($send_message_form_rand); ?>">
-                                    <div class="careerfy-widget-title"><h2><?php echo esc_html__('Contact Form', 'careerfy'); ?></h2></div>
-                                    <ul>
-                                        <li<?php echo (is_user_logged_in() ? ' style="display: none;"' : '') ?>>
-                                            <div class="input-field">
-                                                <input placeholder="<?php echo esc_html__('Name', 'wp-jobsearch'); ?>" type="text" name="send_message_uname" value="<?php echo($user_displayname) ?>"/>
-                                                <i class="careerfy-icon careerfy-user"></i>
-                                            </div>
-                                        </li>
-                                        <?php
-                                        if (!is_user_logged_in()) {
-                                            ?>
-                                            <li>
-                                                <div class="input-field">
-                                                    <input type="text" placeholder="<?php echo esc_html__('Email', 'wp-jobsearch'); ?>" name="send_message_uemail" />
-                                                </div>
-                                            </li>
-                                            <?php
-                                        }
-                                        ?>
-                                        <li>
-                                            <input placeholder="<?php echo esc_html__('Subject', 'careerfy'); ?>" type="text" name="send_message_subject" value="">
-                                        </li>
-                                        <li>
-                                            <textarea placeholder="<?php echo esc_html__('Message', 'careerfy'); ?>" name="send_message_content"></textarea>
-                                        </li>
-                                        <li>
-                                            <div class="input-field-submit">
-                                                <input type="submit" class="send-message-submit-btn" data-action="jobsearch_job_send_message_employer" data-randid="<?php echo esc_html($send_message_form_rand); ?>" name="send_message_content" value="Send now"/>
-                                                <?php jobsearch_terms_and_con_link_txt(); ?>
-                                            </div> 
-                                            <div class="message-box message-box-<?php echo esc_html($send_message_form_rand); ?>"></div> 
-                                            <input type="hidden" name="send_message_job_id" value="<?php echo absint($job_id); ?>" />
-                                        </li>
-                                        <?php
-                                        if ($captcha_switch == 'on') {
-                                            wp_enqueue_script('jobsearch_google_recaptcha');
-                                            ?>
-                                            <li>
-                                                <script>
-                                                    var recaptcha_cand_contact;
-                                                    var jobsearch_multicap = function () {
-                                                        //Render the recaptcha_cand_contact on the element with ID "recaptcha1"
-                                                        recaptcha_cand_contact = grecaptcha.render('recaptcha_cand_contact', {
-                                                            'sitekey': '<?php echo ($jobsearch_sitekey); ?>', //Replace this with your Site key
-                                                            'theme': 'light'
-                                                        });
-                                                    };
-                                                    jQuery(document).ready(function () {
-                                                        jQuery('.recaptcha-reload-a').click();
-                                                    });
-                                                </script>
-                                                <div class="recaptcha-reload" id="recaptcha_cand_contact_div">
-                                                    <?php echo jobsearch_recaptcha('recaptcha_cand_contact'); ?>
-                                                </div>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                </form>
-                            </div>
 
+                            $form_arg = array(
+                                'user_displayname' => $user_displayname,
+                                'job_id' => $job_id
+                            );
+                            do_action('jobsearch_job_send_message_html', $form_arg);
+                          ?>
                         </div>
                     </aside>
                     <!-- Job Detail SideBar -->
@@ -458,21 +447,21 @@ while (have_posts()) : the_post();
         <!-- Main Section -->
 
     </div>
-    <?php
+<?php
 endwhile;
 wp_reset_postdata();
 ?>
-<!-- Main Content -->
-<script>
-    jQuery(document).on('click', '.jobsearch-sendmessage-popup-btn', function () {
-        jobsearch_modal_popup_open('JobSearchModalSendMessage');
-    });
-    jQuery(document).on('click', '.jobsearch-sendmessage-messsage-popup-btn', function () {
-        jobsearch_modal_popup_open('JobSearchModalSendMessageWarning');
-    });
-    jQuery(document).on('click', '.jobsearch-applyjob-msg-popup-btn', function () {
-        jobsearch_modal_popup_open('JobSearchModalApplyJobWarning');
-    });
-</script>
+    <!-- Main Content -->
+    <script>
+        jQuery(document).on('click', '.jobsearch-sendmessage-popup-btn', function () {
+            jobsearch_modal_popup_open('JobSearchModalSendMessage');
+        });
+        jQuery(document).on('click', '.jobsearch-sendmessage-messsage-popup-btn', function () {
+            jobsearch_modal_popup_open('JobSearchModalSendMessageWarning');
+        });
+        jQuery(document).on('click', '.jobsearch-applyjob-msg-popup-btn', function () {
+            jobsearch_modal_popup_open('JobSearchModalApplyJobWarning');
+        });
+    </script>
 <?php
 jobsearch_google_job_posting($job_id);

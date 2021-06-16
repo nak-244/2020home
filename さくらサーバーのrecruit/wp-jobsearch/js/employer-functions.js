@@ -18,7 +18,7 @@ function jobsearch_employer_content_load(counter, view_type, animate_to) {
     var this_frm = jQuery("#jobsearch_employer_frm_" + counter);
 
 
-    var split_map = jQuery(".wp-dp-split-map-wrap").size();
+    var split_map = jQuery(".wp-dp-split-map-wrap").length;
     if (split_map > 0) {
         view_type = 'split_map';
     }
@@ -425,7 +425,7 @@ function jobsearch_employer_split_map_content(counter, view_type, animate_to, hi
     var this_frm = jQuery("#jobsearch_employer_frm_" + counter);
 
 
-    var split_map = jQuery(".wp-dp-split-map-wrap").size();
+    var split_map = jQuery(".wp-dp-split-map-wrap").length;
     if (split_map > 0) {
         view_type = 'split_map';
     }
@@ -755,4 +755,13 @@ jQuery(document).on('click', '.chosen-enquires-list .enquiry-reset-btn', functio
             jQuery('#enquires-sidebar-panel .sidebar-panel-btn').fadeOut('slow');
         }
     });
+});
+/*
+ *  Advance search toggle
+ */
+jQuery(document).on('click', '.adv-srch-toggle-btn', function () {
+    jQuery(this).parents('.jobsearch-advance-search-holdr').find('.adv-search-options').slideToggle();
+    var slider_input_con = jQuery(this).parents('.jobsearch-advance-search-holdr').find('.adv-search-options').find('.filter-slider-range');
+    var def_radius_val = slider_input_con.find('#loc-def-radiusval').val();
+    slider_input_con.find('input[name=loc_radius]').val(def_radius_val);
 });

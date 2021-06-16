@@ -37,7 +37,6 @@ if (!class_exists('Careerfy_Icons_Uploader')) {
         public function careerfy_reading_zip_callback() {
             
             add_filter('upload_dir', array($this, 'icons_upload_files_path'));
-            
             $file_id = $_POST['attachment_id'];
             $file_path = get_attached_file($file_id);
             $group_name = basename($file_path);

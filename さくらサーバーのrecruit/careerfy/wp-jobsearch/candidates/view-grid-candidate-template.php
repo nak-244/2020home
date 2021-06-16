@@ -175,7 +175,7 @@ if (class_exists('JobSearch_plugin')) {
                             ?>
                             <?php
                             if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id);
+                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id,'cand_listv1');
                             }
                             //
                             if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
@@ -199,7 +199,7 @@ if (class_exists('JobSearch_plugin')) {
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title')) {
                                     if ($candidate_company_str != '') {
                                         ?>
-                                        <p><?php echo ($candidate_company_str) ?></p>
+                                        <p><?php echo jobsearch_esc_html($candidate_company_str) ?></p>
                                         <?php
                                     }
                                 }
@@ -207,7 +207,7 @@ if (class_exists('JobSearch_plugin')) {
                                 if (!$cand_profile_restrict::cand_field_is_locked('address_defields')) {
                                     if ($get_candidate_location != '' && $all_location_allow == 'on') {
                                         ?>
-                                        <span><?php echo ($get_candidate_location) ?></span>
+                                        <span><?php echo jobsearch_esc_html($get_candidate_location) ?></span>
                                         <?php
                                     }
                                 }
@@ -224,7 +224,7 @@ if (class_exists('JobSearch_plugin')) {
                                     <li>
                                         <div class="careerfy-right">
                                             <span><?php esc_html_e('Sector:', 'careerfy') ?></span>
-                                            <?php echo ($sector_str) ?>
+                                            <?php echo jobsearch_esc_html($sector_str) ?>
                                         </div>
                                     </li>
                                     <?php

@@ -3,13 +3,14 @@
  * Listing search box
  *
  */
+
 use WP_Jobsearch\Candidate_Profile_Restriction;
 
 global $jobsearch_post_candidate_types, $jobsearch_plugin_options;
 if (class_exists('JobSearch_plugin')) {
-    
+
     $cand_profile_restrict = new Candidate_Profile_Restriction;
-    
+
     $user_id = $user_company = '';
     if (is_user_logged_in()) {
         $user_id = get_current_user_id();
@@ -135,7 +136,7 @@ if (class_exists('JobSearch_plugin')) {
                     $jobsearch_candidate_company_name = get_post_meta($candidate_id, 'jobsearch_field_candidate_company_name', true);
                     $jobsearch_candidate_company_url = get_post_meta($candidate_id, 'jobsearch_field_candidate_company_url', true);
                     $jobsearch_candidate_salary = jobsearch_candidate_current_salary($candidate_id);
-                    $jobsearch_candidate_salary_list = $jobsearch_candidate_salary != "" ? '<figcaption>'.esc_html__('Salary' , 'careerfy').'  ' . trim_salary_type_text($jobsearch_candidate_salary) . ' </figcaption>' : "";
+                    $jobsearch_candidate_salary_list = $jobsearch_candidate_salary != "" ? '<figcaption>' . esc_html__('Salary', 'careerfy') . '  ' . trim_salary_type_text($jobsearch_candidate_salary) . ' </figcaption>' : "";
                     $user_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
 
                     $jobsearch_loc_country = get_post_meta($candidate_id, 'jobsearch_field_location_location1', true);
@@ -157,9 +158,12 @@ if (class_exists('JobSearch_plugin')) {
                                         if (function_exists('jobsearch_member_promote_profile_iconlab')) {
                                             echo jobsearch_member_promote_profile_iconlab($candidate_id);
                                         }
+                                        if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
+                                            echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_listv1');
+                                        }
                                         if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
                                             ?>
-                                            <img src="<?php echo ($post_thumbnail_src) ?>" alt="">
+                                            <img src="<?php echo($post_thumbnail_src) ?>" alt="">
                                             <?php
                                         }
                                         ?>
@@ -177,12 +181,12 @@ if (class_exists('JobSearch_plugin')) {
                                     <span><?php echo ucfirst($jobsearch_industry) ?></span>
                                 <?php } ?>
                                 <ul>
-                                    <?php 
+                                    <?php
                                     if (!$cand_profile_restrict::cand_field_is_locked('address_defields')) {
                                         if ($jobsearch_loc_country != "" && $jobsearch_loc_city != "") { ?>
                                             <li>
                                                 <small><?php esc_html_e('Location:', 'careerfy') ?>
-                                                </small> <?php echo $jobsearch_loc_city ?> <?php echo $jobsearch_loc_country ?>
+                                                </small> <?php echo jobsearch_esc_html($jobsearch_loc_city) ?> <?php echo jobsearch_esc_html($jobsearch_loc_country) ?>
                                             </li>
                                             <?php
                                         }
@@ -193,7 +197,7 @@ if (class_exists('JobSearch_plugin')) {
                                             ?>
                                             <li>
                                                 <small><?php esc_html_e('Sector:', 'careerfy') ?></small>
-                                                <?php echo($sector_str) ?>
+                                                <?php echo jobsearch_esc_html($sector_str) ?>
                                             </li>
                                             <?php
                                         }

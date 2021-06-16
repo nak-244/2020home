@@ -70,7 +70,7 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
                 'supports' => array('title', 'editor')
             );
 
-            register_post_type('dashb_menu', $args);
+            register_post_type('dashb_menu', apply_filters('jobsearch_reg_post_type_cust_menu_args', $args));
         }
 
         public function columns_add($columns) {
@@ -123,7 +123,7 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
         }
         
         public function dashb_menu_save($post_id, $post, $update) {
-            global $wpdb, $pagenow, $JobsearchReduxFramework;
+            global $wpdb, $pagenow;
 
             if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
                 return;
@@ -163,8 +163,6 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
                             }
                         }
                     }
-                    $JobsearchReduxFramework->ReduxFramework->set('cand_dashbord_menu', $cand_dashpages_arr);
-                    $JobsearchReduxFramework->ReduxFramework->set('emp_dashbord_menu', $emp_dashpages_arr);
                 }
             }
         }
@@ -248,13 +246,14 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
                     </div>
                     <div class="elem-field">
                         <?php
+                        $user_types_arr = array(
+                            'cand' => esc_html__('For Candidate', 'wp-jobsearch'),
+                            'emp' => esc_html__('For Employer', 'wp-jobsearch'),
+                            'both' => esc_html__('For Both', 'wp-jobsearch'),
+                        );
                         $field_params = array(
                             'name' => 'menu_user_type',
-                            'options' => array(
-                                'cand' => esc_html__('For Candidate', 'wp-jobsearch'),
-                                'emp' => esc_html__('For Employer', 'wp-jobsearch'),
-                                'both' => esc_html__('For Both', 'wp-jobsearch'),
-                            ),
+                            'options' => apply_filters('jobsearch_post_bk_dashmenus_meta_usertypes', $user_types_arr),
                         );
                         $jobsearch_form_fields->select_field($field_params);
                         ?>
@@ -286,7 +285,7 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
 
             $post_ids_query = "SELECT ID FROM $wpdb->posts AS posts";
             $post_ids_query .= " WHERE post_type='dashb_menu' AND post_status='publish'";
-
+            
             ob_start();
 
             $cust_dashpages_arr = $wpdb->get_col($post_ids_query);
@@ -295,11 +294,14 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
                     $the_page = get_post($cust_dashpage_id);
                     if (isset($the_page->post_name)) {
                         $menu_post_name = $the_page->post_name;
-                        $menu_post_content = $the_page->post_content;
-                        $menu_post_content = apply_filters('the_content', $menu_post_content);
                         $cusmenu_for_user = get_post_meta($cust_dashpage_id, 'jobsearch_field_menu_user_type', true);
                         $cusmenu_type = get_post_meta($cust_dashpage_id, 'jobsearch_field_menu_type', true);
+                        $menu_post_name = urldecode($menu_post_name);
                         if ($cusmenu_type == 'content' && $get_tab == 'cust-' . $menu_post_name) {
+                            ob_start();
+                            $menu_post_content = $the_page->post_content;
+                            echo apply_filters('the_content', $menu_post_content);
+                            $menu_post_content = ob_get_clean();
                             if ($cusmenu_for_user == 'emp' && $is_employer) {
                                 echo self::dashboard_tab_before_html($the_page);
                                 echo ($menu_post_content);
@@ -313,6 +315,9 @@ if (!class_exists('jobsearch_custom_dash_menu')) {
                                 echo ($menu_post_content);
                                 echo self::dashboard_tab_after_html($the_page);
                             }
+                            $before_html = self::dashboard_tab_before_html($the_page);
+                            $after_html = self::dashboard_tab_after_html($the_page);
+                            echo apply_filters('jobsearch_dashmenus_dash_pthe_content_after', '', $menu_post_content, $cusmenu_for_user, $before_html, $after_html);
                         }
                     }
                 }

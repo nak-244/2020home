@@ -5,7 +5,7 @@ window.embeddable_job_embarg = function () {
         get_jobs: function (page) {
             var head = document.getElementsByTagName("head")[0];
             embeddable_job_embarg_script = document.createElement("script");
-            embeddable_job_embarg_script.async = true;
+            //embeddable_job_embarg_script.async = true;
             var var_atts_str = '';
             if (typeof jobsearch_embeddable_job_options === 'object') {
                 var atts_counter = 1;

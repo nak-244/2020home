@@ -3,7 +3,11 @@
  * The template for displaying 
  * WooCommerace Products
  */
-get_header();
+if (wp_is_mobile()) {
+    get_header('mobile');
+} else {
+    get_header();
+}
 $shop_id = wc_get_page_id('shop');
 
 if (is_shop()) {

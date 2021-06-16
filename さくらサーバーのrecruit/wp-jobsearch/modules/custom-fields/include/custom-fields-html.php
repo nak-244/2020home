@@ -3,7 +3,6 @@
   Class : CustomFieldHTML
  */
 
-
 // this is an include only WP file
 if (!defined('ABSPATH')) {
     die;
@@ -27,6 +26,7 @@ class Jobsearch_CustomFieldHTML
         add_filter('jobsearch_custom_field_checkbox_html', array($this, 'jobsearch_custom_field_checkbox_html_callback'), 1, 3);
         add_filter('jobsearch_custom_field_dropdown_html', array($this, 'jobsearch_custom_field_dropdown_html_callback'), 1, 3);
         add_filter('jobsearch_custom_field_dependent_dropdown_html', array($this, 'jobsearch_custom_field_dependent_dropdown_html_callback'), 1, 3);
+        add_filter('jobsearch_custom_field_dependent_fields_html', array($this, 'jobsearch_custom_field_dependent_fields_html_callback'), 1, 3);
         add_filter('jobsearch_custom_field_heading_html', array($this, 'jobsearch_custom_field_heading_html_callback'), 1, 3);
         add_filter('jobsearch_custom_field_textarea_html', array($this, 'jobsearch_custom_field_textarea_html_callback'), 1, 3);
         add_filter('jobsearch_custom_field_email_html', array($this, 'jobsearch_custom_field_email_html_callback'), 1, 3);
@@ -48,7 +48,7 @@ class Jobsearch_CustomFieldHTML
                 <strong><?php esc_html_e('Default', 'wp-jobsearch'); ?>
                     :</strong> <?php esc_html_e('The Default field type will show everywhere.', 'wp-jobsearch'); ?>
                 <br>
-                <strong><?php esc_html_e('Register User Only', 'wp-jobsearch'); ?>
+                <strong><?php esc_html_e('After Register User Only', 'wp-jobsearch'); ?>
                     :</strong> <?php esc_html_e('This type of field will show only for registered and logged-in users.', 'wp-jobsearch'); ?>
                 <br>
                 <strong><?php esc_html_e('For Admin View Only', 'wp-jobsearch'); ?>
@@ -71,7 +71,7 @@ class Jobsearch_CustomFieldHTML
         $heading_field_enable_advsrch = isset($field_data['enable-advsrch']) ? $field_data['enable-advsrch'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-heading-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-editor-textcolor" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $heading_field_label != '' ? '<b>(' . $heading_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -81,7 +81,6 @@ class Jobsearch_CustomFieldHTML
                 <input type="hidden" name="jobsearch-custom-fields-type[]" value="heading"/>
                 <input type="hidden" name="jobsearch-custom-fields-id[]"
                        value="<?php echo esc_html($field_counter); ?>"/>
-
                 <label>
                     <?php echo esc_html__('Field Type', 'wp-jobsearch'); ?>:
                 </label>
@@ -90,7 +89,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -128,7 +127,7 @@ class Jobsearch_CustomFieldHTML
                            value="<?php echo esc_html($heading_field_label); ?>"/>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.heading-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#heading-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -163,7 +162,7 @@ class Jobsearch_CustomFieldHTML
         $text_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-text-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-media-text" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $text_field_label != '' ? '<b>(' . $text_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -184,7 +183,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -277,7 +276,6 @@ class Jobsearch_CustomFieldHTML
                 <div class="input-field">
                     <?php
                     $icon_id = rand(1000000, 99999999);
-
                     //echo jobsearch_icon_picker($text_field_icon, $icon_id, 'jobsearch-custom-fields-text[icon][]');
                     if (is_object($careerfy_icons_fields)) {
                         echo $careerfy_icons_fields->careerfy_icons_fields_callback($text_field_icon, $icon_id, 'jobsearch-custom-fields-text[icon][]', $text_field_icon_group, 'jobsearch-custom-fields-text[icon-group][]');
@@ -287,7 +285,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.text-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#text-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -297,7 +295,6 @@ class Jobsearch_CustomFieldHTML
         </div>
         <?php
         $html .= ob_get_clean();
-
         return $html;
     }
 
@@ -319,7 +316,7 @@ class Jobsearch_CustomFieldHTML
         $video_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-video-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-media-video" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $video_field_label != '' ? '<b>(' . $video_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -340,7 +337,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -408,7 +405,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.video-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#video-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -418,13 +415,11 @@ class Jobsearch_CustomFieldHTML
         </div>
         <?php
         $html .= ob_get_clean();
-
         return $html;
     }
 
     static function jobsearch_custom_field_linkurl_html_callback($html, $global_custom_field_counter, $field_data)
     {
-
         global $careerfy_icons_fields;
         $field_counter = $global_custom_field_counter;
         ob_start();
@@ -441,7 +436,7 @@ class Jobsearch_CustomFieldHTML
         $linkurl_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-linkurl-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-admin-links" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $linkurl_field_label != '' ? '<b>(' . $linkurl_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -462,7 +457,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -542,7 +537,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.linkurl-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#linkurl-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -582,7 +577,7 @@ class Jobsearch_CustomFieldHTML
         $upload_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-upload-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-admin-media" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $upload_field_label != '' ? '<b>(' . $upload_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -603,7 +598,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -664,7 +659,7 @@ class Jobsearch_CustomFieldHTML
                 </label>
                 <div class="input-field">
                     <select name="jobsearch-custom-fields-upload_file[allow_types][<?php echo absint($field_counter); ?>][]"
-                            multiple="multiple" class="customfield-selectize"
+                            multiple="multiple" class="uplodtypes-selectize"
                             placeholder="<?php esc_html_e('Choose File Types', 'wp-jobsearch'); ?>">
                         <option <?php echo(in_array('image/jpeg', $upload_field_allow_types) ? 'selected="selected"' : '') ?>
                                 value="image/jpeg"><?php echo esc_html__('jpeg', 'wp-jobsearch'); ?></option>
@@ -742,14 +737,14 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.upload_file-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#upload-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
                     });
                     // Selectize script
-                    if (jQuery('.customfield-selectize').length > 0) {
-                        jQuery('.customfield-selectize').selectize({
+                    if (jQuery('.uplodtypes-selectize').length > 0) {
+                        jQuery('.uplodtypes-selectize').selectize({
                             plugins: ['remove_button'],
                         });
                     }
@@ -790,7 +785,7 @@ class Jobsearch_CustomFieldHTML
         $email_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-email-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-email-alt" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $email_field_label != '' ? '<b>(' . $email_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -809,7 +804,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -912,7 +907,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.email-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#email-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -946,7 +941,7 @@ class Jobsearch_CustomFieldHTML
         $number_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-number-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-editor-ol" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $number_field_label != '' ? '<b>(' . $number_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -965,7 +960,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -1068,7 +1063,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.number-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#number-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -1104,7 +1099,7 @@ class Jobsearch_CustomFieldHTML
         $date_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-date-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-calendar-alt" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $date_field_label != '' ? '<b>(' . $date_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -1123,7 +1118,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -1239,7 +1234,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.date-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#date-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -1277,7 +1272,7 @@ class Jobsearch_CustomFieldHTML
         $range_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-range-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-image-flip-horizontal"
                                              aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $range_field_label != '' ? '<b>(' . $range_field_label . ')</b>' : '' ?>
@@ -1297,7 +1292,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -1333,7 +1328,7 @@ class Jobsearch_CustomFieldHTML
                     <?php echo esc_html__('Min', 'wp-jobsearch'); ?>:
                 </label>
                 <div class="input-field">
-                    <input name="jobsearch-custom-fields-range[min][]"
+                    <input name="jobsearch-custom-fields-range[min][]" type="number"
                            value="<?php echo esc_html($range_field_min); ?>"/>
                 </div>
 
@@ -1341,15 +1336,16 @@ class Jobsearch_CustomFieldHTML
                     <?php echo esc_html__('Total Laps', 'wp-jobsearch'); ?>:
                 </label>
                 <div class="input-field">
-                    <input name="jobsearch-custom-fields-range[laps][]"
+                    <input name="jobsearch-custom-fields-range[laps][]" type="number" min="1" max="100"
                            value="<?php echo esc_html($range_field_laps); ?>"/>
+                    <em><?php esc_html_e('Minimum value is 1 and maximum is 100.', 'wp-jobsearch'); ?></em>
                 </div>
 
                 <label>
                     <?php echo esc_html__('Interval', 'wp-jobsearch'); ?>:
                 </label>
                 <div class="input-field">
-                    <input name="jobsearch-custom-fields-range[interval][]"
+                    <input name="jobsearch-custom-fields-range[interval][]" type="number"
                            value="<?php echo esc_html($range_field_interval); ?>"/>
                 </div>
 
@@ -1436,7 +1432,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.range-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#range-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -1450,8 +1446,8 @@ class Jobsearch_CustomFieldHTML
         return $html;
     }
 
-    static function jobsearch_custom_field_salary_html_callback($html, $global_custom_field_counter, $field_data)
-    {
+    static function jobsearch_custom_field_salary_html_callback($html, $global_custom_field_counter, $field_data) {
+        global $jobsearch_plugin_options;
         $field_counter = $global_custom_field_counter;
         ob_start();
         $rand = $field_counter;
@@ -1464,9 +1460,11 @@ class Jobsearch_CustomFieldHTML
         $salary_field_interval = isset($field_data['interval']) ? $field_data['interval'] : '';
         $salary_field_enable_advsrch = isset($field_data['enable-advsrch']) ? $field_data['enable-advsrch'] : '';
         $salary_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
+        
+        $post_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-salary-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-vault" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $salary_field_label != '' ? '<b>(' . $salary_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -1485,29 +1483,86 @@ class Jobsearch_CustomFieldHTML
                            value="<?php echo esc_html($salary_field_label); ?>"/>
                 </div>
 
-                <label>
-                    <?php echo esc_html__('Min', 'wp-jobsearch'); ?>:
-                </label>
-                <div class="input-field">
-                    <input name="jobsearch-custom-fields-salary[min][]"
-                           value="<?php echo esc_html($salary_field_min); ?>"/>
-                </div>
+                <?php
+                if (!empty($post_salary_types)) {
+                    $slar_type_count = 1;
+                    $top_tabs_html = '';
+                    $intfields_html = '';
+                    foreach ($post_salary_types as $post_salary_typ) {
+                        
+                        $cusdynm_salary_min = isset($field_data['min' . $slar_type_count]) ? $field_data['min' . $slar_type_count] : '';
+                        $cusdynm_salary_interval = isset($field_data['interval' . $slar_type_count]) ? $field_data['interval' . $slar_type_count] : '';
+                        $cusdynm_salary_laps = isset($field_data['laps' . $slar_type_count]) ? $field_data['laps' . $slar_type_count] : '';
+                        
+                        ob_start();
+                        ?>
+                        <a href="javascript:void(0);" class="button salaryfiltr-type-tab<?php echo ($slar_type_count == 1 ? ' active-type' : '') ?>" data-id="<?php echo ($slar_type_count) ?>"><?php echo ($post_salary_typ) ?></a>
+                        <?php
+                        $top_tabs_html .= ob_get_clean();
+                        
+                        ob_start();
+                        ?>
+                        <div class="salry-type-contntitm salry-type-<?php echo ($slar_type_count) ?>"<?php echo ($slar_type_count > 1 ? ' style="display: none;"' : '') ?>>
+                            <label>
+                                <?php echo esc_html__('Min', 'wp-jobsearch'); ?>:
+                            </label>
+                            <div class="input-field">
+                                <input name="jobsearch-custom-fields-salary[min<?php echo ($slar_type_count) ?>][]" type="number" value="<?php echo esc_html($cusdynm_salary_min); ?>"/>
+                            </div>
 
-                <label>
-                    <?php echo esc_html__('Interval', 'wp-jobsearch'); ?>:
-                </label>
-                <div class="input-field">
-                    <input name="jobsearch-custom-fields-salary[interval][]"
-                           value="<?php echo esc_html($salary_field_interval); ?>"/>
-                </div>
+                            <label>
+                                <?php echo esc_html__('Interval', 'wp-jobsearch'); ?>:
+                            </label>
+                            <div class="input-field">
+                                <input name="jobsearch-custom-fields-salary[interval<?php echo ($slar_type_count) ?>][]" type="number" value="<?php echo esc_html($cusdynm_salary_interval); ?>"/>
+                            </div>
 
-                <label>
-                    <?php echo esc_html__('Total Laps', 'wp-jobsearch'); ?>:
-                </label>
-                <div class="input-field">
-                    <input name="jobsearch-custom-fields-salary[laps][]"
-                           value="<?php echo esc_html($salary_field_laps); ?>"/>
-                </div>
+                            <label>
+                                <?php echo esc_html__('Total Laps', 'wp-jobsearch'); ?>:
+                            </label>
+                            <div class="input-field">
+                                <input name="jobsearch-custom-fields-salary[laps<?php echo ($slar_type_count) ?>][]" type="number" min="1" max="100" value="<?php echo esc_html($cusdynm_salary_laps); ?>"/>
+                                <em><?php esc_html_e('Minimum value is 1 and maximum is 100.', 'wp-jobsearch'); ?></em>
+                            </div>
+                        </div>
+                        <?php
+                        $intfields_html .= ob_get_clean();
+                        $slar_type_count++;
+                    }
+                    echo '<div class="salary-filtr-toptabs">';
+                    echo ($top_tabs_html);
+                    echo '</div>';
+                    echo '<div class="salary-filtr-tabscontent">';
+                    echo ($intfields_html);
+                    echo '</div>';
+                } else {
+                    ?>
+                    <label>
+                        <?php echo esc_html__('Min', 'wp-jobsearch'); ?>:
+                    </label>
+                    <div class="input-field">
+                        <input name="jobsearch-custom-fields-salary[min][]" type="number"
+                               value="<?php echo esc_html($salary_field_min); ?>"/>
+                    </div>
+
+                    <label>
+                        <?php echo esc_html__('Interval', 'wp-jobsearch'); ?>:
+                    </label>
+                    <div class="input-field">
+                        <input name="jobsearch-custom-fields-salary[interval][]" type="number"
+                               value="<?php echo esc_html($salary_field_interval); ?>"/>
+                    </div>
+
+                    <label>
+                        <?php echo esc_html__('Total Laps', 'wp-jobsearch'); ?>:
+                    </label>
+                    <div class="input-field">
+                        <input name="jobsearch-custom-fields-salary[laps][]" type="number" min="1" max="100" value="<?php echo esc_html($salary_field_laps); ?>"/>
+                        <em><?php esc_html_e('Minimum value is 1 and maximum is 100.', 'wp-jobsearch'); ?></em>
+                    </div>
+                    <?php
+                }
+                ?>
 
                 <label>
                     <?php echo esc_html__('Style', 'wp-jobsearch'); ?>:
@@ -1545,11 +1600,21 @@ class Jobsearch_CustomFieldHTML
                 </div>
 
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.salary-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#salary-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
                     });
+                });
+                jQuery(document).on('click', '.salaryfiltr-type-tab', function () {
+                    var _this = jQuery(this);
+                    var this_id = _this.attr('data-id');
+                    var _this_parent = _this.parent('.salary-filtr-toptabs');
+                    _this_parent.find('.salaryfiltr-type-tab').attr('class', 'button salaryfiltr-type-tab');
+                    _this.attr('class', 'button salaryfiltr-type-tab active-type');
+                    
+                    jQuery('.salary-filtr-tabscontent').find('.salry-type-contntitm').hide();
+                    jQuery('.salary-filtr-tabscontent').find('.salry-type-' + this_id).removeAttr('style');
                 });
             </script>
         </div>
@@ -1558,8 +1623,9 @@ class Jobsearch_CustomFieldHTML
 
         return $html;
     }
-    
-    static function jobsearch_custom_field_checkbox_html_callback($html, $global_custom_field_counter, $field_data) {
+
+    static function jobsearch_custom_field_checkbox_html_callback($html, $global_custom_field_counter, $field_data)
+    {
         global $careerfy_icons_fields;
         $field_counter = $global_custom_field_counter;
         ob_start();
@@ -1581,7 +1647,7 @@ class Jobsearch_CustomFieldHTML
         $checkbox_field_options = isset($field_data['options']) ? $field_data['options'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-checkbox-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-yes" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $checkbox_field_label != '' ? '<b>(' . $checkbox_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -1589,7 +1655,8 @@ class Jobsearch_CustomFieldHTML
             </div>
             <div class="field-data" id="checkbox-field-wraper<?php echo esc_html($rand); ?>" style="display:none;">
                 <input type="hidden" name="jobsearch-custom-fields-type[]" value="checkbox"/>
-                <input type="hidden" name="jobsearch-custom-fields-id[]" value="<?php echo esc_html($field_counter); ?>"/>
+                <input type="hidden" name="jobsearch-custom-fields-id[]"
+                       value="<?php echo esc_html($field_counter); ?>"/>
 
                 <label>
                     <?php echo esc_html__('Field Type', 'wp-jobsearch'); ?>:
@@ -1599,7 +1666,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -1752,8 +1819,7 @@ class Jobsearch_CustomFieldHTML
                             <?php
                             $opt_counter++;
                         }
-                    } else {
-                        ?>
+                    } else { ?>
                         <div class="field-options-list">
                             <input name="jobsearch-custom-fields-checkbox[options][label][<?php echo esc_html($field_counter); ?>][]"
                                    value="" placeholder="<?php echo esc_html__('Text', 'wp-jobsearch'); ?>"/> - <input
@@ -1769,7 +1835,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.checkbox-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#checkbox-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -1783,7 +1849,8 @@ class Jobsearch_CustomFieldHTML
         return $html;
     }
 
-    static function jobsearch_custom_field_dropdown_html_callback($html, $global_custom_field_counter, $field_data) {
+    static function jobsearch_custom_field_dropdown_html_callback($html, $global_custom_field_counter, $field_data)
+    {
         global $careerfy_icons_fields;
         $field_counter = $global_custom_field_counter;
         ob_start();
@@ -1805,7 +1872,7 @@ class Jobsearch_CustomFieldHTML
         $dropdown_field_options = isset($field_data['options']) ? $field_data['options'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-dropdown-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-arrow-down-alt" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $dropdown_field_label != '' ? '<b>(' . $dropdown_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -1824,7 +1891,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -1994,7 +2061,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.dropdown-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#dropdown-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
@@ -2010,7 +2077,7 @@ class Jobsearch_CustomFieldHTML
 
     public static function dependent_dropdown_list_html($dropdown_field_options, $field_counter, $parent_id = '0', $lvel_countr = 1)
     {
-        //var_dump($dropdown_field_options[$parent_id]['label']);
+
         if (isset($dropdown_field_options[$parent_id]['label']) && !empty($dropdown_field_options[$parent_id]['label']) && is_array($dropdown_field_options[$parent_id]['label']) && sizeof($dropdown_field_options[$parent_id]['label']) > 0) {
             $field_group_label = isset($dropdown_field_options[$parent_id]['group_label']) ? $dropdown_field_options[$parent_id]['group_label'] : '';
             $field_vals = isset($dropdown_field_options[$parent_id]['value']) ? $dropdown_field_options[$parent_id]['value'] : '';
@@ -2025,15 +2092,12 @@ class Jobsearch_CustomFieldHTML
                 $field_par_id = isset($field_par_ids[$field_count]) ? $field_par_ids[$field_count] : '';
                 $optcon_rand = $field_id;
 
-                if ($field_count == 0 && $lvel_countr > 1) {
-                    ?>
+                if ($field_count == 0 && $lvel_countr > 1) { ?>
                     <input type="text"
                            name="jobsearch-custom-fields-dependent_dropdown[options][<?php echo esc_html($field_counter); ?>][<?php echo($parent_id) ?>][group_label]"
                            placeholder="<?php esc_html_e('Field Label', 'wp-jobsearch'); ?>"
                            value="<?php echo($field_group_label) ?>">
-                    <?php
-                }
-                ?>
+                <?php } ?>
                 <div class="dep-drpdwns-fopt levl<?php echo($lvel_countr) ?>">
                     <a href="javascript:void(0);" class="drp-sort-handle"><i
                                 class="dashicons dashicons-image-flip-vertical"></i></a>
@@ -2110,13 +2174,10 @@ class Jobsearch_CustomFieldHTML
         $dropdown_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
         $dropdown_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         $dropdown_field_options = isset($field_data['options_list']) ? $field_data['options_list'] : '';
-        //echo '<pre>';
-        //var_dump($dropdown_field_options);
-        //echo '</pre>';
         $dropdown_cont_optsid = isset($field_data['options_list_id']) && $field_data['options_list_id'] > 0 ? $field_data['options_list_id'] : rand(100000000, 999999999);
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-dependent_dropdown-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-networking" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $dropdown_field_label != '' ? '<b>(' . $dropdown_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -2136,7 +2197,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -2187,7 +2248,6 @@ class Jobsearch_CustomFieldHTML
                                 value="yes"><?php echo esc_html__('Yes', 'wp-jobsearch'); ?></option>
                     </select>
                 </div>
-
                 <label>
                     <?php echo esc_html__('Enable in filter Search', 'wp-jobsearch'); ?>:
                 </label>
@@ -2229,7 +2289,6 @@ class Jobsearch_CustomFieldHTML
                 <div class="input-field">
                     <?php
                     $icon_id = rand(1000000, 99999999);
-
                     //echo jobsearch_icon_picker($dropdown_field_icon, $icon_id, 'jobsearch-custom-fields-dependent_dropdown[icon][]');
                     if (is_object($careerfy_icons_fields)) {
                         echo $careerfy_icons_fields->careerfy_icons_fields_callback($dropdown_field_icon, $icon_id, 'jobsearch-custom-fields-dependent_dropdown[icon][]', $dropdown_field_icon_group, 'jobsearch-custom-fields-dependent_dropdown[icon-group][]');
@@ -2283,12 +2342,121 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.dependent_dropdown-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#dependent_dropdown-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
                     });
                     jQuery(".dep-drpdwns-foptss").sortable({handle: '.drp-sort-handle'});
+                });
+            </script>
+        </div>
+        <?php
+        $html .= ob_get_clean();
+
+        return $html;
+    }
+    
+    static function jobsearch_custom_field_dependent_fields_html_callback($html, $global_custom_field_counter, $field_data)
+    {
+        global $careerfy_icons_fields;
+        $field_counter = $global_custom_field_counter;
+        ob_start();
+        $rand = $field_counter;
+        $field_for_non_reg_user = isset($field_data['non_reg_user']) ? $field_data['non_reg_user'] : '';
+        $depfield_field_name = isset($field_data['name']) ? $field_data['name'] : '';
+        $depfield_field_label = isset($field_data['label']) ? $field_data['label'] : '';
+        $depfield_field_label = stripslashes($depfield_field_label);
+        $depfield_field_placeholder = isset($field_data['placeholder']) ? $field_data['placeholder'] : '';
+        $depfield_field_classes = isset($field_data['classes']) ? $field_data['classes'] : '';
+        $depfield_field_icon = isset($field_data['icon']) ? $field_data['icon'] : '';
+        $depfield_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
+        ?>
+        <div class="jobsearch-custom-filed-container jobsearch-custom-filed-dependent_fields-container">
+            <div class="field-intro field-msort-handle">
+                <span class="drag-handle"><i class="dashicons dashicons-admin-multisite" aria-hidden="true"></i></span>
+                <?php $field_dyn_name = $depfield_field_label != '' ? '<b>(' . $depfield_field_label . ')</b>' : '' ?>
+                <a href="javascript:void(0);"
+                   class="dependent_fields-field<?php echo esc_html($rand); ?>"><?php echo wp_kses(sprintf(__('Dependent Fields %s', 'wp-jobsearch'), stripslashes($field_dyn_name)), array('b' => array())); ?></a>
+            </div>
+            <div class="field-data" id="dependent_fields-field-wraper<?php echo esc_html($rand); ?>"
+                 style="display:none;">
+                <input type="hidden" name="jobsearch-custom-fields-type[]" value="dependent_fields"/>
+                <input type="hidden" name="jobsearch-custom-fields-id[]"
+                       value="<?php echo esc_html($field_counter); ?>"/>
+
+                <label>
+                    <?php echo esc_html__('Field Type', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <select name="jobsearch-custom-fields-dependent_fields[non_reg_user][]">
+                        <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
+                                value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
+                        <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
+                        <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
+                                value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
+                    </select>
+                    <?php echo self::field_types_hint_text() ?>
+                </div>
+                <?php do_action('jobsearch_custom_fields_dependent_fields_plus_1', $field_counter, $field_data, 'jobsearch-custom-fields-dependent_fields') ?>
+                <label>
+                    <?php echo esc_html__('Field Name', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <input name="jobsearch-custom-fields-dependent_fields[label][]"
+                           value="<?php echo esc_html(stripslashes($depfield_field_label)); ?>"/>
+                </div>
+
+                <label>
+                    <?php echo esc_html__('Slug *', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <input class="check-name-availability" name="jobsearch-custom-fields-dependent_fields[name][]"
+                           value="<?php echo esc_html($depfield_field_name); ?>"/>
+                    <span class="available-msg"><i class="dashicons dashicons-dismiss"></i></span>
+                </div>
+
+                <label>
+                    <?php echo esc_html__('Placeholder', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <input name="jobsearch-custom-fields-dependent_fields[placeholder][]"
+                           value="<?php echo esc_html(stripslashes($depfield_field_placeholder)); ?>"/>
+                </div>
+
+                <label>
+                    <?php echo esc_html__('Custom CSS Class', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <input name="jobsearch-custom-fields-dependent_fields[classes][]"
+                           value="<?php echo esc_html($depfield_field_classes); ?>"/>
+                </div>
+
+                <label>
+                    <?php echo esc_html__('Icon', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <?php
+                    $icon_id = rand(1000000, 99999999);
+                    if (is_object($careerfy_icons_fields)) {
+                        echo $careerfy_icons_fields->careerfy_icons_fields_callback($depfield_field_icon, $icon_id, 'jobsearch-custom-fields-dependent_fields[icon][]', $depfield_field_icon_group, 'jobsearch-custom-fields-dependent_fields[icon-group][]');
+                    } else {
+                        echo jobsearch_icon_picker($depfield_field_icon, $icon_id, 'jobsearch-custom-fields-dependent_fields[icon][]');
+                    }
+                    ?>
+                </div>
+                
+                <?php
+                do_action('jobsearch_cusfields_bk_depdfields_structure', $field_counter, $field_data);
+                ?>
+            </div>
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    jQuery(document).on('click', '.dependent_fields-field<?php echo esc_html($rand); ?>', function () {
+                        jQuery('#dependent_fields-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");
+                    });
+                    jQuery(".childfield-depn-con .childfield-holdr-con").sortable({handle: '.depnd-cuschfield-updte'});
                 });
             </script>
         </div>
@@ -2316,11 +2484,11 @@ class Jobsearch_CustomFieldHTML
             $flag = true;
         }
 
-        if($flag != true){
+        if ($flag != true) {
             return false;
         }
         ?>
-        <script>
+        <script type="text/javascript">
             jQuery(document).on('click', '.add-mor-fieldbtn', function () {
                 var _thisbtn = jQuery(this);
                 var $dropdown_cont_optsid = _thisbtn.parents('.dep-drpdwns-optscon').attr('data-opid');
@@ -2427,19 +2595,21 @@ class Jobsearch_CustomFieldHTML
         $rand = $field_counter;
         $textarea_field_name = isset($field_data['name']) ? $field_data['name'] : '';
         $textarea_field_required = isset($field_data['required']) ? $field_data['required'] : '';
+        $textarea_field_rich_editor = isset($field_data['rich_editor']) ? $field_data['rich_editor'] : '';
         $textarea_field_media_btns = isset($field_data['media_buttons']) ? $field_data['media_buttons'] : '';
         $textarea_field_label = isset($field_data['label']) ? $field_data['label'] : '';
         $textarea_field_label = stripslashes($textarea_field_label);
         $textarea_field_placeholder = isset($field_data['placeholder']) ? $field_data['placeholder'] : '';
         $textarea_field_classes = isset($field_data['classes']) ? $field_data['classes'] : '';
         $textarea_field_enable_search = isset($field_data['enable-search']) ? $field_data['enable-search'] : '';
+        $textarea_field_is_editor = isset($field_data['public_visible']) ? $field_data['public_visible'] : '';
         $textarea_field_enable_advsrch = isset($field_data['enable-advsrch']) ? $field_data['enable-advsrch'] : '';
         $textarea_field_icon = isset($field_data['icon']) ? $field_data['icon'] : '';
         $textarea_field_icon_group = isset($field_data['icon-group']) ? $field_data['icon-group'] : '';
         $textarea_field_collapse_search = isset($field_data['collapse-search']) ? $field_data['collapse-search'] : '';
         ?>
         <div class="jobsearch-custom-filed-container jobsearch-custom-filed-textarea-container">
-            <div class="field-intro">
+            <div class="field-intro field-msort-handle">
                 <span class="drag-handle"><i class="dashicons dashicons-editor-alignleft" aria-hidden="true"></i></span>
                 <?php $field_dyn_name = $textarea_field_label != '' ? '<b>(' . $textarea_field_label . ')</b>' : '' ?>
                 <a href="javascript:void(0);"
@@ -2458,7 +2628,7 @@ class Jobsearch_CustomFieldHTML
                         <option <?php if ($field_for_non_reg_user == 'default') echo('selected="selected"'); ?>
                                 value="default"><?php echo esc_html__('Default', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'for_reg') echo('selected="selected"'); ?>
-                                value="for_reg"><?php echo esc_html__('Register User Only', 'wp-jobsearch'); ?></option>
+                                value="for_reg"><?php echo esc_html__('After Register User Only', 'wp-jobsearch'); ?></option>
                         <option <?php if ($field_for_non_reg_user == 'admin_view_only') echo('selected="selected"'); ?>
                                 value="admin_view_only"><?php echo esc_html__('For Admin View Only', 'wp-jobsearch'); ?></option>
                     </select>
@@ -2499,7 +2669,19 @@ class Jobsearch_CustomFieldHTML
                 </div>
 
                 <label>
-                    <?php echo esc_html__('Media Buttons', 'wp-jobsearch'); ?>:
+                    <?php echo esc_html__('Rich Editor', 'wp-jobsearch'); ?>:
+                </label>
+                <div class="input-field">
+                    <select name="jobsearch-custom-fields-textarea[rich_editor][]">
+                        <option <?php if ($textarea_field_rich_editor == 'yes') echo esc_html('selected'); ?>
+                                value="yes"><?php echo esc_html__('Yes', 'wp-jobsearch'); ?></option>
+                        <option <?php if ($textarea_field_rich_editor == 'no') echo esc_html('selected'); ?>
+                                value="no"><?php echo esc_html__('No', 'wp-jobsearch'); ?></option>
+                    </select>
+                </div>
+
+                <label>
+                    <?php echo esc_html__('Media Buttons (works with rich editor only)', 'wp-jobsearch'); ?>:
                 </label>
                 <div class="input-field">
                     <select name="jobsearch-custom-fields-textarea[media_buttons][]">
@@ -2563,7 +2745,6 @@ class Jobsearch_CustomFieldHTML
                 <div class="input-field">
                     <?php
                     $icon_id = rand(1000000, 99999999);
-                    //echo jobsearch_icon_picker($textarea_field_icon, $icon_id, 'jobsearch-custom-fields-textarea[icon][]');
                     if (is_object($careerfy_icons_fields)) {
                         echo $careerfy_icons_fields->careerfy_icons_fields_callback($textarea_field_icon, $icon_id, 'jobsearch-custom-fields-textarea[icon][]', $textarea_field_icon_group, 'jobsearch-custom-fields-textarea[icon-group][]');
                     } else {
@@ -2572,7 +2753,7 @@ class Jobsearch_CustomFieldHTML
                     ?>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery(document).on('click', '.textarea-field<?php echo esc_html($rand); ?>', function () {
                         jQuery('#textarea-field-wraper<?php echo esc_html($rand); ?>').slideToggle("slow");

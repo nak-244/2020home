@@ -5,7 +5,8 @@
  * html fields
  * @return object
  */
-class JobSearch_Form_Fields {
+class JobSearch_Form_Fields
+{
 
     public $prefix;
 
@@ -14,7 +15,8 @@ class JobSearch_Form_Fields {
      *
      * initialize
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->prefix = 'jobsearch_field_';
         add_action('save_post', array($this, 'save_meta_fields'));
     }
@@ -23,7 +25,8 @@ class JobSearch_Form_Fields {
      * Saving meta fields
      * with save_post hook
      */
-    public function save_meta_fields($post_id = '') {
+    public function save_meta_fields($post_id = '')
+    {
         global $post, $pagenow;
 
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
@@ -35,13 +38,16 @@ class JobSearch_Form_Fields {
             $post_type = get_post_type();
         }
 
+        $_POST = jobsearch_input_post_vals_validate($_POST);
+
         foreach ($_POST as $key => $value) {
             if (strstr($key, $this->prefix)) {
                 //
+                $value = apply_filters('jobsearch_form_fields_value', $value, $key);
 
                 update_post_meta($post_id, $key, $value);
             } else {
-                if ($post_type != 'page' && $post_type != 'post' && $post_type != 'shop_coupon' && $post_type != 'resm-builder' && strpos($key, 'pt_user') === false) {
+                if ($post_type != 'page' && $post_type != 'post' && $post_type != 'shop_coupon' && $post_type != 'product' && $post_type != 'resm-builder' && strpos($key, 'pt_user') === false) {
                     if (!strstr($key, 'jobsearch_cfupfiles_')) {
                         update_post_meta($post_id, $key, $value);
                     }
@@ -55,7 +61,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function input_field($params = array()) {
+    public function input_field($params = array())
+    {
         extract($params);
 
         global $post;
@@ -88,19 +95,22 @@ class JobSearch_Form_Fields {
             $prop_class = " class=\"{$classes}\"";
         }
         if (isset($ext_attr) && $ext_attr != '') {
-            $extra_attr =  $ext_attr;
+            $extra_attr = $ext_attr;
         }
 
         if (isset($std) && $std != '') {
             $value = $std;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($db_value)) {
             $value = $db_value == '' && (isset($std) && $std != '') ? $std : $db_value;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($force_std) && $force_std != '') {
             $value = $force_std;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         $ext_attr_str = 'text';
@@ -123,7 +133,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function input_hidden_field($params = array()) {
+    public function input_hidden_field($params = array())
+    {
         extract($params);
 
         global $post;
@@ -161,14 +172,17 @@ class JobSearch_Form_Fields {
 
         if (isset($std) && $std != '') {
             $value = $std;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($db_value)) {
             $value = $db_value;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($force_std) && $force_std != '') {
             $value = $force_std;
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
 
@@ -186,7 +200,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function date_field($params = array()) {
+    public function date_field($params = array())
+    {
         extract($params);
 
         global $post;
@@ -237,6 +252,7 @@ class JobSearch_Form_Fields {
             } else {
                 $value = $std != '' ? date($date_format, $std) : '';
             }
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($db_value)) {
@@ -245,6 +261,7 @@ class JobSearch_Form_Fields {
             } else {
                 $value = $db_value != '' ? date($date_format, $db_value) : '';
             }
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
         if (isset($force_std) && $force_std != '') {
@@ -253,6 +270,7 @@ class JobSearch_Form_Fields {
             } else {
                 $value = $force_std != '' ? date($date_format, $force_std) : '';
             }
+            $value = jobsearch_esc_html($value);
             $prop_value = " value=\"{$value}\"";
         }
 
@@ -274,7 +292,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function textarea_field($params = array()) {
+    public function textarea_field($params = array())
+    {
         extract($params);
 
         global $post;
@@ -286,7 +305,7 @@ class JobSearch_Form_Fields {
         $prop_value = '';
         $value = '';
         $extra_attr = '';
-        if (isset($name) && $name != '') {
+        if (isset($name) && $name != '' && isset($post->ID)) {
             $db_value = get_post_meta($post->ID, $prefix . $name, true);
         }
 
@@ -312,11 +331,13 @@ class JobSearch_Form_Fields {
             $value = $std;
         }
         if (isset($db_value)) {
-            $value = $db_value;
+            $value = $db_value == '' && (isset($std) && $std != '') ? $std : $db_value;
         }
         if (isset($force_std) && $force_std != '') {
             $value = $force_std;
         }
+
+        $value = jobsearch_esc_html($value);
 
         $html = "<textarea {$prop_id}{$prop_name}{$prop_class} {$extra_attr}>{$value}</textarea>";
 
@@ -336,7 +357,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function image_upload_field($params = array()) {
+    public function image_upload_field($params = array())
+    {
         extract($params);
 
         global $post, $pagenow;
@@ -411,7 +433,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function file_upload_field($params = array()) {
+    public function file_upload_field($params = array())
+    {
         extract($params);
 
         global $post, $pagenow;
@@ -482,9 +505,9 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function checkbox_field($params = array()) {
+    public function checkbox_field($params = array())
+    {
         extract($params);
-
         global $post;
 
         $prefix = $this->prefix;
@@ -570,7 +593,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function radio_field($params = array()) {
+    public function radio_field($params = array())
+    {
         extract($params);
 
         global $post;
@@ -645,7 +669,7 @@ class JobSearch_Form_Fields {
 
     /**
      * Simple Checkbox
-     * 
+     *
      */
 
     /**
@@ -653,7 +677,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function select_field($params = array()) {
+    public function select_field($params = array())
+    {
         extract($params);
 
         global $post, $pagenow;
@@ -724,7 +749,8 @@ class JobSearch_Form_Fields {
      *
      * @return markup
      */
-    public function multi_select_field($params = array()) {
+    public function multi_select_field($params = array())
+    {
         extract($params);
 
         global $post, $pagenow;

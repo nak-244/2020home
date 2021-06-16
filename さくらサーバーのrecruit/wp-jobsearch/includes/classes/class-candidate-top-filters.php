@@ -19,6 +19,7 @@ class Jobsearch_CandidatesTopFilterHTML {
 
     static function jobsearch_candidate_filter_date_posted_box_html_callback($html, $global_rand_id, $sh_atts) {
         $posted = isset($_REQUEST['posted']) ? $_REQUEST['posted'] : '';
+        $posted = jobsearch_esc_html($posted);
         $rand = rand(234, 34234);
         $default_date_time_formate = 'd-m-Y H:i:s';
         $current_timestamp = current_time('timestamp');

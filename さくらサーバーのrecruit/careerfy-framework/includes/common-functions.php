@@ -4,6 +4,8 @@
  * html fields
  * @return functions
  */
+
+
 if (!function_exists('careerfy_pagination')) {
 
     /*
@@ -86,6 +88,31 @@ if (!function_exists('careerfy_pagination')) {
         }
     }
 
+}
+
+
+function careerfy_frame_input_post_vals_validate($post_data)
+{
+    if (!empty($post_data)) {
+        foreach ($post_data as $post_input_key => $post_input_val) {
+            if (is_array($post_input_val)) {
+                $post_data[$post_input_key] = $post_input_val;
+            } else if (strpos($post_input_val, 'alert(') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'alert)') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'focus=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'onerror=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'window.location=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else {
+                $post_data[$post_input_key] = $post_input_val;
+            }
+        }
+    }
+    return $post_data;
 }
 
 if (!function_exists('careerfy_get_user_ip_addr')) {
@@ -273,12 +300,21 @@ if (!function_exists('careerfy_contact_form_submit')) {
 
         if ($msg == '' && $error == 0) {
 
-            $subject = sprintf(esc_html__('%s - Contact Form Message - (%s)', 'careerfy-frame'), get_bloginfo('name'), $usubject);
-            $headers = "From: " . strip_tags($uemail) . "\r\n";
-            $headers .= "Reply-To: " . strip_tags($uemail) . "\r\n";
-            $headers .= "CC: " . get_bloginfo('admin_email') . "\r\n";
-            $headers .= "MIME-Version: 1.0\r\n";
-            $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+            $subject = sprintf('%s - Contact Form Message - (%s)', get_bloginfo('name'), $usubject);
+
+            add_filter('wp_mail_from', function () {
+                $p_mail_from = get_bloginfo('admin_email');
+                return $p_mail_from;
+            });
+            add_filter('wp_mail_from_name', function () {
+                $p_mail_from = get_bloginfo('name');
+                return $p_mail_from;
+            });
+            add_filter('wp_mail_content_type', function () {
+                return 'text/html';
+            });
+
+            $headers = array('Reply-To: ' . $uname . ' <' . $uemail . '>');
 
             $email_message = sprintf(esc_html__('Name : %s', 'careerfy-frame'), $uname) . "<br>";
             $email_message .= sprintf(esc_html__('Email : %s', 'careerfy-frame'), $uemail) . "<br>";
@@ -761,7 +797,7 @@ if (!function_exists('careerfy_count_custom_post_with_filter')) {
             'fields' => 'ids',
             'meta_query' => $arg,
         );
-        //echo '<pre>';print_r($args);echo '</pre>';
+
         $custom_query = new WP_Query($args);
         $all_post_count = $custom_query->found_posts;
         return $all_post_count;
@@ -922,11 +958,11 @@ if (!function_exists('careerfy_breadcrumbs')) {
      * Breadcrumbs markup section.
      * @return markup
      */
-    function careerfy_breadcrumbs()
+    function careerfy_breadcrumbs($candidate_id = '')
     {
         global $wp_query, $post, $careerfy_framework_options;
         $header_style = isset($careerfy_framework_options['header-style']) ? $careerfy_framework_options['header-style'] : '';
-
+        $bread_crumb_class = isset($view) && !empty($view) ? $view : '';
 
         $text['home'] = '' . __('Home', 'careerfy-frame'); // text for the 'Home' link
         $text['category'] = '%s'; // text for a category page
@@ -948,8 +984,13 @@ if (!function_exists('careerfy_breadcrumbs')) {
         $linkAttr = '';
         $link = $linkBefore . '<a' . $linkAttr . ' href="%1$s">%2$s</a>' . $linkAfter;
         $linkhome = $linkBefore . '<a' . $linkAttr . ' href="%1$s">%2$s</a>' . $linkAfter;
+        $bread_crumb_args = array(
+            'candidate_id' => $candidate_id,
+            'bread_crumb_class' => 'careerfy-breadcrumb',
+
+        );
         ?>
-        <div class="<?php echo apply_filters('careerfy_breadcrum_main_con_class', 'careerfy-breadcrumb') ?>">
+        <div class="<?php echo apply_filters('careerfy_breadcrum_main_con_class', $bread_crumb_args) ?>">
             <?php
             echo '<ul>' . sprintf($linkhome, $homeLink, $text['home']) . $delimiter;
             if (is_category()) {
@@ -958,7 +999,7 @@ if (!function_exists('careerfy_breadcrumbs')) {
                     $cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
                     $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
                     $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-                    echo esc_attr($cats);
+                    echo($cats);
                 }
                 echo ($before) . sprintf($text['category'], single_cat_title('', false)) . ($after);
             } elseif (is_search()) {
@@ -1002,7 +1043,6 @@ if (!function_exists('careerfy_breadcrumbs')) {
                     $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
                     $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
                     echo($cats);
-
                     if ($showCurrent == 1)
                         echo ($before) . $current_page . $after;
                 }
@@ -1011,7 +1051,6 @@ if (!function_exists('careerfy_breadcrumbs')) {
                 $post_type = get_post_type_object(get_post_type());
                 echo ($before) . $post_type->labels->singular_name . $after;
             } elseif (isset($wp_query->query_vars['taxonomy']) && !empty($wp_query->query_vars['taxonomy'])) {
-
                 $taxonomy = $taxonomy_category = '';
                 $taxonomy = $wp_query->query_vars['taxonomy'];
                 echo ($before) . $wp_query->query_vars[$taxonomy] . $after;
@@ -1019,6 +1058,7 @@ if (!function_exists('careerfy_breadcrumbs')) {
 
                 if ($showCurrent == 1)
                     echo ($before) . get_the_title() . $after;
+
             } elseif (is_page() && $post->post_parent) {
 
                 $parent_id = $post->post_parent;
@@ -1034,10 +1074,10 @@ if (!function_exists('careerfy_breadcrumbs')) {
                     if ($i != count($breadcrumbs) - 1)
                         echo($delimiter);
                 }
+
                 if ($showCurrent == 1)
                     echo($delimiter . $before . get_the_title() . $after);
             } elseif (is_tag()) {
-
                 echo ($before) . sprintf($text['tag'], single_tag_title('', false)) . $after;
             } elseif (is_author()) {
 
@@ -1054,6 +1094,25 @@ if (!function_exists('careerfy_breadcrumbs')) {
         <?php
     }
 }
+
+add_filter('careerfy_breadcrum_main_con_class', 'careerfy_breadcrumb_main_wrapper_class');
+function careerfy_breadcrumb_main_wrapper_class($arg = '')
+{
+    $candidate_id = isset($arg['candidate_id']) ? $arg['candidate_id'] : '';
+    $bread_crumb_class = isset($arg['bread_crumb_class']) ? $arg['bread_crumb_class'] : '';
+
+    global $jobsearch_plugin_options;
+    $cand_view = isset($jobsearch_plugin_options['jobsearch_cand_detail_views']) && !empty($jobsearch_plugin_options['jobsearch_cand_detail_views']) ? $jobsearch_plugin_options['jobsearch_cand_detail_views'] : '';
+    $cand_view = apply_filters('careerfy_cand_detail_page_style_display', $cand_view, $candidate_id);
+
+    $show_subheader = false;
+    $show_subheader = apply_filters('careerfy_subheader_display_switch', $show_subheader);
+    if ($show_subheader == true && $cand_view == 'view5') {
+        $bread_crumb_class = 'careerfy-breadcrumb-style5';
+    }
+    return $bread_crumb_class;
+}
+
 
 if (!function_exists('careerfy_post_page_title')) {
 
@@ -1106,7 +1165,7 @@ if (!function_exists('careerfy_subheader_display_switch_callback')) {
         }
         // candidate subheader switch
         $cand_switch = true;
-        if ((isset($cand_post_style) && $cand_post_style == 'view1')) {
+        if ((isset($cand_post_style) && ($cand_post_style == 'view1'))) {
             $cand_switch = false;
         } elseif ((!isset($cand_post_style) || $cand_post_style == '')) {
             if ((isset($cand_view) && $cand_view == 'view1')) {
@@ -1170,6 +1229,8 @@ if (!function_exists('careerfy_breadcrumbs_markup')) {
                         $custom_subheader = true;
                     }
                 }
+
+
                 if ($custom_subheader === true) {
                     $subheader_switch = get_post_meta($post_id, 'careerfy_field_page_subheader_switch', true);
                     $subheader_height = get_post_meta($post_id, 'careerfy_field_page_subheader_height', true);
@@ -1230,7 +1291,6 @@ if (!function_exists('careerfy_breadcrumbs_markup')) {
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
-
                                     <div class="<?php echo apply_filters('careerfy_subheader_title_con_class', 'careerfy-page-title') ?>">
                                         <?php
                                         if ($subheader_title == 'on') {
@@ -1274,6 +1334,7 @@ if (!function_exists('careerfy_breadcrumbs_markup')) {
                         ob_start();
                         careerfy_breadcrumbs();
                         $breadcrumbs_html = ob_get_clean();
+
                         echo apply_filters('careerfy_after_header_breadcrumbs_html', $breadcrumbs_html);
                     }
                 }
@@ -1288,7 +1349,7 @@ add_action('careerfy_after_header_subheader_html', 'jobsearch_detail_subheader_r
 
 function jobsearch_detail_subheader_remhtml($subhder_html, $subhdr_args = array())
 {
-    if (is_singular('employer')) {
+    if (is_singular('employer') || is_singular('candidate')) {
         $subhder_html = '';
     }
 
@@ -1299,7 +1360,7 @@ add_action('careerfy_after_header_breadcrumbs_html', 'jobsearch_detail_breadcrum
 
 function jobsearch_detail_breadcrumbs_remhtml($breadcrumbs_html)
 {
-    if (is_singular('employer')) {
+    if (is_singular('employer') || is_singular('candidate')) {
         $breadcrumbs_html = '';
     }
 
@@ -2040,39 +2101,47 @@ if (!function_exists('careerfy_social_icons_footer_eighteen')) {
         ?>
         <li>
             <?php if ($social_facebook != '') { ?>
-                <a href="<?php echo esc_url($social_facebook) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-facebook"></i></a>
+                <a href="<?php echo esc_url($social_facebook) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-facebook"></i></a>
                 <?php
             }
-            if ($social_twitter != '') {?>
-                <a href="<?php echo esc_url($social_twitter) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-twitter"></i></a>
+            if ($social_twitter != '') { ?>
+                <a href="<?php echo esc_url($social_twitter) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-twitter"></i></a>
                 <?php
             }
             if ($social_googleplus != '') { ?>
 
-                <a href="<?php echo esc_url($social_googleplus) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-google-plus"></i></a>
+                <a href="<?php echo esc_url($social_googleplus) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-google-plus"></i></a>
                 <?php
 
             }
             if ($social_youtube != '') { ?>
-                <a href="<?php echo esc_url($social_youtube) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-youtube"></i></a>
+                <a href="<?php echo esc_url($social_youtube) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-youtube"></i></a>
                 <?php
             }
             if ($social_vimeo != '') {
                 ?>
-                <a href="<?php echo esc_url($social_vimeo) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-vimeo"></i></a>
+                <a href="<?php echo esc_url($social_vimeo) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-vimeo"></i></a>
                 <?php
 
             }
             if ($social_linkedin != '') { ?>
-                <a href="<?php echo esc_url($social_linkedin) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-linkedin"></i></a>
+                <a href="<?php echo esc_url($social_linkedin) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-linkedin"></i></a>
                 <?php
             }
 
             if ($social_pinterest != '') { ?>
-                <a href="<?php echo esc_url($social_pinterest) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-pinterest"></i></a>
-                <?php }
+                <a href="<?php echo esc_url($social_pinterest) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-pinterest"></i></a>
+            <?php }
             if ($social_instagram != '') { ?>
-                <a href="<?php echo esc_url($social_instagram) ?>" target="_blank" class="social-icon-footer-twenty"><i class="fa fa-instagram"></i></a>
+                <a href="<?php echo esc_url($social_instagram) ?>" target="_blank" class="social-icon-footer-twenty"><i
+                            class="fa fa-instagram"></i></a>
             <?php } ?>
         </li>
         <?php
@@ -2212,7 +2281,7 @@ if (!function_exists('careerfy_social_icons')) {
                 } else if ($social_view == 'view-3') {
                     ?>
                     <li><a href="<?php echo esc_url($social_linkedin) ?>" target="_blank"><i
-                                    class="fab fa-linkedin"></i></a>
+                                    class="fa fa-linkedin"></i></a>
                     </li>
                     <?php
                 } else if ($social_view == 'view-4' || $social_view == 'view-5' || $social_view == 'view-6') {
@@ -2220,9 +2289,8 @@ if (!function_exists('careerfy_social_icons')) {
                     <li><a href="<?php echo esc_url($social_linkedin) ?>" target="_blank"
                            class="careerfy-icon careerfy-linkedin"></a></li>
                     <?php
-                } else {
-                    ?>
-                    <li><a href="<?php echo esc_url($social_linkedin) ?>" target="_blank" ><i class="fa fa-linkedin"></i></a>
+                } else { ?>
+                    <li><a class="fa fa-linkedin" href="<?php echo esc_url($social_linkedin) ?>" target="_blank"></a>
                     </li>
                     <?php
                 }
@@ -2299,7 +2367,7 @@ if (!function_exists('limit_text')) {
 
     function limit_text($text, $limit)
     {
-        if (str_word_count($text, 0) > $limit) {
+        if (str_word_count(strip_tags($text), 0) > $limit) {
             $words = str_word_count($text, 2);
             $pos = array_keys($words);
             $text = substr($text, 0, $pos[$limit]) . '...';
@@ -2331,3 +2399,4 @@ add_filter('rwmb_meta_boxes', function ($meta_boxes) {
     ];
     return $meta_boxes;
 });
+

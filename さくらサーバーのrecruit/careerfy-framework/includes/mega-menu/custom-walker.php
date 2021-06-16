@@ -7,18 +7,20 @@ add_action('wp_head', function() {
     $style_css = '';
     foreach ($theme_locations as $theme_location) {
         $menu_obj = get_term( $theme_location, 'nav_menu' );
-        $menu_id = $menu_obj->term_id;
-        $menu_items = wp_get_nav_menu_items($menu_id);
-        if (is_array($menu_items) && sizeof($menu_items) > 0) {
-            foreach ($menu_items as $menu_item) {
-                $menu_item_id = $menu_item->ID;
-                if ($menu_item->menu_item_parent == '0' && !in_array($menu_item_id, $addin_css_ids)) {
-                    $listin_count_colr = get_post_meta($menu_item_id, '_menu_item_counliscolr', true);
-                    if ($listin_count_colr != '') {
-                        $style_css .= '.navbar-nav > li#menu-item-' . $menu_item_id . ' > a[data-title]:after{background-color: ' . $listin_count_colr . ' !important;}';
+        if (isset($menu_obj->term_id)) {
+            $menu_id = $menu_obj->term_id;
+            $menu_items = wp_get_nav_menu_items($menu_id);
+            if (is_array($menu_items) && sizeof($menu_items) > 0) {
+                foreach ($menu_items as $menu_item) {
+                    $menu_item_id = $menu_item->ID;
+                    if ($menu_item->menu_item_parent == '0' && !in_array($menu_item_id, $addin_css_ids)) {
+                        $listin_count_colr = get_post_meta($menu_item_id, '_menu_item_counliscolr', true);
+                        if ($listin_count_colr != '') {
+                            $style_css .= '.navbar-nav > li#menu-item-' . $menu_item_id . ' > a[data-title]:after{background-color: ' . $listin_count_colr . ' !important;}';
+                        }
                     }
+                    $addin_css_ids[] = $menu_item_id;
                 }
-                $addin_css_ids[] = $menu_item_id;
             }
         }
     }
@@ -59,11 +61,9 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
 
         $output .= $this->careerfy_menu_start();
         $columns_class = $this->CurrentItem->columns;
-
         $careerfy_parent_id = $this->CurrentItem->menu_item_parent;
 
         $parent_nav_mega = get_post_meta($careerfy_parent_id, '_menu_item_megamenu', true);
-
         $parent_nav_mega_view = get_post_meta($careerfy_parent_id, '_menu_item_view', true);
 
         if ($this->CurrentItem->megamenu == 'on' && $depth == 0) {
@@ -75,8 +75,7 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
         }
     }
 
-    // Start function For Mega menu level end 
-
+    // Start function For Mega menu level end
     function end_lvl(&$output, $depth = 0, $args = array()) {
 
         $careerfy_parent_id = $this->CurrentItem->menu_item_parent;
@@ -160,11 +159,9 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
             $parent_nav_mega = get_post_meta($parent_menu_id, '_menu_item_megamenu', true);
             $parent_item_mega_view = get_post_meta($parent_menu_id, '_menu_item_view', true);
         }
-
         if (empty($args)) {
             $args = new stdClass();
         }
-        
         //
         $listin_counts = '';
         if ($depth == 0) {
@@ -173,7 +170,7 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
             if ($listin_count_for == 'jobs') {
                 $show_listin_counts = true;
                 $jlistin_args = array(
-                    'posts_per_page' => '-1',
+                    'posts_per_page' => '1',
                     'post_type' => 'job',
                     'post_status' => 'publish',
                     'fields' => 'ids', // only load ids
@@ -200,7 +197,7 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
             } else if ($listin_count_for == 'employers') {
                 $show_listin_counts = true;
                 $jlistin_args = array(
-                    'posts_per_page' => '-1',
+                    'posts_per_page' => '1',
                     'post_type' => 'employer',
                     'post_status' => 'publish',
                     'fields' => 'ids', // only load ids
@@ -217,7 +214,7 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
             } else if ($listin_count_for == 'candidates') {
                 $show_listin_counts = true;
                 $jlistin_args = array(
-                    'posts_per_page' => '-1',
+                    'posts_per_page' => '1',
                     'post_type' => 'candidate',
                     'post_status' => 'publish',
                     'fields' => 'ids', // only load ids
@@ -302,14 +299,11 @@ class careerfy_mega_menu_walker extends Walker_Nav_Menu {
         if (!empty($mega_menu) && empty($args->has_children) && $this->CurrentItem->megamenu == 'on') {
             $item_output .= $this->careerfy_menu_start();
         }
-
         $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args, $id);
-        
         return $output;
     }
 
-    // Start function For Mega menu display elements
-
+    //Start function For Mega menu display elements
     function display_element($element, &$children_elements, $max_depth, $depth = 0, $args, &$output) {
         $id_field = $this->db_fields['id'];
         if (is_object($args[0])) {

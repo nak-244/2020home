@@ -96,7 +96,7 @@ class AllPackages extends Widget_Base
             'meta_query' => array(
                 array(
                     'key' => 'jobsearch_field_package_type',
-                    'value' => apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile')),
+                    'value' => apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile', 'cand_resume')),
                     'compare' => 'IN',
                 ),
             ),
@@ -220,6 +220,7 @@ class AllPackages extends Widget_Base
         $featured = $info['featured'];
         $pckg_features = $info['pckg_features'];
 
+
         $duration = $info['duration'];
         $desc = $info['desc'];
 
@@ -231,7 +232,9 @@ class AllPackages extends Widget_Base
 
             if ($att_pck > 0 && get_post_type($att_pck) == 'package') {
                 $package_type = get_post_meta($att_pck, 'jobsearch_field_package_type', true);
-                $check_pkg_types = apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile'));
+
+                $check_pkg_types = apply_filters('jobsearch_careerfy_allpkg_shtypes_list', array('job', 'featured_jobs', 'cv', 'emp_allin_one', 'feature_job', 'candidate', 'promote_profile', 'urgent_pkg', 'candidate_profile', 'employer_profile','cand_resume'));
+
                 if (in_array($package_type, $check_pkg_types)) {
                     $pkg_type = get_post_meta($att_pck, 'jobsearch_field_charges_type', true);
                     $pkg_price = get_post_meta($att_pck, 'jobsearch_field_package_price', true);
@@ -305,7 +308,7 @@ class AllPackages extends Widget_Base
                                 if (is_user_logged_in()) { ?>
                                     <div class="careerfy-sixteen-priceplan-btn">
                                         <a href="javascript:void(0);"
-                                           class="jobsearch-subscribe-job-pkg"
+                                           class="<?php echo ($buy_btn_class) ?>"
                                            data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Select Plan', 'careerfy-frame') ?></a>
                                         <span class="pkg-loding-msg" style="display:none;"></span></div>
                                 <?php } else { ?>
@@ -366,7 +369,7 @@ class AllPackages extends Widget_Base
                                 <?php if (is_user_logged_in()) { ?>
                                     <div class="careerfy-priceplan-thirteen-btn">
                                         <a href="javascript:void(0);"
-                                           class="jobsearch-subscribe-job-pkg "
+                                           class="<?php echo ($buy_btn_class) ?> "
                                            data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Plan', 'careerfy-frame') ?></a>
                                         <span class="pkg-loding-msg" style="display:none;"></span></div>
                                 <?php } else { ?>
@@ -415,8 +418,6 @@ class AllPackages extends Widget_Base
                                                 $_exf_counter++;
                                             }
                                         }
-
-
                                         do_shortcode($pckg_features);
 
                                         ?>
@@ -424,7 +425,7 @@ class AllPackages extends Widget_Base
                                 <?php }
                                 if (is_user_logged_in()) { ?>
                                     <a href="javascript:void(0);"
-                                       class="jobsearch-subscribe-job-pkg careerfy-fifteen-packages-plan-btn"
+                                       class="<?php echo ($buy_btn_class) ?> careerfy-fifteen-packages-plan-btn"
                                        data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Plan', 'careerfy-frame') ?></a>
                                     <span class="pkg-loding-msg" style="display:none;"></span>
                                 <?php } else { ?>
@@ -492,7 +493,7 @@ class AllPackages extends Widget_Base
                                     ?>
                                     <div class="careerfy-priceplan-twelve-btn">
                                         <a href="javascript:void(0);"
-                                           class="jobsearch-subscribe-job-pkg"
+                                           class="<?php echo ($buy_btn_class) ?>"
                                            data-id="<?php echo($att_pck) ?>"><?php esc_html_e('Get Started', 'careerfy-frame') ?></a>
                                         <span class="pkg-loding-msg" style="display:none;"></span></div>
                                 <?php } else { ?>
@@ -927,8 +928,8 @@ class AllPackages extends Widget_Base
                                 <?php } ?>
                             </div>
                         </div>
-                        <?php
-                    } else {
+                    <?php } else {
+
                         ?>
                         <div class="col-md-3">
                             <div class="careerfy-packages-priceplane <?php echo($featured == 'yes' ? 'active' : '') ?>">
@@ -950,26 +951,10 @@ class AllPackages extends Widget_Base
                                 </div>
                                 <?php
 
-                                if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
-                                    ?>
+                                if (!empty($pckg_features) || !empty($pkg_exfield_title)) { ?>
                                     <ul>
                                         <?php
-                                        if (!empty($pkg_exfield_title)) {
-                                            $_exf_counter = 0;
-                                            foreach ($pkg_exfield_title as $_exfield_title) {
-                                                $_exfield_status = isset($pkg_exfield_status[$_exf_counter]) ? $pkg_exfield_status[$_exf_counter] : '';
-                                                ?>
-                                                <li<?php echo($_exfield_status == 'active' ? ' class="active"' : '') ?>>
-                                                    <i
-                                                            class="careerfy-icon careerfy-check-square"></i> <?php echo $_exfield_title ?>
-                                                </li>
-                                                <?php
-                                                $_exf_counter++;
-                                            }
-                                        }
-
                                         do_shortcode($pckg_features);
-
                                         ?>
                                     </ul>
                                 <?php } ?>

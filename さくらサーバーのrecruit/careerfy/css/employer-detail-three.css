@@ -21,8 +21,6 @@
 	float: left;
 	width: 100%;
 	height: 270px;
-	background-size: cover;
-	background-repeat: no-repeat;
 	position: relative;
 }
 .careerfy-employer-subheader-three-transparent {
@@ -31,8 +29,6 @@
 	top: 0px;
 	width: 100%;
 	height: 100%;
-	background-color: #303844;
-	opacity: 0.50;
 }
 .careerfy-employer-subheader-three .careerfy-employer-detail2-toparea-btn {
 	float: right;

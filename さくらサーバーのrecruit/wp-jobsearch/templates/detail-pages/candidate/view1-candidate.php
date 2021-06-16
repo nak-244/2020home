@@ -12,9 +12,7 @@ global $post, $jobsearch_plugin_options;
 $candidate_id = $post->ID;
 
 $candidate_user_id = jobsearch_get_candidate_user_id($candidate_id);
-
 $cand_profile_restrict = new Candidate_Profile_Restriction;
-
 $candidates_reviews = isset($jobsearch_plugin_options['candidate_reviews_switch']) ? $jobsearch_plugin_options['candidate_reviews_switch'] : '';
 
 $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
@@ -53,7 +51,12 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
     if (is_user_logged_in()) {
         $cur_user_id = get_current_user_id();
         $cur_user_obj = wp_get_current_user();
-        $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+        if (jobsearch_user_isemp_member($cur_user_id)) {
+            $employer_id = jobsearch_user_isemp_member($cur_user_id);
+            $cur_user_id = jobsearch_get_employer_user_id($employer_id);
+        } else {
+            $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+        }
         $ucandidate_id = jobsearch_get_user_candidate_id($cur_user_id);
         $employer_dbstatus = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
         if ($employer_id > 0 && $employer_dbstatus == 'on') {
@@ -86,7 +89,13 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
             }
             //
             if ($restrict_candidates_for_users == 'register_resume') {
-                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg();
+                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg($cur_user_id);
+                if (!$user_cv_pkg) {
+                    $user_cv_pkg = jobsearch_allin_first_pkg_subscribed($cur_user_id, 'cvs');
+                }
+                if (!$user_cv_pkg) {
+                    $user_cv_pkg = jobsearch_emprof_first_pkg_subscribed($cur_user_id, 'cvs');
+                }
                 if ($user_cv_pkg) {
                     $view_candidate = true;
                 } else {
@@ -104,6 +113,8 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
         } else if (in_array('administrator', (array)$cur_user_obj->roles)) {
             $view_candidate = true;
         } else if ($ucandidate_id > 0 && $ucandidate_id == $candidate_id) {
+            $view_candidate = true;
+        } else if ($restrict_candidates_for_users == 'register_empcand' && ($ucandidate_id > 0 || $employer_id > 0)) {
             $view_candidate = true;
         }
     }
@@ -129,6 +140,7 @@ $inopt_resm_education = isset($jobsearch_plugin_options['cand_resm_education']) 
 $inopt_resm_experience = isset($jobsearch_plugin_options['cand_resm_experience']) ? $jobsearch_plugin_options['cand_resm_experience'] : '';
 $inopt_resm_portfolio = isset($jobsearch_plugin_options['cand_resm_portfolio']) ? $jobsearch_plugin_options['cand_resm_portfolio'] : '';
 $inopt_resm_skills = isset($jobsearch_plugin_options['cand_resm_skills']) ? $jobsearch_plugin_options['cand_resm_skills'] : '';
+$inopt_resm_langs = isset($jobsearch_plugin_options['cand_resm_langs']) ? $jobsearch_plugin_options['cand_resm_langs'] : '';
 $inopt_resm_honsawards = isset($jobsearch_plugin_options['cand_resm_honsawards']) ? $jobsearch_plugin_options['cand_resm_honsawards'] : '';
 
 $candidate_obj = get_post($candidate_id);
@@ -140,7 +152,7 @@ $candidate_join_date = isset($candidate_obj->post_date) ? $candidate_obj->post_d
 $candidate_jobtitle = get_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', true);
 $candidate_address = get_post_meta($candidate_id, 'jobsearch_field_location_address', true);
 if (function_exists('jobsearch_post_city_contry_txtstr')) {
-    $candidate_address = jobsearch_post_city_contry_txtstr($candidate_id, $loc_view_country, $loc_view_state, $loc_view_city,$cand_det_full_address_switch);
+    $candidate_address = jobsearch_post_city_contry_txtstr($candidate_id, $loc_view_country, $loc_view_state, $loc_view_city, $cand_det_full_address_switch);
 }
 
 $user_facebook_url = get_post_meta($candidate_id, 'jobsearch_field_user_facebook_url', true);
@@ -158,9 +170,41 @@ if ($cand_profile_restrict::cand_field_is_locked('profile_fields|display_name', 
     $user_displayname = $cand_profile_restrict::cand_restrict_display_name();
 }
 
-$user_def_avatar_url = jobsearch_candidate_img_url_comn($candidate_id);
+$candidate_cover_image_src_style_str = '';
+if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|cover_img', 'detail_page')) {
+    if ($candidate_id != '') {
+        $candidate_cover_image_src = '';
+        if (function_exists('jobsearch_candidate_covr_url_comn')) {
+            $candidate_cover_image_src = jobsearch_candidate_covr_url_comn($candidate_id);
+        }
+        if ($candidate_cover_image_src != '') {
+            $candidate_cover_image_src_style_str = ' style="background:url(\'' . ($candidate_cover_image_src) . '\'); background-size:cover; "';
+        }
+    }
+}
 
+$subheader_candidate_bg_color = isset($jobsearch_plugin_options['careerfy-candidate-img-overlay-bg-color']) ? $jobsearch_plugin_options['careerfy-candidate-img-overlay-bg-color'] : '';
+if (isset($subheader_candidate_bg_color['rgba'])) {
+    $subheader_bg_color = $subheader_candidate_bg_color['rgba'];
+}
+
+$user_def_avatar_url = jobsearch_candidate_img_url_comn($candidate_id);
 wp_enqueue_script('isotope-min');
+
+if ($view_candidate !== false) {
+    ?>
+
+    <div class="jobsearch-job-subheader"<?php echo($candidate_cover_image_src_style_str); ?>>
+        <span class="jobsearch-banner-transparent" style="background: <?php echo $subheader_bg_color ?>"></span>
+        <div class="jobsearch-plugin-default-container">
+            <div class="jobsearch-row">
+                <div class="jobsearch-column-12">
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
 ?>
 
 <div class="jobsearch-main-content">
@@ -175,6 +219,8 @@ wp_enqueue_script('isotope-min');
                     $restrict_img_url = isset($restrict_img['url']) ? $restrict_img['url'] : '';
                     $restrict_cv_pckgs = isset($jobsearch_plugin_options['restrict_cv_packages']) ? $jobsearch_plugin_options['restrict_cv_packages'] : '';
                     $restrict_msg = isset($jobsearch_plugin_options['restrict_cand_msg']) && $jobsearch_plugin_options['restrict_cand_msg'] != '' ? $jobsearch_plugin_options['restrict_cand_msg'] : esc_html__('The Page is Restricted only for Subscribed Employers', 'wp-jobsearch');
+                    
+                    $op_emp_register_allow = isset($jobsearch_plugin_options['login_employer_register']) ? $jobsearch_plugin_options['login_employer_register'] : '';
                     ?>
                     <div class="jobsearch-column-12">
                         <div class="restrict-candidate-sec">
@@ -182,36 +228,34 @@ wp_enqueue_script('isotope-min');
                             <h2><?php echo($restrict_msg) ?></h2>
 
                             <?php
-                            if ($is_employer) {
-                                ?>
+                            if ($is_employer) { ?>
                                 <p><?php esc_html_e('Please buy a C.V package to view this candidate.', 'wp-jobsearch') ?></p>
-                                <?php
-                            } else if (is_user_logged_in()) {
-                                ?>
+                            <?php } else if (is_user_logged_in()) { ?>
                                 <p><?php esc_html_e('You are not an employer. Only an Employer can view a candidate.', 'wp-jobsearch') ?></p>
-                                <?php
-                            } else {
-                                ?>
+                            <?php } else { ?>
                                 <p><?php esc_html_e('If you are employer just login to view this candidate or buy a C.V package to download His Resume.', 'wp-jobsearch') ?></p>
                                 <?php
                             }
-                            if (is_user_logged_in()) {
-                                ?>
+                            if (is_user_logged_in()) { ?>
                                 <div class="login-btns">
                                     <a href="<?php echo wp_logout_url(home_url('/')); ?>"><i
                                                 class="jobsearch-icon jobsearch-logout"></i><?php esc_html_e('Logout', 'wp-jobsearch') ?>
                                     </a>
                                 </div>
-                                <?php
-                            } else {
-                                ?>
+                            <?php } else { ?>
                                 <div class="login-btns">
                                     <a href="javascript:void(0);" class="jobsearch-open-signin-tab"><i
                                                 class="jobsearch-icon jobsearch-user"></i><?php esc_html_e('Login', 'wp-jobsearch') ?>
                                     </a>
-                                    <a href="javascript:void(0);" class="jobsearch-open-register-tab"><i
-                                                class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'wp-jobsearch') ?>
-                                    </a>
+                                    <?php
+                                    if ($op_emp_register_allow != 'no') {
+                                        ?>
+                                        <a href="javascript:void(0);" class="jobsearch-open-register-tab company-register-tab"><i
+                                                    class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'wp-jobsearch') ?>
+                                        </a>
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                                 <?php
                             }
@@ -313,11 +357,12 @@ wp_enqueue_script('isotope-min');
                     </div>
                     <?php
                 } else {
-                    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
                     $cand_dob_switch = isset($jobsearch_plugin_options['cand_dob_switch']) ? $jobsearch_plugin_options['cand_dob_switch'] : 'on';
                     $candidate_age = jobsearch_candidate_age($candidate_id);
                     $candidate_salary_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on';
                     $candidate_salary = jobsearch_candidate_current_salary($candidate_id);
+                    //
+                    $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
                     $sectors = wp_get_post_terms($candidate_id, 'sector');
                     $candidate_sector = isset($sectors[0]->name) ? $sectors[0]->name : '';
                     ?>
@@ -325,11 +370,13 @@ wp_enqueue_script('isotope-min');
                         <div class="jobsearch_side_box jobsearch_box_candidate_info">
                             <div class="jobsearch_candidate_info">
                                 <?php echo jobsearch_member_promote_profile_iconlab($candidate_id); ?>
-                                <?php echo jobsearch_cand_urgent_pkg_iconlab($candidate_id) ?>
-
                                 <?php
-                                if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img', 'detail_page')) {
-                                    ?>
+                                ob_start();
+                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_listv2');
+                                $urgnt_html = ob_get_clean();
+                                echo apply_filters('jobsearch_cand_urgent_pkg_iconlab_html', $urgnt_html, $candidate_id, 'cand_listv2');
+
+                                if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img', 'detail_page')) { ?>
                                     <figure><img src="<?php echo($user_def_avatar_url) ?>" alt=""></figure>
                                     <?php
                                 }
@@ -347,9 +394,12 @@ wp_enqueue_script('isotope-min');
                                 </h2>
                                 <?php
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title', 'detail_page')) {
+                                    ob_start();
                                     ?>
-                                    <p><?php echo($candidate_jobtitle) ?></p>
+                                    <p><?php echo jobsearch_esc_html($candidate_jobtitle) ?></p>
                                     <?php
+                                    $candidate_jobtitle_html = ob_get_clean();
+                                    echo apply_filters('jobsearch_candetail_jobtitle_html', $candidate_jobtitle_html, $candidate_id, 'view1');
                                 }
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|sector', 'detail_page')) {
                                     if ($candidate_sector != '' && $sectors_enable_switch == 'on') {
@@ -365,18 +415,17 @@ wp_enqueue_script('isotope-min');
                                 }
                                 do_action('jobsearch_cand_detail_side_after_salary', $candidate_id);
                                 if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|date_of_birth', 'detail_page')) {
-                                    if ($candidate_age != '' && $cand_dob_switch == 'on') {
+                                    if ($candidate_age != '' && $cand_dob_switch != 'off') {
                                         echo apply_filters('jobsearch_candidate_detail_page_age_html', '<p>' . sprintf(esc_html__('(Age: %s years)', 'wp-jobsearch'), $candidate_age) . '</p>');
                                     }
                                 }
                                 if (!$cand_profile_restrict::cand_field_is_locked('address_defields', 'detail_page') && $candidate_address != '' && $all_location_allow == 'on') {
                                     ?>
-                                    <span><?php echo($candidate_address) ?></span>
+                                    <span><?php echo jobsearch_esc_html($candidate_address) ?></span>
                                     <?php
                                 }
-                                if ($candidate_join_date != '') {
-                                    ?>
-                                    <small><?php printf(esc_html__('Member Since, %s', 'wp-jobsearch'), date_i18n('Y/m/d', strtotime($candidate_join_date))) ?></small>
+                                if ($candidate_join_date != '') { ?>
+                                    <small><?php printf(esc_html__('Member Since, %s', 'wp-jobsearch'), date_i18n(get_option('date_format'), strtotime($candidate_join_date))) ?></small>
                                     <?php
                                 }
 
@@ -394,36 +443,34 @@ wp_enqueue_script('isotope-min');
                                             <?php
                                             if ($user_facebook_url != '' && $cand_alow_fb_smm == 'on') {
                                                 ?>
-                                                <li><a href="<?php echo($user_facebook_url) ?>"
+                                                <li>
+                                                    <a href="<?php echo jobsearch_esc_html(esc_url($user_facebook_url)) ?>"
                                                        data-original-title="facebook"
                                                        class="jobsearch-icon jobsearch-facebook-logo"></a></li>
                                                 <?php
                                             }
                                             if ($user_twitter_url != '' && $cand_alow_twt_smm == 'on') {
                                                 ?>
-                                                <li><a href="<?php echo($user_twitter_url) ?>"
+                                                <li>
+                                                    <a href="<?php echo jobsearch_esc_html(esc_url($user_twitter_url)) ?>"
+                                                       target="_blank"
                                                        data-original-title="twitter"
                                                        class="jobsearch-icon jobsearch-twitter-logo"></a></li>
                                                 <?php
                                             }
-                                            if ($user_linkedin_url != '' && $cand_alow_linkd_smm == 'on') {
-                                                ?>
-                                                <li><a href="<?php echo($user_linkedin_url) ?>"
+                                            if ($user_linkedin_url != '' && $cand_alow_linkd_smm == 'on') { ?>
+                                                <li>
+                                                    <a href="<?php echo jobsearch_esc_html(esc_url($user_linkedin_url)) ?>"
+                                                       target="_blank"
                                                        data-original-title="linkedin"
                                                        class="jobsearch-icon jobsearch-linkedin-button"></a></li>
                                                 <?php
                                             }
-                                            if ($user_google_plus_url != '' && $cand_alow_gplus_smm == 'on') {
-                                                ?>
-                                                <li><a href="<?php echo($user_google_plus_url) ?>"
-                                                       data-original-title="google-plus"
-                                                       class="jobsearch-icon jobsearch-google-plus-logo-button"></a>
-                                                </li>
-                                                <?php
-                                            }
                                             if ($user_dribbble_url != '' && $cand_alow_dribbb_smm == 'on') {
                                                 ?>
-                                                <li><a href="<?php echo($user_dribbble_url) ?>"
+                                                <li>
+                                                    <a href="<?php echo jobsearch_esc_html(esc_url($user_dribbble_url)) ?>"
+                                                       target="_blank"
                                                        data-original-title="dribbble"
                                                        class="jobsearch-icon jobsearch-dribbble-logo"></a></li>
                                                 <?php
@@ -451,8 +498,10 @@ wp_enqueue_script('isotope-min');
                                                         if ($field_title_val != '' && $cand_dynm_social != '') {
                                                             ?>
                                                             <li>
-                                                                <a href="<?php echo($cand_dynm_social) ?>" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
-                                                                   class="<?php echo($field_icon) ?>"></a></li>
+                                                                <a href="<?php echo esc_url($cand_dynm_social) ?>"
+                                                                   target="_blank" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
+                                                                   class="<?php echo jobsearch_esc_html($field_icon) ?>"></a>
+                                                            </li>
                                                             <?php
                                                         }
                                                         $field_counter++;
@@ -474,11 +523,27 @@ wp_enqueue_script('isotope-min');
 
                                 $info_html = ob_get_clean();
                                 echo apply_filters('jobsearch_candetail_page_sideinfo_html', $info_html, $candidate_id);
+                                //
+                                $cand_chat_args = array('candidate_id' => $candidate_id);
+
+                                do_action('jobsearch_chat_with_candidate', $cand_chat_args);
+
                                 ?>
                             </div>
                         </div>
                         <?php do_action('jobsearch_candidate_detail_side_after_info', array('id' => $candidate_id)); ?>
                         <?php
+                        $map_switch_arr = isset($jobsearch_plugin_options['jobsearch-detail-map-switch']) ? $jobsearch_plugin_options['jobsearch-detail-map-switch'] : '';
+                        $detail_map = is_array($map_switch_arr) && in_array('candidate', $map_switch_arr) ? 'on' : '';
+                        if (!$cand_profile_restrict::cand_field_is_locked('address_defields', 'detail_page') && $detail_map == 'on') {
+                            ?>
+                            <div class="jobsearch_side_box jobsearch_box_map">
+                                <?php jobsearch_google_map_with_directions($candidate_id); ?>
+                            </div>
+                            <?php
+                        }
+
+                        //
                         $ad_args = array(
                             'post_type' => 'candidate',
                             'view' => 'view1',
@@ -493,24 +558,46 @@ wp_enqueue_script('isotope-min');
                                 <div class="jobsearch_side_box jobsearch_box_contact_form">
                                     <?php
                                     $cnt_counter = rand(1000000, 9999999);
+
+                                    $cnt__cand_wout_log = isset($jobsearch_plugin_options['cand_cntct_wout_login']) ? $jobsearch_plugin_options['cand_cntct_wout_login'] : '';
+
+                                    $cur_user_name = '';
+                                    $cur_user_email = '';
+                                    $field_readonly = false;
+                                    if (is_user_logged_in()) {
+                                        if ($cnt__cand_wout_log != 'on') {
+                                            $field_readonly = true;
+                                        }
+                                        $cur_user_id = get_current_user_id();
+                                        $cur_user_obj = wp_get_current_user();
+                                        $cur_user_name = isset($cur_user_obj->display_name) ? $cur_user_obj->display_name : '';
+                                        $cur_user_email = isset($cur_user_obj->user_email) ? $cur_user_obj->user_email : '';
+                                        if (jobsearch_user_is_employer($cur_user_id)) {
+                                            $cnt_emp_id = jobsearch_get_user_employer_id($cur_user_id);
+                                            $cur_user_name = get_the_title($cnt_emp_id);
+                                        }
+                                    }
                                     ?>
                                     <div class="jobsearch-wdg-box-title">
-                                        <h2><?php esc_html_e('Contact Form', 'wp-jobsearch') ?></h2></div>
+                                        <h2><?php esc_html_e('Contact Form', 'wp-jobsearch') ?></h2>
+                                    </div>
                                     <form id="ct-form-<?php echo absint($cnt_counter) ?>"
                                           data-uid="<?php echo absint($user_id) ?>" method="post">
                                         <ul>
                                             <li>
-                                                <label><?php esc_html_e('User Name:', 'wp-jobsearch') ?></label>
+                                                <label><?php esc_html_e('Name:', 'wp-jobsearch') ?></label>
                                                 <input name="u_name"
                                                        placeholder="<?php esc_html_e('Enter Your Name', 'wp-jobsearch') ?>"
-                                                       type="text">
+                                                       type="text" <?php echo($field_readonly ? 'readonly' : '') ?>
+                                                       value="<?php echo($cur_user_name) ?>">
                                                 <i class="jobsearch-icon jobsearch-user"></i>
                                             </li>
                                             <li>
                                                 <label><?php esc_html_e('Email Address:', 'wp-jobsearch') ?></label>
                                                 <input name="u_email"
                                                        placeholder="<?php esc_html_e('Enter Your Email Address', 'wp-jobsearch') ?>"
-                                                       type="text">
+                                                       type="text" <?php echo($field_readonly ? 'readonly' : '') ?>
+                                                       value="<?php echo($cur_user_email) ?>">
                                                 <i class="jobsearch-icon jobsearch-mail"></i>
                                             </li>
                                             <li>
@@ -556,7 +643,6 @@ wp_enqueue_script('isotope-min');
                                                        data-id="<?php echo absint($cnt_counter) ?>"
                                                        value="<?php esc_html_e('Send now', 'wp-jobsearch') ?>">
                                                 <?php
-                                                $cnt__cand_wout_log = isset($jobsearch_plugin_options['cand_cntct_wout_login']) ? $jobsearch_plugin_options['cand_cntct_wout_login'] : '';
                                                 if (!is_user_logged_in() && $cnt__cand_wout_log != 'on') {
                                                     ?>
                                                     <a class="jobsearch-open-signin-tab"
@@ -583,25 +669,22 @@ wp_enqueue_script('isotope-min');
                         ?>
                     </aside>
                     <div class="jobsearch-column-8 jobsearch-typo-wrap">
-                        <div class="container-wrapper">
+                        <div class="container-wrapper container-wrapper-view1">
                             <div class="jobsearch-candidate-editor">
                                 <?php
                                 $show_disp_name = apply_filters('jobsearch_candidate_detail_content_top_displayname', $user_displayname, $candidate_id);
                                 ?>
-
-                                <div class="jobsearch-candidate-title">
-                                  <h2><i class="jobsearch-icon jobsearch-resume"></i> 基本情報</h2>
+                                <div class="jobsearch-content-title">
+                                    <h2><?php printf(esc_html__('About %s', 'wp-jobsearch'), $show_disp_name) ?></h2>
                                 </div>
-
                                 <?php
                                 if (!$cand_profile_restrict::cand_field_is_locked('customfields_defields', 'detail_page')) {
                                     echo apply_filters('jobsearch_canddetail_page_before_cusfields_html', '', $candidate_id);
                                     $custom_all_fields = get_option('jobsearch_custom_field_candidate');
-                                    if (!empty($custom_all_fields)) {
-                                        ?>
-                                        <div class="jobsearch-jobdetail-services">
 
-                                            <!-- <ul class="jobsearch-row">
+                                    if (!empty($custom_all_fields)) { ?>
+                                        <div class="jobsearch-jobdetail-services">
+                                            <ul class="jobsearch-row">
                                                 <?php
                                                 $cus_fields = array('content' => '');
                                                 $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-4">', '</li>');
@@ -609,107 +692,13 @@ wp_enqueue_script('isotope-min');
                                                     echo($cus_fields['content']);
                                                 }
                                                 ?>
-                                            </ul> -->
-
-                                                <?php
-                                                $cus_fields = array('content' => '');
-                                                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li class="jobsearch-column-6">', '</li>');
-                                                if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
-                                                }
-// カスタムフィールド出力
-// $field = get_field('mmmail');
-// if($field){
-//  echo
-//  '<p>'.$field.'</p>'
-//  ;}
-$user_phone = get_post_meta($candidate_id, 'jobsearch_field_user_phone', true);
-$user_email = isset($user_obj->user_email) ? $user_obj->user_email : '';
-$field1 = get_field('cf1');
-$field2 = get_field('cf2');
-$field3 = get_field('cf3');
-$field4 = get_field('cf4');
-$field5 = get_field('cf5');
-$field6 = get_field('cf6');
-$field7 = get_field('cf7');
-$field8 = get_field('cf8');
-$field9 = get_field('cf9');
-$field10 = get_field('cf10');
-$field11 = get_field('cf11');
-$field20 = get_field('cf20');
-$field21 = get_field('cf21');
-
-    echo
-  '<table class="tbl01">
-	<tbody>
-		<tr>
-			<th>氏名</th>
-			<td>'.$show_disp_name.'（'.$field1.'）</td>
-		</tr>
-    <tr>
-			<th>住所</th>
-			<td>'.$candidate_address.'</td>
-		</tr>
-    <tr>
-			<th>生年月日</th>
-			<td>'.$field4.'</td>
-		</tr>
-    <tr>
-      <th>性別</th>
-      <td>'.$field2.'</td>
-    </tr>
-    <tr>
-      <th>Eメール</th>
-      <td>'.$user_email.'</td>
-    </tr>
-    <tr>
-      <th>TEL</th>
-      <td>'.$user_phone.'</td>
-    </tr>
-    <tr>
-      <th>国籍</th>
-      <td>'.$field5.'</td>
-    </tr>
-    <tr>
-      <th>配偶者（扶養義務）</th>
-      <td>'.$field6.'（'.$field7.'）</td>
-    </tr>
-    <tr>
-      <th>転勤</th>
-      <td>'.$field8.'</td>
-    </tr>
-    <tr>
-      <th>在留資格</th>
-      <td>'.$field9.'</td>
-    </tr>
-    <tr>
-      <th>在留資格期限</th>
-      <td>'.$field10.'</td>
-    </tr>
-    <tr>
-      <th>就業開始可能時期</th>
-      <td>'.$field11.'</td>
-    </tr>
-    <tr>
-      <th>PCスキル（Word）</th>
-      <td>'.$field20.'</td>
-    </tr>
-    <tr>
-      <th>PCスキル（Excel）</th>
-      <td>'.$field21.'</td>
-    </tr>
-	</tbody>
-</table>'
-;
-
-// カスタムフィールド出力
-
-                                                ?>
-
+                                            </ul>
                                         </div>
-
                                         <?php
                                     }
                                 }
+
+                                do_action('jobseach_candidate_detail_after_cusfields', $candidate_id);
 
                                 $ad_args = array(
                                     'post_type' => 'candidate',
@@ -722,13 +711,11 @@ $field21 = get_field('cf21');
                                     if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|about_desc', 'detail_page')) {
                                         ob_start();
                                         ?>
-
-                                        <!-- <div class="jobsearch-content-title">
-                                          <h2>自己PR</h2></div>
+                                        <div class="jobsearch-content-title">
+                                            <h2><?php esc_html_e('Description', 'wp-jobsearch') ?></h2></div>
                                         <div class="jobsearch-description">
-                                            <?php echo($candidate_content) ?>
-                                        </div> -->
-
+                                            <?php echo jobsearch_esc_html($candidate_content) ?>
+                                        </div>
                                         <?php
                                         $desc_html = ob_get_clean();
                                         echo apply_filters('jobsearch_cand_dash_detel_contnt_html', $desc_html, $candidate_id);
@@ -745,19 +732,21 @@ $field21 = get_field('cf21');
                                 //
                                 do_action('jobseach_candidate_detail_after_desctxt', $candidate_id);
                                 ?>
-
                             </div>
-
                             <?php
                             if (!$cand_profile_restrict::cand_field_is_locked('edu_defields', 'detail_page')) {
                                 $exfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_title', true);
                                 $exfield_list_val = get_post_meta($candidate_id, 'jobsearch_field_education_description', true);
                                 $education_academyfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_academy', true);
                                 $education_yearfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_year', true);
+                                $education_start_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_start_date', true);
+                                $education_end_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_end_date', true);
+                                $education_prsnt_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_education_date_prsnt', true);
+
+                                $edu_start_metaexist = metadata_exists('post', $candidate_id, 'jobsearch_field_education_start_date');
 
                                 ob_start();
-                                if (!empty($exfield_list)) {
-                                    ?>
+                                if (!empty($exfield_list)) { ?>
                                     <div class="jobsearch-candidate-title"><h2><i
                                                     class="jobsearch-icon jobsearch-mortarboard"></i> <?php esc_html_e('Education', 'wp-jobsearch') ?>
                                         </h2></div>
@@ -769,9 +758,25 @@ $field21 = get_field('cf21');
                                                 $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                                                 $education_academyfield_val = isset($education_academyfield_list[$exfield_counter]) ? $education_academyfield_list[$exfield_counter] : '';
                                                 $education_yearfield_val = isset($education_yearfield_list[$exfield_counter]) ? $education_yearfield_list[$exfield_counter] : '';
+                                                $education_start_datefield_val = isset($education_start_datefield_list[$exfield_counter]) ? $education_start_datefield_list[$exfield_counter] : '';
+                                                $education_end_datefield_val = isset($education_end_datefield_list[$exfield_counter]) ? $education_end_datefield_list[$exfield_counter] : '';
+                                                $education_prsnt_datefield_val = isset($education_prsnt_datefield_list[$exfield_counter]) ? $education_prsnt_datefield_list[$exfield_counter] : '';
                                                 ?>
                                                 <li class="jobsearch-column-12">
-                                                    <small><?php echo($education_yearfield_val) ?></small>
+                                                    <?php
+                                                    if ($edu_start_metaexist) {
+                                                        if ($education_prsnt_datefield_val == 'on') {
+                                                            ?>
+                                                            <small><?php echo ($education_start_datefield_val != '' ? date('Y', strtotime($education_start_datefield_val)) : '') . (' - ') . esc_html__('Present', 'wp-jobsearch') ?></small>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <small><?php echo ($education_start_datefield_val != '' ? date('Y', strtotime($education_start_datefield_val)) : '') . ($education_end_datefield_val != '' ? ' - ' . date('Y', strtotime($education_end_datefield_val)) : '') ?></small>
+                                                            <?php
+                                                        }
+                                                    } else { ?>
+                                                        <small><?php echo($education_yearfield_val) ?></small>
+                                                    <?php } ?>
                                                     <div class="jobsearch-candidate-timeline-text">
                                                         <span><?php echo($education_academyfield_val) ?></span>
                                                         <?php
@@ -814,9 +819,11 @@ $field21 = get_field('cf21');
 
                                     $exfield_counter = 0;
                                     ?>
-                                    <div class="jobsearch-candidate-title"><h2><i
-                                                    class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Experience', 'wp-jobsearch') ?>
-                                        </h2></div>
+                                    <div class="jobsearch-candidate-title">
+                                        <h2>
+                                            <i class="jobsearch-icon jobsearch-social-media"></i> <?php esc_html_e('Experience', 'wp-jobsearch') ?>
+                                        </h2>
+                                    </div>
                                     <div class="jobsearch-candidate-timeline">
                                         <ul class="jobsearch-row">
                                             <?php
@@ -844,8 +851,8 @@ $field21 = get_field('cf21');
                                                         <?php
                                                         echo apply_filters('jobsearch_cand_det_resume_axpr_list_aftr_comp', '', $candidate_id, $exfield_counter);
                                                         ?>
-                                                        <h2><a><?php echo($exfield) ?></a></h2>
-                                                        <p><?php echo($exfield_val) ?></p>
+                                                        <h2><a><?php echo jobsearch_esc_html($exfield) ?></a></h2>
+                                                        <p><?php echo jobsearch_esc_html($exfield_val) ?></p>
                                                     </div>
                                                 </li>
                                                 <?php
@@ -884,9 +891,7 @@ $field21 = get_field('cf21');
                                             $exfield_counter = 0;
                                             foreach ($exfield_list as $exfield) {
                                                 $rand_num = rand(1000000, 99999999);
-
                                                 $skill_percentagefield_val = isset($skill_percentagefield_list[$exfield_counter]) ? absint($skill_percentagefield_list[$exfield_counter]) : '';
-
                                                 $skill_percentagefield_val = $skill_percentagefield_val > 100 ? 100 : $skill_percentagefield_val;
                                                 ?>
                                                 <div class="jobsearch-column-6">
@@ -914,6 +919,58 @@ $field21 = get_field('cf21');
                             );
                             jobsearch_detail_common_ad_code($ad_args);
                             //
+
+                            //
+                            ob_start();
+                            $exfield_list = get_post_meta($candidate_id, 'jobsearch_field_lang_title', true);
+                            $lang_percentagefield_list = get_post_meta($candidate_id, 'jobsearch_field_lang_percentage', true);
+                            $lang_level_list = get_post_meta($candidate_id, 'jobsearch_field_lang_level', true);
+                            if (is_array($exfield_list) && sizeof($exfield_list) > 0) {
+                                ?>
+                                <div class="jobsearch_progressbar_wrap jobsearch-candidate-langs">
+                                    <div class="jobsearch-row">
+                                        <div class="jobsearch-column-12">
+                                            <div class="jobsearch-candidate-title">
+                                                <h2>
+                                                    <i class="jobsearch-icon jobsearch-design-skills"></i> <?php esc_html_e('Languages', 'wp-jobsearch') ?>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        $exfield_counter = 0;
+                                        foreach ($exfield_list as $exfield) {
+                                            $rand_num = rand(1000000, 99999999);
+                                            $lang_percentagefield_val = isset($lang_percentagefield_list[$exfield_counter]) ? absint($lang_percentagefield_list[$exfield_counter]) : '';
+                                            $lang_percentagefield_val = $lang_percentagefield_val > 100 ? 100 : $lang_percentagefield_val;
+                                            $lang_level_val = isset($lang_level_list[$exfield_counter]) ? ($lang_level_list[$exfield_counter]) : '';
+
+                                            $lang_level_str = esc_html__('Beginner', 'wp-jobsearch');
+                                            if ($lang_level_val == 'proficient') {
+                                                $lang_level_str = esc_html__('Proficient', 'wp-jobsearch');
+                                            } else if ($lang_level_val == 'intermediate') {
+                                                $lang_level_str = esc_html__('Intermediate', 'wp-jobsearch');
+                                            }
+                                            ?>
+                                            <div class="jobsearch-column-4">
+                                                <strong><?php echo($exfield) ?></strong>
+                                                <div class="jobsearch_progressbar1"
+                                                     data-width='<?php echo($lang_percentagefield_val) ?>'><?php echo($lang_level_str) ?></div>
+                                            </div>
+                                            <?php
+                                            $exfield_counter++;
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <?php
+                            }
+                            $languages_html = ob_get_clean();
+                            if ($inopt_resm_langs != 'off') {
+                                echo apply_filters('jobsearch_candidate_detail_$languages_html', $languages_html, $candidate_id);
+                            }
+                            //
+
                             if (!$cand_profile_restrict::cand_field_is_locked('port_defields', 'detail_page')) {
                                 ob_start();
 
@@ -921,8 +978,7 @@ $field21 = get_field('cf21');
                                 $exfield_list_val = get_post_meta($candidate_id, 'jobsearch_field_portfolio_image', true);
                                 $exfield_portfolio_url = get_post_meta($candidate_id, 'jobsearch_field_portfolio_url', true);
                                 $exfield_portfolio_vurl = get_post_meta($candidate_id, 'jobsearch_field_portfolio_vurl', true);
-                                if (is_array($exfield_list) && sizeof($exfield_list) > 0) {
-                                    ?>
+                                if (is_array($exfield_list) && sizeof($exfield_list) > 0) { ?>
                                     <div class="jobsearch-candidate-title"><h2><i
                                                     class="jobsearch-icon jobsearch-briefcase"></i> <?php esc_html_e('Portfolio', 'wp-jobsearch') ?>
                                         </h2></div>
@@ -949,12 +1005,7 @@ $field21 = get_field('cf21');
                                                     }
                                                 }
 
-                                                $port_thumb_img = $portfolio_img;
-                                                if ($portfolio_img != '') {
-                                                    $attach_id = jobsearch_get_attachment_id_from_url($portfolio_img);
-                                                    $port_thumb_image = wp_get_attachment_image_src($attach_id, 'large');
-                                                    $port_thumb_img = isset($port_thumb_image[0]) && esc_url($port_thumb_image[0]) != '' ? $port_thumb_image[0] : $portfolio_img;
-                                                }
+                                                $port_thumb_img = jobsearch_get_cand_portimg_url($candidate_id, $portfolio_img, 'large');
                                                 ?>
                                                 <li class="grid-item <?php echo($exfield_counter == 1 ? 'jobsearch-column-6' : 'jobsearch-column-3') ?>">
                                                     <figure>
@@ -962,19 +1013,16 @@ $field21 = get_field('cf21');
                                                                     style="background-image: url('<?php echo($port_thumb_img) ?>');"></small></span>
                                                         <figcaption>
                                                             <div class="img-icons">
-                                                                <a href="<?php echo($portfolio_vurl != '' ? $portfolio_vurl : $portfolio_img) ?>"
+                                                                <a href="<?php echo($portfolio_vurl != '' ? $portfolio_vurl : $port_thumb_img) ?>"
                                                                    class="<?php echo($portfolio_vurl != '' ? 'fancybox-video' : 'fancybox-galimg') ?>"
                                                                    title="<?php echo($exfield) ?>" <?php echo($portfolio_vurl != '' ? 'data-fancybox-type="iframe"' : '') ?>
                                                                    data-fancybox-group="group"><i
                                                                             class="<?php echo($portfolio_vurl != '' ? 'fa fa-play' : 'fa fa-image') ?>"></i></a>
                                                                 <?php
-                                                                if ($portfolio_url != '') {
-                                                                    ?>
+                                                                if ($portfolio_url != '') { ?>
                                                                     <a href="<?php echo($portfolio_url) ?>"
                                                                        target="_blank"><i class="fa fa-chain"></i></a>
-                                                                    <?php
-                                                                }
-                                                                ?>
+                                                                <?php } ?>
                                                             </div>
                                                         </figcaption>
                                                     </figure>
@@ -1024,8 +1072,8 @@ $field21 = get_field('cf21');
                                                     <li class="jobsearch-column-12">
                                                         <small><?php echo($award_yearfield_val) ?></small>
                                                         <div class="jobsearch-candidate-timeline-text">
-                                                            <h2><a><?php echo($exfield) ?></a></h2>
-                                                            <p><?php echo($exfield_val) ?></p>
+                                                            <h2><a><?php echo jobsearch_esc_html($exfield) ?></a></h2>
+                                                            <p><?php echo jobsearch_esc_html($exfield_val) ?></p>
                                                         </div>
                                                     </li>
                                                     <?php
@@ -1034,7 +1082,6 @@ $field21 = get_field('cf21');
                                                 ?>
                                             </ul>
                                         </div>
-
                                         <?php
                                     }
                                 }
@@ -1078,95 +1125,6 @@ $field21 = get_field('cf21');
                                 do_action('jobsearch_add_review_form', $review_form_args);
                             }
                             ?>
-
-<!-- 追加　-->
-
-<div class="jobsearch-candidate-title">
-  <h2><i class="jobsearch-icon jobsearch-check-sign-in-a-rounded-black-square"></i> 自己PR</h2>
-</div>
-<div class="jobsearch-description">
-    <?php echo($candidate_content) ?>
-</div>
-
-<div class="jobsearch-candidate-title">
-  <h2><i class="jobsearch-icon jobsearch-salary"></i> 給与情報</h2>
-</div>
-
-<?php
-$field41 = get_field('cf41');
-$field42 = get_field('cf42');
-echo
-'<table class="tbl01"><tbody><tr><th>現在の月収</th><td>';
-if(get_post_meta($post->ID, 'cf31',true)):
-echo number_format(get_post_meta($post->ID,'cf31',true));
-echo
-'円<br />基本給：';
-else:
-echo
-'-円<br />基本給：';
-endif;
-
-if(get_post_meta($post->ID, 'cf32',true)):
-echo number_format(get_post_meta($post->ID,'cf32',true));
-echo
-'円／残業手当：';
-else:
-echo
-'-円／残業手当：';
-endif;
-
-if(get_post_meta($post->ID, 'cf33',true)):
-echo number_format(get_post_meta($post->ID,'cf33',true));
-echo
-'円／その他手当：';
-else:
-echo
-'-円／その他手当：';
-endif;
-
-if(get_post_meta($post->ID, 'cf34',true)):
-echo number_format(get_post_meta($post->ID,'cf34',true));
-echo
-'円</td></tr><tr><th>年間賞与</th><td>';
-else:
-echo
-'-円</td></tr><tr><th>年間賞与</th><td>';
-endif;
-
-if(get_post_meta($post->ID, 'cf35',true)):
-echo number_format(get_post_meta($post->ID,'cf35',true));
-echo
-'円</td></tr><tr><th>現在の年収</th><td>';
-else:
-echo
-'-円</td></tr><tr><th>現在の年収</th><td>';
-endif;
-
-if(get_post_meta($post->ID, 'cf36',true)):
-echo number_format(get_post_meta($post->ID,'cf36',true));
-echo
-'円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
-else:
-echo
-'-円</td></tr><tr><th>希望月収</th><td>'.$field41.'</td></tr><tr><th>希望年収</th><td>'.$field42.'</td></tr></tbody></table>';
-endif;
-
-?>
-
-<style>
-.tbl01 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td {
-    text-align: left;
-}
-.tbl01 td,
-.tbl01 th {
-padding-left: 5px;
-}
-.jobsearch-typo-wrap {
-  color:#333333;
-}
-</style>
-<!-- 追加　-->
-
                         </div>
                         <?php
                         echo apply_filters('jobsearch_cand_detail_after_conwraper', '', $candidate_id);
@@ -1179,5 +1137,4 @@ padding-left: 5px;
         </div>
     </div>
     <!-- Main Section -->
-
 </div>

@@ -7,6 +7,21 @@ if (!defined('ABSPATH')) {
     die;
 }
 
+function careerfy_simpemployer_promote_profile_star_html($html, $id, $view = ''){
+    ob_start();
+    if ($view == 'slider2') {
+        ?>
+        <small class="careerfy-jobli-medium3"><i class="fa fa-star"></i></small>
+        <?php
+    } else {
+        ?>
+        <span class="careerfy-jobli-medium3"><i class="fa fa-star"></i></span>
+        <?php
+    }
+    $html = ob_get_clean();
+    return $html;
+}
+
 // main plugin class
 class JobSearch_Careerfy_Simple_Employers_Listins
 {
@@ -79,7 +94,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
             add_filter('posts_join_paged', array($this, 'edit_join'), 999, 2);
             add_filter('posts_orderby', array($this, 'edit_orderby'), 999, 2);
         }
-        
+
         $employers_query = new WP_Query($args);
         $totl_found_jobs = $employers_query->found_posts;
         $employers_posts = $employers_query->posts;
@@ -95,10 +110,10 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                 echo '
                 <div id="careerfy-slidmaintop-' . ($rand_num) . '" style="position: relative; float: left; width: 100%;">
                 <div id="careerfy-slidloder-' . ($rand_num) . '" class="careerfy-slidloder-section"><div class="ball-scale-multiple"><div></div><div></div><div></div></div></div>';
-                
+
             }
             if ($employer_style == 'slider') {
-            echo '<div id="employer-listin-slidr-' . $rand_num . '" class="careerfy-categories-classic-slider">
+                echo '<div id="employer-listin-slidr-' . $rand_num . '" class="careerfy-categories-classic-slider">
                   <div class="careerfy-categories-classic-slider-layer">';
             }
             if ($employer_style == 'simple' || $employer_style == 'slider') {
@@ -131,15 +146,17 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                 </div>
                 <!-- Top Companies List -->
             <?php } else if ($employer_style == 'slider2') {
-                  $view_all_btn_class = isset($employer_per_page) && $totl_found_jobs <= 9  ? 'no-slider' : '';
+                $view_all_btn_class = isset($employer_per_page) && $totl_found_jobs <= 9 ? 'no-slider' : '';
                 ?>
                 <!-- Premium Section -->
                 <div class="careerfy-section-premium-wrap">
                     <?php if ($employer_title != '') { ?>
                         <div class="careerfy-section-title-style">
                             <h2><?php echo $employer_title ?></h2>
-                            <a href="<?php echo $link_text_url ?>"
-                               class="careerfy-section-title-btn <?php echo $view_all_btn_class ?>"><?php echo $link_text ?></a>
+                            <?php if (!empty($link_text)) { ?>
+                                <a href="<?php echo $link_text_url ?>"
+                                   class="careerfy-section-title-btn <?php echo $view_all_btn_class ?>"><?php echo $link_text ?></a>
+                            <?php } ?>
                         </div>
                     <?php } ?>
                     <div id="careerfy-top-employers-<?php echo $rand_num ?>" class="careerfy-top-employers-slider">
@@ -171,22 +188,20 @@ class JobSearch_Careerfy_Simple_Employers_Listins
             <?php } else { ?>
                 <div class="top-companies-list">
                     <ul>
-                        <?php
-                        self::load_more_employers_posts($employers_posts, $employer_style);
-                        ?>
+                        <?php self::load_more_employers_posts($employers_posts, $employer_style); ?>
                     </ul>
                 </div>
 
             <?php }
-            
+
             if ($employer_style == 'slider') {
-                echo '</div></div>'; 
+                echo '</div></div>';
                 ?>
 
                 <script>
                     jQuery(document).ready(function ($) {
                         jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
                         jQuery('#employer-listin-slidr-<?php echo($rand_num) ?>').slick({
                             slidesToShow: 1,
                             slidesToScroll: 1,
@@ -229,7 +244,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
 
                         var slidrHightInt<?php echo($rand_num) ?> = setInterval(function () {
                             jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
 
                             var slider_act_height_<?php echo($rand_num) ?> = jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').height();
 
@@ -243,18 +258,17 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                         }, 1700);
                     });
                     jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'none'});
-                    
+
                     var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
                     jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
                 </script>
-                <?php
-            } else if ($employer_style == 'slider2') { ?>
 
+            <?php } else if ($employer_style == 'slider2') { ?>
                 <script type="text/javascript">
                     //*** Function Top Employers Slider
                     jQuery(document).ready(function ($) {
                         jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
                         jQuery('#careerfy-top-employers-<?php echo $rand_num ?>').slick({
                             slidesToShow: 1,
                             slidesToScroll: 1,
@@ -289,7 +303,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                                 }
                             ]
                         });
-                        
+
                         var remSlidrLodrInt<?php echo($rand_num) ?> = setInterval(function () {
                             jQuery('#careerfy-slidloder-<?php echo($rand_num) ?>').remove();
                             clearInterval(remSlidrLodrInt<?php echo($rand_num) ?>);
@@ -299,7 +313,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                             jQuery('#careerfy-top-employers-<?php echo($rand_num) ?>').find('img').attr('width', '');
                             jQuery('#careerfy-top-employers-<?php echo($rand_num) ?>').find('img').attr('height', '');
                             jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
 
                             var slider_act_height_<?php echo($rand_num) ?> = jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').height();
 
@@ -308,13 +322,12 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                             c_date_<?php echo($rand_num) ?>.setTime(c_date_<?php echo($rand_num) ?>.getTime() + (60 * 60 * 1000));
                             var c_expires_<?php echo($rand_num) ?> = "; c_expires=" + c_date_<?php echo($rand_num) ?>.toGMTString();
                             document.cookie = filtr_cname_<?php echo($rand_num) ?> + "=" + slider_act_height_<?php echo($rand_num) ?> + c_expires_<?php echo($rand_num) ?> + "; path=/";
-
                             clearInterval(slidrHightInt<?php echo($rand_num) ?>);
                         }, 1700);
                     });
-                    
+
                     jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'none'});
-                    
+
                     var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
                     jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
                 </script>
@@ -324,8 +337,8 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                 <script type="text/javascript">
                     jQuery(document).ready(function ($) {
                         jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
-                        
+                        jQuery('#main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
+
                         $('#topcompanies-slider-<?php echo $rand_num ?>').slick({
                             slidesToShow: 1,
                             slidesToScroll: 1,
@@ -366,7 +379,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
 
                         var slidrHightInt<?php echo($rand_num) ?> = setInterval(function () {
                             jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': 'auto'});
-                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'inline-block'});
+                            jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'block'});
 
                             var slider_act_height_<?php echo($rand_num) ?> = jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').height();
 
@@ -379,9 +392,9 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                             clearInterval(slidrHightInt<?php echo($rand_num) ?>);
                         }, 1700);
                     });
-                    
+
                     jQuery('.main-empslists-<?php echo($rand_num) ?>').css({'display': 'none'});
-                    
+
                     var slider_height_<?php echo($rand_num) ?> = '<?php echo(isset($_COOKIE['careerfy_topemps_slidr_lheight']) && $_COOKIE['careerfy_topemps_slidr_lheight'] != '' ? $_COOKIE['careerfy_topemps_slidr_lheight'] . 'px' : '300px') ?>';
                     jQuery('#careerfy-slidmaintop-<?php echo($rand_num) ?>').css({'height': slider_height_<?php echo($rand_num) ?>});
                 </script>
@@ -480,6 +493,7 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                 $categories = get_the_terms($employer_id, 'sector');
 
                 $job_search_employer_location = get_post_meta($employer_id, 'jobsearch_field_location_address', true);
+                $job_search_employer_featured = get_post_meta($employer_id, 'cusemp_feature_fbckend', true);
                 $job_search_employer_sectors = wp_get_post_terms($employer_id, 'sector');
                 $employer_sector = !empty($job_search_employer_sectors[0]->name) ? $job_search_employer_sectors[0]->name : '';
 
@@ -507,14 +521,26 @@ class JobSearch_Careerfy_Simple_Employers_Listins
 
                     }
                 }
+                
+                add_filter('jobsearch_member_promot_profile_star_html', 'careerfy_simpemployer_promote_profile_star_html', 15, 3);
+                ob_start();
+                echo jobsearch_member_promote_profile_iconlab($employer_id, $listin_view);
+                $feature_emp_html = ob_get_clean();
+                remove_filter('jobsearch_member_promot_profile_star_html', 'careerfy_simpemployer_promote_profile_star_html', 15, 3);
+                
                 if ($listin_view == 'simple' || $listin_view == 'slider') { ?>
                     <li>
+
                         <a href="<?php echo get_permalink($employer_id) ?>">
-                        <span class="careerfy-categories-classic-logo"> <img src="<?php echo($post_thumbnail_src) ?>"
-                                                                             alt=""> </span>
+
+                        <span class="careerfy-categories-classic-logo"> <img src="<?php echo($post_thumbnail_src) ?>" alt=""> </span>
                             <span class="careerfy-categories-classic-title"><?php echo($jobsearch_employer_job_count_str) ?></span>
                             <small>(<?php echo absint($jobsearch_employer_job_count) ?>)</small>
+                            <?php
+                            echo ($feature_emp_html);
+                            ?>
                         </a>
+
                     </li>
                 <?php } else if ($listin_view == 'style5') { ?>
                     <li class="col-md-3">
@@ -527,8 +553,13 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                             <?php if (!empty($categories)) { ?>
                                 <span><?php echo $categories[0]->name ?></span>
                             <?php } ?>
-                            <small><?php echo absint($jobsearch_employer_job_count) ?> <?php echo $jobsearch_employer_job_count_str ?></small>
+                            <small><?php echo absint($jobsearch_employer_job_count) ?><?php echo $jobsearch_employer_job_count_str ?></small>
+
+                            <?php
+                            echo ($feature_emp_html);
+                            ?>
                         </div>
+
                     </li>
                 <?php } else if ($listin_view == 'style3') { ?>
                     <li class="col-md-4">
@@ -543,8 +574,9 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                                 <h2>
                                     <a href="<?php echo get_permalink($employer_id) ?>"><?php echo $job_search_employer_info->post_title ?></a>
                                 </h2>
-                                <small><?php echo($job_search_employer_location) ?></small>
-                                <a href="<?php echo get_permalink($employer_id) ?>" class="top-companies-list-text-btn"><?php echo absint($jobsearch_employer_job_count) ?> <?php echo($jobsearch_employer_job_count_str) ?></a>
+                                <small><?php echo jobsearch_esc_html($job_search_employer_location) ?></small>
+                                <a href="<?php echo get_permalink($employer_id) ?>"
+                                   class="top-companies-list-text-btn"><?php echo absint($jobsearch_employer_job_count) ?><?php echo($jobsearch_employer_job_count_str) ?></a>
                             </div>
                             <?php
                             if (function_exists('jobsearch_member_promote_profile_iconlab')) {
@@ -560,6 +592,9 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                             <img src="<?php echo($post_thumbnail_src) ?>" alt="">
                             <span><?php echo $jobsearch_employer_job_count_str ?>
                                 <small>(<?php echo($jobsearch_employer_job_count) ?>)</small></span>
+                            <?php
+                            echo ($feature_emp_html);
+                            ?>
                         </a>
                     </li>
 
@@ -574,11 +609,14 @@ class JobSearch_Careerfy_Simple_Employers_Listins
                                         <?php echo get_the_title($employer_id) ?></a>
                                 </h2>
                                 <span><i class="fa fa-map-marker"></i>
-                                    <?php echo($job_search_employer_location) ?></span>
+                                    <?php echo jobsearch_esc_html($job_search_employer_location) ?></span>
                                 <small>
                                     <?php echo($jobsearch_employer_job_count) ?>
                                     <?php echo($jobsearch_employer_job_count_str) ?></small>
                             </figcaption>
+                            <?php
+                            echo ($feature_emp_html);
+                            ?>
                         </figure>
                     </li>
                 <?php } else { ?>
@@ -703,6 +741,18 @@ class JobSearch_Careerfy_Simple_Employers_Listins
         return $join_paged_statement;
     }
 
+    public function edit_orderby($orderby_statement, $wp_query)
+    {
+        if (!isset($wp_query->query) || $wp_query->is_page || (isset($wp_query->query['post_type']) && $wp_query->query['post_type'] != 'employer')
+        ) {
+            return $orderby_statement;
+        }
+
+        $orderby_statement = "cast(postmeta.meta_value as unsigned) DESC";
+
+        return $orderby_statement;
+    }
+
     /**
      * Edit orderby
      *
@@ -716,30 +766,18 @@ class JobSearch_Careerfy_Simple_Employers_Listins
 
         if ($listin_view == 'style3' || $listin_view == 'slider2' || $listin_view == 'style5') {
             $img_size = 'style3';
-        } else if($listin_view == 'slider') {
+        } else if ($listin_view == 'slider') {
             $img_size = 'thumbnail';
+        } else if ($listin_view == 'slider3') {
+            $img_size = 'careerfy-service';
         } else {
             $img_size = 'careerfy-emp-msmal';
-
         }
 
         $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, $img_size);
         $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : '';
         return $post_thumbnail_src == '' ? jobsearch_employer_image_placeholder() : $post_thumbnail_src;
     }
-
-    public function edit_orderby($orderby_statement, $wp_query)
-    {
-        if (!isset($wp_query->query) || $wp_query->is_page || (isset($wp_query->query['post_type']) && $wp_query->query['post_type'] != 'employer')
-        ) {
-            return $orderby_statement;
-        }
-
-        $orderby_statement = "cast(postmeta.meta_value as unsigned) DESC";
-
-        return $orderby_statement;
-    }
-
 }
 
 return new JobSearch_Careerfy_Simple_Employers_Listins();

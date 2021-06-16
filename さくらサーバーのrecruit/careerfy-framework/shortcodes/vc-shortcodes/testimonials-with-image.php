@@ -461,7 +461,7 @@ function careerfy_testimonials_shortcode($atts, $content = '')
         $html = '
         <div class="careerfy-testimonial-section">
             <div class="row">
-                ' . ($img != '' ? '<aside class="col-md-5"> <img src="' . $img . '" alt=""> </aside>' : '') . '
+                ' . ($img != '' ? '<aside class="col-md-5" style="background:url('.$img.'); background-repeat: no-repeat; background-size:cover; background-position: center;"></aside>' : '') . '
                 <aside class="col-md-7">
                     <div class="careerfy-testimonial-slider">
                         ' . do_shortcode($content) . '
@@ -492,6 +492,7 @@ function careerfy_testimonial_item_shortcode($atts)
         'date_txt' => '',
         'testimonial_url' => '',
     ), $atts));
+
 
     $bg_color = $bg_color != "" ? "style='background-color: $bg_color'" : "";
 
@@ -546,11 +547,16 @@ function careerfy_testimonial_item_shortcode($atts)
         }
         $thumbnail_src = isset($thumbnail_image[0]) && esc_url($thumbnail_image[0]) != '' ? $thumbnail_image[0] : $no_placeholder_img;
 
-        $html = '<div class="careerfy-testimonial-description">
+        $html = '<div class="careerfy-testimonial-twentyone-layers">
+          <div class="careerfy-testimonial-twentyone-inner">
+                <a href="javascript:void(0)" tabindex="0">
+                    <img src="' . ($thumbnail_src) . '" alt="">
+                </a>
+                <div class="careerfy-testimonialone-description">
                     <p>' . ($desc) . '</p>
-                    <a href="javascript:void(0)"><img src="' . ($thumbnail_src) . '" alt=""></a>
                     <h2>' . ($title) . '</h2>
                     <span>' . ($position) . '</span>
+                </div></div>
                 </div>';
 
 

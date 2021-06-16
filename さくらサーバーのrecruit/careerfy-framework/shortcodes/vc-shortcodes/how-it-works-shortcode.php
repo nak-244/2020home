@@ -86,7 +86,7 @@ class JobSearch_Careerfy_How_It_Works
             <figure>
                 <a href="#"><img src="<?php echo $step_2_image ?>" alt=""></a>
                 <figcaption>
-                    <span><i class="careerfy-icon <?php echo $step_2_icon ?>" <?php echo $carrerfy_step_2_icon_color ?>></i><?php echo esc_html__('Let’s Connect!', 'careerfy-frame') ?></span>
+                    <span><i class="careerfy-icon <?php echo $step_2_icon ?>" <?php echo $carrerfy_step_2_icon_color ?>></i><?php echo esc_html__($step_2_image_desc) ?></span>
                 </figcaption>
             </figure>
             <div class="careerfy-howit-works-text">
@@ -101,7 +101,9 @@ class JobSearch_Careerfy_How_It_Works
             <figure>
                 <figcaption>
                     <?php
-                    $step_3_options = vc_param_group_parse_atts($step_3_opts);
+        if (function_exists('vc_param_group_parse_atts')) {
+            $step_3_options = vc_param_group_parse_atts($step_3_opts);
+        }
                     foreach ($step_3_options as $options) {
                         $icon_color = isset($options['step_3_icon_color']) && $options['step_3_icon_color'] != "" ? 'style="color: ' . $options['step_3_icon_color'] . '"  ' : '';
                         $option_status = isset($options['step_3_checked_1']) && $options['step_3_checked_1'] == "yes" ? '<em class="careerfy-icon careerfy-checked"></em>' : '<em class="fa fa-times"></em>';
@@ -138,5 +140,4 @@ class JobSearch_Careerfy_How_It_Works
         return $html;
     }
 }
-
 return new JobSearch_Careerfy_How_It_Works();

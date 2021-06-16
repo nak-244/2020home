@@ -68,11 +68,10 @@ class JobSearch_plugin {
     );
 
     public function __construct() {
-
-        self::$version = '1.4.5';
+        
+        self::$version = '1.6.2';
         self::$unique_id = uniqid();
 
-        $this->set_locale();
         do_action('jobsearch_trigger_hook_after_locale');
         $this->load_dependencies();
         $this->define_admin_hooks();
@@ -80,18 +79,51 @@ class JobSearch_plugin {
         $this->load_post_types();
         $this->load_shortcodes();
         $this->load_widgets();
+        add_action('init', array($this, 'set_plugin_locale'), 0);
         add_action('wp_print_scripts', array($this, 'remove_wp_ui_core'), 100);
         add_filter('custom_menu_order', '__return_true');
         add_filter('menu_order', array($this, 'menu_order'), 9);
     }
     
+    public function set_plugin_locale() {
+        $this->set_locale();
+    }
+    
     public function remove_wp_ui_core() {
-        global $pagenow;
+        global $pagenow, $jobsearch_plugin_options;
+        
+        $is_page = is_page();
+        $page_content = '';
+        if ($is_page) {
+            $page_id = get_the_ID();
+            $page_post = get_post($page_id);
+            $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
+        }
+        $is_jobs_elemnt_page = $is_cands_elemnt_page = $is_emps_elemnt_page = false;
+        if (strpos($page_content, 'job_short_counter')) {
+            $is_jobs_elemnt_page = true;
+        }
+        if (strpos($page_content, 'candidate_short_counter')) {
+            $is_cands_elemnt_page = true;
+        }
+        if (strpos($page_content, 'employer_short_counter')) {
+            $is_emps_elemnt_page = true;
+        }
+        
+        $signup_custom_fields = isset($jobsearch_plugin_options['signup_custom_fields']) ? $jobsearch_plugin_options['signup_custom_fields'] : '';
+        $candidate_custom_fields = isset($jobsearch_plugin_options['candidate_custom_fields']) ? $jobsearch_plugin_options['candidate_custom_fields'] : '';
+        $employer_custom_fields = isset($jobsearch_plugin_options['employer_custom_fields']) ? $jobsearch_plugin_options['employer_custom_fields'] : '';
+        $is_cusfields_inregr = false;
+        if ($signup_custom_fields == 'on' && (!empty($candidate_custom_fields) || !empty($employer_custom_fields)) && !is_user_logged_in()) {
+            $is_cusfields_inregr = true;
+        }
         
         if (!is_admin() && $pagenow != 'wp-login.php') {
             //wp_deregister_script('jquery-ui-core');
-            wp_enqueue_script('jquery-ui-slider');
-            wp_enqueue_script('jquery-ui-sortable');
+            if ($is_cusfields_inregr || is_singular(array('job', 'employer', 'candidate')) || ($is_page && ($is_jobs_elemnt_page || $is_cands_elemnt_page || $is_emps_elemnt_page || has_shortcode($page_content, 'jobsearch_job_shortcode') || has_shortcode($page_content, 'jobsearch_candidate_shortcode') || has_shortcode($page_content, 'jobsearch_employer_shortcode') || has_shortcode($page_content, 'jobsearch_user_job')))) {
+                wp_enqueue_script('jquery-ui-slider');
+                wp_enqueue_script('jquery-ui-sortable');
+            }
         }
     }
 
@@ -108,7 +140,7 @@ class JobSearch_plugin {
             'edit.php?post_type=dashb_menu',
             'jobsearch-job-fields',
             'jobsearch-email-templates-fields',
-            'jobsearch_options',
+            'jobsearch_plugin_options',
         );
         
         $jobsearch_posts_arr = apply_filters('jobsearch_main_wp_menu_list', $jobsearch_posts_arr);
@@ -130,7 +162,7 @@ class JobSearch_plugin {
                 $cus_menu_order[] = 'jobsearch-email-templates-fields';
                 $cus_menu_order[] = 'jobsearch-location-sett';
                 $cus_menu_order[] = 'edit.php?post_type=package';
-                $cus_menu_order[] = 'jobsearch_options';
+                $cus_menu_order[] = 'jobsearch_plugin_options';
                 //
                 $cus_menu_order = apply_filters('jobsearch_main_wp_menu_order', $cus_menu_order);
                 $jobsearch_menu_order = array_merge($jobsearch_menu_order, $cus_menu_order);
@@ -174,12 +206,15 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-location-check.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/json/currencies.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/class-form-fields.php';
+        
         // common functions file
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/class-fix-image-rotation.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/common-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-wc-subscriptions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/job-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/employer-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/candidate-functions.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/candidate-portfolio-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/woocommerce-addon-helper.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/applicants-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/email-applicants.php';
@@ -187,6 +222,10 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/candidate-restrictions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/job-desc-templates.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/dashboard-notifications.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-job-applicants-filters.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions/emp-dash-jobmanage-applicants.php';
+        
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/jobsearch-end-jsfile.php';
         // employer all applicants class
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-employer-all-applicants.php'; 
         // employer email applicants class
@@ -209,6 +248,8 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'admin/user/user-custom-fields.php';
         // custom rss feeds
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/rss/class-job-rss-feed.php'; 
+        //
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-apply-job-questions.php'; 
         // twitter oauth
         include plugin_dir_path(dirname(__FILE__)) . 'includes/twitter-tweets/twitteroauth.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-email.php';
@@ -237,6 +278,10 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-user-rejected-for-interview.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-job-applied-to-employer.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-job-applied-to-candidate.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-instamatch-mail-by-employer.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-instamatch-mail-at-jobpost.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-profile-approved-to-candidate.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-profile-approved-to-employer.php';
         //
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-jobs-package-expire-alert.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/email-templates/class-fjobs-package-expire-alert.php';
@@ -282,12 +327,18 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'modules/job-alerts/job-alerts.php';
         //import locations
         include plugin_dir_path(dirname(__FILE__)) . 'modules/import-locations/import-locations.php';
-        //indeed jobs
+
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-job-import-integrations.php';
         include plugin_dir_path(dirname(__FILE__)) . 'modules/indeed-jobs-import/indeed-jobs.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'modules/ziprecruiter-integration/ziprecruiter-jobs.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'modules/careerjet-integration/careerjet-jobs.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'modules/careerbuilder-integration/careerbuilder-jobs.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/classes/class-job-import-cron.php';
+
         //ads management
         include plugin_dir_path(dirname(__FILE__)) . 'modules/ads-management/ads-management.php';
-        // redux frameworks files
-        include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/ReduxCore/framework.php';
+        //redux frameworks files
+        include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/class-redux-framework-plugin.php';
         include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/jobsearch-options/options-config.php';
         //shortcode builder
         include plugin_dir_path(dirname(__FILE__)) . 'includes/shortcode-builder/shortcodes-builder.php';
@@ -314,6 +365,7 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/job-categories.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/advance-search.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/banner-advertisement.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/login-popup-shortcode.php';
     }
 
     /**
@@ -359,6 +411,7 @@ class JobSearch_plugin {
         include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/candidate-multi-fields/candidate-portfolio-fields.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/candidate-multi-fields/candidate-award-fields.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/candidate-multi-fields/candidate-skill-fields.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/candidate-multi-fields/candidate-language-fields.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/post-types/employer.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/employer-metabox.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/meta-boxes/employer-multi-fields/employer-team-fields.php';
@@ -376,8 +429,14 @@ class JobSearch_plugin {
      */
     private function set_locale() {
 
-        $locale = apply_filters('plugin_locale', get_locale(), 'wp-jobsearch');
-
+        if (function_exists('determine_locale')) {
+            $locale = determine_locale();
+        } else {
+            // @todo Remove when start supporting WP 5.0 or later.
+            $locale = is_admin() ? get_user_locale() : get_locale();
+        }
+        $locale = apply_filters('plugin_locale', $locale, 'wp-jobsearch');
+        unload_textdomain('wp-jobsearch');
         load_textdomain('wp-jobsearch', WP_LANG_DIR . '/plugins/wp-jobsearch-' . $locale . '.mo');
         load_plugin_textdomain('wp-jobsearch', false, dirname(dirname(plugin_basename(__FILE__))) . '/languages');
     }
@@ -411,7 +470,7 @@ class JobSearch_plugin {
         add_action('admin_menu', array($this, 'jobsearch_email_logs_post_type_menu'));
 
         add_action('admin_enqueue_scripts', array($this, 'admin_style_scripts'));
-        add_action('wp_enqueue_scripts', array($this, 'front_style_scripts'), 1);
+        add_action('wp_enqueue_scripts', array($this, 'front_style_scripts'), 90);
 
         // jobs metaboxes
         add_action('add_meta_boxes', 'jobsearch_jobs_settings_meta_boxes');
@@ -421,6 +480,32 @@ class JobSearch_plugin {
 
         // employer metaboxes
         add_action('add_meta_boxes', 'jobsearch_employers_settings_meta_boxes');
+        
+        // For all jobs single cron event
+        $args = array(
+            'post_type' => 'job',
+            'posts_per_page' => '-1',
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'order' => 'DESC',
+            'orderby' => 'ID',
+            'meta_query' => array(
+                array(
+                    'key' => 'jobsearch_job_single_exp_cron',
+                    'value' => 'yes',
+                    'compare' => '=',
+                ),
+            ),
+        );
+        $jobs_query = new WP_Query($args);
+
+        $jobs_posts = $jobs_query->posts;
+
+        if (!empty($jobs_posts)) {
+            foreach ($jobs_posts as $job_id) {
+                add_action('jobsearch_job_expiry_cron_event_' . $job_id, 'jobsearch_make_job_to_expiry_cron', 15, 2);
+            }
+        }
     }
     
     public function common_sector_menu() {
@@ -617,6 +702,14 @@ class JobSearch_plugin {
         }
         return $single_template;
     }
+    
+    public static function map_styles_for_header() {
+        global $jobsearch_plugin_options;
+        $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
+        if ($location_map_type == 'mapbox') {
+            wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
+        }
+    }
 
     /**
      * Register all of the front styles and scripts
@@ -628,17 +721,46 @@ class JobSearch_plugin {
     public function front_style_scripts() {
         global $jobsearch_plugin_options, $careerfy_framework_options, $sitepress;
 
+        $is_page = is_page();
+        $page_content = '';
+        if ($is_page) {
+            $page_id = get_the_ID();
+            $page_post = get_post($page_id);
+            $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
+        }
+        
+        $is_jobs_elemnt_page = $is_cands_elemnt_page = $is_emps_elemnt_page = false;
+        if (strpos($page_content, 'job_short_counter')) {
+            $is_jobs_elemnt_page = true;
+        }
+        if (strpos($page_content, 'candidate_short_counter')) {
+            $is_cands_elemnt_page = true;
+        }
+        if (strpos($page_content, 'employer_short_counter')) {
+            $is_emps_elemnt_page = true;
+        }
+
         $admin_ajax_url = admin_url('admin-ajax.php');
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
             $admin_ajax_url = add_query_arg(array('lang' => $lang_code), $admin_ajax_url);
         }
         
+        //
+        $signup_custom_fields = isset($jobsearch_plugin_options['signup_custom_fields']) ? $jobsearch_plugin_options['signup_custom_fields'] : '';
+        $candidate_custom_fields = isset($jobsearch_plugin_options['candidate_custom_fields']) ? $jobsearch_plugin_options['candidate_custom_fields'] : '';
+        $employer_custom_fields = isset($jobsearch_plugin_options['employer_custom_fields']) ? $jobsearch_plugin_options['employer_custom_fields'] : '';
+        $is_cusfields_inregr = false;
+        if ($signup_custom_fields == 'on' && (!empty($candidate_custom_fields) || !empty($employer_custom_fields)) && !is_user_logged_in()) {
+            $is_cusfields_inregr = true;
+        }
+        //
+
         $location_allow_map = isset($jobsearch_plugin_options['location-allow-map']) ? $jobsearch_plugin_options['location-allow-map'] : '';
         $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
         $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
         $mapbox_style_url = isset($jobsearch_plugin_options['mapbox_style_url']) ? $jobsearch_plugin_options['mapbox_style_url'] : '';
-        
+
         $all_locations_type = isset($jobsearch_plugin_options['all_locations_type']) ? $jobsearch_plugin_options['all_locations_type'] : '';
         $jobsearch_locsetin_options = get_option('jobsearch_locsetin_options');
         $loc_required_fields = isset($jobsearch_locsetin_options['loc_required_fields']) ? $jobsearch_locsetin_options['loc_required_fields'] : '';
@@ -658,21 +780,32 @@ class JobSearch_plugin {
 
         $careerfy_theme_color = isset($careerfy_framework_options['careerfy-main-color']) && $careerfy_framework_options['careerfy-main-color'] != '' ? $careerfy_framework_options['careerfy-main-color'] : '#13b5ea';
         $google_api_key = isset($jobsearch_plugin_options['jobsearch-google-api-key']) ? $jobsearch_plugin_options['jobsearch-google-api-key'] : '';
-        wp_enqueue_style('fullcalendar', jobsearch_plugin_get_url('css/fullcalendar.css'), array(), JobSearch_plugin::get_version());
+        //wp_enqueue_style('fullcalendar', jobsearch_plugin_get_url('css/fullcalendar.css'), array(), JobSearch_plugin::get_version());
         // required for frontend embading
-        wp_enqueue_style('fancybox', jobsearch_plugin_get_url('css/fancybox.css'), array(), JobSearch_plugin::get_version());
+        if (is_singular(array('job', 'employer', 'candidate'))) {
+            wp_enqueue_style('fancybox', jobsearch_plugin_get_url('css/fancybox.css'), array(), JobSearch_plugin::get_version());
+        }
         wp_enqueue_style('wp-jobsearch-flaticon', jobsearch_plugin_get_url('icon-picker/css/flaticon.css'), array(), JobSearch_plugin::get_version());
         wp_enqueue_style('wp-jobsearch-font-awesome', jobsearch_plugin_get_url('icon-picker/css/font-awesome.css'), array(), JobSearch_plugin::get_version());
         wp_enqueue_style('wp-jobsearch-selectize-def', jobsearch_plugin_get_url('css/selectize.default.css'), array(), JobSearch_plugin::get_version());
         if ($location_map_type == 'mapbox') {
-            wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
-            wp_enqueue_style('mapbox-geocoder-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css', array(), JobSearch_plugin::get_version());
-            wp_enqueue_style('mapbox-directions-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css', array(), JobSearch_plugin::get_version());
+            
+            if ($is_page && ($is_jobs_elemnt_page || $is_cands_elemnt_page || $is_emps_elemnt_page || has_shortcode($page_content, 'jobsearch_job_shortcode') || has_shortcode($page_content, 'jobsearch_candidate_shortcode') || has_shortcode($page_content, 'jobsearch_employer_shortcode') || has_shortcode($page_content, 'jobsearch_advance_search') || has_shortcode($page_content, 'jobsearch_user_job'))) {
+                wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
+            }
+            
+            if (is_singular(array('job', 'employer', 'candidate'))) {
+                wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
+                wp_enqueue_style('mapbox-geocoder-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css', array(), JobSearch_plugin::get_version());
+                wp_enqueue_style('mapbox-directions-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css', array(), JobSearch_plugin::get_version());
+            }
         }
-        wp_enqueue_style('jobsearch-intlTelInput', jobsearch_plugin_get_url('css/intlTelInput.css'), array(), JobSearch_plugin::get_version());
+        do_action('jobsearch_enqueue_front_files_after_mapstyles', JobSearch_plugin::get_version(), $jobsearch_plugin_options);
+        if (!is_user_logged_in() || is_singular(array('job'))) {
+            wp_enqueue_style('jobsearch-intlTelInput', jobsearch_plugin_get_url('css/intlTelInput.css'), array(), JobSearch_plugin::get_version());
+        }
         wp_enqueue_style('wp-jobsearch-css', jobsearch_plugin_get_url('css/plugin.css'), array(), JobSearch_plugin::get_version());
         wp_enqueue_style('jobsearch-color-style', jobsearch_plugin_get_url('css/color.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_style('jobsearch-morris', jobsearch_plugin_get_url('css/morris.css'), array(), JobSearch_plugin::get_version());
         // responsive
         wp_enqueue_style('plugin-responsive-styles', jobsearch_plugin_get_url('css/plugin-responsive.css'), array(), JobSearch_plugin::get_version());
         // rtl
@@ -683,6 +816,8 @@ class JobSearch_plugin {
             }
         }
         wp_enqueue_style('jobsearch-patch', jobsearch_plugin_get_url('css/patch.css'), array(), JobSearch_plugin::get_version());
+        
+        wp_enqueue_script('jobsearch-selectize', jobsearch_plugin_get_url('js/selectize.min.js'), array(), JobSearch_plugin::get_version(), true);
         
         $file_sizes_arr = array(
             '300' => __('300KB', 'wp-jobsearch'),
@@ -702,12 +837,15 @@ class JobSearch_plugin {
             '1000120' => __('1Gb', 'wp-jobsearch'),
         );
 
-        wp_enqueue_script('jobsearch-plugin-scripts', jobsearch_plugin_get_url('js/jobsearch-plugin.js'), array('jquery', 'password-strength-meter'), JobSearch_plugin::get_version(), true);
+        wp_enqueue_script('fitvideo', jobsearch_plugin_get_url('js/fitvideo.js'), array('jquery'), JobSearch_plugin::get_version(), true);
+        wp_enqueue_script('jobsearch-plugin-scripts', jobsearch_plugin_get_url('js/jobsearch-plugin.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         // Localize the script
         $jobsearch_plugin_arr = array(
             'plugin_url' => jobsearch_plugin_get_url(),
             'ajax_url' => $admin_ajax_url,
+            'ajax_url_simp' => admin_url('admin-ajax.php'),
             'locmap_type' => $location_map_type,
+            'google_api_key' => $google_api_key,
             'mapbox_token' => $mapbox_access_token,
             'mapbox_style' => $mapbox_style_url,
             'is_map_allow' => $location_allow_map,
@@ -724,7 +862,7 @@ class JobSearch_plugin {
             'com_word_description' => esc_html__('Description', 'wp-jobsearch'),
             'com_word_save' => esc_html__('Save', 'wp-jobsearch'),
             'error_msg' => esc_html__('There is some problem.', 'wp-jobsearch'),
-            'shortlisted_str' => esc_html__('Saved', 'wp-jobsearch'),
+            'shortlisted_str' => apply_filters('jobsearch_candidate_alrdy_saved_text', esc_html__('Saved', 'wp-jobsearch')),
             'select_sector' => esc_html__('Select Sector', 'wp-jobsearch'),
             'loading' => esc_html__('Loading...', 'wp-jobsearch'),
             'accpt_terms_cond' => esc_html__('Please accept our terms and conditions.', 'wp-jobsearch'),
@@ -735,6 +873,7 @@ class JobSearch_plugin {
             'pass_length_med' => esc_html__('Weak', 'wp-jobsearch'),
             'pass_length_good' => esc_html__('Medium', 'wp-jobsearch'),
             'pass_length_strng' => esc_html__('Strong', 'wp-jobsearch'),
+            'is_rtl' => is_rtl(),
         );
         $jobsearch_plugin_arr['acptable_pass_strnth'] = json_encode($accptable_pass_strength);
 
@@ -748,7 +887,7 @@ class JobSearch_plugin {
 
         $multiple_cv_files_allow = isset($jobsearch_plugin_options['multiple_cv_uploads']) ? $jobsearch_plugin_options['multiple_cv_uploads'] : '';
         $max_portfolio_allow = isset($jobsearch_plugin_options['max_gal_imgs_allow']) && $jobsearch_plugin_options['max_gal_imgs_allow'] > 0 ? $jobsearch_plugin_options['max_gal_imgs_allow'] : 5;
-        wp_register_script('jobsearch-user-dashboard', jobsearch_plugin_get_url('js/jobsearch-dashboard.js'), array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-user-dashboard', jobsearch_plugin_get_url('js/jobsearch-dashboard.js'), array('password-strength-meter'), JobSearch_plugin::get_version(), true);
 
         $pphot_size = '5120';
         $pphot_size_str = __('5 Mb', 'wp-jobsearch');
@@ -815,6 +954,7 @@ class JobSearch_plugin {
             'max_portfolio_allow_msg' => sprintf(esc_html__('You can upload up to "%s" portfolio files only.', 'wp-jobsearch'), $max_portfolio_allow),
             'pphot_size_err' => sprintf(esc_html__('Image size should not greater than %s.', 'wp-jobsearch'), $pphot_size_str),
             'cvrphot_size_err' => sprintf(esc_html__('Image size should not greater than %s.', 'wp-jobsearch'), $cvrphot_size_str),
+            'empphot_higwid_err' => esc_html__('Logo height and width should not not be greater than 250x250.', 'wp-jobsearch'),
             'pphot_size_allow' => $pphot_size,
             'cvrphot_size_allow' => $cvrphot_size,
             'com_img_size' => esc_html__('Image size should not greater than 1 MB.', 'wp-jobsearch'),
@@ -825,6 +965,7 @@ class JobSearch_plugin {
             'cvdoc_file_types' => stripslashes($cand_files_types_json),
             'error_msg' => esc_html__('There is some problem.', 'wp-jobsearch'),
             'fill_nec_fields' => esc_html__('Please fill the required fields.', 'wp-jobsearch'),
+            'are_you_sure' => esc_html__('Are you sure!', 'wp-jobsearch'),
             'del_prof_txt' => esc_html__('Are you sure! You want to delete your profile.', 'wp-jobsearch'),
         );
         wp_localize_script('jobsearch-user-dashboard', 'jobsearch_dashboard_vars', $jobsearch_plugin_arr);
@@ -861,21 +1002,19 @@ class JobSearch_plugin {
         wp_register_script('jobsearch-location', jobsearch_plugin_get_url('modules/locations/js/location-functions.js'), array('jquery'), '', true);
         wp_enqueue_script('jobsearch-plugin-common', jobsearch_plugin_get_url('js/jobsearch-common.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         wp_enqueue_script('fancybox-pack', jobsearch_plugin_get_url('js/fancybox.pack.js'), array(), JobSearch_plugin::get_version(), true);
-        wp_enqueue_script('jobsearch-selectize', jobsearch_plugin_get_url('js/selectize.min.js'), array(), JobSearch_plugin::get_version(), true);
         wp_enqueue_script('isotope-min', jobsearch_plugin_get_url('js/isotope.min.js'), array(), JobSearch_plugin::get_version(), true);
         wp_enqueue_script('moment', jobsearch_plugin_get_url('js/moment.min.js'), array(), JobSearch_plugin::get_version(), true);
         if (!class_exists('plugin_righthere_calendar')) {
-            wp_enqueue_script('fullcalendar', jobsearch_plugin_get_url('js/fullcalendar.min.js'), array(), JobSearch_plugin::get_version(), true);
+            //wp_enqueue_script('fullcalendar', jobsearch_plugin_get_url('js/fullcalendar.min.js'), array(), JobSearch_plugin::get_version(), true);
         }
         wp_register_script('jobsearch-map-infobox', jobsearch_plugin_get_url('js/map-infobox.js'), array(), JobSearch_plugin::get_version(), true);
-        
-        if ($location_map_type == 'mapbox') {
-            wp_register_script('jobsearch-mapbox', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('jobsearch-mapbox-geocoder', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('mapbox-geocoder-polyfill', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('mapbox-geocoder-polyfillauto', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('mapbox-directions', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js', array(), JobSearch_plugin::get_version(), true);
-        }
+
+        wp_register_script('jobsearch-mapbox', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-mapbox-geocoder', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('mapbox-geocoder-polyfill', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('mapbox-geocoder-polyfillauto', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('mapbox-directions', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js', array(), JobSearch_plugin::get_version(), true);
+
         if ($google_api_key != '') {
             wp_register_script('jobsearch-google-map', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&libraries=places', array(), JobSearch_plugin::get_version(), true);
         } else {
@@ -886,10 +1025,13 @@ class JobSearch_plugin {
         wp_register_script('jobsearch_google_recaptcha', 'https://www.google.com/recaptcha/api.js?onload=jobsearch_multicap_all_functions&amp;render=explicit', array(), JobSearch_plugin::get_version(), true);
         wp_register_script('jobsearch-addthis', 'https://s7.addthis.com/js/250/addthis_widget.js', array(), JobSearch_plugin::get_version(), true);
         wp_register_script('jobsearch-search-box-sugg', jobsearch_plugin_get_url('js/search-box-autocomplete.js'), array(), JobSearch_plugin::get_version(), true);
+        
+        wp_register_script('datetimepicker-script', jobsearch_plugin_get_url('js/jquery.datetimepicker.full.min.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         wp_enqueue_style('datetimepicker-style', jobsearch_plugin_get_url('css/jquery.datetimepicker.css'), array(), JobSearch_plugin::get_version());
-        wp_enqueue_script('datetimepicker-script', jobsearch_plugin_get_url('js/jquery.datetimepicker.full.min.js'), array('jquery'), JobSearch_plugin::get_version(), true);
+        wp_enqueue_script('datetimepicker-script');
+        
         wp_enqueue_script('jquery-ui', jobsearch_plugin_get_url('admin/js/jquery-ui.js'), array(), JobSearch_plugin::get_version(), false);
-        wp_enqueue_script('jobsearch-job-functions-script', jobsearch_plugin_get_url('js/job-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-job-functions-script', jobsearch_plugin_get_url('js/job-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         if ($location_map_type == 'mapbox') {
             wp_register_script('jobsearch-job-lists-map', jobsearch_plugin_get_url('js/job-listing-mapbox.js'), array('jquery'), JobSearch_plugin::get_version(), true);
             wp_register_script('jobsearch-employer-lists-map', jobsearch_plugin_get_url('js/employer-listing-mapbox.js'), array('jquery'), JobSearch_plugin::get_version(), true);
@@ -899,10 +1041,10 @@ class JobSearch_plugin {
             wp_register_script('jobsearch-employer-lists-map', jobsearch_plugin_get_url('js/employer-listing-map.js'), array('jquery'), JobSearch_plugin::get_version(), true);
             wp_register_script('jobsearch-candidate-lists-map', jobsearch_plugin_get_url('js/candidate-listing-map.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         }
-        wp_enqueue_script('jobsearch-employer-functions-script', jobsearch_plugin_get_url('js/employer-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
-        wp_enqueue_script('jobsearch-candidate-functions-script', jobsearch_plugin_get_url('js/candidate-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
-        wp_enqueue_script('jobsearch-morris', jobsearch_plugin_get_url('js/morris.js'), array(), JobSearch_plugin::get_version(), true);
-        wp_enqueue_script('jobsearch-raphael', jobsearch_plugin_get_url('js/raphael-min.js'), array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-employer-functions-script', jobsearch_plugin_get_url('js/employer-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-candidate-functions-script', jobsearch_plugin_get_url('js/candidate-functions.js'), array('jquery'), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-morris', jobsearch_plugin_get_url('js/morris.js'), array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-raphael', jobsearch_plugin_get_url('js/raphael-min.js'), array(), JobSearch_plugin::get_version(), true);
 
         wp_register_script('jobsearch-intlTelInput', jobsearch_plugin_get_url('js/intlTelInput.js'), array(), JobSearch_plugin::get_version(), true);
         wp_register_script('jobsearch-progressbar', jobsearch_plugin_get_url('js/progressbar.js'), array(), JobSearch_plugin::get_version(), true);
@@ -910,7 +1052,9 @@ class JobSearch_plugin {
         wp_enqueue_style('jobsearch-tag-it', jobsearch_plugin_get_url('css/jquery.tagit.css'), array(), JobSearch_plugin::get_version());
         wp_register_script('jobsearch-tag-it', jobsearch_plugin_get_url('js/tag-it.js'), array(), JobSearch_plugin::get_version(), true);
 
-        wp_enqueue_style('dropzone-style', jobsearch_plugin_get_url('css/dropzone.min.css'), array(), JobSearch_plugin::get_version());
+        if (is_singular('job')) {
+            wp_enqueue_style('dropzone-style', jobsearch_plugin_get_url('css/dropzone.min.css'), array(), JobSearch_plugin::get_version());
+        }
         wp_register_script('dropzone', jobsearch_plugin_get_url('js/dropzone.min.js'), array(), JobSearch_plugin::get_version(), true);
     }
 
@@ -924,6 +1068,15 @@ class JobSearch_plugin {
     public function admin_style_scripts() {
         global $jobsearch_plugin_options, $sitepress, $pagenow;
         wp_enqueue_style('wp-color-picker');
+        
+        $is_options_page = false;
+        if (isset($_GET['page']) && $_GET['page'] == 'jobsearch_plugin_options') {
+            $is_options_page = true;
+        }
+        $theme_options_page = false;
+        if (isset($_GET['page']) && $_GET['page'] == 'careerfy_framework_options') {
+            $theme_options_page = true;
+        }
 
         $admin_ajax_url = admin_url('admin-ajax.php');
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -964,6 +1117,7 @@ class JobSearch_plugin {
             'locmap_type' => $location_map_type,
             'mapbox_token' => $mapbox_access_token,
             'mapbox_style' => $mapbox_style_url,
+            'google_api_key' => $google_api_key,
             'is_map_allow' => $location_allow_map,
             'plugin_url' => jobsearch_plugin_get_url(),
             'var_address_str' => esc_html__('Address', 'wp-jobsearch'),
@@ -987,15 +1141,13 @@ class JobSearch_plugin {
         wp_register_script('jobsearch-plugin-custom-multi-meta-fields', jobsearch_plugin_get_url('js/custom-multi-meta-fields.js'), array('jquery'), JobSearch_plugin::get_version(), true);
         
         wp_register_script('jobsearch-location-autocomplete', jobsearch_plugin_get_url('js/jquery.location-autocomplete.js'), array(), JobSearch_plugin::get_version(), true);
-        
-        if ($location_map_type == 'mapbox') {
-            wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
-            wp_enqueue_style('mapbox-geocoder-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css', array(), JobSearch_plugin::get_version());
-            wp_register_script('jobsearch-mapbox', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('jobsearch-mapbox-geocoder', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('mapbox-geocoder-polyfill', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js', array(), JobSearch_plugin::get_version(), true);
-            wp_register_script('mapbox-geocoder-polyfillauto', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', array(), JobSearch_plugin::get_version(), true);
-        }
+
+        wp_enqueue_style('mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
+        wp_register_script('jobsearch-mapbox', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('jobsearch-mapbox-geocoder', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('mapbox-geocoder-polyfill', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js', array(), JobSearch_plugin::get_version(), true);
+        wp_register_script('mapbox-geocoder-polyfillauto', 'https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', array(), JobSearch_plugin::get_version(), true);
+
         if ($google_api_key != '') {
             wp_register_script('jobsearch-google-map', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&libraries=places', array(), JobSearch_plugin::get_version(), true);
         } else {
@@ -1004,9 +1156,10 @@ class JobSearch_plugin {
         // enqueue style
         // enqueue scripts
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_script('wp-color-picker-alpha', jobsearch_plugin_get_url('admin/js/wp-color-picker-alpha.min.js'), array('wp-color-picker'), JobSearch_plugin::get_version(), true);
-
-        wp_register_script('jobsearch-selectize', jobsearch_plugin_get_url('js/selectize.min.js'), array(), JobSearch_plugin::get_version(), true);
+        if (!$is_options_page && !$theme_options_page) {
+            wp_enqueue_script('wp-color-picker-alpha', jobsearch_plugin_get_url('admin/js/wp-color-picker-alpha.min.js'), array('wp-color-picker'), JobSearch_plugin::get_version(), true);
+        }
+        wp_enqueue_script('jobsearch-selectize', jobsearch_plugin_get_url('js/selectize.min.js'), array(), JobSearch_plugin::get_version(), true);
 
         //
         wp_register_script('jobsearch-user-dashboard', jobsearch_plugin_get_url('js/jobsearch-dashboard.js'), array(), JobSearch_plugin::get_version(), true);
@@ -1180,4 +1333,3 @@ class JobSearch_plugin {
     }
 
 }
-

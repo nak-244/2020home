@@ -5,8 +5,8 @@
  *
  */
 add_action('save_post', 'jobsearch_candidates_time_save');
-
-function jobsearch_candidates_time_save($post_id) {
+function jobsearch_candidates_time_save($post_id)
+{
     global $pagenow;
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
@@ -48,7 +48,7 @@ function jobsearch_candidates_time_save($post_id) {
                     update_post_meta($post_id, '_urgent_cand_frmadmin', 'no');
                 }
             }
-            
+
             // feature cand from bckend
             if (isset($_POST['cuscand_feature_fbckend'])) {
                 $promote_pckg_subtime = get_post_meta($post_id, 'promote_profile_substime', true);
@@ -63,6 +63,15 @@ function jobsearch_candidates_time_save($post_id) {
                     update_post_meta($post_id, '_feature_mber_frmadmin', 'no');
                 }
             }
+
+            if (isset($_POST['prev_candidate_approved'])) {
+
+                $post_on_status = $_POST['prev_candidate_approved'];
+
+                update_post_meta($post_id, 'jobsearch_prev_candidate_approved', $post_on_status);
+            }
+
+            jobsearch_onuser_update_wc_update($candidate_user_id);
         }
     }
 }
@@ -78,8 +87,9 @@ function jobsearch_candidates_time_save($post_id) {
 
 add_action('wp_ajax_jobsearch_cand_bkprofile_meta_delete_cover', 'jobsearch_cand_bkprofile_meta_delete_cover');
 
-function jobsearch_cand_bkprofile_meta_delete_cover() {
-    
+function jobsearch_cand_bkprofile_meta_delete_cover()
+{
+
     $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
     if ($user_id > 0) {
         $candidate_id = jobsearch_get_user_candidate_id($user_id);
@@ -95,7 +105,8 @@ function jobsearch_cand_bkprofile_meta_delete_cover() {
 
 add_action('wp_ajax_jobsearch_bkmeta_updating_cand_cover_img', 'jobsearch_bkmeta_updating_cand_cover_img');
 
-function jobsearch_bkmeta_updating_cand_cover_img() {
+function jobsearch_bkmeta_updating_cand_cover_img()
+{
     $candidate_id = isset($_POST['cand_id']) ? $_POST['cand_id'] : '';
     if ($candidate_id > 0) {
         $user_id = jobsearch_get_candidate_user_id($candidate_id);
@@ -103,12 +114,12 @@ function jobsearch_bkmeta_updating_cand_cover_img() {
         if (!empty($atach_urls)) {
 
             jobsearch_remove_cand_photo_foldr($candidate_id, 'cover_img');
-            
+
             $folder_path = $atach_urls['path'];
             $img_url = $atach_urls['orig'];
-            
+
             $file_uniqid = jobsearch_get_unique_folder_byurl($img_url);
-            
+
             $filename = basename($img_url);
             $filetype = wp_check_filetype($filename, null);
             $fileuplod_time = current_time('timestamp');
@@ -124,7 +135,7 @@ function jobsearch_bkmeta_updating_cand_cover_img() {
             update_post_meta($candidate_id, 'jobsearch_user_cover_imge', $arg_arr);
 
             $img_url = apply_filters('wp_jobsearch_cand_ccovr_img_url', $img_url, $candidate_id);
-            
+
             echo json_encode(array('imgUrl' => $img_url, 'err_msg' => ''));
             die;
         }
@@ -135,8 +146,9 @@ function jobsearch_bkmeta_updating_cand_cover_img() {
 
 add_action('wp_ajax_jobsearch_cand_bkprofile_avatar_delete_pthumb', 'jobsearch_cand_bkprofile_avatar_delete_pthumb');
 
-function jobsearch_cand_bkprofile_avatar_delete_pthumb() {
-    
+function jobsearch_cand_bkprofile_avatar_delete_pthumb()
+{
+
     $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
     if ($user_id > 0) {
         $candidate_id = jobsearch_get_user_candidate_id($user_id);
@@ -156,23 +168,24 @@ function jobsearch_cand_bkprofile_avatar_delete_pthumb() {
 
 add_action('wp_ajax_jobsearch_bkmeta_updating_cand_avatar_img', 'jobsearch_bkmeta_updating_cand_avatar_img');
 
-function jobsearch_bkmeta_updating_cand_avatar_img() {
+function jobsearch_bkmeta_updating_cand_avatar_img()
+{
     $candidate_id = isset($_POST['cand_id']) ? $_POST['cand_id'] : '';
     if ($candidate_id > 0) {
         $user_id = jobsearch_get_candidate_user_id($candidate_id);
         $file_urls = jobsearch_insert_candupload_attach('profile_img', $candidate_id);
         if (!empty($file_urls)) {
-            
+
             do_action('jobsearch_aftr_user_uploaded_profile_pic', $file_urls, $user_id);
 
             jobsearch_remove_cand_photo_foldr($candidate_id);
-            
+
             $folder_path = $file_urls['path'];
             $img_url = $file_urls['crop'];
             $orig_img_url = $file_urls['orig'];
-            
+
             $file_uniqid = jobsearch_get_unique_folder_byurl($img_url);
-            
+
             $filename = basename($orig_img_url);
             $filetype = wp_check_filetype($filename, null);
             $fileuplod_time = current_time('timestamp');
@@ -189,7 +202,7 @@ function jobsearch_bkmeta_updating_cand_avatar_img() {
             update_post_meta($candidate_id, 'jobsearch_user_avatar_url', $arg_arr);
 
             $img_url = apply_filters('wp_jobsearch_cand_profile_img_url', $img_url, $candidate_id, '150');
-            
+
             echo json_encode(array('imgUrl' => $img_url, 'err_msg' => ''));
             die;
         }
@@ -200,11 +213,13 @@ function jobsearch_bkmeta_updating_cand_avatar_img() {
 
 add_action('add_meta_boxes', 'jobsearch_candidate_profilephoto_meta_box');
 
-function jobsearch_candidate_profilephoto_meta_box() {
+function jobsearch_candidate_profilephoto_meta_box()
+{
     add_meta_box('jobsearch-cand-profilephoto', esc_html__('Profile Photo', 'wp-jobsearch'), 'jobsearch_candidate_bkmeta_profilephoto', 'candidate', 'side');
 }
 
-function jobsearch_candidate_bkmeta_profilephoto() {
+function jobsearch_candidate_bkmeta_profilephoto()
+{
     global $post;
     $rand_num = rand(1000000, 99999999);
     $_post_id = $post->ID;
@@ -216,30 +231,39 @@ function jobsearch_candidate_bkmeta_profilephoto() {
         $user_has_cimg = true;
     }
     $user_def_avatar_url = jobsearch_candidate_img_url_comn($_post_id);
+    ob_start();
     ?>
     <div class="jobsearch-post-settings">
         <div class="jobsearch-bkimg-holdr">
-            <a href="javascript:void(0);" class="user-bkdashthumb-remove" title="<?php esc_html_e('Delete', 'wp-jobsearch') ?>" data-uid="<?php echo ($user_id) ?>" <?php echo ($user_has_cimg ? '' : 'style="display: none;"') ?>><i class="dashicons dashicons-no-alt"></i></a>
+            <a href="javascript:void(0);" class="user-bkdashthumb-remove"
+               title="<?php esc_html_e('Delete', 'wp-jobsearch') ?>"
+               data-uid="<?php echo($user_id) ?>" <?php echo($user_has_cimg ? '' : 'style="display: none;"') ?>><i
+                        class="dashicons dashicons-no-alt"></i></a>
             <a id="candbk-profileimg-holder" href="javascript:void(0);" class="metabk-uplodr-thumb">
-                <img src="<?php echo ($user_def_avatar_url) ?>" alt="" style="max-width: 150px;">
+                <img src="<?php echo($user_def_avatar_url) ?>" alt="" style="max-width: 150px;">
             </a>
         </div>
         <div class="jobsearch-bkimg-uploadrcon">
             <input type="file" id="candidate_profile_img" name="candidate_profile_img" style="display: none;">
-            <a href="javascript:void(0);" class="button button-primary jobsearch-candbk-uplodimgbtn" data-id="<?php echo ($_post_id) ?>"><?php esc_html_e('Upload Profile Photo', 'wp-jobsearch') ?></a>
+            <a href="javascript:void(0);" class="button button-primary jobsearch-candbk-uplodimgbtn"
+               data-id="<?php echo($_post_id) ?>"><?php esc_html_e('Upload Profile Photo', 'wp-jobsearch') ?></a>
             <span class="file-img-uploadr"></span>
         </div>
     </div>
     <?php
+    $html = ob_get_clean();
+    echo apply_filters('jobsearch_cand_backend_profile_img', $html, $user_id, $user_has_cimg, $user_def_avatar_url);
 }
 
 add_action('add_meta_boxes', 'jobsearch_candidate_coverimg_meta_box');
 
-function jobsearch_candidate_coverimg_meta_box() {
+function jobsearch_candidate_coverimg_meta_box()
+{
     add_meta_box('jobsearch-cand-coverimge', esc_html__('Cover Image', 'wp-jobsearch'), 'jobsearch_candidate_bkmeta_coverimge', 'candidate', 'side');
 }
 
-function jobsearch_candidate_bkmeta_coverimge() {
+function jobsearch_candidate_bkmeta_coverimge()
+{
     global $post;
     $rand_num = rand(1000000, 99999999);
     $_post_id = $post->ID;
@@ -248,22 +272,26 @@ function jobsearch_candidate_bkmeta_coverimge() {
     if ($_post_id != '') {
         $user_cover_img_url = jobsearch_candidate_covr_url_comn($_post_id);
     }
-    
+
     $candidate_cover_image_src_style_str = '';
     if ($user_cover_img_url != '') {
-        $candidate_cover_image_src_style_str = ' style="background:url(\'' . ($user_cover_img_url) . '\'") no-repeat center/cover;"';
+        $candidate_cover_image_src_style_str = ' style="background:url(\'' . ($user_cover_img_url) . '\'")"';
     }
     ?>
     <div class="jobsearch-post-settings">
         <div class="jobsearch-bkimg-holdr">
-            <a href="javascript:void(0);" class="user-bkdashcover-remove" title="<?php esc_html_e('Delete', 'wp-jobsearch') ?>" data-uid="<?php echo ($user_id) ?>" <?php echo ($user_cover_img_url == '' ? 'style="display: none;"' : '') ?>><i class="dashicons dashicons-no-alt"></i></a>
+            <a href="javascript:void(0);" class="user-bkdashcover-remove"
+               title="<?php esc_html_e('Delete', 'wp-jobsearch') ?>"
+               data-uid="<?php echo($user_id) ?>" <?php echo($user_cover_img_url == '' ? 'style="display: none;"' : '') ?>><i
+                        class="dashicons dashicons-no-alt"></i></a>
             <a id="candbk-covrimg-holder" href="javascript:void(0);" class="metabk-uplodr-cvr">
-                <span<?php echo ($candidate_cover_image_src_style_str) ?>></span>
+                <span<?php echo($candidate_cover_image_src_style_str) ?>></span>
             </a>
         </div>
         <div class="jobsearch-bkimg-uploadrcon">
             <input type="file" id="candidate_cover_img" name="candidate_cover_img" style="display: none;">
-            <a href="javascript:void(0);" class="button button-primary jobsearch-candbk-uplodimgbtn" data-id="<?php echo ($_post_id) ?>"><?php esc_html_e('Upload Cover Image', 'wp-jobsearch') ?></a>
+            <a href="javascript:void(0);" class="button button-primary jobsearch-candbk-uplodimgbtn"
+               data-id="<?php echo($_post_id) ?>"><?php esc_html_e('Upload Cover Image', 'wp-jobsearch') ?></a>
             <span class="file-img-uploadr"></span>
         </div>
     </div>
@@ -273,26 +301,31 @@ function jobsearch_candidate_bkmeta_coverimge() {
 /**
  * Candidate settings meta box.
  */
-function jobsearch_candidates_settings_meta_boxes() {
+function jobsearch_candidates_settings_meta_boxes()
+{
     add_meta_box('jobsearch-candidates-settings', esc_html__('Candidate Settings', 'wp-jobsearch'), 'jobsearch_candidates_meta_settings', 'candidate', 'normal');
 }
 
 /**
  * Candidate settings meta box callback.
  */
-function jobsearch_candidates_meta_settings() {
-    global $post, $jobsearch_form_fields, $jobsearch_plugin_options, $jobsearch_currencies_list;
+function jobsearch_candidates_meta_settings()
+{
+    global $post, $pagenow, $jobsearch_form_fields, $jobsearch_plugin_options, $jobsearch_currencies_list;
     $rand_num = rand(1000000, 99999999);
     $_post_id = $post->ID;
 
     $job_salary_types = isset($jobsearch_plugin_options['job-salary-types']) ? $jobsearch_plugin_options['job-salary-types'] : '';
 
     $job_custom_currency_switch = isset($jobsearch_plugin_options['job_custom_currency']) ? $jobsearch_plugin_options['job_custom_currency'] : '';
-    
+
+    $is_candidate_approved = get_post_meta($_post_id, 'jobsearch_field_candidate_approved', true);
+    $prev_candidate_approved = get_post_meta($_post_id, 'jobsearch_prev_candidate_approved', true);
+
     $candidate_posted_by = get_post_meta($_post_id, 'jobsearch_field_users', true);
 
-    $candidate_user_id = get_post_meta($post->ID, 'jobsearch_user_id', true);
-    
+    $candidate_user_id = get_post_meta($_post_id, 'jobsearch_user_id', true);
+
     //$candidasasdby = get_user_meta($candidate_user_id, 'att_profpckg_orderid', true);
     //var_dump($candidasasdby);
 
@@ -322,6 +355,21 @@ function jobsearch_candidates_meta_settings() {
         //
         do_action('jobsearch_candidate_meta_box_inbefore', $_post_id, $candidate_user_id);
         //
+        if ($pagenow == 'post-new.php') {
+            ?>
+            <br>
+            <div class="jobsearch-element-field">
+                <div class="elem-label">
+                    <label><?php esc_html_e('User Email', 'wp-jobsearch') ?></label>
+                </div>
+                <div class="elem-field">
+                    <input type="email" name="user_reg_with_email" required="required">
+                </div>
+            </div>
+            <br><br>
+            <?php
+        }
+
         $get_user_cand_id = get_user_meta($candidate_user_id, 'jobsearch_candidate_id', true);
         if ($get_user_cand_id != '' && $post->ID == $get_user_cand_id) {
             $user_obj = get_user_by('ID', $candidate_user_id);
@@ -349,9 +397,30 @@ function jobsearch_candidates_meta_settings() {
                 <?php
             }
         }
+        if (class_exists('w357LoginAsUser')) {
+            $w357LoginAsUser = new w357LoginAsUser;
+            $user_obj = get_user_by('ID', $candidate_user_id);
+            if (isset($user_obj->ID)) {
+                ?>
+                <div class="jobsearch-element-field">
+                    <div class="elem-label">
+                        <label><?php esc_html_e('Login as', 'wp-jobsearch') ?></label>
+                    </div>
+                    <div class="elem-field">
+                        <?php
+                        $the_user_obj = new WP_User($candidate_user_id);
+                        $login_as_user_url = $w357LoginAsUser->build_the_login_as_user_url($the_user_obj);
+                        $login_as_link = '<a class="button w357-login-as-user-btn" href="' . esc_url($login_as_user_url) . '" title="' . esc_html__('Login as', 'login-as-user') . ': ' . $w357LoginAsUser->login_as_type($the_user_obj, false) . '"><span class="dashicons dashicons-admin-users"></span> ' . esc_html__('Login as', 'login-as-user') . ': <strong>' . $w357LoginAsUser->login_as_type($the_user_obj) . '</strong></a>';
+                        echo($login_as_link);
+                        ?>
+                    </div>
+                </div>
+                <br><br><br>
+                <?php
+            }
+        }
 
         do_action('jobsearch_candidate_admin_meta_fields_before', $post->ID);
-
         $sdate_format = jobsearch_get_wp_date_simple_format();
 
         $days = array();
@@ -368,8 +437,7 @@ function jobsearch_candidates_meta_settings() {
         }
 
         $cand_dob_switch = isset($jobsearch_plugin_options['cand_dob_switch']) ? $jobsearch_plugin_options['cand_dob_switch'] : 'on';
-        if ($cand_dob_switch == 'on') {
-            ?>
+        if ($cand_dob_switch != 'off') { ?>
             <div class="jobsearch-element-field">
                 <div class="elem-label">
                     <label><?php esc_html_e('Date of Birth', 'wp-jobsearch') ?></label>
@@ -418,19 +486,19 @@ function jobsearch_candidates_meta_settings() {
                     </div>
                     <?php
                     $dob_yy_html = ob_get_clean();
-                    //
+
                     if ($sdate_format == 'm-d-y') {
-                        echo ($dob_mm_html);
-                        echo ($dob_dd_html);
-                        echo ($dob_yy_html);
+                        echo($dob_mm_html);
+                        echo($dob_dd_html);
+                        echo($dob_yy_html);
                     } else if ($sdate_format == 'y-m-d') {
-                        echo ($dob_yy_html);
-                        echo ($dob_mm_html);
-                        echo ($dob_dd_html);
+                        echo($dob_yy_html);
+                        echo($dob_mm_html);
+                        echo($dob_dd_html);
                     } else {
-                        echo ($dob_dd_html);
-                        echo ($dob_mm_html);
-                        echo ($dob_yy_html);
+                        echo($dob_dd_html);
+                        echo($dob_mm_html);
+                        echo($dob_yy_html);
                     }
                     ?>
                 </div>
@@ -474,7 +542,9 @@ function jobsearch_candidates_meta_settings() {
                 ?>
             </div>
         </div>
-
+        <?php
+        do_action('jobsearch_cand_postbk_meta_after_urgent_field', $_post_id);
+        ?>
         <div class="jobsearch-element-field">
             <div class="elem-label">
                 <label><?php esc_html_e('Featured Candidate', 'wp-jobsearch') ?></label>
@@ -528,6 +598,8 @@ function jobsearch_candidates_meta_settings() {
             </div>
         </div>
         <?php
+        do_action('jobsearch_cand_postbk_meta_after_jobtitle_field', $_post_id);
+        
         $salary_onoff_switch = isset($jobsearch_plugin_options['cand_salary_switch']) ? $jobsearch_plugin_options['cand_salary_switch'] : 'on';
         if ($salary_onoff_switch == 'on') {
             ?>
@@ -706,11 +778,10 @@ function jobsearch_candidates_meta_settings() {
                     if ($field_icon_group == '') {
                         $field_icon_group = 'default';
                     }
-                    if ($field_title_val != '') {
-                        ?>
+                    if ($field_title_val != '') { ?>
                         <div class="jobsearch-element-field">
                             <div class="elem-label">
-                                <label><?php echo ($field_title_val) ?></label>
+                                <label><?php echo($field_title_val) ?></label>
                             </div>
                             <div class="elem-field">
                                 <?php
@@ -727,9 +798,14 @@ function jobsearch_candidates_meta_settings() {
                 }
             }
         }
-        
+
         //
         do_action('jobsearch_cand_admin_meta_after_social', $post->ID);
+
+        ?>
+        <input type="hidden" name="prev_candidate_approved" value="<?php echo($is_candidate_approved) ?>">
+        <?php
+
         $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
 
         if ($all_location_allow == 'on') {
@@ -769,17 +845,17 @@ function jobsearch_candidates_meta_settings() {
                                 $fileuplod_time = isset($cv_file_val['time']) ? $cv_file_val['time'] : '';
                                 $file_attach_id = isset($cv_file_val['file_id']) ? $cv_file_val['file_id'] : '';
                                 $cv_primary = isset($cv_file_val['primary']) ? $cv_file_val['primary'] : '';
-                                                                
+
                                 $cv_file_title = $filename;
 
                                 $attach_date = $fileuplod_time;
                                 $attach_mime = isset($filetype['type']) ? $filetype['type'] : '';
-                                
+
                                 if (is_numeric($file_attach_id) && get_post_type($file_attach_id) == 'attachment') {
                                     $cv_file_title = get_the_title($file_attach_id);
                                     $attach_post = get_post($file_attach_id);
                                     $file_path = get_attached_file($file_attach_id);
-                                    
+
                                     //
                                     $filename = basename($file_path);
 
@@ -795,7 +871,7 @@ function jobsearch_candidates_meta_settings() {
                                 } else {
                                     $attach_icon = 'fa fa-file-word-o';
                                 }
-                                
+
                                 $file_url = apply_filters('wp_jobsearch_user_cvfile_downlod_url', $file_url, $file_attach_id, $_post_id);
 
                                 if (!empty($filetype)) {
@@ -804,22 +880,37 @@ function jobsearch_candidates_meta_settings() {
                                         <ul class="jobsearch-row">
                                             <li class="jobsearch-column-12">
                                                 <div class="jobsearch-cv-manager-wrap">
-                                                    <a class="jobsearch-cv-manager-thumb"><i class="<?php echo ($attach_icon) ?>"></i></a>
+                                                    <a class="jobsearch-cv-manager-thumb"><i
+                                                                class="<?php echo($attach_icon) ?>"></i></a>
                                                     <div class="jobsearch-cv-manager-text">
                                                         <div class="jobsearch-cv-manager-left">
-                                                            <h2><a href="<?php echo ($file_url) ?>" oncontextmenu="javascript: return false;" onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};" download="<?php echo ($filename) ?>"><?php echo (strlen($filename) > 40 ? substr($filename, 0, 40) . '...' : $filename) ?></a></h2>
+                                                            <h2><a href="<?php echo($file_url) ?>"
+                                                                   oncontextmenu="javascript: return false;"
+                                                                   onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};"
+                                                                   download="<?php echo($filename) ?>"><?php echo(strlen($filename) > 40 ? substr($filename, 0, 40) . '...' : $filename) ?></a>
+                                                            </h2>
                                                             <?php
                                                             if ($attach_date != '') {
                                                                 ?>
                                                                 <ul>
-                                                                    <li><i class="fa fa-calendar"></i> <?php echo date_i18n(get_option('date_format'), ($attach_date)) . ' ' . date_i18n(get_option('time_format'), ($attach_date)) ?></li>
+                                                                    <li>
+                                                                        <i class="fa fa-calendar"></i> <?php echo date_i18n(get_option('date_format'), ($attach_date)) . ' ' . date_i18n(get_option('time_format'), ($attach_date)) ?>
+                                                                    </li>
                                                                 </ul>
                                                                 <?php
                                                             }
                                                             ?>
                                                         </div>
-                                                        <a href="javascript:void(0);" class="jobsearch-cv-manager-link jobsearch-del-user-cv" data-id="<?php echo ($file_attach_id) ?>"><i class="jobsearch-icon jobsearch-rubbish"></i></a>
-                                                        <a href="<?php echo ($file_url) ?>" class="jobsearch-cv-manager-link jobsearch-cv-manager-download" oncontextmenu="javascript: return false;" onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};" download="<?php echo ($filename) ?>"><i class="jobsearch-icon jobsearch-download-arrow"></i></a>
+                                                        <a href="javascript:void(0);"
+                                                           class="jobsearch-cv-manager-link jobsearch-del-user-cv"
+                                                           data-id="<?php echo($file_attach_id) ?>"><i
+                                                                    class="jobsearch-icon jobsearch-rubbish"></i></a>
+                                                        <a href="<?php echo($file_url) ?>"
+                                                           class="jobsearch-cv-manager-link jobsearch-cv-manager-download"
+                                                           oncontextmenu="javascript: return false;"
+                                                           onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};"
+                                                           download="<?php echo($filename) ?>"><i
+                                                                    class="jobsearch-icon jobsearch-download-arrow"></i></a>
                                                     </div>
                                                 </div>
                                             </li>
@@ -866,7 +957,8 @@ function jobsearch_candidates_meta_settings() {
             $sec_questions = get_post_meta($post->ID, 'user_security_questions', true);
             if (!empty($sec_questions)) {
                 ?>
-                <div class="jobsearch-elem-heading"> <h2><?php esc_html_e('Security Questions', 'wp-jobsearch') ?></h2> </div>
+                <div class="jobsearch-elem-heading"><h2><?php esc_html_e('Security Questions', 'wp-jobsearch') ?></h2>
+                </div>
                 <?php
                 $answer_to_ques = isset($sec_questions['answers']) ? $sec_questions['answers'] : '';
                 $qcount = 0;
@@ -878,11 +970,14 @@ function jobsearch_candidates_meta_settings() {
                         ?>
                         <div class="jobsearch-element-field">
                             <div class="elem-label">
-                                <label><?php printf(esc_html__('Question No %s :', 'wp-jobsearch'), $qcount_num) ?> <span><?php echo ($_ques) ?></span></label>
+                                <label><?php printf(esc_html__('Question No %s :', 'wp-jobsearch'), $qcount_num) ?>
+                                    <span><?php echo($_ques) ?></span></label>
                             </div>
                             <div class="elem-field">
-                                <input type="hidden" name="user_security_questions[questions][]" value="<?php echo ($_ques) ?>">
-                                <input type="text" name="user_security_questions[answers][]" disabled="disabled" value="<?php echo ($_answer_to_ques) ?>">
+                                <input type="hidden" name="user_security_questions[questions][]"
+                                       value="<?php echo($_ques) ?>">
+                                <input type="text" name="user_security_questions[answers][]" disabled="disabled"
+                                       value="<?php echo($_answer_to_ques) ?>">
                             </div>
                         </div>
                         <?php
@@ -902,6 +997,7 @@ function jobsearch_candidates_meta_settings() {
             'post_type' => 'package',
             'posts_per_page' => -1,
             'post_status' => 'publish',
+            'fields' => 'ids',
             'order' => 'ASC',
             'orderby' => 'title',
             'meta_query' => array(
@@ -914,7 +1010,7 @@ function jobsearch_candidates_meta_settings() {
         );
         $pkgs_query = new WP_Query($args);
 
-        if ($pkgs_query->have_posts()) {
+        if (!empty($pkgs_query->posts)) {
             ?>
             <div class="packge-asignbtn-holder">
                 <label><?php esc_html_e('Select Package and assign to user:', 'wp-jobsearch') ?></label>
@@ -922,21 +1018,23 @@ function jobsearch_candidates_meta_settings() {
                     <?php
                     $firts_pkg_id = 0;
                     $pck_countre = 1;
-                    while ($pkgs_query->have_posts()) : $pkgs_query->the_post();
+                    foreach ($pkgs_query->posts as $pkg_id) {
                         $pkg_rand = rand(10000000, 99999999);
-                        $pkg_id = get_the_ID();
+                        //$pkg_id = get_the_ID();
                         if ($pck_countre == 1) {
                             $firts_pkg_id = $pkg_id;
                         }
                         ?>
-                        <option value="<?php echo ($pkg_id) ?>"><?php echo get_the_title($pkg_id) ?></option>
+                        <option value="<?php echo($pkg_id) ?>"><?php echo get_the_title($pkg_id) ?></option>
                         <?php
-                        $pck_countre ++;
-                    endwhile;
+                        $pck_countre++;
+                    }
                     wp_reset_postdata();
                     ?>
                 </select>
-                <a href="javascript:void(0);" data-uid="<?php echo ($candidate_user_id) ?>" data-id="<?php echo ($firts_pkg_id) ?>" class="button button-primary button-large admin-packge-asignbtn"><?php esc_html_e('Assign new package to this User', 'wp-jobsearch') ?></a>
+                <a href="javascript:void(0);" data-uid="<?php echo($candidate_user_id) ?>"
+                   data-id="<?php echo($firts_pkg_id) ?>"
+                   class="button button-primary button-large admin-packge-asignbtn"><?php esc_html_e('Assign new package to this User', 'wp-jobsearch') ?></a>
                 <span class="assign-loder"></span>
             </div>
             <script>
@@ -981,6 +1079,7 @@ function jobsearch_candidates_meta_settings() {
             'posts_per_page' => -1,
             'post_status' => 'wc-completed',
             'order' => 'DESC',
+            'fields' => 'ids',
             'orderby' => 'ID',
             'meta_query' => array(
                 array(
@@ -1002,14 +1101,15 @@ function jobsearch_candidates_meta_settings() {
         );
         $pkgs_query = new WP_Query($args);
 
-        if ($pkgs_query->have_posts()) {
+        if (!empty($pkgs_query->posts)) {
             ?>
 
             <div class="jobsearch-jobs-list-holder">
                 <div class="jobsearch-managejobs-list">
                     <div class="jobsearch-table-layer jobsearch-managejobs-thead">
                         <div class="jobsearch-table-row">
-                            <div class="jobsearch-table-cell" style="width: 20%;"><?php esc_html_e('Order ID', 'wp-jobsearch') ?></div>
+                            <div class="jobsearch-table-cell"
+                                 style="width: 20%;"><?php esc_html_e('Order ID', 'wp-jobsearch') ?></div>
                             <div class="jobsearch-table-cell"><?php esc_html_e('Package', 'wp-jobsearch') ?></div>
                             <div class="jobsearch-table-cell"><?php esc_html_e('Total Applications', 'wp-jobsearch') ?></div>
                             <div class="jobsearch-table-cell"><?php esc_html_e('Used', 'wp-jobsearch') ?></div>
@@ -1019,9 +1119,9 @@ function jobsearch_candidates_meta_settings() {
                         </div>
                     </div>
                     <?php
-                    while ($pkgs_query->have_posts()) : $pkgs_query->the_post();
+                    foreach ($pkgs_query->posts as $pkg_order_id) {
                         $pkg_rand = rand(10000000, 99999999);
-                        $pkg_order_id = get_the_ID();
+                        //$pkg_order_id = get_the_ID();
                         $pkg_order_name = get_post_meta($pkg_order_id, 'package_name', true);
 
                         $unlimited_pkg = get_post_meta($pkg_order_id, 'unlimited_pkg', true);
@@ -1032,7 +1132,7 @@ function jobsearch_candidates_meta_settings() {
 
                         $used_apps = jobsearch_pckg_order_used_apps($pkg_order_id);
                         $remaining_apps = jobsearch_pckg_order_remaining_apps($pkg_order_id);
-                        
+
                         $unlimited_numcapps = get_post_meta($pkg_order_id, 'unlimited_numcapps', true);
                         if ($unlimited_numcapps == 'yes') {
                             $total_apps = esc_html__('Unlimited', 'wp-jobsearch');
@@ -1080,12 +1180,13 @@ function jobsearch_candidates_meta_settings() {
                         ?>
                         <div class="jobsearch-table-layer jobsearch-packages-tbody">
                             <div class="jobsearch-table-row">
-                                <div class="jobsearch-table-cell" style="width: 20%;">#<?php echo ($pkg_order_id) ?></div>
-                                <div class="jobsearch-table-cell"><span><?php echo ($pkg_order_name) ?></span></div>
+                                <div class="jobsearch-table-cell" style="width: 20%;">
+                                    #<?php echo($pkg_order_id) ?></div>
+                                <div class="jobsearch-table-cell"><span><?php echo($pkg_order_name) ?></span></div>
 
-                                <div class="jobsearch-table-cell"><?php echo ($total_apps) ?></div>
-                                <div class="jobsearch-table-cell"><?php echo ($used_apps) ?></div>
-                                <div class="jobsearch-table-cell"><?php echo ($remaining_apps) ?></div>
+                                <div class="jobsearch-table-cell"><?php echo($total_apps) ?></div>
+                                <div class="jobsearch-table-cell"><?php echo($used_apps) ?></div>
+                                <div class="jobsearch-table-cell"><?php echo($remaining_apps) ?></div>
 
                                 <?php
                                 if ($unlimited_pkg == 'yes') {
@@ -1098,21 +1199,27 @@ function jobsearch_candidates_meta_settings() {
                                     <?php
                                 }
                                 ?>
-                                <div class="jobsearch-table-cell"<?php echo ($status_class) ?>><?php echo ($status_txt) ?></div>
+                                <div class="jobsearch-table-cell"<?php echo($status_class) ?>><?php echo($status_txt) ?></div>
                             </div>
                         </div>
-                        <?php
-                    endwhile;
+                    <?php
+                    }
                     wp_reset_postdata();
                     ?>
                 </div>
             </div>
             <?php
         }
-        ?> 
+        ?>
 
-    </div> 
+    </div>
     <?php
+    if ($candidate_user_id > 0 && $prev_candidate_approved != 'on' && $is_candidate_approved == 'on') {
+        $user_obj = get_user_by('ID', $candidate_user_id);
+        if (isset($user_obj->ID)) {
+            //do_action('jobsearch_profile_approval_to_candidate', $user_obj);
+        }
+    }
     //
     do_action('jobsearch_user_data_save_onprofile', $candidate_user_id, $_post_id, 'candidate');
 }

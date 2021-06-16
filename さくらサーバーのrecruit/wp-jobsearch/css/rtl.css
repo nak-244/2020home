@@ -365,5 +365,10 @@ body {
 
 
 
+.jobsearch-quick-apply-box .jobsearch-jobdetail-listthumb ~ figcaption { margin-left: 0px; margin-right: 160px; }
+.jobsearch-quick-apply-box { right: auto; left: -100%; padding-left: 0px; padding-right: 45px; }
+a.jobsearch-quick-apply-close { left: auto; right: -62px; float: right; margin-right: -45px; margin-left: 0px; border-left: none; border-right: 1px solid #efefef; }
+
+
 
 

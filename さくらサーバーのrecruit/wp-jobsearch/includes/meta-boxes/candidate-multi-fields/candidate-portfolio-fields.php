@@ -30,6 +30,8 @@ if (!function_exists('portfolio_meta_fields_callback')) {
 
     function portfolio_meta_fields_callback($post) {
         global $jobsearch_form_fields;
+        
+        $_post_id = $post->ID;
         wp_enqueue_script('jobsearch-plugin-custom-multi-meta-fields');
         $rand_num = rand(1000000, 99999999);
         ?> 
@@ -60,13 +62,15 @@ if (!function_exists('portfolio_meta_fields_callback')) {
                         <div class="elem-label">
                             <label><?php esc_html_e('Portfolio Image', 'wp-jobsearch') ?></label>
                         </div>
-                        <div class="elem-field">
-                            <?php
-                            $field_params = array(
-                                'id' => 'portfolio_image_' . $rand_num ,
-                            );
-                            $jobsearch_form_fields->image_upload_field($field_params);
-                            ?>   
+                        <div class="elem-field jobsearch-eximg-portcon" data-id="<?php echo ($_post_id) ?>">
+                            <div id="portfolio_image_<?php echo ($rand_num) ?>-box" class="jobsearch-browse-med-image" style="display: none;">
+                                <a class="jobsearch-rem-media-b" data-id="portfolio_image_<?php echo ($rand_num) ?>"><i class="dashicons dashicons-no-alt"></i></a>
+                                <img id="portfolio_image_<?php echo ($rand_num) ?>-img" src="" alt="">
+                            </div>
+                            <input type="hidden" id="portfolio_image_<?php echo ($rand_num) ?>" value="">
+                            <input name="add_portfolio_img_<?php echo ($rand_num) ?>" type="file" style="display: none;">
+                            <input type="button" class="jobsearch-upload-upportimg jobsearch-bk-btn" value="<?php esc_html_e('Browse', 'wp-jobsearch') ?>">
+                            <span class="file-loader"></span>
                         </div>
                     </div> 
                     <div class="jobsearch-element-field">
@@ -95,7 +99,7 @@ if (!function_exists('portfolio_meta_fields_callback')) {
                             ?>
                         </div>
                     </div>
-                    <div class="addto-list-btn"><a id="jobsearch-add-portfolio-exfield" data-id="<?php echo absint($rand_num) ?>" class="jobsearch-bk-btn" href="javascript:void(0)"><?php esc_html_e('Add to List', 'wp-jobsearch') ?></a><span class="ajax-loader"></span></div>
+                    <div class="addto-list-btn"><a id="jobsearch-add-portfolio-exfield" data-id="<?php echo absint($rand_num) ?>" data-pid="<?php echo absint($_post_id) ?>" class="jobsearch-bk-btn" href="javascript:void(0)"><?php esc_html_e('Add to List', 'wp-jobsearch') ?></a><span class="ajax-loader"></span></div>
                 </div>
                 <?php
                 $exfield_list = get_post_meta($post->ID, 'jobsearch_field_portfolio_title', true);
@@ -114,6 +118,8 @@ if (!function_exists('portfolio_meta_fields_callback')) {
                             $portfolio_image = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                             $portfolio_url = isset($exfield_portfolio_url[$exfield_counter]) ? $exfield_portfolio_url[$exfield_counter] : '';
                             $portfolio_vurl = isset($exfield_portfolio_vurl[$exfield_counter]) ? $exfield_portfolio_vurl[$exfield_counter] : '';
+                            
+                            $portfolio_image_src = jobsearch_get_cand_portimg_url($_post_id, $portfolio_image);
                             ?>
                             <li id="list-<?php echo absint($rand_num) ?>"> 
                                 <div class="multi-list-header" id="list-head-<?php echo absint($rand_num) ?>">
@@ -146,14 +152,16 @@ if (!function_exists('portfolio_meta_fields_callback')) {
                                             <label><?php esc_html_e('Portfolio Image', 'wp-jobsearch') ?></label>
                                         </div>
                                         <div class="elem-field">
-                                            <?php
-                                            $field_params = array(
-                                                'id' => 'portfolio_image_' . $rand_num . $exfield_counter,
-                                                'name' => 'portfolio_image[]',
-                                                'force_std' => $portfolio_image,
-                                            );
-                                            $jobsearch_form_fields->image_upload_field($field_params);
-                                            ?>
+                                            <div class="elem-field jobsearch-eximg-portcon" data-id="<?php echo ($_post_id) ?>">
+                                                <div id="portfolio_image_<?php echo ($rand_num) ?>-box" class="jobsearch-browse-med-image" style="display: <?php echo ($portfolio_image_src != '' ? 'inline-block' : 'none') ?>;">
+                                                    <a class="jobsearch-rem-media-b" data-id="portfolio_image_<?php echo ($rand_num) ?>"><i class="dashicons dashicons-no-alt"></i></a>
+                                                    <img id="portfolio_image_<?php echo ($rand_num) ?>-img" src="<?php echo ($portfolio_image_src) ?>" alt="">
+                                                </div>
+                                                <input type="hidden" id="portfolio_image_<?php echo ($rand_num) ?>" name="jobsearch_field_portfolio_image[]" value="<?php echo ($portfolio_image) ?>">
+                                                <input name="add_portfolio_img_<?php echo ($rand_num) ?>" type="file" style="display: none;">
+                                                <input type="button" class="jobsearch-upload-upportimg jobsearch-bk-btn" value="<?php esc_html_e('Browse', 'wp-jobsearch') ?>">
+                                                <span class="file-loader"></span>
+                                            </div>
                                         </div>
                                     </div> 
                                     <div class="jobsearch-element-field">
@@ -217,6 +225,10 @@ if (!function_exists('jobsearch_add_project_portfoliofield')) {
         $portfolio_image = isset($_POST['portfolio_image']) ? $_POST['portfolio_image'] : '';
         $portfolio_url = isset($_POST['portfolio_url']) ? $_POST['portfolio_url'] : '';
         $portfolio_vurl = isset($_POST['portfolio_vurl']) ? $_POST['portfolio_vurl'] : '';
+        
+        $_post_id = isset($_POST['pid']) ? $_POST['pid'] : '';
+        
+        $portfolio_image_src = jobsearch_get_cand_portimg_url($_post_id, $portfolio_image);
 
         $rand_num = rand(1000000, 99999999);
 
@@ -253,14 +265,16 @@ if (!function_exists('jobsearch_add_project_portfoliofield')) {
                         <label><?php esc_html_e('Portfolio Image', 'wp-jobsearch') ?></label>   
                     </div>
                     <div class="elem-field">
-                        <?php
-                        $field_params = array(
-                            'id' => 'portfolio_image_' . $rand_num,
-                            'name' => 'portfolio_image[]',
-                            'force_std' => $portfolio_image,
-                        );
-                        $jobsearch_form_fields->image_upload_field($field_params);
-                        ?> 
+                        <div class="elem-field jobsearch-eximg-portcon" data-id="<?php echo ($_post_id) ?>">
+                            <div id="portfolio_image_<?php echo ($rand_num) ?>-box" class="jobsearch-browse-med-image" style="display: <?php echo ($portfolio_image_src != '' ? 'inline-block' : 'none') ?>;">
+                                <a class="jobsearch-rem-media-b" data-id="portfolio_image_<?php echo ($rand_num) ?>"><i class="dashicons dashicons-no-alt"></i></a>
+                                <img id="portfolio_image_<?php echo ($rand_num) ?>-img" src="<?php echo ($portfolio_image_src) ?>" alt="">
+                            </div>
+                            <input type="hidden" id="portfolio_image_<?php echo ($rand_num) ?>" name="jobsearch_field_portfolio_image[]" value="<?php echo ($portfolio_image) ?>">
+                            <input name="add_portfolio_img_<?php echo ($rand_num) ?>" type="file" style="display: none;">
+                            <input type="button" class="jobsearch-upload-upportimg jobsearch-bk-btn" value="<?php esc_html_e('Browse', 'wp-jobsearch') ?>">
+                            <span class="file-loader"></span>
+                        </div>
                     </div>
                 </div> 
                 <div class="jobsearch-element-field">

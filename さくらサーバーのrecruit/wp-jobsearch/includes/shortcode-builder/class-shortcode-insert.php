@@ -117,7 +117,7 @@ if (!class_exists('jobsearch_builder_shortcode_insert')) {
                     $jobsearch_builder_output = '<td id="multichk-boxes-con' . $multichk_rand_num . '"><label class="screen-reader-text" for="' . $jobsearch_builder_key . '">' . $jobsearch_builder_param['label'] . '</label>';
                     foreach ($jobsearch_builder_param['options'] as $jobsearch_builder_value => $jobsearch_builder_option) {
                         $rand_num = rand(1000000, 9999999);
-                        $jobsearch_builder_output .= '<div class="onechnbox-con"><input type="checkbox" data-id="multi_chekbox_' . $rand_num . '" data-val="' . $jobsearch_builder_value . '" class="jobsearch-builder-form-checkbox jobsearch-builder-input">';
+                        $jobsearch_builder_output .= '<div class="onechnbox-con"><input type="checkbox" data-id="multi_chekbox_' . $rand_num . '" data-val="' . $jobsearch_builder_value . '" class="jobsearch-builder-form-multi-checkbox jobsearch-builder-input">';
                         $jobsearch_builder_output .= '<label for="multi_chekbox_' . $rand_num . '">' . $jobsearch_builder_option . '</label></div>' . "\n";
                     }
                     $jobsearch_builder_output .= '<input type="hidden" name="' . $jobsearch_builder_key . '" id="' . $jobsearch_builder_key . '" value="">';
@@ -192,7 +192,7 @@ if (!class_exists('jobsearch_builder_shortcode_insert')) {
 
                         // go over each table, build the shortcode content
                         for (var i = 0; i < tables.length; i++) {
-                            var elems = jQuery(tables[i]).find('input, select, textarea');
+                            var elems = jQuery(tables[i]).find('input:not(.jobsearch-builder-form-multi-checkbox), select, textarea');
 
                             // Build an attributes string by mapping over the input
                             // fields in a given table.

@@ -155,7 +155,7 @@ $wrapper_attributes[] = 'class="' . esc_attr(trim($css_class)) . '"';
 
 $output .= '<div ' . implode(' ', $wrapper_attributes) . (!empty($wrapper_style_atts) ? ' style="' . implode(' ', $wrapper_style_atts) . '"' : '') . '>';
 if (isset($careerfy_overlay) && $careerfy_overlay == 'yes') {
-    $overlay_color = isset($careerfy_overlay_color) && $careerfy_overlay_color != '' ? ' style="background-color:' . $careerfy_overlay_color . ';"' : '';
+    $overlay_color = isset($careerfy_overlay_color) && $careerfy_overlay_color != '' ? ' style="background-color:' . $careerfy_overlay_color . ';"' : 'style="background-color: rgb(48, 56, 68, 0.50)"';
     $output .= '<span class="careerfy-light-transparent"' . $overlay_color . '></span>';
 }
 if (is_page() && isset($careerfy_container) && $careerfy_container == 'box') {

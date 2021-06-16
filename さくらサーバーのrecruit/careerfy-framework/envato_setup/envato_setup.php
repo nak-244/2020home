@@ -167,15 +167,15 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
         public function __construct() {
             $this->init_globals();
             $this->init_actions();
-            
+
             add_filter('woocommerce_enable_setup_wizard', array($this, 'disable_woocommerce_setup_wizard'));
             remove_action('vc_activation_hook', 'vc_page_welcome_set_redirect');
             remove_action('admin_init', 'vc_page_welcome_redirect');
         }
-        
+
         public function disable_woocommerce_setup_wizard($ret_val) {
             $ret_val = false;
-            
+
             return $ret_val;
         }
 
@@ -230,6 +230,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
          * @access public
          */
         public function init_globals() {
+
             $current_theme = wp_get_theme();
             $this->theme_name = strtolower(preg_replace('#[^a-zA-Z]#', '', $current_theme->get('Name')));
             $this->envato_username = apply_filters($this->theme_name . '_theme_setup_wizard_username', 'eyecix');
@@ -240,6 +241,9 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
             // create an images/styleX/ folder for each style here.
             $this->site_styles = array(
                 'careerfy' => 'Careerfy',
+                'petcare' => 'PetCare',
+                'cleanworld' => 'CleanWorld',
+                'babylove' => 'BabyLove',
                 'jobpoint' => 'Jobpoint',
                 'perfectjob' => 'Perfectjob',
                 'careerbooster' => 'Career Booster',
@@ -338,7 +342,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
         }
 
         public function enqueue_scripts() {
-            
+
         }
 
         public function tgmpa_load($status) {
@@ -392,15 +396,9 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
             if ($this->is_submenu_page()) {
                 //prevent Theme Check warning about "themes should use add_theme_page for adding admin pages"
                 $add_subpage_function = 'add_submenu' . '_page';
-                $add_subpage_function($this->parent_slug, esc_html__('Import Demo Data'), esc_html__('Import Demo Data'), 'manage_options', $this->page_slug, array(
-                    $this,
-                    'setup_wizard',
-                ));
+                $add_subpage_function($this->parent_slug, esc_html__('Import Demo Data'), esc_html__('Import Demo Data'), 'manage_options', $this->page_slug, array($this, 'setup_wizard'));
             } else {
-                add_theme_page(esc_html__('Import Demo Data'), esc_html__('Import Demo Data'), 'manage_options', $this->page_slug, array(
-                    $this,
-                    'setup_wizard',
-                ));
+                add_theme_page(esc_html__('Import Demo Data'), esc_html__('Import Demo Data'), 'manage_options', $this->page_slug, array($this, 'setup_wizard'));
             }
         }
 
@@ -537,8 +535,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
         /**
          * Import Demo Data Header
          */
-        public function setup_wizard_header() {
-            ?>
+        public function setup_wizard_header() { ?>
             <!DOCTYPE html>
             <html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
                 <head>
@@ -552,7 +549,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                     <?php wp_print_scripts('envato-setup'); ?>
                     <?php do_action('admin_print_styles'); ?>
                     <?php do_action('admin_print_scripts'); ?>
-                    <?php do_action('admin_head'); ?>
+                    <?php //do_action('admin_head'); ?>
                 </head>
                 <body class="envato-setup wp-core-ui">
                     <h1 id="wc-logo">
@@ -566,7 +563,8 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                             } else {
                                 ?>
                                 <img src="<?php echo esc_url($this->plugin_url . 'images/' . get_theme_mod('dtbwp_site_color', $this->get_default_theme_style()) . '/logo.png'); ?>" alt="Envato install wizard" /><?php }
-                            ?></a>
+                            ?>
+                        </a>
                     </h1>
                     <?php
                 }
@@ -2350,7 +2348,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
 
             return true;
         }
-        
+
         public function _content_wpbakery_templates() {
             ////////// Import Wp Bakery Templates //////////////////
             if (function_exists('careerfy_demo_data_get_path')) {
@@ -2389,7 +2387,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                                 $theme_mods = array_merge($theme_mods, $import_templates);
                             }
                         }
-                        
+
                         $update_templates = update_option('wpb_js_templates', $theme_mods);
                     }
                 }
@@ -2629,6 +2627,7 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
             check_admin_referer('envato-setup');
 
             global $CareerfyFrameReduxFramework;
+            $theme_options = get_option('careerfy_framework_options');
             $new_logo_id = (int) $_POST['new_logo_id'];
             // save this new logo url into the database and calculate the desired height based off the logo width.
             // copied from eyecix.theme_options.php
@@ -2649,13 +2648,17 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                     if ($attr && isset($attr[0]) && !empty($attr[0])) {
 
                         $logo_image = array('url' => $attr[0]);
-                        $CareerfyFrameReduxFramework->ReduxFramework->set('careerfy-site-logo', $logo_image);
+                        //$CareerfyFrameReduxFramework->ReduxFramework->set('careerfy-site-logo', $logo_image);
+                        $theme_options['careerfy-site-logo']['url'] = $attr[0];
+                        update_option('careerfy_framework_options', $theme_options);
                     }
                 }
             } else {
                 $image_url = $this->plugin_url . '/images/' . get_theme_mod('dtbwp_site_style', $this->get_default_theme_style()) . '/logo.png';
                 $logo_image = array('url' => $image_url);
-                $CareerfyFrameReduxFramework->ReduxFramework->set('careerfy-site-logo', $logo_image);
+                //$CareerfyFrameReduxFramework->ReduxFramework->set('careerfy-site-logo', $logo_image);
+                $theme_options['careerfy-site-logo']['url'] = $image_url;
+                update_option('careerfy_framework_options', $theme_options);
             }
 
             wp_redirect(esc_url_raw($this->get_next_step_link()));
@@ -3087,7 +3090,6 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
 
         public function admin_theme_auth_notice() {
 
-
             if (function_exists('envato_market')) {
                 $option = envato_market()->get_options();
 
@@ -3101,12 +3103,14 @@ if (!class_exists('Envato_Theme_Setup_Wizard')) {
                     if (!$dissmissed_time || $dissmissed_time < strtotime('-7 days')) {
                         // Added the class "notice-my-class" so jQuery pick it up and pass via AJAX,
                         // and added "data-notice" attribute in order to track multiple / different notices
-                        // multiple dismissible notice states 
+                        // multiple dismissible notice states
                         ?>
                         <div class="notice notice-warning notice-dtbwp-themeupdates is-dismissible">
-                            <p><?php
+                            <p>
+                                <?php
                                 _e('Please activate ThemeForest updates to ensure you have the latest version of this theme.');
-                                ?></p>
+                                ?>
+                            </p>
                             <p>
                                 <?php printf(__('<a class="button button-primary" href="%s">Activate Updates</a>'), esc_url($this->get_oauth_login_url(admin_url('admin.php?page=' . envato_market()->get_slug() . '')))); ?>
                             </p>
@@ -3249,23 +3253,4 @@ if (!function_exists('envato_theme_setup_wizard')) :
     function envato_theme_setup_wizard() {
         Envato_Theme_Setup_Wizard::get_instance();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 endif;

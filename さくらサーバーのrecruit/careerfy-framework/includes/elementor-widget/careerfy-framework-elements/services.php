@@ -110,6 +110,21 @@ class Services extends Widget_Base
                     'view-6' => __('Style 6', 'careerfy-frame'),
                     'view-7' => __('Style 7', 'careerfy-frame'),
                     'view-8' => __('Style 8', 'careerfy-frame'),
+                    'view-9' => __('Style 9', 'careerfy-frame'),
+                    'view-10' => __('Style 10', 'careerfy-frame'),
+                    'view-11' => __('Style 11', 'careerfy-frame'),
+                    'view-12' => __('Style 12', 'careerfy-frame'),
+                    'view-13' => __('Style 13', 'careerfy-frame'),
+                    'view-14' => __('Style 14', 'careerfy-frame'),
+                    'view-15' => __('Style 15', 'careerfy-frame'),
+                    'view-16' => __('Style 16', 'careerfy-frame'),
+                    'view-17' => __('Style 17', 'careerfy-frame'),
+                    'view-18' => __('Style 18', 'careerfy-frame'),
+                    'view-19' => __('Style 19', 'careerfy-frame'),
+                    'view-20' => __('Style 20', 'careerfy-frame'),
+                    'view-21' => __('Style 21', 'careerfy-frame'),
+                    'view-22' => __('Style 22', 'careerfy-frame'),
+
                 ],
             ]
         );
@@ -149,7 +164,7 @@ class Services extends Widget_Base
         $repeater->add_control(
             'service_icon', [
                 'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICON,
+                'type' => Controls_Manager::ICONS,
             ]
         );
 
@@ -254,7 +269,7 @@ class Services extends Widget_Base
             $rand_num = rand(10000000, 99909999);
             $btn_txt = $info['btn_txt'];
             $btn_color = $info['btn_color'];
-            $service_icon = $info['service_icon'];
+            $service_icon = $info['service_icon']['value'];
             $service_img = $info['service_img'] != '' ? $info['service_img']['url'] : '';
             $service_title = $info['service_title'];
             $service_link = $info['service_link'];
@@ -276,7 +291,7 @@ class Services extends Widget_Base
             <i class="' . $service_icon . '"' . $icon_color . '></i>
             <h2' . $text_color_h2 . '>' . ($service_link != '' ? '<a href="' . $service_link . '"' . $text_color_a . '>' : '') . $service_title . ($service_link != '' ? '</a>' : '') . '</h2>
             <p' . $text_color . '>' . $service_desc . '</p>
-            ' . ($view == 'view-4' && $service_shortcode_counter == 2 ? '<a ' . ($service_link != '' ? 'href="' . $service_link . '"' : '') . ' class="careerfy-services-stylefour-btn"><small class="careerfy-right-arrow"></small></a>' : '') . '
+            ' . ($view == 'view-4' && $service_shortcode_counter == 2 ? '<a ' . ($service_link != '' ? 'href="' . $service_link . '"' : '') . ' class="careerfy-services-stylefour-btn"><small class="careerfy-icon careerfy-right-arrow"></small></a>' : '') . '
             ' . ($view == 'view-4' ? '</div>' : '') . ' 
         </li>';
             } else if ($view == 'view-5') {
@@ -298,10 +313,10 @@ class Services extends Widget_Base
                 }
         </style>
         <li class="col-md-4">';
-                if(!empty($service_img)) {
+                if (!empty($service_img)) {
                     $html .= '<img src="' . $service_img . '" alt="">';
                 }
-                $html .='<h2 ' . $text_color_h2 . '>' . ($service_link != '' ? '<a href="' . $service_link . '"' . $text_color_a . '>' : '') . $service_title . ($service_link != '' ? '</a>' : '') . '</h2>
+                $html .= '<h2 ' . $text_color_h2 . '>' . ($service_link != '' ? '<a href="' . $service_link . '"' . $text_color_a . '>' : '') . $service_title . ($service_link != '' ? '</a>' : '') . '</h2>
             <p ' . $text_color . '>' . $service_desc . '</p >
             <a  href = "' . $service_link . '" class="careerfy-services-style11-btn" > ' . $btn_txt . '</a >
         </li >';
@@ -590,7 +605,7 @@ class Services extends Widget_Base
             }
 
             $service_shortcode_counter++;
-         echo $html;
+            echo $html;
         }
 
     }
@@ -630,14 +645,68 @@ class Services extends Widget_Base
         if ($view == 'view-8') {
             $service_class = 'careerfy-services-eighteen';
         }
-        ob_start();
-        ?>
+        if ($view == 'view-9') {
+            $service_class = 'careerfy-services careerfy-services-nineteen';
+        }
+        if ($view == 'view-10') {
+            $service_class = 'careerfy-services careerfy-services-nineteen-style2';
+        }
+        if ($view == 'view-11') {
+            $service_class = 'careerfy-services careerfy-services-nineteen-style3';
+        }
+        if ($view == 'view-12') {
+            $service_class = 'careerfy-services careerfy-services-twenty';
+        }
+        if ($view == 'view-13') {
+            $service_class = 'careerfy-services careerfy-services-twenty-style2';
+        }
+        if ($view == 'view-14') {
+            $service_class = 'careerfy-services careerfy-services-twenty-style3';
+        }
+        if ($view == 'view-15') {
+            $service_class = 'careerfy-services careerfy-services-twenty-style4';
+        }
+        if ($view == 'view-16') {
+            $service_class = 'careerfy-services careerfy-services-twentyone';
+        }
+        if ($view == 'view-17') {
+            $service_class = 'careerfy-services careerfy-services-twentyone-style2';
+        }
+        if ($view == 'view-18') {
+            $service_class = 'careerfy-services careerfy-services-twentyone-style3';
+        }
+        if ($view == 'view-19') {
+            $service_class = 'careerfy-services careerfy-services-twentyone-style4';
+        }
+        if ($view == 'view-20') {
+            $service_class = 'careerfy-services careerfy-services-twentytwo';
+        }
 
-        <div class="<?php echo $service_class ?>">
+        if ($view == 'view-22') {
+            $service_class = 'careerfy-services careerfy-services-twentytwo-style3';
+        }
+
+        ob_start();
+
+        ?>
+        <?php if ($view != 'view-21') { ?>
+            <div class="<?php echo $service_class ?>">
+        <?php } ?>
+
+        <?php if ($view == 'view-21' && $view == 'view-8') { ?>
+            <div class="row">
+                <?php echo $this->careerfy_services_item_shortcode() ?>
+            </div>
+        <?php } else { ?>
             <ul class="row">
                 <?php echo $this->careerfy_services_item_shortcode() ?>
             </ul>
-        </div>
+        <?php } ?>
+
+        <?php if ($view != 'view-21') { ?>
+            </div>
+        <?php } ?>
+
         <?php
         $html = ob_get_clean();
         echo $html;
@@ -645,5 +714,6 @@ class Services extends Widget_Base
 
     protected function _content_template()
     {
+
     }
 }

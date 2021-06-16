@@ -44,7 +44,10 @@ function careerfy_app_promo_shortcode($atts)
     if ($app_promo_view == 'view3') { ?>
         <div class="careerfy-searchjob-text">
             <h2 <?php echo $hc_title_clr ?>><?php echo $h_title ?></h2>
-            <?php $pckg_features = vc_param_group_parse_atts($pckg_features);
+            <?php
+        if (function_exists('vc_param_group_parse_atts')) {
+            $pckg_features = vc_param_group_parse_atts($pckg_features);
+        }
             if (!empty($pckg_features)) { ?>
                 <ul>
                     <?php

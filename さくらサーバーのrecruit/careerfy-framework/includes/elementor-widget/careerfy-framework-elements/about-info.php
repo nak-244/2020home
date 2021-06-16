@@ -86,7 +86,6 @@ class AboutInfo extends Widget_Base
      */
     protected function _register_controls()
     {
-
         $this->start_controls_section(
             'content_section',
             [
@@ -127,7 +126,7 @@ class AboutInfo extends Widget_Base
         $repeater->add_control(
             'abt_soc_icon', [
                 'label' => __('Social Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICON,
+                'type' => Controls_Manager::ICONS,
                 'label_block' => true,
             ]
         );
@@ -189,24 +188,20 @@ class AboutInfo extends Widget_Base
                 <p><?php echo($abt_desc) ?></p>
                 <?php
             }
-            ?>
-            <?php
-            if (!empty($abt_social_links)) { ?>
+
+             if (!empty($abt_social_links)) { ?>
                 <ul>
-                    <?php
-                    foreach ($abt_social_links as $social_link) {
-                        $abt_soc_icon = isset($social_link['abt_soc_icon']) ? $social_link['abt_soc_icon'] : '';
+                    <?php foreach ($abt_social_links as $social_link) {
+                        $abt_soc_icon = isset($social_link['abt_soc_icon']) ? $social_link['abt_soc_icon']['value'] : '';
                         $abt_soc_link = isset($social_link['abt_soc_link']) ? $social_link['abt_soc_link'] : '';
 
-                        if ($abt_soc_icon != '') {
-                            ?>
+                        if ($abt_soc_icon != '') { ?>
                             <li>
                                 <a href="<?php echo($abt_soc_link) ?>" class="<?php echo($abt_soc_icon) ?>"></a>
                             </li>
                             <?php
                         }
-                    }
-                    ?>
+                    } ?>
                 </ul>
             <?php } ?>
         </div>
@@ -248,7 +243,7 @@ class AboutInfo extends Widget_Base
                 <# _.each(settings.abt_social_links, function(item,index) { #>
                 <# if(item.abt_soc_icon != ''){ #>
                     <li>
-                        <a href="#" class="{{{item.abt_soc_icon}}}"></a>
+                        <a href="#" class="{{{item.abt_soc_icon.value}}}"></a>
                     </li>
                 <# } #>
                 <# }) #>

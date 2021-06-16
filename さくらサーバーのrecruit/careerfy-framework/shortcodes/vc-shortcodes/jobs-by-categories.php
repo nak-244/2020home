@@ -11,6 +11,7 @@ function careerfy_jobs_by_categories_shortcode($atts)
         'num_cats' => '-1',
         'cat_title' => '',
         'result_page' => '',
+        'sector_job_counts' => 'yes',
         'cat_link_text' => '',
         'cat_link_text_url' => '',
         'order_by' => 'jobs_count',
@@ -60,11 +61,17 @@ function careerfy_jobs_by_categories_shortcode($atts)
                             $cat_goto_link = add_query_arg(array('sector_cat' => $term_sector->slug), get_permalink($result_page));
                             $cat_goto_link = apply_filters('jobsearch_job_sector_cat_result_link', $cat_goto_link, $term_sector->slug);
 
-                            ob_start(); ?>
+                            ob_start();
+                            ?>
                             <li>
-                                <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs) ?></a>
+                                <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php
+                                    if ($sector_job_counts == 'yes') {
+                                        printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs);
+                                    }
+                                    ?></a>
                             </li>
                             <?php
+
                             $catitem_html = ob_get_clean();
                             echo apply_filters('careerfy_job_cats_shcode_citem_html', $catitem_html, $term_sector, $atts, $found_jobs);
 
@@ -104,6 +111,7 @@ function careerfy_jobs_by_categories_shortcode($atts)
                         url: ajax_url,
                         method: "POST",
                         data: {
+                            sector_job_counts: '<?php echo ($sector_job_counts) ?>',
                             post_per_page: <?php echo $num_cats ?>,
                             action: job_filter_action
                         },
@@ -156,14 +164,15 @@ function get_DB_terms($order_by)
     return $get_db_terms;
 }
 
-function get_jobs_query($term_sector, $num_cats) {
+function get_jobs_query($term_sector, $num_cats = 0)
+{
     global $jobsearch_shortcode_jobs_frontend;
     $jobsearch_jobs_listin_sh = $jobsearch_shortcode_jobs_frontend;
-    
+
     $jobsearch__options = get_option('jobsearch_plugin_options');
     $emporler_approval = isset($jobsearch__options['job_listwith_emp_aprov']) ? $jobsearch__options['job_listwith_emp_aprov'] : '';
     $is_filled_jobs = isset($jobsearch__options['job_allow_filled']) ? $jobsearch__options['job_allow_filled'] : '';
-    
+
     $element_filter_arr = array();
 //    $element_filter_arr[] = array(
 //        'key' => 'jobsearch_field_job_publish_date',
@@ -180,7 +189,7 @@ function get_jobs_query($term_sector, $num_cats) {
 //        'value' => 'approved',
 //        'compare' => '=',
 //    );
-    
+
     $post_ids = array();
     $sh_atts = array();
     $all_post_ids = array();
@@ -212,7 +221,7 @@ function get_jobs_query($term_sector, $num_cats) {
             ),
         );
     }
-    
+
     $job_args = array(
         'posts_per_page' => $num_cats,
         'post_type' => 'job',
@@ -226,15 +235,15 @@ function get_jobs_query($term_sector, $num_cats) {
             )
         ),
     );
-    
+
     if (!empty($element_filter_arr)) {
         $job_args['meta_query'] = $element_filter_arr;
     }
-    
+
     if (!empty($all_post_ids)) {
         $job_args['post__in'] = $all_post_ids;
     }
-    
+
     return new WP_Query($job_args);
 }
 
@@ -242,6 +251,7 @@ add_action('wp_ajax_jobsearch_load_companies_list', 'jobsearch_load_companies_li
 add_action('wp_ajax_nopriv_jobsearch_load_companies_list', 'jobsearch_load_companies_list');
 function jobsearch_load_companies_list()
 {
+    $sector_job_counts = isset($_POST['sector_job_counts']) ? $_POST['sector_job_counts'] : '';
     $element_filter_arr = array();
     $element_filter_arr[] = array(
         'key' => 'jobsearch_field_employer_approved',
@@ -273,7 +283,8 @@ function jobsearch_load_companies_list()
             <li>
                 <a href="<?php echo get_permalink($employer_id) ?>">
                     <?php echo $job_search_employer_info->post_title ?>
-                    &nbsp;(<?php echo absint($jobsearch_employer_job_count) ?>)</a></li>
+                    <?php if ($sector_job_counts == 'yes') { ?>
+                    &nbsp;(<?php echo absint($jobsearch_employer_job_count) ?>)<?php } ?></a></li>
             <?php
 
         }
@@ -291,6 +302,8 @@ add_action('wp_ajax_jobsearch_load_category_list', 'jobsearch_load_category_list
 add_action('wp_ajax_nopriv_jobsearch_load_category_list', 'jobsearch_load_category_list');
 function jobsearch_load_category_list($order_by)
 {
+    $sector_job_counts = isset($_POST['sector_job_counts']) ? $_POST['sector_job_counts'] : '';
+    
     $get_db_terms = get_DB_terms($order_by);
     ob_start();
     foreach ($get_db_terms as $term_id) {
@@ -304,7 +317,7 @@ function jobsearch_load_category_list($order_by)
         $cat_goto_link = apply_filters('jobsearch_job_sector_cat_result_link', $cat_goto_link, $term_sector->slug);
         ?>
         <li>
-            <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs) ?></a>
+            <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?><?php if ($sector_job_counts == 'yes') { printf(esc_html__('(%s)', 'careerfy-frame'), $found_jobs); } ?></a>
         </li>
         <?php
     }

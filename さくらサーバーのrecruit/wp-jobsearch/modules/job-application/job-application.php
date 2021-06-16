@@ -21,6 +21,7 @@ if (!class_exists('Jobsearch_JobApplication')) {
             // email template
             include plugin_dir_path(dirname(__FILE__)) . 'job-application/include/apply-job-email-template.php';
             include plugin_dir_path(dirname(__FILE__)) . 'job-application/include/apply-job-email-tocand.php';
+            include plugin_dir_path(dirname(__FILE__)) . 'job-application/include/quick-apply-job-load.php';
             //
             include plugin_dir_path(dirname(__FILE__)) . 'job-application/include/job-application-load.php';
         }
@@ -36,6 +37,14 @@ if (!class_exists('Jobsearch_JobApplication')) {
 
         public function jobsearch_job_application_enqueue_scripts() {
             global $sitepress, $jobsearch_plugin_options;
+
+            $is_page = is_page();
+            $page_content = '';
+            if ($is_page) {
+                $page_id = get_the_ID();
+                $page_post = get_post($page_id);
+                $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
+            }
 
             $file_sizes_arr = array(
                 '5120' => __('5Mb', 'wp-jobsearch'),
@@ -103,7 +112,10 @@ if (!class_exists('Jobsearch_JobApplication')) {
                 'cv_file_types' => sprintf(esc_html__('Suitable files are %s.', 'wp-jobsearch'), $sutable_files_str),
                 'cvdoc_file_types' => stripslashes($cand_files_types_json),
             ));
-            wp_enqueue_script('jobsearch-job-application-functions-script');
+            
+            if (is_singular('job')) {
+                wp_enqueue_script('jobsearch-job-application-functions-script');
+            }
         }
 
         public function jobsearch_job_application_abc_callback($permissions = array(), $abc) {
@@ -119,7 +131,9 @@ if (!class_exists('Jobsearch_JobApplication')) {
 function jobsearch_job_applicants_sort_list($job_id, $sort_by = '', $list_meta_key = 'jobsearch_job_applicants_list') {
 
     $job_applicants_list = get_post_meta($job_id, $list_meta_key, true);
-    if ($job_applicants_list != '') {
+    if (is_array($job_applicants_list)) {
+        $job_applicants_list = $job_applicants_list;
+    } else if ($job_applicants_list != '') {
         $job_applicants_list = explode(',', $job_applicants_list);
     }
 

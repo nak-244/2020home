@@ -65,7 +65,7 @@ $employer_join_date = isset($employer_obj->post_date) ? $employer_obj->post_date
 $employer_address = get_post_meta($employer_id, 'jobsearch_field_location_address', true);
 
 if (function_exists('jobsearch_post_city_contry_txtstr')) {
-    $employer_address = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city,$emp_det_full_address_switch);
+    $employer_address = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city, $emp_det_full_address_switch);
 }
 
 $employer_phone = get_post_meta($employer_id, 'jobsearch_field_user_phone', true);
@@ -108,7 +108,10 @@ if (isset($subheader_employer_bg_color['rgba'])) {
 
 $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $jobsearch_plugin_options['allow_compny_galery'] : '';
 ?>
-<div class="employer-two-cover"<?php echo ($employer_cover_image_src_style_str); ?>><span class="careerfy-light-transparent" style="background: <?php echo ($subheader_bg_color) ?>"></span></div>
+<div class="employer-two-cover"<?php echo($employer_cover_image_src_style_str); ?>>
+    <span class="careerfy-light-transparent"
+          style="background: <?php echo !empty($subheader_bg_color) ? $subheader_bg_color : 'rgb(48, 56, 68, 0.50)' ?>"></span>
+</div>
 <div class="careerfy-main-content">
 
     <!-- Main Section -->
@@ -118,12 +121,12 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                 <div class="careerfy-column-12">
                     <div class="careerfy-employer-detail2-toparea">
                         <figure>
-                            <a><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
+                            <a><img src="<?php echo jobsearch_esc_html($user_def_avatar_url) ?>" alt=""></a>
                             <figcaption>
                                 <h2>
                                     <?php
                                     ob_start();
-                                    echo ($user_displayname);
+                                    echo($user_displayname);
                                     $title_html = ob_get_clean();
                                     echo apply_filters('jobsearch_emp_detail_maintitle_html', $title_html, $employer_id, 'view2');
 
@@ -154,7 +157,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 'view' => 'detail_view2',
                             );
                             do_action('jobsearch_employer_followin_btn', $follow_btn_args);
-                            
+
                             //
                             $reviews_switch = isset($jobsearch_plugin_options['reviews_switch']) ? $jobsearch_plugin_options['reviews_switch'] : '';
                             if ($reviews_switch == 'on') {
@@ -162,11 +165,16 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     wp_enqueue_script('jobsearch-barrating');
                                     wp_enqueue_script('jobsearch-add-review');
                                     ?>
-                                    <a href="javascript:void(0);" data-target="add_review_form_sec" class="careerfy-employer-detail2-toparea-btn jobsearch-go-to-review-form" data-post_id="<?php echo ($employer_id) ?>"><i class="careerfy-icon careerfy-add"></i> <?php esc_html_e('Add a review', 'careerfy') ?></a>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <a href="javascript:void(0);" class="careerfy-employer-detail2-toparea-btn jobsearch-open-signin-tab"><i class="careerfy-icon careerfy-add"></i> <?php esc_html_e('Add a review', 'careerfy') ?></a>
+                                    <a href="javascript:void(0);" data-target="add_review_form_sec"
+                                       class="careerfy-employer-detail2-toparea-btn jobsearch-go-to-review-form"
+                                       data-post_id="<?php echo jobsearch_esc_html($employer_id) ?>"><i
+                                                class="careerfy-icon careerfy-add"></i> <?php esc_html_e('Add a review', 'careerfy') ?>
+                                    </a>
+                                <?php } else { ?>
+                                    <a href="javascript:void(0);"
+                                       class="careerfy-employer-detail2-toparea-btn jobsearch-open-signin-tab"><i
+                                                class="careerfy-icon careerfy-add"></i> <?php esc_html_e('Add a review', 'careerfy') ?>
+                                    </a>
                                     <?php
                                 }
                             }
@@ -175,23 +183,31 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                     </div>
                     <div class="careerfy-employer-detail2-tablink">
                         <ul id="employer-detail2-tabs">
-                            <li class="active"><a href="javascript:void(0);" class="div-to-scroll" data-target="careerfy-overview-sec"><?php esc_html_e('OverView', 'careerfy') ?></a></li>
+                            <li class="active"><a href="javascript:void(0);" class="div-to-scroll"
+                                                  data-target="careerfy-overview-sec"><?php esc_html_e('OverView', 'careerfy') ?></a>
+                            </li>
                             <?php
                             if ($employer_content != '') {
                                 ?>
-                                <li><a href="javascript:void(0);" class="div-to-scroll" data-target="careerfy-compdesc-sec"><?php esc_html_e('Company Description', 'careerfy') ?></a></li>
+                                <li><a href="javascript:void(0);" class="div-to-scroll"
+                                       data-target="careerfy-compdesc-sec"><?php esc_html_e('Company Description', 'careerfy') ?></a>
+                                </li>
                                 <?php
                             }
                             $exfield_list = get_post_meta($employer_id, 'jobsearch_field_team_title', true);
                             if (is_array($exfield_list) && sizeof($exfield_list) > 0) {
                                 ?>
-                                <li><a href="javascript:void(0);" class="div-to-scroll" data-target="careerfy-teammemb-sec"><?php echo apply_filters('jobsearch_emp_detail_team_hdingtxt', esc_html__('Team Members', 'careerfy')) ?></a></li>
+                                <li><a href="javascript:void(0);" class="div-to-scroll"
+                                       data-target="careerfy-teammemb-sec"><?php echo apply_filters('jobsearch_emp_detail_team_hdingtxt', esc_html__('Team Members', 'careerfy')) ?></a>
+                                </li>
                                 <?php
                             }
                             $company_gal_imgs = get_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs', true);
                             if (!empty($company_gal_imgs) && $compny_gal_allow == 'on') {
                                 ?>
-                                <li><a href="javascript:void(0);" class="div-to-scroll" data-target="careerfy-oficphots-sec"><?php esc_html_e('Office Photos', 'careerfy') ?></a></li>
+                                <li><a href="javascript:void(0);" class="div-to-scroll"
+                                       data-target="careerfy-oficphots-sec"><?php esc_html_e('Office Photos', 'careerfy') ?></a>
+                                </li>
                                 <?php
                             }
                             $reviews_switch = isset($jobsearch_plugin_options['reviews_switch']) ? $jobsearch_plugin_options['reviews_switch'] : '';
@@ -201,9 +217,10 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     'status' => 'approve',
                                 );
                                 $all_comments = get_comments($comen_args);
-                                if (!empty($all_comments)) {
-                                    ?>
-                                    <li><a href="javascript:void(0);" class="div-to-scroll" data-target="careerfy-reviws-sec"><?php esc_html_e('Reviews', 'careerfy') ?></a></li>
+                                if (!empty($all_comments)) { ?>
+                                    <li><a href="javascript:void(0);" class="div-to-scroll"
+                                           data-target="careerfy-reviws-sec"><?php esc_html_e('Reviews', 'careerfy') ?></a>
+                                    </li>
                                     <?php
                                 }
                             }
@@ -227,7 +244,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 ?>
                                 <li class="careerfy-column-4">
                                     <i class="careerfy-icon careerfy-folder"></i>
-                                    <div class="careerfy-services-text"><?php esc_html_e('Sectors', 'careerfy') ?> <?php echo wp_kses($sector_str, array('small' => array())) ?></div>
+                                    <div class="careerfy-services-text"><?php esc_html_e('Sectors', 'careerfy') ?><?php echo wp_kses($sector_str, array('small' => array())) ?></div>
                                 </li>
                                 <?php
                             }
@@ -235,7 +252,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 ?>
                                 <li class="careerfy-column-4">
                                     <i class="careerfy-icon careerfy-briefcase"></i>
-                                    <div class="careerfy-services-text"><?php esc_html_e('Posted Jobs', 'careerfy') ?> <small><?php echo jobsearch_employer_total_jobs_posted($employer_id) ?></small></div>
+                                    <div class="careerfy-services-text"><?php esc_html_e('Posted Jobs', 'careerfy') ?>
+                                        <small><?php echo jobsearch_employer_total_jobs_posted($employer_id) ?></small>
+                                    </div>
                                 </li>
                                 <?php
                             }
@@ -243,7 +262,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 ?>
                                 <li class="careerfy-column-4">
                                     <i class="careerfy-icon careerfy-view"></i>
-                                    <div class="careerfy-services-text"><?php esc_html_e('Viewed', 'careerfy') ?> <small><?php echo ($employer_views_count) ?></small></div>
+                                    <div class="careerfy-services-text"><?php esc_html_e('Viewed', 'careerfy') ?>
+                                        <small><?php echo jobsearch_esc_html($employer_views_count) ?></small>
+                                    </div>
                                 </li>
                                 <?php
                             }
@@ -253,16 +274,15 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                             if (!empty($custom_all_fields)) {
                                 $cus_fields = apply_filters('jobsearch_custom_fields_list', 'employer', $employer_id, $cus_fields, '<li class="careerfy-column-4">', '</li>', '', true, true, true, 'careerfy');
                             }
-                            if ((isset($cus_fields['content']) && $cus_fields['content'] != '') || $extra_cus_fields != '') {
-                                ?>
-                                <div id="careerfy-overview-sec" class="careerfy-content-title"><h2><?php esc_html_e('Overview', 'careerfy') ?></h2></div>
+                            if ((isset($cus_fields['content']) && $cus_fields['content'] != '') || $extra_cus_fields != '') { ?>
+                                <div id="careerfy-overview-sec" class="careerfy-content-title">
+                                    <h2><?php esc_html_e('Overview', 'careerfy') ?></h2></div>
                                 <div class="careerfy-jobdetail-services">
                                     <ul class="careerfy-row">
                                         <?php
-                                        echo ($extra_cus_fields);
-
+                                        echo($extra_cus_fields);
                                         //
-                                        echo ($cus_fields['content']);
+                                        echo($cus_fields['content']);
                                         ?>
                                     </ul>
                                 </div>
@@ -273,16 +293,16 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     'position' => 'b4_desc',
                                 );
                                 jobsearch_detail_common_ad_code($ad_args);
-                                if ($employer_content != '') {
-                                    ?>
-                                    <div id="careerfy-compdesc-sec" class="careerfy-content-title"><h2><?php esc_html_e('Company Description', 'careerfy') ?></h2></div>
+                                if ($employer_content != '') { ?>
+                                    <div id="careerfy-compdesc-sec" class="careerfy-content-title">
+                                        <h2><?php esc_html_e('Company Description', 'careerfy') ?></h2></div>
                                     <div class="jobsearch-description">
-                                        <?php echo ($employer_content) ?>
+                                        <?php echo jobsearch_esc_html($employer_content) ?>
                                     </div>
                                     <?php
                                 }
                                 echo apply_filters('jobsearch_emp_detail_after_company_desc', '', $employer_id);
-                                
+
                                 $ad_args = array(
                                     'post_type' => 'employer',
                                     'view' => 'view2',
@@ -308,8 +328,11 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
 
                             $rand_num_ul = rand(1000000, 99999999);
                             ?>
-                            <div id="careerfy-teammemb-sec" class="careerfy-employer-wrap-section careerfy-employerdetail-twocontent bottom-none">
-                                <div class="careerfy-content-title careerfy-addmore-space"><h2><?php echo apply_filters('jobsearch_emp_detail_team_hdingtxt', sprintf(esc_html__('Team Members (%s)', 'careerfy'), $total_team)); ?></h2></div>
+                            <div id="careerfy-teammemb-sec"
+                                 class="careerfy-employer-wrap-section careerfy-employerdetail-twocontent bottom-none">
+                                <div class="careerfy-content-title careerfy-addmore-space">
+                                    <h2><?php echo apply_filters('jobsearch_emp_detail_team_hdingtxt', sprintf(esc_html__('Team Members (%s)', 'careerfy'), $total_team)); ?></h2>
+                                </div>
                                 <div class="jobsearch-candidate jobsearch-candidate-grid">
                                     <ul id="members-holder-<?php echo absint($rand_num_ul) ?>" class="careerfy-row">
                                         <?php
@@ -317,15 +340,15 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                         foreach ($exfield_list as $exfield) {
                                             $rand_num = rand(1000000, 99999999);
 
-                                            $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
-                                            $team_designationfield_val = isset($team_designationfield_list[$exfield_counter]) ? $team_designationfield_list[$exfield_counter] : '';
-                                            $team_experiencefield_val = isset($team_experiencefield_list[$exfield_counter]) ? $team_experiencefield_list[$exfield_counter] : '';
-                                            $team_imagefield_val = isset($team_imagefield_list[$exfield_counter]) ? $team_imagefield_list[$exfield_counter] : '';
-                                            $team_facebookfield_val = isset($team_facebookfield_list[$exfield_counter]) ? $team_facebookfield_list[$exfield_counter] : '';
-                                            $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? $team_googlefield_list[$exfield_counter] : '';
-                                            $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? $team_twitterfield_list[$exfield_counter] : '';
-                                            $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? $team_linkedinfield_list[$exfield_counter] : '';
-                                            
+                                            $exfield_val = isset($exfield_list_val[$exfield_counter]) ? jobsearch_esc_html($exfield_list_val[$exfield_counter]) : '';
+                                            $team_designationfield_val = isset($team_designationfield_list[$exfield_counter]) ? jobsearch_esc_html($team_designationfield_list[$exfield_counter]) : '';
+                                            $team_experiencefield_val = isset($team_experiencefield_list[$exfield_counter]) ? jobsearch_esc_html($team_experiencefield_list[$exfield_counter]) : '';
+                                            $team_imagefield_val = isset($team_imagefield_list[$exfield_counter]) ? jobsearch_esc_html($team_imagefield_list[$exfield_counter]) : '';
+                                            $team_facebookfield_val = isset($team_facebookfield_list[$exfield_counter]) ? jobsearch_esc_html($team_facebookfield_list[$exfield_counter]) : '';
+                                            $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? jobsearch_esc_html($team_googlefield_list[$exfield_counter]) : '';
+                                            $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? jobsearch_esc_html($team_twitterfield_list[$exfield_counter]) : '';
+                                            $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? jobsearch_esc_html($team_linkedinfield_list[$exfield_counter]) : '';
+
                                             $team_imagefield_imgid = jobsearch_get_attachment_id_from_url($team_imagefield_val);
                                             ?>
                                             <li class="careerfy-column-4">
@@ -346,13 +369,19 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                                     <?php
                                                     if ($team_imagefield_imgid > 0) {
                                                         ?>
-                                                        <a id="fancybox_notes<?php echo ($rand_num) ?>" href="#notes<?php echo ($rand_num) ?>" class="jobsearch-candidate-grid-thumb"><img src="<?php echo ($team_imagefield_val) ?>" alt=""> <span class="jobsearch-candidate-grid-status"></span></a>
+                                                        <a id="fancybox_notes<?php echo($rand_num) ?>"
+                                                           href="#notes<?php echo($rand_num) ?>"
+                                                           class="jobsearch-candidate-grid-thumb"><img
+                                                                    src="<?php echo($team_imagefield_val) ?>" alt="">
+                                                            <span class="jobsearch-candidate-grid-status"></span></a>
                                                         <?php
                                                     }
                                                     ?>
                                                     <figcaption>
-                                                        <h2><a id="fancybox_notes_txt<?php echo ($rand_num) ?>" href="#notes<?php echo ($rand_num) ?>"><?php echo ($exfield) ?></a></h2>
-                                                        <p><?php echo ($team_designationfield_val) ?></p>
+                                                        <h2><a id="fancybox_notes_txt<?php echo($rand_num) ?>"
+                                                               href="#notes<?php echo($rand_num) ?>"><?php echo jobsearch_esc_html($exfield) ?></a>
+                                                        </h2>
+                                                        <p><?php echo($team_designationfield_val) ?></p>
                                                         <?php
                                                         if ($team_experiencefield_val != '') {
                                                             echo '<span>' . sprintf(esc_html__('Experience: %s', 'careerfy'), $team_experiencefield_val) . '</span>';
@@ -361,7 +390,8 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                                     </figcaption>
                                                 </figure>
 
-                                                <div id="notes<?php echo ($rand_num) ?>" style="display: none;"><?php echo ($exfield_val) ?></div>
+                                                <div id="notes<?php echo($rand_num) ?>"
+                                                     style="display: none;"><?php echo($exfield_val) ?></div>
                                                 <?php
                                                 if ($team_facebookfield_val != '' || $team_googlefield_val != '' || $team_twitterfield_val != '' || $team_linkedinfield_val != '') {
                                                     ?>
@@ -422,7 +452,11 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     $total_pages = ceil($total_team / $reults_per_page);
                                     ?>
                                     <div class="jobsearch-load-more">
-                                        <a class="load-more-team" href="javascript:void(0);" data-id="<?php echo ($employer_id) ?>" data-pref="careerfy" data-rand="<?php echo ($rand_num_ul) ?>" data-pages="<?php echo ($total_pages) ?>" data-page="1"><?php esc_html_e('Load More', 'careerfy') ?></a>
+                                        <a class="load-more-team" href="javascript:void(0);"
+                                           data-id="<?php echo($employer_id) ?>" data-pref="careerfy"
+                                           data-rand="<?php echo($rand_num_ul) ?>"
+                                           data-pages="<?php echo($total_pages) ?>"
+                                           data-page="1"><?php esc_html_e('Load More', 'careerfy') ?></a>
                                     </div>
                                     <?php
                                 }
@@ -430,21 +464,21 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                             </div>
                             <?php
                         }
-                        
+
                         $ad_args = array(
                             'post_type' => 'employer',
                             'view' => 'view2',
                             'position' => 'aftr_team',
                         );
                         jobsearch_detail_common_ad_code($ad_args);
-                        
+
                         //
                         if ($compny_gal_allow == 'on') {
                             $company_gal_imgs = get_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs', true);
                             $company_gal_videos = get_post_meta($employer_id, 'jobsearch_field_company_gallery_videos', true);
                             $company_gal_descs = get_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs_description', true);
                             $company_gal_titles = get_post_meta($employer_id, 'jobsearch_field_company_gallery_imgs_title', true);
-                        
+
                             if (!empty($company_gal_imgs)) {
                                 $_gal_img_counter = 0;
                                 foreach ($company_gal_imgs as $company_gal_img) {
@@ -457,8 +491,10 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 }
                                 if ($_gal_img_counter > 0) {
                                     ?>
-                                    <div id="careerfy-oficphots-sec" class="careerfy-employer-wrap-section careerfy-employerdetail-twocontent">
-                                        <div class="jcareerfy-content-title careerfy-addmore-space"><h2><?php esc_html_e('Office Photos', 'careerfy') ?></h2></div>
+                                    <div id="careerfy-oficphots-sec"
+                                         class="careerfy-employer-wrap-section careerfy-employerdetail-twocontent">
+                                        <div class="jcareerfy-content-title careerfy-addmore-space">
+                                            <h2><?php esc_html_e('Office Photos', 'careerfy') ?></h2></div>
                                         <div class="careerfy-gallery careerfy-employer-gallery">
                                             <ul class="careerfy-row">
                                                 <?php
@@ -493,9 +529,14 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
 
                                                     if ($company_gal_img > 0) {
                                                         ?>
-                                                        <li class="grid-item <?php echo ($profile_gal_counter > 2 ? 'careerfy-column-4' : 'careerfy-column-6') ?>">
-                                                            <a href="<?php echo ($gal_video_url != '' ? $gal_video_url : $gal_full_image_src) ?>" title="<?php echo ($gal_img_title) ?>" data-caption="<?php echo ($gal_img_desc) ?>" class="<?php echo ($gal_video_url != '' ? 'fancybox-video' : 'fancybox-galimg') ?>" <?php echo ($gal_video_url != '' ? 'data-fancybox-type="iframe"' : '') ?> data-fancybox-group="group">
-                                                                <span class="grid-item-thumb"><small style="background-image: url('<?php echo ($gal_thumb_image_src) ?>');"></small></span>
+                                                        <li class="grid-item <?php echo($profile_gal_counter > 2 ? 'careerfy-column-4' : 'careerfy-column-6') ?>">
+                                                            <a href="<?php echo($gal_video_url != '' ? $gal_video_url : $gal_full_image_src) ?>"
+                                                               title="<?php echo($gal_img_title) ?>"
+                                                               data-caption="<?php echo($gal_img_desc) ?>"
+                                                               class="<?php echo($gal_video_url != '' ? 'fancybox-video' : 'fancybox-galimg') ?>" <?php echo($gal_video_url != '' ? 'data-fancybox-type="iframe"' : '') ?>
+                                                               data-fancybox-group="group">
+                                                                <span class="grid-item-thumb"><small
+                                                                            style="background-image: url('<?php echo($gal_thumb_image_src) ?>');"></small></span>
                                                             </a>
                                                         </li>
                                                         <?php
@@ -511,7 +552,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 }
                             }
                         }
-                        
+
                         $ad_args = array(
                             'post_type' => 'employer',
                             'view' => 'view2',
@@ -543,7 +584,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                     <?php
                     echo jobsearch_employer_profile_awards($employer_id);
                     echo jobsearch_employer_profile_affiliations($employer_id);
-                    
+                    //
+                    $emp_chat_args = array('employer_id' => $employer_id);
+                    echo do_action('jobsearch_chat_with_employer', $emp_chat_args);
                     $ad_args = array(
                         'post_type' => 'employer',
                         'view' => 'view2',
@@ -574,26 +617,34 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                 <?php
                                 if (!empty($employer_address) && $all_location_allow == 'on') {
                                     ?>
-                                    <li><i class="careerfy-color fa fa-map-marker"></i> <?php echo ($employer_address) ?></li>
+                                    <li>
+                                        <i class="careerfy-color fa fa-map-marker"></i> <?php echo jobsearch_esc_html($employer_address) ?>
+                                    </li>
                                     <?php
                                 }
                                 if (isset($user_obj->user_url) && $user_obj->user_url != '' && $emp_web_switch == 'on' && jobsearch_employer_info_div_visible('weburl')) {
                                     $user_url = apply_filters('jobsearch_employer_info_encoding', $user_obj->user_url, 'weburl');
                                     ?>
-                                    <li><i class="careerfy-color careerfy-icon careerfy-internet"></i> <a href="<?php echo esc_url($user_url) ?>" target="_blank"><?php echo esc_url($user_url) ?></a></li>
+                                    <li><i class="careerfy-color careerfy-icon careerfy-internet"></i> <a
+                                                href="<?php echo esc_url($user_url) ?>"
+                                                target="_blank"><?php echo esc_url($user_url) ?></a></li>
                                     <?php
                                 }
                                 if (isset($user_obj->user_email) && $user_obj->user_email != '') {
                                     $user_email = apply_filters('jobsearch_employer_info_encoding', $user_obj->user_email, 'email' && jobsearch_employer_info_div_visible('email'));
                                     $tr_email = sprintf(__('<a href="mailto: %s">Email: %s</a>', 'careerfy'), $user_email, $user_email);
                                     ?>
-                                    <li><i class="careerfy-color careerfy-icon careerfy-envelope"></i> <?php echo wp_kses($tr_email, array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?></li>
+                                    <li>
+                                        <i class="careerfy-color careerfy-icon careerfy-envelope"></i> <?php echo wp_kses($tr_email, array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+                                    </li>
                                     <?php
                                 }
                                 if ($employer_phone != '' && $emp_phone_switch == 'on') {
                                     $user_phone = apply_filters('jobsearch_employer_info_encoding', $employer_phone, 'phone' && jobsearch_employer_info_div_visible('phone'));
                                     ?>
-                                    <li><i class="careerfy-color careerfy-icon careerfy-technology"></i> <?php printf(esc_html__('Hotline: %s', 'careerfy'), $user_phone) ?></li>
+                                    <li>
+                                        <i class="careerfy-color careerfy-icon careerfy-technology"></i> <?php printf(esc_html__('Hotline: %s', 'careerfy'), $user_phone) ?>
+                                    </li>
                                     <?php
                                 }
                                 ?>
@@ -612,27 +663,32 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     <?php
                                     if ($user_facebook_url != '' && $emp_alow_fb_smm == 'on') {
                                         ?>
-                                        <li><a href="<?php echo ($user_facebook_url) ?>" target="_blank" data-original-title="facebook" class="fa fa-facebook"></a></li>
+                                        <li><a href="<?php echo esc_url($user_facebook_url) ?>" target="_blank"
+                                               data-original-title="facebook" class="fa fa-facebook"></a></li>
                                         <?php
                                     }
                                     if ($user_twitter_url != '' && $emp_alow_twt_smm == 'on') {
                                         ?>
-                                        <li><a href="<?php echo ($user_twitter_url) ?>" target="_blank" data-original-title="twitter" class="fa fa-twitter"></a></li>
+                                        <li><a href="<?php echo esc_url($user_twitter_url) ?>" target="_blank"
+                                               data-original-title="twitter" class="fa fa-twitter"></a></li>
                                         <?php
                                     }
                                     if ($user_linkedin_url != '' && $emp_alow_linkd_smm == 'on') {
                                         ?>
-                                        <li><a href="<?php echo ($user_linkedin_url) ?>" target="_blank" data-original-title="linkedin" class="fa fa-linkedin"></a></li>
+                                        <li><a href="<?php echo esc_url($user_linkedin_url) ?>" target="_blank"
+                                               data-original-title="linkedin" class="fa fa-linkedin"></a></li>
                                         <?php
                                     }
                                     if ($user_google_plus_url != '' && $emp_alow_gplus_smm == 'on') {
                                         ?>
-                                        <li><a href="<?php echo ($user_google_plus_url) ?>" target="_blank" data-original-title="google-plus" class="fa fa-google-plus"></a></li>
+                                        <li><a href="<?php echo esc_url($user_google_plus_url) ?>" target="_blank"
+                                               data-original-title="google-plus" class="fa fa-google-plus"></a></li>
                                         <?php
                                     }
                                     if ($user_dribbble_url != '' && $emp_alow_dribbb_smm == 'on') {
                                         ?>
-                                        <li><a href="<?php echo ($user_dribbble_url) ?>" target="_blank" data-original-title="dribbble" class="fa fa-dribbble"></a></li>
+                                        <li><a href="<?php echo($user_dribbble_url) ?>" target="_blank"
+                                               data-original-title="dribbble" class="fa fa-dribbble"></a></li>
                                         <?php
                                     }
                                     if (!empty($employer_social_mlinks)) {
@@ -657,7 +713,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                                 $emp_dynm_social = get_post_meta($employer_id, 'jobsearch_field_dynm_social' . $field_counter, true);
                                                 if ($field_title_val != '' && $emp_dynm_social != '') {
                                                     ?>
-                                                    <li><a href="<?php echo ($emp_dynm_social) ?>" <?php echo ($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?> target="_blank" class="<?php echo ($field_icon) ?>"></a></li>
+                                                    <li>
+                                                        <a href="<?php echo jobsearch_esc_html(esc_url($emp_dynm_social)) ?>" <?php echo($field_icon_styles != '' ? 'style="' . $field_icon_styles . '"' : '') ?>
+                                                           target="_blank" class="<?php echo($field_icon) ?>"></a></li>
                                                     <?php
                                                 }
                                                 $field_counter++;
@@ -681,30 +739,56 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                     jobsearch_detail_common_ad_code($ad_args);
 
                     $emp_det_contact_form = isset($jobsearch_plugin_options['emp_det_contact_form']) ? $jobsearch_plugin_options['emp_det_contact_form'] : '';
-                    if ($emp_det_contact_form == 'on') {
+                    if ($emp_det_contact_form != 'off') {
                         ob_start();
                         ?>
                         <div class="widget widget_contact_form">
                             <?php
                             $cnt_counter = rand(1000000, 9999999);
+
+                            $cur_user_name = '';
+                            $cur_user_email = '';
+                            $field_readonly = false;
+                            if (is_user_logged_in()) {
+                                if ($emp_det_contact_form == 'cand_login') {
+                                    $field_readonly = true;
+                                }
+                                $cur_user_id = get_current_user_id();
+                                $cur_user_obj = wp_get_current_user();
+                                $cur_user_name = isset($cur_user_obj->display_name) ? $cur_user_obj->display_name : '';
+                                $cur_user_email = isset($cur_user_obj->user_email) ? $cur_user_obj->user_email : '';
+                                if (jobsearch_user_is_candidate($cur_user_id)) {
+                                    $cnt_cand_id = jobsearch_get_user_candidate_id($cur_user_id);
+                                    $cur_user_name = get_the_title($cnt_cand_id);
+                                }
+                            }
                             ?>
-                            <div class="careerfy-widget-title"><h2><?php esc_html_e('Contact Form', 'careerfy') ?></h2></div>
-                            <form id="ct-form-<?php echo absint($cnt_counter) ?>" data-uid="<?php echo absint($user_id) ?>" method="post">
+                            <div class="careerfy-widget-title"><h2><?php esc_html_e('Contact Form', 'careerfy') ?></h2>
+                            </div>
+                            <form id="ct-form-<?php echo absint($cnt_counter) ?>"
+                                  data-uid="<?php echo absint($user_id) ?>" method="post">
                                 <ul>
                                     <li>
-                                        <input name="u_name" placeholder="<?php esc_html_e('Enter Your Name', 'careerfy') ?>" type="text">
+                                        <input name="u_name"
+                                               placeholder="<?php esc_html_e('Enter Your Name', 'careerfy') ?>"
+                                               type="text" <?php echo ($field_readonly ? 'readonly' : '') ?> value="<?php echo ($cur_user_name) ?>">
                                         <i class="jobsearch-icon jobsearch-user"></i>
                                     </li>
                                     <li>
-                                        <input name="u_email" placeholder="<?php esc_html_e('Enter Your Email Address', 'careerfy') ?>" type="text">
+                                        <input name="u_email"
+                                               placeholder="<?php esc_html_e('Enter Your Email Address', 'careerfy') ?>"
+                                               type="text" <?php echo ($field_readonly ? 'readonly' : '') ?> value="<?php echo ($cur_user_email) ?>">
                                         <i class="jobsearch-icon jobsearch-mail"></i>
                                     </li>
                                     <li>
-                                        <input name="u_number" placeholder="<?php esc_html_e('Enter Your Phone Number', 'careerfy') ?>" type="text">
+                                        <input name="u_number"
+                                               placeholder="<?php esc_html_e('Enter Your Phone Number', 'careerfy') ?>"
+                                               type="text">
                                         <i class="jobsearch-icon jobsearch-technology"></i>
                                     </li>
                                     <li>
-                                        <textarea name="u_msg" placeholder="<?php esc_html_e('Type Your Message here', 'careerfy') ?>"></textarea>
+                                        <textarea name="u_msg"
+                                                  placeholder="<?php esc_html_e('Type Your Message here', 'careerfy') ?>"></textarea>
                                     </li>
                                     <?php
                                     if ($captcha_switch == 'on') {
@@ -716,7 +800,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                                 var jobsearch_multicap = function () {
                                                     //Render the recaptcha_empl_contact on the element with ID "recaptcha1"
                                                     recaptcha_empl_contact = grecaptcha.render('recaptcha_empl_contact', {
-                                                        'sitekey': '<?php echo ($jobsearch_sitekey); ?>', //Replace this with your Site key
+                                                        'sitekey': '<?php echo($jobsearch_sitekey); ?>', //Replace this with your Site key
                                                         'theme': 'light'
                                                     });
                                                 };
@@ -735,12 +819,14 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                         <?php
                                         jobsearch_terms_and_con_link_txt();
                                         ?>
-                                        <input type="submit" class="jobsearch-employer-ct-form" data-id="<?php echo absint($cnt_counter) ?>" value="<?php esc_html_e('Send now', 'careerfy') ?>">
+                                        <input type="submit" class="jobsearch-employer-ct-form"
+                                               data-id="<?php echo absint($cnt_counter) ?>"
+                                               value="<?php esc_html_e('Send now', 'careerfy') ?>">
                                         <?php
-                                        $cnt__emp_wout_log = isset($jobsearch_plugin_options['emp_cntct_wout_login']) ? $jobsearch_plugin_options['emp_cntct_wout_login'] : '';
-                                        if (!is_user_logged_in() && $cnt__emp_wout_log != 'on') {
+                                        if (!is_user_logged_in() && $emp_det_contact_form != 'on') {
                                             ?>
-                                            <a class="jobsearch-open-signin-tab" style="display: none;"><?php esc_html_e('login', 'careerfy') ?></a>
+                                            <a class="jobsearch-open-signin-tab"
+                                               style="display: none;"><?php esc_html_e('login', 'careerfy') ?></a>
                                             <?php
                                         }
                                         ?>
@@ -757,7 +843,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                 </aside>
 
                 <?php
-//
+                //
                 $default_date_time_formate = 'd-m-Y H:i:s';
                 $args = array(
                     'posts_per_page' => 20,
@@ -792,7 +878,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                     $jobsearch_title_limit = isset($jobsearch_plugin_options['related_jobs_title_length']) && $jobsearch_plugin_options['related_jobs_title_length'] > 0 ? $jobsearch_plugin_options['related_jobs_title_length'] : '';
                     ?>
                     <div class="careerfy-column-12">
-                        <div class="careerfy-section-title"><h2><?php printf(esc_html__('Active Jobs From %s', 'careerfy'), $user_displayname) ?></h2></div>
+                        <div class="careerfy-section-title">
+                            <h2><?php printf(esc_html__('Active Jobs From %s', 'careerfy'), $user_displayname) ?></h2>
+                        </div>
 
                         <?php
                         ob_start();
@@ -831,19 +919,26 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                     <li class="col-md-12">
                                         <div class="careerfy-joblisting-wrap">
                                             <div class="careerfy-joblisting-media">
-                                                <figure><a href="<?php echo get_permalink($job_id) ?>"><img src="<?php echo ($post_thumbnail_src) ?>" alt=""></a></figure>
+                                                <figure><a href="<?php echo get_permalink($job_id) ?>"><img
+                                                                src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
+                                                </figure>
                                             </div>
                                             <div class="careerfy-joblisting-text">
-                                                <h2><a href="<?php echo get_permalink($job_id) ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), $jobsearch_title_limit)) ?></a> <?php echo ($job_type_str); ?> </h2>
+                                                <h2>
+                                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo esc_html(wp_trim_words(get_the_title($job_id), $jobsearch_title_limit)) ?></a> <?php echo($job_type_str); ?>
+                                                </h2>
                                                 <?php
                                                 if ($company_name != '') {
                                                     ?>
-                                                    <div class="careerfy-company-name"><a><?php echo ($company_name); ?></a></div>
+                                                    <div class="careerfy-company-name">
+                                                        <a><?php echo jobsearch_esc_html($company_name); ?></a></div>
                                                     <?php
                                                 }
                                                 if (!empty($job_city_title) && $all_location_allow == 'on') {
                                                     ?>
-                                                    <small><i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo esc_html($job_city_title); ?></small>
+                                                    <small>
+                                                        <i class="careerfy-icon careerfy-maps-and-flags"></i> <?php echo jobsearch_esc_html($job_city_title); ?>
+                                                    </small>
                                                     <?php
                                                 }
                                                 $job_skills = wp_get_post_terms($job_id, 'skill');
@@ -853,7 +948,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                                         <?php
                                                         foreach ($job_skills as $skill_term) {
                                                             ?>
-                                                            <a><?php echo ($skill_term->name) ?></a>
+                                                            <a><?php echo($skill_term->name) ?></a>
                                                             <?php
                                                         }
                                                         ?>
@@ -872,7 +967,7 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                                             ?>
                                         </div>
                                     </li>
-                                    <?php
+                                <?php
                                 endwhile;
                                 wp_reset_postdata();
                                 ?>
@@ -883,13 +978,9 @@ $compny_gal_allow = isset($jobsearch_plugin_options['allow_compny_galery']) ? $j
                         echo apply_filters('jobsearch_employer_detail_active_jobs_html', $activ_jobs_html, $jobs_query);
                         ?>
                     </div>
-                    <?php
-                }
-                ?>
-
+                <?php } ?>
             </div>
         </div>
     </div>
     <!-- Main Section -->
-
 </div>

@@ -14,18 +14,6 @@
     <?php
     wp_head();
     ?>
-	
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179140594-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-179140594-2');
-</script>
-
-	
 </head>
 
 <body <?php body_class(); ?> <?php echo apply_filters('careerfy_theme_body_tag_atts', '') ?>>
@@ -52,21 +40,17 @@ if (!(class_exists('Careerfy_MMC') && true == Careerfy_MMC::is_construction_mode
     <?php } ?>
     <!--// Header \\-->
     <header id="careerfy-header" class="<?php echo careerfy_header_class() ?>">
-        <!--// MainHeader \\-->
         <?php
         // header section
         do_action('careerfy_header_section');
         ?>
-        <!--// MainHeader \\-->
     </header>
+    <?php do_action('careerfy_header_after_html');
 
-    <!--// Header Advance Search\\-->
-    <?php do_action('header_advance_search'); ?>
-    <!--// Header Navigation for only style12\\-->
-    <?php
+    do_action('header_advance_search');
+
     do_action('header_navigation_style_twelve');
-    ?>
-    <!--// Header \\-->
-    <?php 
+
+
     do_action('careerfy_header_breadcrumbs');
 }

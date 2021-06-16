@@ -59,9 +59,6 @@ if (!class_exists('jobsearch_packages_functions')) {
                 
                 $is_subscribed = jobsearch_allinpckg_is_subscribed($pkg_id, $user_id, 'jobs');
                 if (!$is_subscribed) {
-                    $is_subscribed = jobsearch_allinpckg_is_subscribed($pkg_id, $user_id, 'fjobs');
-                }
-                if (!$is_subscribed) {
                     $is_subscribed = jobsearch_allinpckg_is_subscribed($pkg_id, $user_id, 'cvs');
                 }
                 
@@ -161,7 +158,12 @@ if (!class_exists('jobsearch_packages_functions')) {
             if ($user_is_employer) {
                 $pkg_id = isset($_POST['pkg_id']) ? $_POST['pkg_id'] : '';
                 $employer_id = jobsearch_get_user_employer_id($user_id);
-                if (jobsearch_emp_profile_pckg_is_subscribed($pkg_id, $user_id)) {
+                $is_subscribed = jobsearch_emprofpckg_is_subscribed($pkg_id, $user_id, 'jobs');
+                if (!$is_subscribed) {
+                    $is_subscribed = jobsearch_emprofpckg_is_subscribed($pkg_id, $user_id, 'cvs');
+                }
+                
+                if ($is_subscribed) {
                     $msgva = esc_html__('You have already subscribed to this package.', 'wp-jobsearch');
                     $msgva = apply_filters('jobsearch_buypkg_emp_alredybuy_msg', $msgva);
                     echo json_encode(array('msg' => $msgva, 'error' => '1'));
@@ -391,7 +393,7 @@ if (!class_exists('jobsearch_packages_functions')) {
                 //
             } else {
                 $msgva = esc_html__('You are not allowed.', 'wp-jobsearch');
-                $msgva = apply_filters('jobsearch_buyjobpkg_emp_notalowerr_msg', $msgva);
+                $msgva = apply_filters('jobsearch_buypromotpkg_emp_notalowerr_msg', $msgva);
                 echo json_encode(array('msg' => $msgva, 'error' => '1'));
                 die;
             }
@@ -439,7 +441,7 @@ if (!class_exists('jobsearch_packages_functions')) {
                 //
             } else {
                 $msgva = esc_html__('You are not allowed.', 'wp-jobsearch');
-                $msgva = apply_filters('jobsearch_buyjobpkg_emp_notalowerr_msg', $msgva);
+                $msgva = apply_filters('jobsearch_buyurgentpkg_emp_notalowerr_msg', $msgva);
                 echo json_encode(array('msg' => $msgva, 'error' => '1'));
                 die;
             }

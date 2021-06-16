@@ -3,14 +3,15 @@
  * Listing search box
  *
  */
+
 use WP_Jobsearch\Candidate_Profile_Restriction;
 
 global $jobsearch_post_candidate_types, $jobsearch_plugin_options;
 
 if (class_exists('JobSearch_plugin')) {
-    
+
     $cand_profile_restrict = new Candidate_Profile_Restriction;
-    
+
     $user_id = $user_company = '';
     if (is_user_logged_in()) {
         $user_id = get_current_user_id();
@@ -20,7 +21,7 @@ if (class_exists('JobSearch_plugin')) {
     $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
 
     $default_candidate_no_custom_fields = isset($jobsearch_plugin_options['jobsearch_candidate_no_custom_fields']) ? $jobsearch_plugin_options['jobsearch_candidate_no_custom_fields'] : '';
-    if (false === ( $candidate_view = jobsearch_get_transient_obj('jobsearch_candidate_view' . $candidate_short_counter) )) {
+    if (false === ($candidate_view = jobsearch_get_transient_obj('jobsearch_candidate_view' . $candidate_short_counter))) {
         $candidate_view = isset($atts['candidate_view']) ? $atts['candidate_view'] : '';
     }
     $candidates_excerpt_length = isset($atts['candidates_excerpt_length']) ? $atts['candidates_excerpt_length'] : '18';
@@ -47,9 +48,9 @@ if (class_exists('JobSearch_plugin')) {
         while ($candidate_ads_after_list_array_count > $array_i) {
             if (isset($candidate_ads_list_array[$array_i]) && $candidate_ads_list_array[$array_i] != '') {
                 $candidate_ads_after_list_array[$i] = $candidate_ads_list_array[$array_i];
-                $i ++;
+                $i++;
             }
-            $array_i ++;
+            $array_i++;
         }
         // new count 
         $candidate_ads_after_list_array_count = sizeof($candidate_ads_after_list_array);
@@ -58,16 +59,16 @@ if (class_exists('JobSearch_plugin')) {
     $candidates_ads_array = array();
     if ($candidate_ads_switch == 'yes' && $candidate_ads_after_list_array_count > 0) {
         $list_count = 0;
-        for ($i = 0; $i <= $candidate_loop_obj->found_posts; $i ++) {
+        for ($i = 0; $i <= $candidate_loop_obj->found_posts; $i++) {
             if ($list_count == $candidate_ads_after_list_array[$candidate_ads_after_list_flag]) {
                 $list_count = 1;
                 $candidates_ads_array[] = $i;
-                $candidate_ads_after_list_flag ++;
+                $candidate_ads_after_list_flag++;
                 if ($candidate_ads_after_list_flag >= $candidate_ads_after_list_array_count) {
                     $candidate_ads_after_list_flag = $candidate_ads_after_list_array_count - 1;
                 }
             } else {
-                $list_count ++;
+                $list_count++;
             }
         }
     }
@@ -79,8 +80,8 @@ if (class_exists('JobSearch_plugin')) {
     if ($candidate_page >= 2) {
         $counter = (
                 ($candidate_page - 1) *
-                $candidate_per_page ) +
-                1;
+                $candidate_per_page) +
+            1;
     }
     // end ads script
 
@@ -90,7 +91,8 @@ if (class_exists('JobSearch_plugin')) {
 
     $http_request = jobsearch_server_protocol();
     ?>
-    <div class="careerfy-candidate careerfy-candidate-view4" id="jobsearch-candidate-<?php echo absint($candidate_short_counter) ?>">
+    <div class="careerfy-candidate careerfy-candidate-view4"
+         id="jobsearch-candidate-<?php echo absint($candidate_short_counter) ?>">
 
         <ul class="row">
             <?php
@@ -122,21 +124,29 @@ if (class_exists('JobSearch_plugin')) {
                     ?>
                     <li class="<?php echo esc_html($columns_class); ?>">
                         <div class="careerfy-candidate-view4-wrap">
+                            <?php
+                            if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
+                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_listv1');
+                            }
+                            ?>
                             <figure>
-                                <?php if ($post_thumbnail_src != '') { ?> 
+                                <?php if ($post_thumbnail_src != '') { ?>
                                     <a href="<?php the_permalink(); ?>" class="careerfy-candidate-view4-thumb">
                                         <?php
                                         if (function_exists('jobsearch_member_promote_profile_iconlab')) {
                                             echo jobsearch_member_promote_profile_iconlab($candidate_id);
                                         }
+
+
+
                                         if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {
                                             ?>
-                                            <img src="<?php echo ($post_thumbnail_src) ?>" alt="">
+                                            <img src="<?php echo($post_thumbnail_src) ?>" alt="">
                                             <?php
                                         }
                                         ?>
                                     </a>
-                                <?php } ?> 
+                                <?php } ?>
                             </figure>
                             <h2>
                                 <a href="<?php echo esc_url(get_permalink($candidate_id)); ?>">
@@ -145,16 +155,12 @@ if (class_exists('JobSearch_plugin')) {
                                     ?>
                                 </a>
                             </h2>
-                            <?php
-                            if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id, 'cand_dmodren');
-                            }
-                            ?>
+
                             <?php
                             if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|job_title')) {
                                 if ($candidate_company_str != '') {
                                     ?>
-                                    <p><?php echo ($candidate_company_str) ?></p>
+                                    <p><?php echo($candidate_company_str) ?></p>
                                     <?php
                                 }
                             }
@@ -162,26 +168,29 @@ if (class_exists('JobSearch_plugin')) {
                             if (!$cand_profile_restrict::cand_field_is_locked('address_defields')) {
                                 if ($get_candidate_location != '' && $all_location_allow == 'on') {
                                     ?>
-                                    <span><?php echo ($get_candidate_location) ?></span>
+                                    <span><?php echo($get_candidate_location) ?></span>
                                     <?php
                                 }
                             }
                             if (!$cand_profile_restrict::cand_field_is_locked('socialicons_defields')) {
                                 ?>
                                 <ul class="careerfy-candidate-view4-social">
-                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i class="fa fa-envelope-o"></i></a></li>
-                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i class="careerfy-icon careerfy-briefcase"></i></a></li>
-                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i class="careerfy-icon careerfy-technology"></i></a></li>
+                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i
+                                                    class="fa fa-envelope-o"></i></a></li>
+                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i
+                                                    class="careerfy-icon careerfy-briefcase"></i></a></li>
+                                    <li><a href="<?php echo esc_url(get_permalink($candidate_id)); ?>"><i
+                                                    class="careerfy-icon careerfy-technology"></i></a></li>
                                 </ul>
                                 <?php
                             }
                             ?>
                         </div>
-                    </li> 
+                    </li>
                     <?php
                     do_action('jobsearch_random_ad_banners', $atts, $candidate_loop_obj, $counter, 'candidate_listing');
-                    $counter ++;
-                    $flag_number ++; // number variable for candidate
+                    $counter++;
+                    $flag_number++; // number variable for candidate
                 endwhile;
             } else {
                 $reset_link = get_permalink(get_the_ID());
@@ -196,7 +205,7 @@ if (class_exists('JobSearch_plugin')) {
                     </div>
                 </li>';
             }
-            ?> 
+            ?>
         </ul>
     </div>
     <?php

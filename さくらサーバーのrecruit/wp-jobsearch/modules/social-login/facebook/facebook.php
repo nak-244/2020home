@@ -1,8 +1,9 @@
 <?php
+
 /*
  * Import the Facebook SDK and load all the classes
  */
-include (plugin_dir_path(__FILE__) . 'facebook-sdk/autoload.php');
+include(plugin_dir_path(__FILE__) . 'facebook-sdk/autoload.php');
 
 /*
  * Classes required to call the Facebook API
@@ -16,7 +17,8 @@ use Facebook\Exceptions\FacebookResponseException;
 /**
  * Class JobsearchFacebook
  */
-class JobsearchFacebook {
+class JobsearchFacebook
+{
 
     /**
      * Facebook APP ID
@@ -58,27 +60,29 @@ class JobsearchFacebook {
      */
     private $facebook_details;
 
+    private $facebook_get_pic;
+
     /**
      * JobsearchFacebook constructor.
      */
     public function __construct() {
-        
-        global $jobsearch_plugin_options;
 
-        //
-        if (session_status() == PHP_SESSION_NONE) {
-            @session_start();
+        global $jobsearch_plugin_options, $pagenow;
+        
+        if ($pagenow != 'site-health.php') {
+            session_start();
         }
 
+        add_action('wp', array($this, 'btn_shortcode_load'));
         //
         add_action('jobsearch_do_apply_job_fb', array($this, 'do_apply_job_with_facebook'), 10, 1);
-        
+
         add_action('wp_ajax_jobsearch_facebook_detect_user_logged_in', array($this, 'facebook_detect_user_logged_in'));
         add_action('wp_ajax_nopriv_jobsearch_facebook_detect_user_logged_in', array($this, 'facebook_detect_user_logged_in'));
-        
+
         add_action('wp_ajax_jobsearch_facebook_get_soc_login_url', array($this, 'login_with_redirect_url'));
         add_action('wp_ajax_nopriv_jobsearch_facebook_get_soc_login_url', array($this, 'login_with_redirect_url'));
-        
+
         //
         $facebook_app_id = isset($jobsearch_plugin_options['jobsearch-facebook-app-id']) ? $jobsearch_plugin_options['jobsearch-facebook-app-id'] : '';
         $facebook_app_secret = isset($jobsearch_plugin_options['jobsearch-facebook-app-secret']) ? $jobsearch_plugin_options['jobsearch-facebook-app-secret'] : '';
@@ -88,7 +92,7 @@ class JobsearchFacebook {
 
         $this->callback_url = admin_url('admin-ajax.php?action=jobsearch_facebook');
         // We register our shortcode
-        add_shortcode('jobsearch_facebook_login', array($this, 'renderShortcode'));
+
 
         if (!isset($_GET['jobsearch_instagram_login'])) {
             // Callback URL
@@ -104,12 +108,13 @@ class JobsearchFacebook {
         do_action('jobsearch_facebook_dologin_inend_constr', $this);
     }
 
-    public function facebook_detect_user_logged_in() {
-        global $jobsearch_plugin_options;
+    public function btn_shortcode_load() {
+        add_shortcode('jobsearch_facebook_login', array($this, 'renderShortcode'));
+    }
 
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+    public function facebook_detect_user_logged_in()
+    {
+        global $jobsearch_plugin_options;
 
         $app_id = isset($jobsearch_plugin_options['jobsearch-facebook-app-id']) ? $jobsearch_plugin_options['jobsearch-facebook-app-id'] : '';
         $app_secret = isset($jobsearch_plugin_options['jobsearch-facebook-app-secret']) ? $jobsearch_plugin_options['jobsearch-facebook-app-secret'] : '';
@@ -155,15 +160,16 @@ class JobsearchFacebook {
         }
         die;
     }
-    
-    public function login_with_redirect_url() {
-        
+
+    public function login_with_redirect_url()
+    {
+
         $user_data = isset($_POST['user_data']) ? $_POST['user_data'] : '';
-        
+
         if ($user_data != '') {
             $user_data = json_decode(stripslashes($user_data), true);
         }
-        
+
         if (isset($user_data['email'])) {
             $wp_users = get_users(array(
                 'meta_key' => 'jobsearch_facebook_id',
@@ -178,7 +184,7 @@ class JobsearchFacebook {
                 echo json_encode(array('login' => '1'));
                 die;
             }
-            
+
             $user_id = isset($user_data['id']) ? $user_data['id'] : '';
 
             $first_name = isset($user_data['first_name']) ? $user_data['first_name'] : '';
@@ -234,8 +240,9 @@ class JobsearchFacebook {
         echo json_encode(array('login' => '1', 'red_url' => $this->getLoginUrl()));
         die;
     }
-    
-    public static function getSocLoginFbURL() {
+
+    public static function getSocLoginFbURL()
+    {
         $url = $this->getLoginUrl();
         echo json_encode(array('url' => $url));
         die;
@@ -246,7 +253,8 @@ class JobsearchFacebook {
      *
      * It displays our Login / Register button
      */
-    public function renderShortcode() {
+    public function renderShortcode()
+    {
         global $jobsearch_plugin_options;
         $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
         $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
@@ -297,7 +305,8 @@ class JobsearchFacebook {
      *
      * @return Facebook
      */
-    private function initApi() {
+    private function initApi()
+    {
 
         $facebook = new Facebook([
             'app_id' => $this->app_id,
@@ -314,7 +323,8 @@ class JobsearchFacebook {
      *
      * @return string
      */
-    private function getLoginUrl() {
+    private function getLoginUrl()
+    {
 
         $fb = $this->initApi();
 
@@ -332,12 +342,10 @@ class JobsearchFacebook {
      * API call back running whenever we hit /wp-admin/admin-ajax.php?action=jobsearch_facebook
      * This code handles the Login / Regsitration part
      */
-    public function apiCallback() {
-        
+    public function apiCallback()
+    {
+
         global $jobsearch_plugin_options;
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         if (isset($_COOKIE['facebook_redirect_url']) && $_COOKIE['facebook_redirect_url'] != '') {
             $real_redirect_url = $_COOKIE['facebook_redirect_url'];
             unset($_COOKIE['facebook_redirect_url']);
@@ -350,7 +358,6 @@ class JobsearchFacebook {
         }
 
 
-
         $this->redirect_url = $real_redirect_url;
 
         // We start the connection
@@ -361,6 +368,8 @@ class JobsearchFacebook {
 
         // We get the user details
         $this->facebook_details = $this->getUserDetails($fb);
+
+        //$this->facebook_get_pic = $this->getUserPictureURL($fb);
 
         // We first try to login the user
         $this->loginUser();
@@ -380,7 +389,8 @@ class JobsearchFacebook {
      * @param $fb Facebook
      * @return string - The Token
      */
-    private function getToken($fb) {
+    private function getToken($fb)
+    {
 
         // Assign the Session variable for Facebook
         $_SESSION['FBRLH_state'] = $_GET['state'];
@@ -391,16 +401,14 @@ class JobsearchFacebook {
         // Try to get an access token
         try {
             $accessToken = $helper->getAccessToken(admin_url('admin-ajax.php?action=jobsearch_facebook'));
-        }
-        // When Graph returns an error
+        } // When Graph returns an error
         catch (FacebookResponseException $e) {
             $error = __('Graph returned an error: ', 'wp-jobsearch') . $e->getMessage();
             $message = array(
                 'type' => 'error',
                 'content' => $error
             );
-        }
-        // When validation fails or other local issues
+        } // When validation fails or other local issues
         catch (FacebookSDKException $e) {
             $error = __('Facebook SDK returned an error: ', 'wp-jobsearch') . $e->getMessage();
             $message = array(
@@ -430,10 +438,11 @@ class JobsearchFacebook {
      * @param $fb Facebook
      * @return \Facebook\GraphNodes\GraphUser
      */
-    private function getUserDetails($fb) {
+    private function getUserDetails($fb)
+    {
 
         try {
-            $response = $fb->get('/me?fields=id,name,first_name,last_name,email,link', $this->access_token);
+            $response = $fb->get('/me?fields=id,name,first_name,last_name,email,link,picture', $this->access_token);
         } catch (FacebookResponseException $e) {
             $message = __('Graph returned an error: ', 'wp-jobsearch') . $e->getMessage();
             $message = array(
@@ -461,13 +470,36 @@ class JobsearchFacebook {
         return $response->getGraphUser();
     }
 
+    private function getUserPictureURL($fb)
+    {
+
+        try {
+            $response = $fb->get('/me/picture', $this->access_token);
+        } catch (FacebookResponseException $e) {
+            $message = __('Graph returned an error: ', 'wp-jobsearch') . $e->getMessage();
+            $message = array(
+                'type' => 'error',
+                'content' => $error
+            );
+        } catch (FacebookSDKException $e) {
+            $message = __('Facebook SDK returned an error: ', 'wp-jobsearch') . $e->getMessage();
+            $message = array(
+                'type' => 'error',
+                'content' => $error
+            );
+        }
+
+        return $response->getGraphNode();
+    }
+
     /**
      * Login an user to WordPress
      *
      * @link https://codex.wordpress.org/Function_Reference/get_users
      * @return bool|void
      */
-    private function loginUser() {
+    private function loginUser()
+    {
 
         // We look for the `eo_facebook_id` to see if there is any match
         $wp_users = get_users(array(
@@ -497,8 +529,15 @@ class JobsearchFacebook {
      */
     private function createUser() {
 
-
+        global $jobsearch_plugin_options;
         $fb_user = $this->facebook_details;
+        $user_pic_obj = isset($fb_user['picture']) ? $fb_user['picture'] : '';
+        $user_pic = '';
+        if (isset($user_pic_obj['url'])) {
+            $user_pic = $user_pic_obj['url'];
+        }
+        
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
 
         // Create an username
         $username = sanitize_user(str_replace(' ', '_', strtolower($this->facebook_details['name'])));
@@ -514,7 +553,8 @@ class JobsearchFacebook {
         }
 
         // Creating our user
-        $new_user = wp_create_user($username, wp_generate_password(), $fb_user['email']);
+        $user_pass = wp_generate_password();
+        $new_user = wp_create_user($username, $user_pass, $fb_user['email']);
 
         if (is_wp_error($new_user)) {
             // Report our errors
@@ -522,7 +562,7 @@ class JobsearchFacebook {
             echo $new_user->get_error_message();
             die;
         } else {
-
+            $user_candidate_id = jobsearch_get_user_candidate_id($new_user);
             // user role
             $user_role = 'jobsearch_candidate';
             wp_update_user(array('ID' => $new_user, 'role' => $user_role));
@@ -535,20 +575,47 @@ class JobsearchFacebook {
             update_user_meta($new_user, 'last_name', $fb_user['last_name']);
             update_user_meta($new_user, 'user_url', $fb_user['link']);
             update_user_meta($new_user, 'jobsearch_facebook_id', $fb_user['id']);
+            
+            if ($candidate_auto_approve == 'on' || $candidate_auto_approve == 'email') {
+                update_post_meta($user_candidate_id, 'jobsearch_field_candidate_approved', 'on');
+            }
+            
+            if ($user_pic != '') {
+                jobsearch_upload_attach_with_external_url($user_pic, $user_candidate_id);
+            }
+            $c_user = get_user_by('ID', $new_user);
+            do_action('jobsearch_new_user_register', $c_user, $user_pass);
 
             // Log the user ?
             wp_set_auth_cookie($new_user);
         }
     }
 
-    public function do_apply_job_with_facebook($user_id) {
+    public function do_apply_job_with_facebook($user_id)
+    {
+
+        global $jobsearch_plugin_options;
+
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
+
+        $user_is_candidate = jobsearch_user_is_candidate($user_id);
+
+        $apply_job_cond = true;
+        if ($candidate_auto_approve != 'on') {
+            $apply_job_cond = false;
+            if ($user_is_candidate) {
+                $candidate_id = jobsearch_get_user_candidate_id($user_id);
+                $candidate_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
+                if ($candidate_status == 'on') {
+                    $apply_job_cond = true;
+                }
+            }
+        }
 
         if (isset($_COOKIE['jobsearch_apply_fb_jobid']) && $_COOKIE['jobsearch_apply_fb_jobid'] > 0) {
             $job_id = $_COOKIE['jobsearch_apply_fb_jobid'];
 
             //
-            $user_is_candidate = jobsearch_user_is_candidate($user_id);
-
             if ($user_is_candidate) {
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
 
@@ -574,12 +641,21 @@ class JobsearchFacebook {
         }
     }
 
-    public function applying_job_with_facebook() {
+    public function applying_job_with_facebook()
+    {
+        global $jobsearch_plugin_options;
+
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
+
         $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
         if ($job_id > 0 && get_post_type($job_id) == 'job') {
-            $real_redirect_url = get_permalink($job_id);
+
             setcookie('jobsearch_apply_fb_jobid', $job_id, time() + (180), "/");
-            setcookie('facebook_redirect_url', $real_redirect_url, time() + (360), "/");
+            if ($candidate_auto_approve == 'on') {
+                $real_redirect_url = get_permalink($job_id);
+                setcookie('facebook_redirect_url', $real_redirect_url, time() + (360), "/");
+            }
+
             echo json_encode(array('redirect_url' => $this->getLoginUrl()));
             die;
         } else {
@@ -588,7 +664,8 @@ class JobsearchFacebook {
         }
     }
 
-    public function apply_job_with_fb($args = array()) {
+    public function apply_job_with_fb($args = array())
+    {
         global $jobsearch_plugin_options;
         $facebook_login = isset($jobsearch_plugin_options['facebook-social-login']) ? $jobsearch_plugin_options['facebook-social-login'] : '';
         if ($this->app_id != '' && $this->app_secret != '' && $facebook_login == 'on') {
@@ -598,21 +675,29 @@ class JobsearchFacebook {
             $label = isset($args['label']) ? $args['label'] : '';
             $view = isset($args['view']) ? $args['view'] : '';
 
-            if ($view == 'job2') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><?php echo ($label); ?></a>
-                <?php
-            } elseif ($view == 'job3') {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"></a></li>
-                <?php
-            } elseif ($view == 'job4') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"> <?php esc_html_e('Apply with with Facebook', 'wp-jobsearch') ?></a>
-                <?php
-            } else {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="jobsearch-icon jobsearch-facebook-logo-1"></i> <?php esc_html_e('Facebook', 'wp-jobsearch') ?></a></li>
+            if ($view == 'job2') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"><?php echo($label); ?></a>
+            <?php } elseif ($view == 'job3') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"></a>
+                </li>
+            <?php } elseif ($view == 'job4') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"><i
+                            class="jobsearch-icon jobsearch-facebook-logo-1"></i> <?php esc_html_e('Apply with Facebook', 'wp-jobsearch') ?>
+                </a>
+            <?php } elseif ($view == 'job5') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"><i
+                            class="jobsearch-icon jobsearch-facebook-logo-1"></i><?php echo($label); ?></a>
+            <?php } elseif ($view == 'job6') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                       data-id="<?php echo($job_id) ?>"><i
+                                class="jobsearch-icon jobsearch-facebook-logo-1"></i><?php echo($label); ?></a></li>
+            <?php } else { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                                class="jobsearch-icon jobsearch-facebook-logo-1"></i> <?php esc_html_e('Facebook', 'wp-jobsearch') ?>
+                    </a></li>
                 <?php
             }
         }

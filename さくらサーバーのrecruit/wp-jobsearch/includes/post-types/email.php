@@ -43,13 +43,16 @@ if (!class_exists('post_type_email')) {
         }
 
         function my_admin_custom_styles() {
-            $output_css = '<style type="text/css"> 
-                .column-email_title { width:500px !important; overflow:hidden }
-                .column-featured { width:50px !important; overflow:hidden } 
-                .column-status { width:30px !important; overflow:hidden }
-                .column-action { text-align:right !important; width:150px !important; overflow:hidden }
-            </style>';
-            echo $output_css;
+            global $pagenow;
+            if ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'email') {
+                $output_css = '<style type="text/css"> 
+                    .column-email_title { width:500px !important; overflow:hidden }
+                    .column-featured { width:50px !important; overflow:hidden } 
+                    .column-status { width:30px !important; overflow:hidden }
+                    .column-action { text-align:right !important; width:150px !important; overflow:hidden }
+                </style>';
+                echo $output_css;
+            }
         }
 
         function admin_custom_script() {

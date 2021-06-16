@@ -38,9 +38,19 @@ if ($job_status != 'approved' && !$allow_page_access) {
 
 $job_view = isset($jobsearch_plugin_options['jobsearch_job_detail_views']) && !empty($jobsearch_plugin_options['jobsearch_job_detail_views']) ? $jobsearch_plugin_options['jobsearch_job_detail_views'] : 'view1';
 
-jobsearch_job_views_count($job_id);
-get_header();
+$job_views_count = isset($jobsearch_plugin_options['job_detail_views_count']) ? $jobsearch_plugin_options['job_detail_views_count'] : '';
+if ($job_views_count == 'on') {
+    jobsearch_job_views_count($job_id);
+}
+if (wp_is_mobile()) {
+    get_header('mobile');
+} else {
+    get_header();
+}
 
+wp_enqueue_script('fancybox-pack');
+
+ob_start();
 if ($restrict_content) {
     $notify_err_image = isset($jobsearch_plugin_options['expire_job_image']['url']) ? $jobsearch_plugin_options['expire_job_image']['url'] : '';
     $notify_err_hding = isset($jobsearch_plugin_options['expire_job_heading']) ? $jobsearch_plugin_options['expire_job_heading'] : '';
@@ -54,22 +64,23 @@ if ($restrict_content) {
                     <div class="jobsearch-column-12">
                         <div class="jobsearch-jobexpire-notifyerr">
                             <div class="jobsearch-jobexpire-notifyerr-inner">
-                                <div class="jobexpire-notify-hdrlogo"><img src="<?php echo ($notify_err_image) ?>" alt="404"></div>
+                                <div class="jobexpire-notify-hdrlogo"><img src="<?php echo($notify_err_image) ?>"
+                                                                           alt="404"></div>
                                 <div class="jobexpire-notify-msgcon">
-                                    <h2><?php echo ($notify_err_hding) ?></h2>
-                                    <p><?php echo ($notify_err_desctxt) ?></p>
-                                    <div class="backto-home-btncon"><a href="<?php echo home_url('/') ?>"><?php esc_html_e('Back to Home', 'wp-jobsearch') ?></a></div>
+                                    <h2><?php echo($notify_err_hding) ?></h2>
+                                    <p><?php echo($notify_err_desctxt) ?></p>
+                                    <div class="backto-home-btncon"><a
+                                                href="<?php echo home_url('/') ?>"><?php esc_html_e('Back to Home', 'wp-jobsearch') ?></a>
+                                    </div>
                                 </div>
                                 <?php
-                                if ($notify_err_footr_logo != '') {
-                                    ?>
+                                if ($notify_err_footr_logo != '') { ?>
                                     <div class="jobexpire-notify-footrlogo">
                                         <span><?php esc_html_e('Powered by', 'wp-jobsearch') ?></span>
-                                        <img src="<?php echo ($notify_err_footr_logo) ?>" alt="<?php bloginfo('name') ?>">
+                                        <img src="<?php echo($notify_err_footr_logo) ?>"
+                                             alt="<?php bloginfo('name') ?>">
                                     </div>
-                                    <?php
-                                }
-                                ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -79,10 +90,13 @@ if ($restrict_content) {
     </div>
     <?php
 } else {
-    $job_view = apply_filters('careerfy_job_detail_page_style_display',$job_view,$job_id);
+    $job_view = apply_filters('careerfy_job_detail_page_style_display', $job_view, $job_id);
 
     jobsearch_get_template_part($job_view, 'job', 'detail-pages/job');
 
     do_action('jobsearch_job_detail_before_footer', $job_id);
 }
+$html = ob_get_clean();
+echo apply_filters('jobsearch_single_job_allover_view_html', $html, $job_id);
+
 get_footer();

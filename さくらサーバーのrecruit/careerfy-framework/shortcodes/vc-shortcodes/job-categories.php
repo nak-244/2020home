@@ -6,13 +6,15 @@
 
 add_shortcode('careerfy_job_categories', 'careerfy_job_categories_shortcode');
 
-function careerfy_job_categories_shortcode($atts) {
-    global $wpdb, $jobsearch_plugin_options, $jobsearch_shortcode_jobs_frontend;
+function careerfy_job_categories_shortcode($atts)
+{
+    global $wpdb, $jobsearch_plugin_options, $jobsearch_shortcode_jobs_frontend, $sitepress;
     extract(shortcode_atts(array(
         'cats_view' => '',
         'num_cats' => '',
         'result_page' => '',
         'cat_title' => '',
+        'sector_job_counts' => 'yes',
         'sub_cats' => 'yes',
         'cat_link_text' => '',
         'cat_link_text_url' => '',
@@ -53,11 +55,23 @@ function careerfy_job_categories_shortcode($atts) {
             $cats_query = "SELECT terms.term_id FROM $wpdb->terms AS terms";
             $cats_query .= " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) ";
             $cats_query .= " LEFT JOIN $wpdb->termmeta AS term_meta ON(terms.term_id = term_meta.term_id) ";
+            if (function_exists('icl_object_id')) {
+                $trans_tble = $wpdb->prefix . 'icl_translations';
+                $cats_query .= " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id)";
+            }
             $cats_query .= " WHERE term_tax.taxonomy=%s AND term_meta.meta_key=%s";
             if ($sub_cats == 'yes') {
                 $cats_query .= " AND term_tax.parent=0";
             }
-            $cats_query .= " ORDER BY cast(term_meta.meta_value as unsigned) DESC";
+            if (function_exists('icl_object_id')) {
+                $cats_query .= " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'";
+            }
+            $cats_query .= " GROUP BY terms.term_id";
+            if ($order_by == 'title') {
+                $cats_query .= " ORDER BY terms.name ASC";
+            } else {
+                $cats_query .= " ORDER BY cast(term_meta.meta_value as unsigned) DESC";
+            }
             $get_db_terms = $wpdb->get_col($wpdb->prepare($cats_query, 'sector', 'active_jobs_count'));
         }
         $cats_class = 'categories-list';
@@ -91,10 +105,9 @@ function careerfy_job_categories_shortcode($atts) {
                 </div>';
             }
         }
-        $icon_color = $icon_color != "" ? 'style="color: ' . $icon_color . ' "' : "";
         $job_bg_color = $job_bg_color != "" ? 'style="background-color: ' . $job_bg_color . ' "' : "";
         ?>
-        <div id="jobsearch-findby-sectors" class="<?php echo($cats_class) ?>" data-view="<?php echo ($cats_view) ?>">
+        <div id="jobsearch-findby-sectors" class="<?php echo($cats_class) ?>" data-view="<?php echo($cats_view) ?>">
             <?php if ($cats_view == 'view10'){ ?>
             <div class="row">
                 <?php } ?>
@@ -174,8 +187,7 @@ function careerfy_job_categories_shortcode($atts) {
                                         $jobs_query = new WP_Query($job_args);
                                         $found_jobs = $jobs_query->found_posts;
                                         wp_reset_postdata();
-                                        
-                                        $total_jobs = $found_jobs == 1 ? "Job" : "Jobs";
+
                                         $term_fields = get_term_meta($term_sector->term_id, 'careerfy_frame_cat_fields', true);
                                         $term_icon = isset($term_fields['icon']) ? $term_fields['icon'] : '';
                                         $term_color = isset($term_fields['color']) ? $term_fields['color'] : '';
@@ -189,27 +201,39 @@ function careerfy_job_categories_shortcode($atts) {
                                                 <a href="<?php echo($cat_goto_link) ?>">
                                                     <?php
                                                     if ($term_icon != '') { ?>
-                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view4' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                    <?php } else { ?>
+                                                        <img src="<?php echo $term_image ?>" alt="">
                                                     <?php } ?>
                                                     <h6><?php echo($term_sector->name) ?></h6>
-                                                    <small><?php printf(esc_html__('(%s ' . $total_jobs . ')', 'careerfy-frame'), $found_jobs) ?></small>
+                                                    <?php
+                                                    if ($sector_job_counts == 'yes') { ?>
+                                                        <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                               class="jobsearchh-sect-childcount"
+                                                               data-id="<?php echo absint($term_id) ?>">0
+                                                        </small>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
                                         <?php } else if ($cats_view == "view10") { ?>
                                             <div class="col-md-3">
-                                                <a href="<?php echo($cat_goto_link) ?>"><img
-                                                            src="<?php echo $term_image ?>" alt=""></a>
+                                                <?php
+                                                if ($term_icon != '') { ?>
+                                                    <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                <?php } else { ?>
+                                                    <img src="<?php echo $term_image ?>" alt="">
+                                                <?php } ?>
                                                 <h2>
                                                     <a href="<?php echo($cat_goto_link) ?>"><?php echo($term_sector->name) ?></a>
                                                 </h2>
-                                                <?php foreach ($term_sector_child as $term_sectors_children) {
-
-                                                    $child_term = get_term_by('id', $term_sectors_children, 'sector');
-                                                    $total_found_jobs = getChildSectorsJobs($child_term->slug);
-                                                    $cat_child_goto_link = add_query_arg(array('sector_cat' => $child_term->slug), get_permalink($to_result_page));
-                                                    ?>
-                                                    <span><a href="<?php echo($cat_child_goto_link) ?>"><?php echo $child_term->name; ?></a><small><?php echo($total_found_jobs) ?></small></span>
+                                                <?php
+                                                if ($sector_job_counts == 'yes') { ?>
+                                                    <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                           class="jobsearchh-sect-childcount"
+                                                           data-id="<?php echo absint($term_id) ?>">0
+                                                    </small>
                                                 <?php } ?>
+
                                             </div>
 
                                         <?php } else if ($cats_view == "view9") { ?>
@@ -217,7 +241,11 @@ function careerfy_job_categories_shortcode($atts) {
                                             <li>
                                                 <a href="<?php echo($cat_goto_link) ?>">
                                                     <?php echo($term_sector->name) ?>
-                                                    <span id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</span>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                              class="jobsearchh-sect-childcount"
+                                                              data-id="<?php echo absint($term_id) ?>">0</span>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
 
@@ -225,38 +253,56 @@ function careerfy_job_categories_shortcode($atts) {
                                             <li>
                                                 <a href="<?php echo($cat_goto_link) ?>">
                                                     <?php
-                                                    if ($term_icon != '') {
-                                                        ?>
-                                                        <i class="careerfy-icon <?php echo($term_icon) ?>"></i>
+                                                    if ($term_icon != '') { ?>
+                                                        <i class="<?php echo($term_icon) ?>" <?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                    <?php } else { ?>
+                                                        <img src="<?php echo $term_image ?>">
                                                     <?php } ?>
 
                                                     <span><?php echo($term_sector->name) ?>​</span>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                               class="jobsearchh-sect-childcount"
+                                                               data-id="<?php echo absint($term_id) ?>">0
+                                                        </small>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
                                         <?php } else if ($cats_view == 'view7') { ?>
                                             <li>
                                                 <?php
-                                                if ($term_icon != '') {
-                                                    ?>
-                                                    <i class="careerfy-icon <?php echo($term_icon) ?>"></i>
+                                                if ($term_icon != '') { ?>
+                                                    <i class="<?php echo($term_icon) ?>" <?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                <?php } else { ?>
+                                                    <a href="<?php echo($cat_goto_link) ?>">
+                                                        <img src="<?php echo $term_image ?>" alt=""></a>
                                                 <?php } ?>
                                                 <span><a href="<?php echo($cat_goto_link) ?>"> <?php echo($term_sector->name) ?></a></span>
-                                                <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small>
+                                                <?php if ($sector_job_counts == 'yes') { ?>
+                                                    <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                           class="jobsearchh-sect-childcount"
+                                                           data-id="<?php echo absint($term_id) ?>">0
+                                                    </small>
+                                                <?php } ?>
                                             </li>
 
                                         <?php } else if ($cats_view == 'view6') { ?>
                                             <li class="col-md-2">
                                                 <a href="<?php echo($cat_goto_link) ?>">
                                                     <?php
-                                                    if ($term_image != '') { ?>
+                                                    if ($term_icon != '') { ?>
+                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                    <?php } else { ?>
                                                         <img src="<?php echo $term_image ?>">
-                                                    <?php } else if ($term_icon) {
-                                                        if ($term_icon != '') { ?>
-                                                            <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view4' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
-                                                        <?php }
-                                                    } ?>
+                                                    <?php } ?>
+
                                                     <strong><?php echo($term_sector->name) ?></strong>
-                                                    <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                               class="jobsearchh-sect-childcount"
+                                                               data-id="<?php echo absint($term_id) ?>">0
+                                                        </small>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
                                         <?php } else if ($cats_view == 'view4') { ?>
@@ -264,26 +310,37 @@ function careerfy_job_categories_shortcode($atts) {
                                                 <a href="<?php echo($cat_goto_link) ?>"
                                                    class="careerfy-categories-stylefive-wrap">
                                                     <?php
-                                                    if ($term_icon != '') {
-                                                        ?>
-                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view4' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
-                                                        <?php
-                                                    }
-                                                    ?>
+                                                    if ($term_icon != '') { ?>
+                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+                                                    <?php } else { ?>
+                                                        <img src="<?php echo $term_image ?>">
+                                                    <?php } ?>
+
                                                     <span class="jobcat-title"><?php echo($term_sector->name) ?></span>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                               class="jobsearchh-sect-childcount"
+                                                               data-id="<?php echo absint($term_id) ?>">0
+                                                        </small>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
                                             <?php
                                         } elseif ($cats_view == 'view3') { ?>
                                             <li class="col-md-2">
-                                                <a href="<?php echo($cat_goto_link) ?>"
-                                                   class="careerfy-categories-stylethree-wrap" <?php echo($term_image != '' ? 'style="background-image: url(' . $term_image . '); background-size: cover;"' : '') ?>>
+                                                <a href="<?php echo($cat_goto_link) ?>" class="careerfy-categories-stylethree-wrap" <?php echo($term_image != '' ? 'style="background-image: url(' . $term_image . '); background-size: cover;"' : '') ?>>
                                                     <span></span>
+                                                    <i class="careerfy-categories-stylethree-icon <?php echo($term_icon) ?>"></i>
                                                     <div class="careerfy-categories-stylethree-text">
                                                         <p class="jobcat-title">
                                                             <strong <?php echo($term_color != '' ? 'style="color: ' . $term_color . ';"' : '') ?>>#</strong> <?php echo($term_sector->name) ?>
                                                         </p>
-                                                        <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small>
+                                                        <?php if ($sector_job_counts == 'yes') { ?>
+                                                            <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                   class="jobsearchh-sect-childcount"
+                                                                   data-id="<?php echo absint($term_id) ?>">0
+                                                            </small>
+                                                        <?php } ?>
                                                     </div>
                                                 </a>
                                             </li>
@@ -291,14 +348,18 @@ function careerfy_job_categories_shortcode($atts) {
                                         } else if ($cats_view == 'view5') { ?>
                                             <li class="col-md-3">
                                                 <a href="<?php echo($cat_goto_link) ?>">
-                                                    <?php
-                                                    if ($term_icon != '') {
-                                                        ?>
-                                                        <i <?php echo $icon_color ?>
+                                                    <?php if ($term_icon != '') { ?>
+                                                        <i <?php echo($term_color != '' ? 'style="color: ' . $term_color . ';"' : '') ?>
                                                                 class="<?php echo($term_icon) ?>"></i>
+                                                    <?php } else { ?>
+                                                        <img src="<?php echo $term_image ?>">
                                                     <?php } ?>
                                                     <h2><?php echo($term_sector->name) ?></h2>
-                                                    <span id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>" <?php echo $job_bg_color ?>>0</span>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                              class="jobsearchh-sect-childcount"
+                                                              data-id="<?php echo absint($term_id) ?>" <?php echo $job_bg_color ?>>0</span>
+                                                    <?php } ?>
                                                 </a>
                                             </li>
                                             <?php
@@ -311,24 +372,41 @@ function careerfy_job_categories_shortcode($atts) {
                                                     $term_act_conts = get_term_meta($term_sector->term_id, 'active_jobs_count', true);
                                                     //var_dump($term_act_conts);
                                                     if ($term_icon != '') {
-                                                        ?>
-                                                        <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view2' ? ' style="background-color: ' . $term_color . ';"' : '') ?>></i>
-                                                        <?php
-                                                    }
-                                                    ?>
+                                                        if ($cats_view == 'view2') { ?>
+                                                            <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="background-color: ' . $term_color . ';"' : '') ?>></i>
+                                                        <?php } else { ?>
+                                                            <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
+
+                                                        <?php } ?>
+
+
+                                                    <?php } else {
+                                                        if ($cats_view == 'view2') { ?>
+                                                            <span class="careerfy-categories-styletwo-image"
+                                                                  style="background-image: url('<?php echo $term_image ?>')"></span>
+                                                        <?php } else { ?>
+                                                            <img src="<?php echo $term_image ?>">
+                                                        <?php }
+
+                                                    } ?>
                                                     <span class="jobcat-title"><?php echo($term_sector->name) ?></span>
                                                     <?php
                                                     ob_start();
                                                     if ($cats_view == 'view2') {
-                                                        ?>
-                                                        <small id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</small>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <span id="jobsearchh-sect-item-<?php echo absint($term_id) ?>" class="jobsearchh-sect-childcount" data-id="<?php echo absint($term_id) ?>">0</span>
-                                                        <?php
-                                                    }
-                                                    ?>
+                                                        if ($sector_job_counts == 'yes') { ?>
+                                                            <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                   class="jobsearchh-sect-childcount"
+                                                                   data-id="<?php echo absint($term_id) ?>">0
+                                                            </small>
+                                                        <?php } ?>
+                                                    <?php } else {
+                                                        if ($sector_job_counts == 'yes') { ?>
+                                                            <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                  class="jobsearchh-sect-childcount"
+                                                                  data-id="<?php echo absint($term_id) ?>">0</span>
+
+                                                        <?php }
+                                                    } ?>
                                                 </a>
                                                 <?php
                                                 $vacs_html = ob_get_clean();

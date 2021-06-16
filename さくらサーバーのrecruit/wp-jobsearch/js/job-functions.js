@@ -1,4 +1,5 @@
 var jobFilterAjax;
+
 function jobsearch_job_content_load(counter, view_type, animate_to) {
     //"use strict";
 
@@ -11,7 +12,7 @@ function jobsearch_job_content_load(counter, view_type, animate_to) {
     var this_frm = jQuery("#jobsearch_job_frm_" + counter);
 
 
-    var split_map = jQuery(".wp-dp-split-map-wrap").size();
+    var split_map = jQuery(".wp-dp-split-map-wrap").length;
     if (split_map > 0) {
         view_type = 'split_map';
     }
@@ -24,9 +25,9 @@ function jobsearch_job_content_load(counter, view_type, animate_to) {
 
     //
     if (jQuery("#jobsearch_job_frm_" + counter).length > 0) {
-        
+
         var data_vals = jQuery(jQuery("#jobsearch_job_frm_" + counter)[0].elements).not(":input[name='alerts-email'], :input[name='alert-frequency'], :input[name^='loc_count_qargs_']").serialize();
-        
+
         if (jQuery('form[name="jobsearch-top-map-form"]').length > 0) {
             data_vals += "&" + jQuery('form[name="jobsearch-top-map-form"]').serialize();
         }
@@ -37,7 +38,6 @@ function jobsearch_job_content_load(counter, view_type, animate_to) {
 
         jQuery('#Job-content-' + counter + ' .job').addClass('slide-loader');
         jQuery('#jobsearch-data-job-content-' + counter + ' .all-results').addClass('slide-loader');
-
 
         if (typeof (jobFilterAjax) != 'undefined') {
             jobFilterAjax.abort();
@@ -118,8 +118,8 @@ function stripUrlParams(args) {
     for (var i = parts.length - 1; i >= 0; i--) {
         var spl = parts[i].split("=");
         // Overwrite only if existing is empty.
-        if (typeof comps[ spl[0] ] == "undefined" || (typeof comps[ spl[0] ] != "undefined" && comps[ spl[0] ] == '')) {
-            comps[ spl[0] ] = spl[1];
+        if (typeof comps[spl[0]] == "undefined" || (typeof comps[spl[0]] != "undefined" && comps[spl[0]] == '')) {
+            comps[spl[0]] = spl[1];
         }
     }
     parts = [];
@@ -224,8 +224,8 @@ function jobsearch_job_by_categories_filters_content(counter, page_var, page_num
 function convertHTML(html) {
     "use strict";
     var newHtml = $.trim(html),
-            $html = $(newHtml),
-            $empty = $();
+        $html = $(newHtml),
+        $empty = $();
 
     $html.each(function (index, value) {
         if (value.nodeType === 1) {
@@ -379,7 +379,7 @@ function removeURLParameter(url, parameter) {
         var pars = urlparts[1].split(/[&;]/g);
 
         //reverse iteration as may be destructive
-        for (var i = pars.length; i-- > 0; ) {
+        for (var i = pars.length; i-- > 0;) {
             //idiom for string.startsWith
             if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                 pars.splice(i, 1);
@@ -413,7 +413,7 @@ function jobsearch_job_split_map_content(counter, view_type, animate_to, hide_ov
     var this_frm = jQuery("#jobsearch_job_frm_" + counter);
 
 
-    var split_map = jQuery(".wp-dp-split-map-wrap").size();
+    var split_map = jQuery(".wp-dp-split-map-wrap").length;
     if (split_map > 0) {
         view_type = 'split_map';
     }
@@ -448,7 +448,6 @@ function jobsearch_job_split_map_content(counter, view_type, animate_to, hide_ov
         //    jobFilterAjax.abort();
         //}
 
-        console.log(data_vals);
         var jobFilterAjax = jQuery.ajax({
             type: 'POST',
             dataType: 'HTML',
@@ -686,7 +685,7 @@ jQuery(document).on('click', '.send-message-submit-btn', function () {
 
     meessage_box.html('<div class="split-map-loader"><span><i class="fa fa-spin fa fa-refresh"></i></span></div>');
     meessage_box.show();
-    
+
     jQuery.ajax({
         type: 'POST',
         dataType: 'JSON',
@@ -712,9 +711,11 @@ jQuery(document).on('click', '.send-message-submit-btn', function () {
 //***************************
 // FilterAble Function
 //***************************
+
 jQuery(window).on('load', function () {
 
     if (jQuery('.careerfy-animated-filter-list,.careerfy-product-grid').length > 0) {
+
         var $grid = $('.careerfy-animated-filter-list,.careerfy-product-grid').isotope({
             itemSelector: '.element-item',
             layoutMode: 'fitRows'
@@ -735,8 +736,9 @@ jQuery(window).on('load', function () {
         // bind filter button click
         $('.filters-button-group,.filters-button-group-two').on('click', 'a', function () {
             var filterValue = $(this).attr('data-filter');
+            console.info(filterValue);
             // use filterFn if matches value
-            filterValue = filterFns[ filterValue ] || filterValue;
+            filterValue = filterFns[filterValue] || filterValue;
             $grid.isotope({filter: filterValue});
         });
         // change is-checked class on buttons
@@ -751,20 +753,20 @@ jQuery(window).on('load', function () {
 
 });
 
-jQuery(document).on('click', '#jobsearch-jobadvserach-submit', function(ev) {
+jQuery(document).on('click', '#jobsearch-jobadvserach-submit', function (ev) {
     ev.preventDefault();
     var _thisForm = jQuery(this).parents('form');
-    var formToSubmit = setInterval(function() {
+    var formToSubmit = setInterval(function () {
         var lubricForm = _thisForm.find('input,select,textarea');
 
-        jQuery.each(lubricForm, function() {
+        jQuery.each(lubricForm, function () {
             var thisFieldObj = jQuery(this);
             if (typeof thisFieldObj.attr('name') !== 'undefined') {
                 console.info(thisFieldObj);
                 var thisFieldName = thisFieldObj.attr('name');
                 if (thisFieldObj.val() == ''
-                    || thisFieldName.indexOf("alert-") != -1 
-                    || thisFieldName.indexOf("loc_count_qargs") != -1 
+                    || thisFieldName.indexOf("alert-") != -1
+                    || thisFieldName.indexOf("loc_count_qargs") != -1
                     || thisFieldName.indexOf("alerts-") != -1) {
                     thisFieldObj.removeAttr('name');
                 }
@@ -773,4 +775,78 @@ jQuery(document).on('click', '#jobsearch-jobadvserach-submit', function(ev) {
         _thisForm.submit();
         clearInterval(formToSubmit);
     }, 1000);
+});
+
+jQuery(document).on('click', '.jobsearch-quick-apply-btn-close', function (e) {
+    var _selector = jQuery(".jobsearch-quick-apply-box"), _selector_inner = jQuery('.jobsearch-quick-apply-box-inner');
+    _selector.removeAttr('style').delay(100).hide(500);
+    _selector_inner.remove()
+
+});
+
+jQuery(document).on('click', '.jobsearch-quick-apply-show', function () {
+
+    var _selector = jQuery(".jobsearch-quick-apply-box"), _loader = jQuery("#jobsearch-loader"),
+        _event_class = jQuery(".jobsearch-pst-title"), job_id = jQuery(this).attr('data-job-id');
+    _event_class.removeClass('jobsearch-quick-apply-show');
+    _selector.show();
+    if (jobsearch_plugin_vars.is_rtl == true) {
+        _selector.animate({
+            left: '-15px'
+        });
+    } else {
+        _selector.animate({
+            right: "-15px"
+        });
+    }
+
+
+    setTimeout(function () {
+        _loader.html('<div class="careerfy-loading-section"><div class="line-scale-pulse-out"><div></div><div></div><div></div><div></div><div></div></div></div>');
+    }, 300)
+
+    var request = jQuery.ajax({
+        url: jobsearch_plugin_vars.ajax_url,
+        method: "POST",
+        data: 'action=jobsearch_quick_job_popup&job_id=' + job_id,
+        dataType: 'HTML',
+    });
+
+    request.done(function (response) {
+        _loader.html('');
+        _event_class.addClass('jobsearch-quick-apply-show');
+        _selector.append(response);
+    });
+    request.fail(function (jqXHR, textStatus) {
+        //msg_con.html(jobsearch_job_application.error_msg);
+        //msg_loader.html('');
+    });
+
+});
+
+jQuery(document).on('change', '.jobalert-crti-typebtn', function() {
+    var this_val = jQuery('.jobalert-crti-typebtn:checked').val();
+    var field_id = jQuery(this).parents('.jobalert-salrytype-filter').attr('data-id');
+    //console.log(this_val);
+    var pop_html_con = jQuery('#modpop-criteria-tags');
+    pop_html_con.append('<span class="tags-loder"><i class="fa fa-refresh fa-spin"></i></span>');
+    var appender = jQuery('.salarytypes-rangelist-con');
+    var request = jQuery.ajax({
+        url: jobsearch_plugin_vars.ajax_url,
+        method: "POST",
+        data: 'action=jobsearch_joblert_pop_salry_html&type_id=' + this_val + '&fid=' + field_id,
+        dataType: 'json',
+    });
+    request.done(function (response) {
+        if (undefined !== typeof response.html && response.html != '') {
+            appender.html(response.html);
+            jQuery('.salary-load-selectize').selectize({
+                allowEmptyOption: true,
+            });
+        }
+        pop_html_con.find('.tags-loder').remove();
+    });
+    request.complete(function () {
+        pop_html_con.find('.tags-loder').remove();
+    });
 });

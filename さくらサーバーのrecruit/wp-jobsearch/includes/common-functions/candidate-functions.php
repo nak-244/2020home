@@ -31,8 +31,7 @@ if (!function_exists('jobsearch_candidate_get_company_name')) {
 
 add_action('jobsearch_user_data_save_onprofile', 'jobsearch_user_data_save_onprofile', 10, 3);
 
-function jobsearch_user_data_save_onprofile($user_id, $post_id, $post_type = 'candidate')
-{
+function jobsearch_user_data_save_onprofile($user_id, $post_id, $post_type = 'candidate') {
 
     $allow_fields = array(
         'jobsearch_field_user_phone',
@@ -79,19 +78,20 @@ function jobsearch_user_data_save_onprofile($user_id, $post_id, $post_type = 'ca
     //
 }
 
-function jobsearch_candidate_img_url_comn($candidate_id, $dimen = '150')
-{
+function jobsearch_candidate_img_url_comn($candidate_id, $dimen = '150') {
     $user_id = jobsearch_get_candidate_user_id($candidate_id);
     $user_gravatar_url = get_avatar_url($user_id, array('size' => 132));
     $user_avatar_dburl = get_post_meta($candidate_id, 'jobsearch_user_avatar_url', true);
+
     $user_def_avatar_url = '';
     if (isset($user_avatar_dburl['file_url']) && $user_avatar_dburl['file_url'] != '') {
         $user_img_name = $user_avatar_dburl['file_name'];
         $user_img_path = $user_avatar_dburl['file_path'];
-        $img_full_path = $user_img_path . '/' . $user_img_name;
+        $filetype = $user_avatar_dburl['mime_type'];
+        $file_ext = $filetype['ext'];
+        $img_150_path = $user_img_path . '/user-img-150.' . $file_ext;
         $user_def_avatar_url = isset($user_avatar_dburl['orig_file_url']) ? $user_avatar_dburl['orig_file_url'] : '';
-
-        if (file_exists($img_full_path)) {
+        if (file_exists($img_150_path)) {
             $user_def_avatar_url = apply_filters('wp_jobsearch_cand_profile_img_url', $user_def_avatar_url, $candidate_id, $dimen);
         } else {
             $user_def_avatar_url = '';
@@ -109,9 +109,9 @@ function jobsearch_candidate_img_url_comn($candidate_id, $dimen = '150')
     if ($user_def_avatar_url == '') {
         $user_def_avatar_url = $user_gravatar_url != '' ? $user_gravatar_url : jobsearch_candidate_image_placeholder();
     }
-
     return $user_def_avatar_url;
 }
+
 
 function jobsearch_candidate_covr_url_comn($candidate_id)
 {
@@ -257,12 +257,20 @@ function wp_jobsearch_user_profile_img_url($url, $candidate_id = '', $size = '15
                 global $wp_filesystem;
 
                 $folder_path = $user_avatar_dburl['file_path'];
+                $user_def_avatar_url = isset($user_avatar_dburl['orig_file_url']) ? $user_avatar_dburl['orig_file_url'] : '';
+
                 $file_name = $user_avatar_dburl['file_name'];
                 $filetype = $user_avatar_dburl['mime_type'];
                 $file_ext = $filetype['ext'];
+                if (!$file_ext) {
+                    $file_ext = 'jpg';
+                }
 
                 if ($attach_size == 'full') {
                     $file_path = $folder_path . '/' . $file_name;
+                    if ($user_def_avatar_url != '') {
+                        $file_path = str_replace(get_site_url() . '/', ABSPATH, $user_def_avatar_url);
+                    }
                 } else {
                     $file_path = $folder_path . '/user-img-150.' . $file_ext;
                 }
@@ -276,6 +284,7 @@ function wp_jobsearch_user_profile_img_url($url, $candidate_id = '', $size = '15
 
     return $url;
 }
+
 
 add_filter('wp_jobsearch_cand_ccovr_img_url', 'wp_jobsearch_user_ccover_img_url', 10, 2);
 
@@ -316,6 +325,7 @@ function wp_jobsearch_user_ccover_img_url($url, $candidate_id = '')
 
 function jobsearch_candidate_detail_whatsapp_btn($candidate_id, $view = 'view_1')
 {
+
     global $jobsearch_plugin_options;
 
     $cand_profile_restrict = new Candidate_Profile_Restriction;
@@ -330,7 +340,7 @@ function jobsearch_candidate_detail_whatsapp_btn($candidate_id, $view = 'view_1'
         if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|phone', 'detail_page')) {
             ?>
             <div class="jobsearch-whatsapp-msgcon jobsearch_whatsap_<?php echo($view) ?>">
-                <a href="https://wa.me/<?php echo($user_phone) ?>?text=<?php echo urlencode($message) ?>"
+                <a href="https://wa.me/<?php echo jobsearch_esc_html($user_phone) ?>?text=<?php echo urlencode($message) ?>"
                    target="_blank">
                     <i class="fa fa-whatsapp"></i>
                     <small><?php esc_html_e('WhatsApp', 'wp-jobsearch') ?></small>
@@ -345,6 +355,7 @@ add_filter('jobsearch_candidate_listing_item_title', 'jobsearch_candidate_listin
 
 function jobsearch_candidate_listing_item_title($title = '', $candidate_id = 0)
 {
+
     $cand_profile_restrict = new Candidate_Profile_Restriction;
     if ($cand_profile_restrict::cand_field_is_locked('profile_fields|display_name')) {
         $title = $cand_profile_restrict::cand_restrict_display_name();
@@ -358,6 +369,7 @@ function jobsearch_get_candidate_salary_format($candidate_id = 0, $price = 0, $c
     global $jobsearch_currencies_list, $jobsearch_plugin_options;
     $post_custom_currency_switch = isset($jobsearch_plugin_options['post_custom_currency']) ? $jobsearch_plugin_options['post_custom_currency'] : '';
     $candidate_currency = get_post_meta($candidate_id, 'jobsearch_field_candidate_salary_currency', true);
+    $candidate_currency = jobsearch_esc_html($candidate_currency);
     if ($candidate_currency != 'default' && $post_custom_currency_switch == 'on') {
         $candidate_currency = isset($jobsearch_currencies_list[$candidate_currency]['symbol']) ? $jobsearch_currencies_list[$candidate_currency]['symbol'] : jobsearch_get_currency_symbol();
     } else {
@@ -366,6 +378,10 @@ function jobsearch_get_candidate_salary_format($candidate_id = 0, $price = 0, $c
     $cur_pos = get_post_meta($candidate_id, 'jobsearch_field_candidate_salary_pos', true);
     $candidate_salary_sep = get_post_meta($candidate_id, 'jobsearch_field_candidate_salary_sep', true);
     $candidate_salary_deci = get_post_meta($candidate_id, 'jobsearch_field_candidate_salary_deci', true);
+    
+    $cur_pos = jobsearch_esc_html($cur_pos);
+    $candidate_salary_sep = jobsearch_esc_html($candidate_salary_sep);
+    $candidate_salary_deci = jobsearch_esc_html($candidate_salary_deci);
 
     $candidate_salary_deci = $candidate_salary_deci < 10 ? absint($candidate_salary_deci) : 2;
 
@@ -403,6 +419,8 @@ if (!function_exists('jobsearch_candidate_current_salary')) {
         $salary_str = $before_str;
         $_post_salary_type = get_post_meta($id, 'jobsearch_field_candidate_salary_type', true);
         $_candidate_salary = get_post_meta($id, 'jobsearch_field_candidate_salary', true);
+        
+        $_candidate_salary = jobsearch_esc_html($_candidate_salary);
 
         $salary_type_val_str = '';
         if (!empty($post_salary_types)) {
@@ -437,6 +455,10 @@ if (!function_exists('jobsearch_candidate_age')) {
 
         //
         if ($dob_dd != '' && $dob_mm != '' && $dob_yy != '') {
+            $dob_yy = str_replace('-', '', $dob_yy);
+            if ($dob_yy > date('Y')) {
+                $dob_yy = date('Y');
+            }
             //date in mm/dd/yyyy format; or it can be in other formats as well
             $birthDate = "{$dob_mm}/{$dob_dd}/{$dob_yy}";
             //explode the date to get month, day and year
@@ -458,11 +480,9 @@ if (!function_exists('jobsearch_candidate_age')) {
 function jobsearch_detail_common_ad_code($args = array())
 {
     global $jobsearch_plugin_options;
-
     if (isset($args['post_type']) && $args['post_type'] != '' && isset($args['position']) && $args['position'] != '') {
         $option_name = $args['post_type'] . '_detail_adcode_' . $args['position'];
-        if (isset($jobsearch_plugin_options[$option_name]) && $jobsearch_plugin_options[$option_name] != '') {
-            ?>
+        if (isset($jobsearch_plugin_options[$option_name]) && $jobsearch_plugin_options[$option_name] != '') { ?>
             <div class="jobsearch-det-adver-wrap <?php echo(isset($args['view']) && $args['view'] != '' ? $args['post_type'] . '_' . $args['position'] . '_' . $args['view'] : '') ?>">
                 <div class="detail-adver-codecon">
                     <?php echo do_shortcode($jobsearch_plugin_options[$option_name]); ?>
@@ -473,11 +493,36 @@ function jobsearch_detail_common_ad_code($args = array())
     }
 }
 
+add_action('wp_ajax_jobsearch_userreg_form_after_nonce', 'jobsearch_logreg_forms_add_nonce');
+add_action('wp_ajax_nopriv_jobsearch_userreg_form_after_nonce', 'jobsearch_logreg_forms_add_nonce');
+
+function jobsearch_logreg_forms_add_nonce() {
+
+    $allow_args = array(
+        'input' => array(
+            'name' => array(),
+            'value' => array(),
+            'type' => array(),
+        ),
+    );
+
+    $form_type = 'register-security';
+    if (isset($_POST['secure_form']) && $_POST['secure_form'] != '') {
+        $form_type = $_POST['secure_form'];
+    }
+
+    ob_start();
+    wp_nonce_field('ajax-login-nonce', $form_type);
+    $secur_field = ob_get_clean();
+    echo wp_kses($secur_field, $allow_args);
+
+    die;
+}
+
 if (!function_exists('jobsearch_candidate_get_all_candidatetypes')) {
 
     function jobsearch_candidate_get_all_candidatetypes($candidate_id, $link_class = 'jobsearch-option-btn', $before_title = '', $after_title = '', $before_tag = '', $after_tag = '')
     {
-
         $candidate_type = wp_get_post_terms($candidate_id, 'candidatetype');
         ob_start();
         $html = '';
@@ -492,7 +537,7 @@ if (!function_exists('jobsearch_candidate_get_all_candidatetypes')) {
                 $candidatetype_textcolor = get_term_meta($term->term_id, 'jobsearch_field_candidatetype_textcolor', true);
                 $candidatetype_color_str = '';
                 if ($candidatetype_color != '') {
-                    $candidatetype_color_str = ' style="background-color: ' . esc_attr($candidatetype_color) . '; color: ' . esc_attr($candidatetype_textcolor) . ' "';
+                    $candidatetype_color_str = 'style="background-color: ' . esc_attr($candidatetype_color) . '; color: ' . esc_attr($candidatetype_textcolor) . ' "';
                 }
                 ?>
                 <a <?php echo($link_class_str) ?> <?php echo($candidatetype_color_str); ?>>
@@ -545,13 +590,22 @@ if (!function_exists('jobsearch_candidate_get_all_sectors')) {
         ob_start();
         $html = '';
         if (!empty($sectors)) {
+            $term_ids_arr = array();
             $link_class_str = '';
             if ($link_class != '') {
                 $link_class_str = 'class="' . $link_class . '"';
             }
-            echo($before_tag);
+            echo ($before_tag);
             $flag = 0;
             foreach ($sectors as $term) :
+                $term_id = isset($term->term_id) ? $term->term_id : '';
+
+                if (in_array($term_id, $term_ids_arr)) {
+                    continue;
+                }
+
+                $term_ids_arr[] = $term_id;
+
                 if ($flag > 0) {
                     echo ", ";
                 }
@@ -600,13 +654,19 @@ function jobsearch_post_city_contry_txtstr($post_id, $is_country = true, $is_sta
     $post_location_txt = '';
 
     $get_post_city = get_post_meta($post_id, 'jobsearch_field_location_location4', true);
+    $get_post_city = jobsearch_esc_html($get_post_city);
     if ($get_post_city == '') {
         $get_post_city = get_post_meta($post_id, 'jobsearch_field_location_location3', true);
+        $get_post_city = jobsearch_esc_html($get_post_city);
     }
 
     $get_post_state = get_post_meta($post_id, 'jobsearch_field_location_location2', true);
     $get_post_country = get_post_meta($post_id, 'jobsearch_field_location_location1', true);
     $full_address = get_post_meta($post_id, 'jobsearch_field_location_address', true);
+    
+    $get_post_state = jobsearch_esc_html($get_post_state);
+    $get_post_country = jobsearch_esc_html($get_post_country);
+    $full_address = jobsearch_esc_html($full_address);
 
     if ($all_locations_type == 'api') {
         $retrn_arr = array();
@@ -674,16 +734,52 @@ function jobsearch_post_city_contry_txtstr($post_id, $is_country = true, $is_sta
         }
     }
 
-    if ($post_location_txt == '') {
+    if ($post_location_txt == '' && $is_full_address) {
         $post_location_txt = get_post_meta($post_id, 'jobsearch_field_location_address', true);
+        $post_location_txt = jobsearch_esc_html($post_location_txt);
     }
 
-    return ($post_location_txt);
+    return stripslashes($post_location_txt);
 }
 
 if (!function_exists('jobsearch_get_candidate_item_count')) {
 
-    function jobsearch_get_candidate_item_count($left_filter_count_switch, $args, $count_arr, $candidate_short_counter, $field_meta_key, $open_house = '')
+    function jobsearch_get_candidate_item_count($left_filter_count_switch, $count_posts_in, $count_arr, $candidate_short_counter, $field_meta_key, $open_house = '')
+    {
+        global $wpdb;
+
+        $total_num = 0;
+        if ($left_filter_count_switch == 'yes') {
+            if (!empty($count_posts_in) && is_array($count_posts_in)) {
+
+                if (isset($count_arr[0]['key']) && $count_arr[0]['key'] != '' && !isset($count_arr[1]['key'])) {
+                    $count_arr_o = $count_arr[0];
+                    $get_meta_cond = get_meta_condition($count_arr_o);
+                    $meta_post_ids = $wpdb->get_col("SELECT post_id FROM $wpdb->postmeta WHERE {$get_meta_cond}");
+                    if (!empty($meta_post_ids)) {
+                        $to_countmeta_arr = array_intersect($count_posts_in, $meta_post_ids);
+                        $total_num = !empty($to_countmeta_arr) ? count($to_countmeta_arr) : 0;
+                    }
+                } else if (isset($count_arr[0]['type']) && $count_arr[0]['type'] == 'numeric' && isset($count_arr[1]['key'])) {
+                    $count_arr_o = $count_arr[0];
+                    $count_arr_1 = $count_arr[1];
+                    $the_meta_key = $count_arr_o['key'];
+                    $from_meta_val = $count_arr_o['value'];
+                    $to_meta_val = $count_arr_1['value'];
+                    $meta_post_ids = $wpdb->get_col("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='{$the_meta_key}' AND meta_value BETWEEN {$from_meta_val} AND {$to_meta_val}");
+                    if (!empty($meta_post_ids)) {
+                        $to_countmeta_arr = array_intersect($count_posts_in, $meta_post_ids);
+                        $total_num = !empty($to_countmeta_arr) ? count($to_countmeta_arr) : 0;
+                    }
+                } else {
+                    $total_num = !empty($count_posts_in) ? count($count_posts_in) : 0;
+                }
+            }
+        }
+        return $total_num;
+    }
+
+    function jobsearch_get_candidate_item_count_depricate($left_filter_count_switch, $args, $count_arr, $candidate_short_counter, $field_meta_key, $open_house = '')
     {
         if ($left_filter_count_switch == 'yes') {
             global $jobsearch_shortcode_candidates_frontend;
@@ -1017,6 +1113,9 @@ if (!function_exists('jobsearch_candidate_skill_percent_count')) {
                                 $this_opt_id = str_replace('jobsearch_', '', $custom_meta_key) . '_skill';
                                 $def_percentage = isset($jobsearch_plugin_options[$this_opt_id]) ? $jobsearch_plugin_options[$this_opt_id] : '';
                                 //
+                                if (isset($custom_field['type']) && $custom_field['type'] == 'upload_file') {
+                                    $custom_meta_key = 'jobsearch_cfupfiles_' . $custom_meta_key;
+                                }
                                 $custom_f_val = get_post_meta($candidate_id, $custom_meta_key, true);
                                 if (!empty($custom_f_val)) {
                                     $skills_perc += ($def_percentage > 0 ? $def_percentage : 0);
@@ -1195,6 +1294,8 @@ function jobsearch_upload_candidate_cv($Fieldname = 'file', $post_id = 0, $user_
         $wp_upload_dir = wp_upload_dir();
 
         $orig_upload_file = $upload_file = $_FILES[$Fieldname];
+        
+        //var_dump($upload_file);
 
         require_once ABSPATH . 'wp-admin/includes/image.php';
         require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -1263,7 +1364,6 @@ function jobsearch_upload_candidate_cv($Fieldname = 'file', $post_id = 0, $user_
         if ($test_uploaded_file && !isset($status_upload['file'])) {
             //$status_upload = jobsearch_wp_handle_upload($upload_file, array('test_form' => false, 'mimes' => $allowed_file_types));
         }
-        //var_dump($status_upload);
 
         if (empty($status_upload['error'])) {
 
@@ -1321,28 +1421,44 @@ function wp_jobsearch_get_user_cv_file_download()
             if ($multiple_cv_files_allow == 'on') {
                 $ca_at_cv_files = get_post_meta($attachment_user_id, 'candidate_cv_files', true);
 
+                $attach_key = 0;
                 if (!empty($ca_at_cv_files)) {
                     $file_url = '';
+                    $attach_counter = 0;
                     foreach ($ca_at_cv_files as $ca_at_cv_file) {
                         if (isset($ca_at_cv_file['file_id']) && $ca_at_cv_file['file_id'] == $attachment_id) {
                             $file_url = isset($ca_at_cv_file['file_url']) ? $ca_at_cv_file['file_url'] : '';
+                            $attach_key = $attach_counter;
                         }
+                        $attach_counter++;
                     }
+
                     if ($file_url == '') {
                         $file_url = isset($ca_at_cv_files[$attachment_id]['file_url']) ? $ca_at_cv_files[$attachment_id]['file_url'] : '';
                     }
                     $file_mimetype = isset($ca_at_cv_files[$attach_key]['mime_type']) ? $ca_at_cv_files[$attach_key]['mime_type'] : '';
+                    $file_mimetype = isset($file_mimetype['type']) ? $file_mimetype['type'] : '';
+
+                    $in_foldr_file = false;
                     if (strpos($file_url, 'jobsearch-user-files/')) {
+                        $in_foldr_file = true;
                         $sub_file_url = substr($file_url, strpos($file_url, 'jobsearch-user-files/'), strlen($file_url));
-                    } else {
+                    } else if (strpos($file_url, 'jobsearch-resumes/')) {
+                        $in_foldr_file = true;
                         $sub_file_url = substr($file_url, strpos($file_url, 'jobsearch-resumes/'), strlen($file_url));
                     }
-                    $file_path = $uplod_dirpath . '/' . $sub_file_url;
+
+                    if ($in_foldr_file) {
+                        $file_path = $uplod_dirpath . '/' . $sub_file_url;
+                    } else {
+                        $file_path = str_replace(get_site_url() . '/', ABSPATH, $file_url);
+                    }
                 }
             } else {
                 $candidate_cv_file = get_post_meta($attachment_user_id, 'candidate_cv_file', true);
                 $file_url = isset($candidate_cv_file['file_url']) ? $candidate_cv_file['file_url'] : '';
                 $file_mimetype = isset($candidate_cv_file['mime_type']) ? $candidate_cv_file['mime_type'] : '';
+                $file_mimetype = isset($file_mimetype['type']) ? $file_mimetype['type'] : '';
                 if (strpos($file_url, 'jobsearch-user-files/')) {
                     $sub_file_url = substr($file_url, strpos($file_url, 'jobsearch-user-files/'), strlen($file_url));
                 } else {
@@ -1362,6 +1478,7 @@ function wp_jobsearch_get_user_cv_file_download()
                     $attch_parnt = $attch_parnt[0];
                 }
             }
+
             //
             $downlod_err = 1;
             if (!is_user_logged_in()) {
@@ -1369,7 +1486,11 @@ function wp_jobsearch_get_user_cv_file_download()
                 exit;
             }
             $user_id = get_current_user_id();
+
             $cur_user_obj = wp_get_current_user();
+            if (jobsearch_user_isemp_member($user_id)) {
+                $downlod_err = 0;
+            }
             $user_is_employer = jobsearch_user_is_employer($user_id);
             if ($user_is_employer) {
                 $downlod_err = 0;
@@ -1388,6 +1509,8 @@ function wp_jobsearch_get_user_cv_file_download()
             if (in_array('administrator', (array)$cur_user_obj->roles)) {
                 $downlod_err = 0;
             }
+
+            $downlod_err = apply_filters('jobsearch_candidate_getcvfile_acces_err', $downlod_err);
 
             if ($downlod_err == 1) {
                 wp_redirect($error_page_url);
@@ -1957,6 +2080,14 @@ function jobsearch_add_member_promote_profile_datetime($package_id, $order_id, $
             update_post_meta($employer_id, 'att_promote_profile_pkgorder', $order_id);
         }
     }
+    if ($order_pkg_type == 'employer_profile') {
+        $employer_id = jobsearch_get_user_employer_id($order_user_id);
+        $pkg_with_promote = get_post_meta($package_id, 'jobsearch_field_emprof_promote_profile', true);
+        if ($pkg_with_promote == 'on') {
+            update_post_meta($employer_id, 'promote_profile_substime', current_time('timestamp'));
+            update_post_meta($employer_id, 'att_promote_profile_pkgorder', $order_id);
+        }
+    }
 }
 
 add_action('jobsearch_before_add_pkge_fields_in_order', 'jobsearch_add_member_urgentpkg_attach', 10, 3);
@@ -1978,6 +2109,88 @@ function jobsearch_add_member_urgentpkg_attach($package_id, $order_id, $order_pk
             update_post_meta($employer_id, 'urgent_pkg_substime', current_time('timestamp'));
             update_post_meta($employer_id, 'att_urgent_pkg_orderid', $order_id);
         }
+    }
+}
+
+add_action('wp', 'jobsearch_remove_member_promote_profile');
+
+function jobsearch_remove_member_promote_profile() {
+    $cachetime = 900;
+    $transient = 'jobsearch_remove_exp_member_promote';
+    
+    $current_time = current_time('timestamp');
+
+    $check_transient = get_transient($transient);
+    if (empty($check_transient)) {
+        
+        $emp_args = array(
+            'post_type' => 'employer',
+            'posts_per_page' => '100',
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'meta_query' => array(
+                array(
+                    'key' => 'att_promote_profile_pkgorder',
+                    'value' => '',
+                    'compare' => '!=',
+                ),
+            ),
+        );
+        $emp_query = new WP_Query($emp_args);
+        $emp_posts = $emp_query->posts;
+        if (!empty($emp_posts)) {
+            foreach ($emp_posts as $employer_id) {
+                $mber_feature_bk = get_post_meta($employer_id, '_feature_mber_frmadmin', true);
+                $att_promote_pckg = get_post_meta($employer_id, 'att_promote_profile_pkgorder', true);
+                $pakg_type = get_post_meta($att_promote_pckg, 'package_type', true);
+                if ($mber_feature_bk != 'yes') {
+                    if ($pakg_type == 'employer_profile') {
+                        $promote_expiry_timestamp = get_post_meta($att_promote_pckg, 'emprof_promote_expiry_timestamp', true);
+                        if ($current_time > $promote_expiry_timestamp) {
+                            delete_post_meta($employer_id, 'promote_profile_substime');
+                            delete_post_meta($employer_id, 'att_promote_profile_pkgorder');
+                        }
+                    } else {
+                        if (jobsearch_promote_profile_pkg_is_expired($att_promote_pckg)) {
+                            delete_post_meta($employer_id, 'promote_profile_substime');
+                            delete_post_meta($employer_id, 'att_promote_profile_pkgorder');
+                        }
+                    }
+                }
+            }
+        }
+        wp_reset_postdata();
+        
+        $cand_args = array(
+            'post_type' => 'candidate',
+            'posts_per_page' => '100',
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'meta_query' => array(
+                array(
+                    'key' => 'att_promote_profile_pkgorder',
+                    'value' => '',
+                    'compare' => '!=',
+                ),
+            ),
+        );
+        $cand_query = new WP_Query($cand_args);
+        $cand_posts = $cand_query->posts;
+        if (!empty($cand_posts)) {
+            foreach ($cand_posts as $candidate_id) {
+                $mber_feature_bk = get_post_meta($candidate_id, '_feature_mber_frmadmin', true);
+                $att_promote_pckg = get_post_meta($candidate_id, 'att_promote_profile_pkgorder', true);
+                if ($mber_feature_bk != 'yes') {
+                    if (jobsearch_promote_profile_pkg_is_expired($att_promote_pckg)) {
+                        delete_post_meta($candidate_id, 'promote_profile_substime');
+                        delete_post_meta($candidate_id, 'att_promote_profile_pkgorder');
+                    }
+                }
+            }
+        }
+        wp_reset_postdata();
+        //
+        set_transient($transient, true, $cachetime);
     }
 }
 
@@ -2003,29 +2216,27 @@ function jobsearch_member_promote_profile_iconlab($id = 0, $view = '')
     }
 
     if ($show_badge) {
-        if ($view == 'simple_employer_list_style3') {
-            ?>
+        ob_start();
+        if ($view == 'simple_employer_list_style3') { ?>
             <i class="top-companies-list-feature fa fa-star"></i>
-            <?php
-        } else if ($view == 'employer_list') {
-            ?>
+        <?php } else if ($view == 'employer_list') { ?>
             <span class="promotepof-badgeemp"><?php esc_html_e('Featured', 'wp-jobsearch') ?> <i class="fa fa-star"
                                                                                                  title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
-            <?php
-        } else if ($view == 'employer_detv1') {
-            ?>
+        <?php } else if ($view == 'employer_detv1') { ?>
             <span class="promotepof-detv1"><?php esc_html_e('Featured', 'wp-jobsearch') ?> <i class="fa fa-star"
                                                                                               title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
         <?php } else if ($view == 'cand_listv1') { ?>
             <span class="promotepof-badge"><?php esc_html_e('Featured', 'wp-jobsearch') ?> <i class="fa fa-star"
                                                                                               title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
         <?php } else if ($view == 'employer_list_grid') { ?>
-            <span class="promotepof-badge-grid"><i class="fa fa-star jobsearch-tooltipcon"  title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
+            <span class="promotepof-badge-grid"><i class="fa fa-star jobsearch-tooltipcon" title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
         <?php } else { ?>
             <span class="promotepof-badge"><i class="fa fa-star"
                                               title="<?php esc_html_e('Featured', 'wp-jobsearch') ?>"></i></span>
             <?php
         }
+        $html = ob_get_clean();
+        echo apply_filters('jobsearch_member_promot_profile_star_html', $html, $id, $view);
     }
 }
 
@@ -2052,17 +2263,16 @@ function jobsearch_cand_urgent_pkg_iconlab($id = 0, $view = '')
 
     if ($show_badge) {
         if ($view == 'cand_dclassic' || $view == 'cand_dmodren' || $view == 'cand_listv4') { ?>
-            <span class="urgntpkg-detilbadge"><i
-                        class="fa fa-star"></i> <?php esc_html_e('Urgent', 'wp-jobsearch') ?></span>
+            <span class="urgntpkg-detilbadge"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
         <?php } else if ($view == 'cand_listv1') { ?>
-            <span class="urgntpkg-candv1"><i
-                        class="fa fa-star"></i> <?php esc_html_e('Urgent', 'wp-jobsearch') ?></span>
-        <?php }
-        if ($view == 'cand_listv6') { ?>
-            <span class="urgntpkg-candv5"><?php esc_html_e('Urgent', 'wp-jobsearch') ?></span>
+            <span class="urgntpkg-candv1"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
+        <?php } else if ($view == 'cand_listv6') { ?>
+            <span class="urgntpkg-candv5"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
 
+        <?php } else if ($view == 'cand_listv2') { ?>
+            <div class="urgntpkg-candv2"><span><?php esc_html_e('urgent', 'wp-jobsearch') ?></span></div>
         <?php } else { ?>
-            <span class="urgntpkg-badge"><i class="fa fa-star"></i> <?php esc_html_e('Urgent', 'wp-jobsearch') ?></span>
+            <span class="urgntpkg-badge"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
             <?php
         }
     }
@@ -2092,15 +2302,23 @@ function jobsearch_empjobs_urgent_pkg_iconlab($emp_id = 0, $post_id = 0, $view =
     }
 
     if ($show_badge && $post_is_urgent == 'on') {
+        ob_start();
         if ($view == 'post_v_grid' || $view == 'post_v_grid2') { ?>
-            <span class="urgntpkg-gridv-badge"><i class="fa fa-star"></i> <small><?php esc_html_e('Urgent', 'wp-jobsearch') ?></small></span>
+            <span class="urgntpkg-gridv-badge"><small><?php esc_html_e('urgent', 'wp-jobsearch') ?></small></span>
+        <?php } else if ($view == 'job_listv1') { ?>
+            <span class="urgntpkg-jobv1"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
+        <?php } else if ($view == 'job_listin2') { ?>
+            <div class="urgntpkg-job-listin2"><span><?php esc_html_e('Urgent', 'wp-jobsearch') ?></span></div>
         <?php } else if ($view == 'style9') { ?>
             <span class="urgntpkg-badge-style9"><?php esc_html_e('urgent', 'wp-jobsearch') ?></span>
-
+        <?php } else if ($view == 'style10') { ?>
+            <div class="urgntpkg-badge-style10"><span><?php esc_html_e('urgent', 'wp-jobsearch') ?></span></div>
         <?php } else { ?>
-            <span class="urgntpkg-badge"><i class="fa fa-star"></i> <small><?php esc_html_e('Urgent', 'wp-jobsearch') ?></small></span>
+            <span class="urgntpkg-badge"> <small><?php esc_html_e('urgent', 'wp-jobsearch') ?></small></span>
             <?php
         }
+        $html = ob_get_clean();
+        echo apply_filters('jobsearch_job_urgent_tag_html', $html, $view);
     }
 }
 
@@ -2116,19 +2334,28 @@ function jobsearch_user_attach_cv_file_url($cv_file_url, $candidate_id, $post_id
         $ca_at_cv_files = get_post_meta($candidate_id, 'candidate_cv_files', true);
         if (!empty($ca_at_cv_files)) {
             $files_counter = 1;
+
             foreach ($ca_at_cv_files as $cv_file_key => $cv_file_val) {
                 $file_attach_id = isset($cv_file_val['file_id']) ? $cv_file_val['file_id'] : '';
                 $file_url = isset($cv_file_val['file_url']) ? $cv_file_val['file_url'] : '';
                 $cv_primary = isset($cv_file_val['primary']) ? $cv_file_val['primary'] : '';
-                if ($files_counter == 1 && $file_url != '') {
+                if ($file_url != '') {
                     $cv_file_url = $file_url;
+                    $to_attach_id = $file_attach_id;
                 }
                 if ($cv_primary == 'yes' && $file_url != '') {
-                    $cv_file_url = $file_url;
+                    $primcv_file_url = $file_url;
+                    $prime_attach_id = $file_attach_id;
                 }
-                $cv_file_url = apply_filters('wp_jobsearch_user_cvfile_downlod_url', $cv_file_url, $file_attach_id, $candidate_id);
+
                 $files_counter++;
             }
+            if (isset($prime_attach_id)) {
+                $cv_file_url = apply_filters('wp_jobsearch_user_cvfile_downlod_url', $primcv_file_url, $prime_attach_id, $candidate_id);
+            } else if (isset($to_attach_id)) {
+                $cv_file_url = apply_filters('wp_jobsearch_user_cvfile_downlod_url', $cv_file_url, $to_attach_id, $candidate_id);
+            }
+
             if ($post_id > 0) {
                 $get_post_apps_cv_att = get_post_meta($post_id, 'post_apps_cv_att', true);
                 $attach_cv_job = isset($get_post_apps_cv_att[$candidate_id]) ? $get_post_apps_cv_att[$candidate_id] : '';
@@ -2243,125 +2470,6 @@ function jobsearch_cand_listin_top_jobfounds_html($html, $post_totnum, $candidat
     return $html;
 }
 
-function jobsearch_phonenum_itltell_input($field_name, $rand_numb, $field_val = '', $atts = array())
-{
-    $set_before_vals = isset($atts['set_before_vals']) ? $atts['set_before_vals'] : '';
-
-    $name_atr = $field_name;
-    if (isset($atts['sepc_name']) && $atts['sepc_name'] != '') {
-        $name_atr = $atts['sepc_name'];
-    }
-    ?>
-    <div id="phon-fieldcon-<?php echo absint($rand_numb) ?>" class="phon-num-fieldcon">
-        <input class="required" required="" name="<?php echo($name_atr) ?>"
-               id="<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>"
-               type="tel" <?php echo($field_val != '' ? 'value="' . $field_val . '"' : '') ?>
-               placeholder="<?php _e('Phone Number', 'wp-jobsearch'); ?>"/>
-        <input id="dial_code_<?php echo absint($rand_numb) ?>" type="hidden" name="dial_code">
-        <input id="contry_code_<?php echo absint($rand_numb) ?>" type="hidden" name="contry_iso_code">
-    </div>
-    <?php
-    if (isset($atts['field_icon']) && $atts['field_icon'] == 'yes') {
-        ?>
-        <i class="jobsearch-icon jobsearch-technology"></i>
-        <?php
-    }
-    ?>
-    <script>
-        function onChangeContryCallAct<?php echo absint($rand_numb) ?>(iti_randadn) {
-            var _this_<?php echo absint($rand_numb) ?> = jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.intl-tel-input .intl-tel-input ul.country-list > li.active');
-            var dial_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-dial-code');
-            var contry_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-country-code');
-            var this_contry_name_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.find('.country-name').html();
-            jQuery('#dialcode-con-<?php echo absint($rand_numb) ?>').html('+' + dial_code_val_<?php echo absint($rand_numb) ?>);
-            jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(dial_code_val_<?php echo absint($rand_numb) ?>);
-            jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(contry_code_val_<?php echo absint($rand_numb) ?>);
-            jQuery('#contry-name-<?php echo absint($rand_numb) ?>').html('');
-            if (typeof contry_code_val_<?php echo absint($rand_numb) ?> !== 'undefined') {
-                iti_randadn.setCountry(contry_code_val_<?php echo absint($rand_numb) ?>);
-            }
-        }
-
-        jQuery(document).ready(function () {
-            var input_<?php echo absint($rand_numb) ?> = document.querySelector("#<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>");
-            var iti_<?php echo absint($rand_numb) ?> = intlTelInput(input_<?php echo absint($rand_numb) ?>);
-            var reset_phone_field_<?php echo absint($rand_numb) ?> = function () {
-                input_<?php echo absint($rand_numb) ?>.classList.remove("phone-input-error");
-            };
-            <?php
-            if (isset($atts['set_condial_intrvl']) && $atts['set_condial_intrvl'] == 'yes') {
-            ?>
-            var afterLoadIntrvl<?php echo absint($rand_numb) ?> = setInterval(function () {
-                jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.contry-info-con .country-name-con').attr('id', 'contry-name-<?php echo absint($rand_numb) ?>');
-                jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.contry-info-con .dialcode-num-con').attr('id', 'dialcode-con-<?php echo absint($rand_numb) ?>');
-                clearInterval(afterLoadIntrvl<?php echo absint($rand_numb) ?>);
-            }, 2000);
-            <?php
-            }
-            ?>
-            // on blur: validate
-            input_<?php echo absint($rand_numb) ?>.addEventListener('blur', function () {
-                reset_phone_field_<?php echo absint($rand_numb) ?>();
-                if (input_<?php echo absint($rand_numb) ?>.value.trim()) {
-                    if (iti_<?php echo absint($rand_numb) ?>.isValidNumber()) {
-                        jQuery(input_<?php echo absint($rand_numb) ?>).css({'border': '1px solid #efefef'});
-                    } else {
-                        input_<?php echo absint($rand_numb) ?>.classList.add("phone-input-error");
-                        jQuery(input_<?php echo absint($rand_numb) ?>).css({'border': '1px solid #ff0000'});
-                    }
-                }
-            });
-            <?php
-            if (wp_is_mobile()) {
-            ?>
-            jQuery(document).on('click', '.intl-tel-input ul.country-list > li', function () {
-                var _this_<?php echo absint($rand_numb) ?> = jQuery(this);
-                var dial_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-dial-code');
-                var contry_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-country-code');
-                var this_contry_name_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.find('.country-name').html();
-                jQuery('#dialcode-con-<?php echo absint($rand_numb) ?>').html('+' + dial_code_val_<?php echo absint($rand_numb) ?>);
-                jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(dial_code_val_<?php echo absint($rand_numb) ?>);
-                jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(contry_code_val_<?php echo absint($rand_numb) ?>);
-                jQuery('#contry-name-<?php echo absint($rand_numb) ?>').html('');
-                iti_<?php echo absint($rand_numb) ?>.setCountry(contry_code_val_<?php echo absint($rand_numb) ?>);
-            });
-            <?php
-            } else {
-            ?>
-            input_<?php echo absint($rand_numb) ?>.addEventListener("countrychange", function () {
-                onChangeContryCallAct<?php echo absint($rand_numb) ?>(iti_<?php echo absint($rand_numb) ?>);
-            });
-            <?php
-            }
-            ?>
-            window.intlTelInput(input_<?php echo absint($rand_numb) ?>, {
-                initialCountry: "auto",
-                geoIpLookup: function (callback_<?php echo absint($rand_numb) ?>) {
-                    $.get('https://ipinfo.io', function () {
-                    }, "jsonp").always(function (resp) {
-                        var countryCode = (resp && resp.country) ? resp.country : "";
-                        callback_<?php echo absint($rand_numb) ?>(countryCode);
-                        iti_<?php echo absint($rand_numb) ?>.setCountry(countryCode);
-                        var countryData_<?php echo absint($rand_numb) ?> = iti_<?php echo absint($rand_numb) ?>.getSelectedCountryData();
-                        if (typeof countryData_<?php echo absint($rand_numb) ?>.dialCode !== 'undefined') {
-                            console.log(countryData_<?php echo absint($rand_numb) ?>);
-                            jQuery("input[<?php echo($set_before_vals == 'all' ? 'id^=' . $field_name : 'id=' . $field_name . '_' . $rand_numb) ?>]").before('<div class="contry-info-con">\
-                                <span id="contry-name-<?php echo absint($rand_numb) ?>" class="country-name-con"></span>\
-                                <span id="dialcode-con-<?php echo absint($rand_numb) ?>" class="dialcode-num-con">+' + countryData_<?php echo absint($rand_numb) ?>.dialCode + '</span>\
-                            </div>');
-                            jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(countryData_<?php echo absint($rand_numb) ?>.dialCode);
-                            jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(countryData_<?php echo absint($rand_numb) ?>.iso2);
-                        }
-                    });
-                },
-                preferredCountries: [],
-                utilsScript: "<?php echo jobsearch_plugin_get_url('js/utils.js') ?>?<?php echo time() ?>" // just for formatting/placeholders etc
-            });
-        });
-    </script>
-    <?php
-}
-
 function jobsearch_cand_listin_before_top_jobfounds_html($html, $post_totnum, $candidate_short_counter, $atts)
 {
     $counts_on = true;
@@ -2403,6 +2511,139 @@ function jobsearch_cand_listin_after_sort_orders_html($html, $post_totnum, $cand
     return $html;
 }
 
+function jobsearch_phonenum_itltell_input($field_name, $rand_numb, $field_val = '', $atts = array())
+{
+    $set_before_vals = isset($atts['set_before_vals']) ? $atts['set_before_vals'] : '';
+    $is_required_field = isset($atts['is_required']) ? $atts['is_required'] : '';
+
+    $name_atr = $field_name;
+    if (isset($atts['sepc_name']) && $atts['sepc_name'] != '') {
+        $name_atr = $atts['sepc_name'];
+    }
+    ?>
+    <div id="phon-fieldcon-<?php echo absint($rand_numb) ?>" class="phon-num-fieldcon phonefild-wout-valid">
+        <input class="required<?php echo (isset($atts['classes']) && $atts['classes'] != '' ? ' ' . $atts['classes'] : '') ?>" <?php echo($is_required_field ? 'required' : '') ?> name="<?php echo($name_atr) ?>"
+               id="<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>"
+               type="tel" <?php echo($field_val != '' ? 'value="' . $field_val . '"' : '') ?> placeholder="<?php _e('Phone Number', 'wp-jobsearch'); ?>">
+        <input id="dial_code_<?php echo absint($rand_numb) ?>" type="hidden" name="dial_code">
+        <input id="contry_code_<?php echo absint($rand_numb) ?>" type="hidden" name="contry_iso_code">
+    </div>
+    <?php
+    if (isset($atts['field_icon']) && $atts['field_icon'] == 'yes') {
+        ?>
+        <i class="jobsearch-icon jobsearch-technology"></i>
+        <?php
+    }
+    ?>
+    <script>
+        function onChangeContryCallAct<?php echo absint($rand_numb) ?>(iti_randadn) {
+            var _this_<?php echo absint($rand_numb) ?> = jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.intl-tel-input .intl-tel-input ul.country-list > li.active');
+            var dial_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-dial-code');
+            var contry_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-country-code');
+            var this_contry_name_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.find('.country-name').html();
+            jQuery('#dialcode-con-<?php echo absint($rand_numb) ?>').html('+' + dial_code_val_<?php echo absint($rand_numb) ?>);
+            jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(dial_code_val_<?php echo absint($rand_numb) ?>);
+            jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(contry_code_val_<?php echo absint($rand_numb) ?>);
+            jQuery('#contry-name-<?php echo absint($rand_numb) ?>').html('');
+            if (typeof contry_code_val_<?php echo absint($rand_numb) ?> !== 'undefined') {
+                iti_randadn.setCountry(contry_code_val_<?php echo absint($rand_numb) ?>);
+            }
+        }
+
+        function jobseachPhoneValidInit<?php echo absint($rand_numb) ?>() {
+            var input_<?php echo absint($rand_numb) ?> = document.querySelector("#<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>");
+            var iti_<?php echo absint($rand_numb) ?> = intlTelInput(input_<?php echo absint($rand_numb) ?>);
+            var reset_phone_field_<?php echo absint($rand_numb) ?> = function () {
+                input_<?php echo absint($rand_numb) ?>.classList.remove("phone-input-error");
+            };
+            <?php
+            if (isset($atts['set_condial_intrvl']) && $atts['set_condial_intrvl'] == 'yes') {
+            ?>
+//            var afterLoadIntrvl<?php echo absint($rand_numb) ?> = setInterval(function () {
+//                jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.contry-info-con .country-name-con').attr('id', 'contry-name-<?php echo absint($rand_numb) ?>');
+//                jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').find('.contry-info-con .dialcode-num-con').attr('id', 'dialcode-con-<?php echo absint($rand_numb) ?>');
+//                clearInterval(afterLoadIntrvl<?php echo absint($rand_numb) ?>);
+//            }, 2000);
+            <?php
+            }
+            ?>
+            // on blur: validate
+            input_<?php echo absint($rand_numb) ?>.addEventListener('blur', function () {
+                reset_phone_field_<?php echo absint($rand_numb) ?>();
+                if (input_<?php echo absint($rand_numb) ?>.value.trim()) {
+                    if (iti_<?php echo absint($rand_numb) ?>.isValidNumber()) {
+                        jQuery(input_<?php echo absint($rand_numb) ?>).css({'border': '1px solid #efefef'});
+                    } else {
+                        input_<?php echo absint($rand_numb) ?>.classList.add("phone-input-error");
+                        jQuery(input_<?php echo absint($rand_numb) ?>).css({'border': '1px solid #ff0000'});
+                    }
+                }
+            });
+            <?php
+            if (wp_is_mobile()) {
+            ?>
+            jQuery(document).on('click', '.intl-tel-input ul.country-list > li', function () {
+                var _this_<?php echo absint($rand_numb) ?> = jQuery(this);
+                var dial_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-dial-code');
+                var contry_code_val_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.attr('data-country-code');
+                var this_contry_name_<?php echo absint($rand_numb) ?> = _this_<?php echo absint($rand_numb) ?>.find('.country-name').html();
+                jQuery('#dialcode-con-<?php echo absint($rand_numb) ?>').html('+' + dial_code_val_<?php echo absint($rand_numb) ?>);
+                jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(dial_code_val_<?php echo absint($rand_numb) ?>);
+                jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(contry_code_val_<?php echo absint($rand_numb) ?>);
+                jQuery('#contry-name-<?php echo absint($rand_numb) ?>').html('');
+                iti_<?php echo absint($rand_numb) ?>.setCountry(contry_code_val_<?php echo absint($rand_numb) ?>);
+            });
+            <?php
+            } else {
+            ?>
+            input_<?php echo absint($rand_numb) ?>.addEventListener("countrychange", function () {
+                onChangeContryCallAct<?php echo absint($rand_numb) ?>(iti_<?php echo absint($rand_numb) ?>);
+            });
+            <?php
+            }
+            ?>
+            var iti_init_<?php echo absint($rand_numb) ?> = window.intlTelInput(input_<?php echo absint($rand_numb) ?>, {
+                initialCountry: "auto",
+                geoIpLookup: function (callback_<?php echo absint($rand_numb) ?>) {
+                    jQuery.get('https://ipinfo.io', function () {
+                    }, "jsonp").always(function (resp) {
+                        var countryCode = (resp && resp.country) ? resp.country : "";
+                        callback_<?php echo absint($rand_numb) ?>(countryCode);
+                        iti_<?php echo absint($rand_numb) ?>.setCountry(countryCode);
+                        var countryData_<?php echo absint($rand_numb) ?> = iti_<?php echo absint($rand_numb) ?>.getSelectedCountryData();
+                        if (typeof countryData_<?php echo absint($rand_numb) ?>.dialCode !== 'undefined') {
+                            //console.log(countryData_<?php echo absint($rand_numb) ?>);
+                            //console.log('<?php echo absint($rand_numb) ?>');
+                            jQuery("input[<?php echo('id=' . $field_name . '_' . $rand_numb) ?>]").before('<div class="contry-info-con">\
+                                <span id="contry-name-<?php echo absint($rand_numb) ?>" class="country-name-con"></span>\
+                                <span id="dialcode-con-<?php echo absint($rand_numb) ?>" class="dialcode-num-con">+' + countryData_<?php echo absint($rand_numb) ?>.dialCode + '</span>\
+                            </div>');
+                            jQuery('#dial_code_<?php echo absint($rand_numb) ?>').val(countryData_<?php echo absint($rand_numb) ?>.dialCode);
+                            jQuery('#contry_code_<?php echo absint($rand_numb) ?>').val(countryData_<?php echo absint($rand_numb) ?>.iso2);
+                        }
+                    });
+                },
+                preferredCountries: [],
+                utilsScript: "<?php echo jobsearch_plugin_get_url('js/utils.js') ?>?<?php echo time() ?>" // just for formatting/placeholders etc
+            });
+            var afterLoadIntFunc<?php echo absint($rand_numb) ?> = setInterval(function () {
+                var selectd_flag_class = jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?> > .intl-tel-input > .flag-container > .selected-flag .iti-flag').attr('class');
+                jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?> .selected-flag .iti-flag').attr('class', selectd_flag_class);
+                clearInterval(afterLoadIntFunc<?php echo absint($rand_numb) ?>);
+            }, 500);
+        }
+
+        jQuery(document).on('click', '#<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>', function () {
+            if (jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').hasClass('phonefild-wout-valid')) {
+                jQuery('#<?php echo($field_name) ?>_<?php echo absint($rand_numb) ?>').removeAttr('placeholder');
+                jobseachPhoneValidInit<?php echo absint($rand_numb) ?>();
+            }
+            jQuery('#phon-fieldcon-<?php echo absint($rand_numb) ?>').removeClass('phonefild-wout-valid');
+        });
+    </script>
+    <?php
+}
+
 add_filter('careerfy_subheader_post_page_title', 'jobsearch_careerfy_subheader_dash_titles', 11, 2);
 
 function jobsearch_careerfy_subheader_dash_titles($title, $page_id)
@@ -2437,12 +2678,16 @@ function jobsearch_careerfy_subheader_userdash_bg_img($bg_img, $page_id)
         $user_is_employer = jobsearch_user_is_employer($user_id);
         $user_is_candidate = jobsearch_user_is_candidate($user_id);
         if ($user_is_employer) {
+            $bg_img = '';
             $employer_id = jobsearch_get_user_employer_id($user_id);
             if (class_exists('JobSearchMultiPostThumbnails')) {
                 $employer_cover_image_src = JobSearchMultiPostThumbnails::get_post_thumbnail_url('employer', 'cover-image', $employer_id);
                 if ($employer_cover_image_src != '') {
                     $bg_img = $employer_cover_image_src;
                 }
+            }
+            if ($bg_img == '') {
+                $bg_img = isset($jobsearch_plugin_options['cand_default_coverimg']['url']) ? $jobsearch_plugin_options['cand_default_coverimg']['url'] : '';
             }
         } else if ($user_is_candidate) {
             $candidate_id = jobsearch_get_user_candidate_id($user_id);
@@ -2453,6 +2698,7 @@ function jobsearch_careerfy_subheader_userdash_bg_img($bg_img, $page_id)
 }
 
 add_action('admin_init', 'jobsearch_redirect_memb_from_admin_to_dash');
+add_action('init', 'jobsearch_redirect_memb_from_admin_to_dash');
 
 function jobsearch_redirect_memb_from_admin_to_dash()
 {
@@ -2582,7 +2828,12 @@ function jobsearch_candpost_type_link_chnge($link, $post = 0)
             if (is_user_logged_in()) {
                 $cur_user_id = get_current_user_id();
                 $cur_user_obj = wp_get_current_user();
-                $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+                if (jobsearch_user_isemp_member($cur_user_id)) {
+                    $employer_id = jobsearch_user_isemp_member($cur_user_id);
+                    $cur_user_id = jobsearch_get_employer_user_id($employer_id);
+                } else {
+                    $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+                }
                 $ucandidate_id = jobsearch_get_user_candidate_id($cur_user_id);
                 $employer_dbstatus = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
                 if ($employer_id > 0 && $employer_dbstatus == 'on') {
@@ -2615,7 +2866,13 @@ function jobsearch_candpost_type_link_chnge($link, $post = 0)
                     }
                     //
                     if ($restrict_candidates_for_users == 'register_resume') {
-                        $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg();
+                        $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg($cur_user_id);
+                        if (!$user_cv_pkg) {
+                            $user_cv_pkg = jobsearch_allin_first_pkg_subscribed($cur_user_id, 'cvs');
+                        }
+                        if (!$user_cv_pkg) {
+                            $user_cv_pkg = jobsearch_emprof_first_pkg_subscribed($cur_user_id, 'cvs');
+                        }
                         if ($user_cv_pkg) {
                             $view_candidate = true;
                         } else {
@@ -2633,6 +2890,8 @@ function jobsearch_candpost_type_link_chnge($link, $post = 0)
                 } else if (in_array('administrator', (array)$cur_user_obj->roles)) {
                     $view_candidate = true;
                 } else if ($ucandidate_id > 0 && $ucandidate_id == $candidate_id) {
+                    $view_candidate = true;
+                } else if ($restrict_candidates_for_users == 'register_empcand' && ($ucandidate_id > 0 || $employer_id > 0)) {
                     $view_candidate = true;
                 }
             }
@@ -2804,8 +3063,7 @@ function jobsearch_candpost_type_link_rewrite()
     $jobsearch__options = get_option('jobsearch_plugin_options');
     $cand_post_writeslug = isset($jobsearch__options['candidate_rewrite_slug']) && $jobsearch__options['candidate_rewrite_slug'] != '' ? $jobsearch__options['candidate_rewrite_slug'] : 'candidate';
 
-    add_rewrite_rule(
-        $cand_post_writeslug . '/([0-9]+)?$', 'index.php?post_type=candidate&p=$matches[1]', 'top');
+    add_rewrite_rule($cand_post_writeslug . '/([0-9]+)?$', 'index.php?post_type=candidate&p=$matches[1]', 'top');
 }
 
 function jobsearch_filter_cand_wp_title($title)
@@ -2839,7 +3097,12 @@ function jobsearch_filter_cand_wp_title($title)
             if (is_user_logged_in()) {
                 $cur_user_id = get_current_user_id();
                 $cur_user_obj = wp_get_current_user();
-                $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+                if (jobsearch_user_isemp_member($cur_user_id)) {
+                    $employer_id = jobsearch_user_isemp_member($cur_user_id);
+                    $cur_user_id = jobsearch_get_employer_user_id($employer_id);
+                } else {
+                    $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+                }
                 $ucandidate_id = jobsearch_get_user_candidate_id($cur_user_id);
                 $employer_dbstatus = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
                 if ($employer_id > 0 && $employer_dbstatus == 'on') {
@@ -2872,7 +3135,13 @@ function jobsearch_filter_cand_wp_title($title)
                     }
                     //
                     if ($restrict_candidates_for_users == 'register_resume') {
-                        $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg();
+                        $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg($cur_user_id);
+                        if (!$user_cv_pkg) {
+                            $user_cv_pkg = jobsearch_allin_first_pkg_subscribed($cur_user_id, 'cvs');
+                        }
+                        if (!$user_cv_pkg) {
+                            $user_cv_pkg = jobsearch_emprof_first_pkg_subscribed($cur_user_id, 'cvs');
+                        }
                         if ($user_cv_pkg) {
                             $view_candidate = true;
                         } else {
@@ -2890,6 +3159,8 @@ function jobsearch_filter_cand_wp_title($title)
                 } else if (in_array('administrator', (array)$cur_user_obj->roles)) {
                     $view_candidate = true;
                 } else if ($ucandidate_id > 0 && $ucandidate_id == $candidate_id) {
+                    $view_candidate = true;
+                } else if ($restrict_candidates_for_users == 'register_empcand' && ($ucandidate_id > 0 || $employer_id > 0)) {
                     $view_candidate = true;
                 }
             }
@@ -3007,6 +3278,27 @@ function jobsearch_users_admin_add_colval($val, $column_name, $user_id)
     switch ($column_name) {
 
         case 'jobsearch_adminprove' :
+            $social_user = false;
+            $jobsearch_facebook_id = get_user_meta($user_id, 'jobsearch_facebook_id', true);
+            if ($jobsearch_facebook_id != '') {
+                $social_user = true;
+            }
+            $jobsearch_google_id = get_user_meta($user_id, 'jobsearch_google_id', true);
+            if ($jobsearch_google_id != '') {
+                $social_user = true;
+            }
+            $jobsearch_linkedin_id = get_user_meta($user_id, 'jobsearch_linkedin_id', true);
+            if ($jobsearch_linkedin_id != '') {
+                $social_user = true;
+            }
+            $jobsearch_twitter_id = get_user_meta($user_id, 'jobsearch_twitter_id', true);
+            if ($jobsearch_twitter_id != '') {
+                $social_user = true;
+            }
+            $jobsearch_xing_id = get_user_meta($user_id, 'jobsearch_xing_id', true);
+            if ($jobsearch_xing_id != '') {
+                $social_user = true;
+            }
             $user_login_auth = get_user_meta($user_id, 'jobsearch_accaprov_allow', true);
             ob_start();
             if ($user_login_auth == '0') {
@@ -3016,6 +3308,13 @@ function jobsearch_users_admin_add_colval($val, $column_name, $user_id)
                        data-id="<?php echo($user_id) ?>"
                        style="color: #ff0000; font-weight: bold;"><?php esc_html_e('Verify', 'wp-jobsearch') ?></a>
                     <span class="loader-con"></span>
+                </div>
+                <?php
+            } else if ($social_user) {
+                ?>
+                <div class="user-manulaprove-btncon">
+                    <a class="user-adminprove-btn has-approved"
+                       style="color: #17aa00;"><?php esc_html_e('Verified', 'wp-jobsearch') ?></a>
                 </div>
                 <?php
             } else if ($user_login_auth == '1') {
@@ -3062,6 +3361,7 @@ function jobsearch_user_acountaprovl_by_admin()
     update_user_meta($user_id, 'jobsearch_accaprov_allow', '1');
     $user_pass = get_user_meta($user_id, 'jobsearch_new_user_regtpass', true);
     if ($user_pass != '') {
+        $user_pass = base64_decode($user_pass);
         do_action('jobsearch_new_user_register', $c_user, $user_pass);
     }
 
@@ -3071,6 +3371,133 @@ function jobsearch_user_acountaprovl_by_admin()
 
 add_action('wp_ajax_jobsearch_user_acountaprovl_by_admin', 'jobsearch_user_acountaprovl_by_admin');
 //
+
+//
+add_action('admin_init', 'jobsearch_new_cand_add_bk_action');
+
+function jobsearch_new_cand_add_bk_action() {
+    if (isset($_POST['post_type']) && $_POST['post_type'] == 'candidate' && isset($_POST['user_reg_with_email']) && $_POST['user_reg_with_email'] != '') {
+        $post_id = $_POST['post_ID'];
+        $user_email = $_POST['user_reg_with_email'];
+        
+        if (filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+            
+            if (!email_exists($user_email)) {
+                $user_pass = wp_generate_password(12);
+
+                $username = $user_email;
+                if (isset($_POST['post_title']) && $_POST['post_title'] != '') {
+                    $username = sanitize_title($_POST['post_title']);
+                }
+                
+                $create_user = wp_create_user($username, $user_pass, $user_email);
+
+                if (!is_wp_error($create_user)) {
+                    $user_id = $create_user;
+                    $update_user_arr = array(
+                        'ID' => $user_id,
+                        'role' => 'jobsearch_candidate'
+                    );
+                    wp_update_user($update_user_arr);
+                    
+                    $user_cand_id = get_user_meta($user_id, 'jobsearch_candidate_id', true);
+                    if ($user_cand_id > 0 && get_post_type($user_cand_id) == 'candidate') {
+                        wp_delete_post($user_cand_id, true);
+                    }
+                    
+                    //
+                    update_user_meta($user_id, 'jobsearch_candidate_id', $post_id);
+                    update_post_meta($post_id, 'jobsearch_user_id', $user_id);
+                    update_post_meta($post_id, 'jobsearch_field_user_email', $user_email);
+                    update_user_option($user_id, 'show_admin_bar_front', false);
+                    //
+                    
+                    $c_user = get_user_by('email', $user_email);
+                    do_action('jobsearch_new_user_register', $c_user, $user_pass);
+                }
+            } else {
+                $user_obj = get_user_by('email', $user_email);
+                if (in_array('administrator', (array)$user_obj->roles)) {
+                    return false;
+                }
+                $user_id = $user_obj->ID;
+                
+                $user_cand_id = get_user_meta($user_id, 'jobsearch_candidate_id', true);
+                if ($user_cand_id == '') {
+                    //
+                    update_user_meta($user_id, 'jobsearch_candidate_id', $post_id);
+                    update_post_meta($post_id, 'jobsearch_user_id', $user_id);
+                    update_post_meta($post_id, 'jobsearch_field_user_email', $user_email);
+                    //
+                }
+            }
+        }
+    }
+}
+//
+
+function jobsearch_addto_candidate_exp_inyears($candidate_id) {
+    $cand_exp_startdate = get_post_meta($candidate_id, 'jobsearch_field_experience_start_date', true);
+    $cand_exp_enddate = get_post_meta($candidate_id, 'jobsearch_field_experience_end_date', true);
+    $cand_exp_present = get_post_meta($candidate_id, 'jobsearch_field_experience_date_prsnt', true);
+    if (!empty($cand_exp_startdate)) {
+        $new_exp_filedsarr = array();
+        $exfield_counter = 0;
+        foreach ($cand_exp_startdate as $start_date) {
+            
+            $exfield_start_date = isset($cand_exp_startdate[$exfield_counter]) ? $cand_exp_startdate[$exfield_counter] : '';
+            $exfield_end_date = isset($cand_exp_enddate[$exfield_counter]) ? $cand_exp_enddate[$exfield_counter] : '';
+            $exfield_prsnt_field = isset($cand_exp_present[$exfield_counter]) ? $cand_exp_present[$exfield_counter] : '';
+
+            $exp_sort_date = 0;
+            if ($exfield_start_date != '') {
+                $exp_sort_date = strtotime($exfield_start_date);
+            }
+
+            $new_exp_filedsarr[] = array(
+                'start_date' => $exfield_start_date,
+                'end_date' => $exfield_end_date,
+                'present' => $exfield_prsnt_field,
+                'sort_date' => $exp_sort_date,
+            );
+
+            $exfield_counter++;
+        }
+        usort($new_exp_filedsarr, function($a, $b) {
+            if ($a['sort_date'] == $b['sort_date']) {
+                $ret_val = 0;
+            }
+            $ret_val = ($a['sort_date'] < $b['sort_date']) ? -1 : 1;
+            return $ret_val;
+        });
+        //echo '<pre>';
+        //var_dump($new_exp_filedsarr);
+        //echo '</pre>';
+        $start_year = $new_exp_filedsarr[0]['start_date'];
+        $all_arr_end = end($new_exp_filedsarr);
+        $end_year = $all_arr_end['end_date'];
+        if ($all_arr_end['present'] == 'on') {
+            $end_year = current_time('d-m-Y');
+        }
+        
+        if ($start_year != '') {
+            $start_year_str = strtotime($start_year);
+            $start_year = date('Y', $start_year_str);
+        }
+        if ($end_year != '') {
+            $end_year_str = strtotime($end_year);
+            $end_year = date('Y', $end_year_str);
+        }
+        
+        if ($start_year > 0 && $end_year > 0 && $end_year > $start_year) {
+            $overall_exp = $end_year - $start_year;
+        } else {
+            $overall_exp = 0;
+        }
+        $overall_exp = absint($overall_exp);
+        update_post_meta($candidate_id, 'jobsearch_candidate_experience_inyears', $overall_exp);
+    }
+}
 
 add_action('pre_get_terms', 'jobsearch_owncustax_chnge_get_terms');
 
@@ -3118,7 +3545,8 @@ function jobsearch_get_custom_term_by($field = 'term_id', $value = '0', $taxonom
         $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
             . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
             . " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id) "
-            . " WHERE term_tax.taxonomy = '%s' AND terms." . $field . "='" . $value . "' AND icl_trans.language_code='" . $sitepress_curr_lang . "'", $taxonomy));
+            . " WHERE term_tax.taxonomy = '%s' AND terms." . $field . "='" . $value . "'"
+            . " AND icl_trans.language_code='" . $sitepress_curr_lang . "'", $taxonomy));
     } else {
         $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
             . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
@@ -3141,12 +3569,15 @@ function jobsearch_custom_get_terms($taxonomy = 'job-location', $parent = 0, $or
             . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
             . " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id) "
             . " WHERE term_tax.taxonomy = '%s' AND term_tax.parent = " . $parent
+            . " AND icl_trans.element_type='tax_{$taxonomy}'"
             . " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'"
+            . " GROUP BY terms.term_id"
             . " ORDER BY " . $orderby . " " . $order, $taxonomy));
     } else {
         $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
             . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
             . " WHERE term_tax.taxonomy = '%s' AND term_tax.parent = " . $parent
+            . " GROUP BY terms.term_id"
             . " ORDER BY " . $orderby . " " . $order, $taxonomy));
     }
     return $terms;
@@ -3155,10 +3586,24 @@ function jobsearch_custom_get_terms($taxonomy = 'job-location', $parent = 0, $or
 function jobsearch_get_terms_woutparnt($taxonomy = 'job-location', $orderby = 'terms.name', $order = 'ASC', $hide_empty = false)
 {
     global $wpdb;
-    $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
-        . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
-        . " WHERE term_tax.taxonomy = '%s' "
-        . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    if (function_exists('icl_object_id')) {
+        global $sitepress;
+        $trans_tble = $wpdb->prefix . 'icl_translations';
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id) "
+            . " WHERE term_tax.taxonomy = '%s'"
+            . " AND icl_trans.element_type='tax_{$taxonomy}'"
+            . " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'"
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    } else {
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " WHERE term_tax.taxonomy = '%s'"
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    }
 
     return $terms;
 }
@@ -3166,10 +3611,26 @@ function jobsearch_get_terms_woutparnt($taxonomy = 'job-location', $orderby = 't
 function jobsearch_get_terms_wlimit($taxonomy = 'job-location', $limit = 10, $offset = 0, $orderby = 'terms.name', $order = 'ASC')
 {
     global $wpdb;
-    $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
-        . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
-        . " WHERE term_tax.taxonomy = '%s' "
-        . " ORDER BY " . $orderby . " " . $order . " LIMIT " . $limit . " OFFSET " . $offset, $taxonomy));
+    if (function_exists('icl_object_id')) {
+        global $sitepress;
+        $trans_tble = $wpdb->prefix . 'icl_translations';
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id) "
+            . " WHERE term_tax.taxonomy = '%s'"
+            . " AND icl_trans.element_type='tax_{$taxonomy}'"
+            . " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'"
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order
+            . " LIMIT " . $limit . " OFFSET " . $offset, $taxonomy));
+    } else {
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " WHERE term_tax.taxonomy = '%s' "
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order
+            . " LIMIT " . $limit . " OFFSET " . $offset, $taxonomy));
+    }
 
     return $terms;
 }
@@ -3177,18 +3638,32 @@ function jobsearch_get_terms_wlimit($taxonomy = 'job-location', $limit = 10, $of
 function jobsearch_get_terms_wcounts($taxonomy = 'job-location', $post_type = 'job', $orderby = 'terms.name', $order = 'ASC')
 {
     global $wpdb;
-    $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
-        . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
-        . " LEFT JOIN $wpdb->termmeta AS term_meta ON(terms.term_id = term_meta.term_id) "
-        . " WHERE term_tax.taxonomy = '%s' AND term_meta.meta_key='active_" . $post_type . "s_loc_count' AND term_meta.meta_value > 0 "
-        . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    if (function_exists('icl_object_id')) {
+        global $sitepress;
+        $trans_tble = $wpdb->prefix . 'icl_translations';
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id) "
+            . " WHERE term_tax.taxonomy = '%s' AND term_meta.meta_key='active_" . $post_type . "s_loc_count' AND term_meta.meta_value > 0 "
+            . " AND icl_trans.element_type='tax_{$taxonomy}'"
+            . " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'"
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    } else {
+        $terms = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->terms AS terms"
+            . " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) "
+            . " LEFT JOIN $wpdb->termmeta AS term_meta ON(terms.term_id = term_meta.term_id) "
+            . " WHERE term_tax.taxonomy = '%s' AND term_meta.meta_key='active_" . $post_type . "s_loc_count' AND term_meta.meta_value > 0 "
+            . " GROUP BY terms.term_id"
+            . " ORDER BY " . $orderby . " " . $order, $taxonomy));
+    }
 
     return $terms;
 }
 
 if (!function_exists('jobsearch_candidate_listing_custom_fields_callback')) {
 
-    function jobsearch_candidate_listing_custom_fields_callback($atts = array(), $candidate_id = '', $candidate_cus_field_arr = array())
+    function jobsearch_candidate_listing_custom_fields_callback($atts = array(), $candidate_id = '', $candidate_cus_field_arr = array(), $view = 'view-1')
     {
         $candidate_custom_fields_switch = isset($atts['candidate_custom_fields_switch']) ? $atts['candidate_custom_fields_switch'] : 'no';
         if ($candidate_custom_fields_switch == 'yes' && !empty($candidate_cus_field_arr)) {
@@ -3196,13 +3671,39 @@ if (!function_exists('jobsearch_candidate_listing_custom_fields_callback')) {
                 'content' => '',
                 'candidate_list' => true,
             );
-            $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '', '', '', false, true, true, 'jobsearch', $candidate_cus_field_arr);
 
+            if ($view == 'default') {
+                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '<li>', '</li>', '', true, true, true, 'jobsearch', $candidate_cus_field_arr);
+            } else {
+                $cus_fields = apply_filters('jobsearch_custom_fields_list', 'candidate', $candidate_id, $cus_fields, '', '', '', true, true, true, 'jobsearch', $candidate_cus_field_arr);
+            }
             if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
-                echo '<small class="careerfy-candidate-style8-options">' . force_balance_tags($cus_fields['content']) . '</small>';
+                if ($view == 'default') {
+                    echo '<ul class="jobsearch-custom-field">' . force_balance_tags($cus_fields['content']) . ' </ul> ';
+                } else {
+                    echo '<small class="careerfy-candidate-style8-options">' . force_balance_tags($cus_fields['content']) . '</small>';
+                }
             }
         }
     }
 
-    add_action('jobsearch_candidate_listing_custom_fields', 'jobsearch_candidate_listing_custom_fields_callback', 10, 3);
+    add_action('jobsearch_candidate_listing_custom_fields', 'jobsearch_candidate_listing_custom_fields_callback', 10, 4);
 }
+
+add_filter('author_link', function ($link, $user_id) {
+    $user_is_candidate = jobsearch_user_is_candidate($user_id);
+    $user_is_employer = jobsearch_user_is_employer($user_id);
+    if ($user_is_employer) {
+        $employer_id = jobsearch_get_user_employer_id($user_id);
+        if ($employer_id > 0 && get_post_type($employer_id) == 'employer') {
+            $link = get_permalink($employer_id);
+        }
+    } else if ($user_is_candidate) {
+        $candidate_id = jobsearch_get_user_candidate_id($user_id);
+        if ($candidate_id > 0 && get_post_type($candidate_id) == 'candidate') {
+            $link = get_permalink($candidate_id);
+        }
+    }
+
+    return $link;
+}, 10, 2);

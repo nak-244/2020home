@@ -225,7 +225,7 @@ if (class_exists('JobSearch_plugin')) {
                                     ?>
                                     <?php if ($post_thumbnail_src != '') { ?>
                                         <a href="<?php the_permalink(); ?>"<?php echo($no_img_class); ?>><img
-                                                    src="<?php echo($post_thumbnail_src) ?>" alt=""></a>
+                                                    src="<?php echo($post_thumbnail_src) ?>" alt=""><span class="jobs-scrolslider-imghelpr"></span></a>
                                     <?php } ?>
                                 </figure>
                             </div>
@@ -239,13 +239,13 @@ if (class_exists('JobSearch_plugin')) {
                                 ?>
                                 <h2>
                                     <a href="<?php echo esc_url(get_permalink($employer_id)); ?>">
-                                        <?php echo esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
+                                        <?php echo jobsearch_esc_html(wp_trim_words(get_the_title($employer_id), $jobsearch_split_map_title_limit)); ?>
                                     </a>
                                 </h2>
                                 <?php
                                 if (!empty($get_employer_location) && $all_location_allow == 'on') {
                                     ?>
-                                    <span><?php echo esc_html($get_employer_location); ?></span>
+                                    <span><?php echo jobsearch_esc_html($get_employer_location); ?></span>
                                     <?php
                                 }
 

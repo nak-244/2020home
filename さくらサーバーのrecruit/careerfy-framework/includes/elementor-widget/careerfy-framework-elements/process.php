@@ -104,7 +104,7 @@ class Process extends Widget_Base
         $repeater->add_control(
             'process_icon', [
                 'label' => __('Icon', 'careerfy-frame'),
-                'type' => Controls_Manager::ICON,
+                'type' => Controls_Manager::ICONS,
             ]
         );
         $repeater->add_control(
@@ -145,7 +145,7 @@ class Process extends Widget_Base
 
         foreach ($atts['careerfy_process_item'] as $key => $info) {
 
-            $process_icon = $info['process_icon'] != "" ? '<i class="' . $info['process_icon'] . '" ></i>' : '';
+            $process_icon = $info['process_icon'] != "" ? '<i class="' . $info['process_icon']['value'] . '" ></i>' : '';
             $html = '<li class="col-md-4">
                ' . $process_icon . '
                <h2>' . $info['process_title'] . '</h2>

@@ -12,6 +12,7 @@ var ajaxCustomFieldRequestTextarea;
 var ajaxCustomFieldRequestCheckbox;
 var ajaxCustomFieldRequestDropdown;
 var ajaxCustomFieldRequestDepDropdown;
+var ajaxCustomFieldRequestDepFields;
 var ajaxCustomFieldSaveRequest;
 jQuery(document).on('click', '.jobsearch-custom-field-add-field', function () {
     "use strict";
@@ -332,6 +333,29 @@ jQuery(document).on('click', '.jobsearch-custom-field-add-field', function () {
             }
         });
 
+    } else if (fieldtype == 'dependent_fields') {
+        if (typeof (ajaxCustomFieldRequestDepFields) != 'undefined') {
+            ajaxCustomFieldRequestDepFields.abort();
+        }
+        ajaxCustomFieldRequestDepFields = jQuery.ajax({
+            type: "POST",
+            url: ajax_url,
+            data: dataString,
+            dataType: "json",
+            success: function (response) {
+                if (response != 'error') {
+                    $this.html(old_text);
+                    empty_container.hide();
+                    field_container.append(response.html);
+                    var all_fields_count_val = all_fields_count.val();
+                    all_fields_count_val++;
+                    all_fields_count.val(all_fields_count_val);
+                } else {
+                    $this.html(' There is an error.');
+                }
+            }
+        });
+
     } else if (fieldtype == 'textarea') {
         if (typeof (ajaxCustomFieldRequestTextarea) != 'undefined') {
             ajaxCustomFieldRequestTextarea.abort();
@@ -354,14 +378,7 @@ jQuery(document).on('click', '.jobsearch-custom-field-add-field', function () {
                 }
             }
         });
-
     }
-
-
-
-
-
-
     return false;
 });
 

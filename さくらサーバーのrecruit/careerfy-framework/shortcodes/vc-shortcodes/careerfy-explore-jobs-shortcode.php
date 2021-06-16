@@ -59,7 +59,7 @@ class JobSearch_Careerfy_Explore_jobs_list
             }
 
         }
-        $html .='</div>';
+        $html .= '</div>';
 
 
         if ($list_view == 'style2') {
@@ -187,13 +187,13 @@ class JobSearch_Careerfy_Explore_jobs_list
                     <?php if ($jobs_by != 'employer') {
 
                         if ($totl_explore_jobs > 0) { ?>
-                            <?php self::load_more_explore_jobs($jobs_by_detail, $list_items_color); ?>
+                            <?php self::load_more_explore_jobs($jobs_by_detail, $list_items_color, $list_view); ?>
                             <?php if ($total_jobs >= $jobs_numbers && $load_more == 'yes') { ?>
                                 <li class="morejobs-link"><a
                                             href="javascript:void(0)" class="load-more-<?php echo $rand_num ?>"
                                             data-tpages="<?php echo $totl_explore_jobs ?>"
                                             list-style="<?php echo $list_items_color ?>"
-                                            data-totalJobs="<?php echo $total_jobs ?>"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?></a>
+                                            data-totalJobs="<?php echo $total_jobs ?>"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?><?php echo $list_view == 'style1' ? '<i class="fa fa-angle-double-right"></i>' : ''; ?></a>
                                 </li>
                             <?php }
                         } else { ?>
@@ -204,7 +204,7 @@ class JobSearch_Careerfy_Explore_jobs_list
 
                         if ($totl_found_jobs > 0) {
 
-                            self::load_more_top_companies($employers_posts, $list_items_color);
+                            self::load_more_top_companies($employers_posts, $list_items_color, $list_view);
 
                             if ($totl_found_jobs >= $jobs_numbers && $load_more == 'yes') { ?>
                                 <li class="morejobs-link"><a
@@ -213,7 +213,7 @@ class JobSearch_Careerfy_Explore_jobs_list
                                             data-tpages="<?php echo $totl_found_jobs ?>"
                                             list-item-color="<?php echo $list_items_color ?>"
                                             jobs-results="<?php echo $jobs_numbers ?>"
-                                            data-gtopage="2"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?></a>
+                                            data-gtopage="2"><?php echo esc_html__($load_more_text, 'careerfy-frame') ?><?php echo $list_view == 'style1' ? '<i class="fa fa-angle-double-right"></i>' : ''; ?></a>
                                 </li>
                             <?php }
 
@@ -231,7 +231,7 @@ class JobSearch_Careerfy_Explore_jobs_list
         </div>
         <!-- Services Links -->
         <?php if ($jobs_by != 'employer') { ?>
-        <script>
+        <script type="text/javascript">
             jQuery(document).on('click', '.load-more-<?php echo($rand_num) ?>', function (e) {
                 e.preventDefault();
                 var _this = jQuery(this),
@@ -282,7 +282,7 @@ class JobSearch_Careerfy_Explore_jobs_list
 
         </script>
     <?php } else { ?>
-        <script>
+        <script type="text/javascript">
             jQuery(document).on('click', '.load-more-companies-<?php echo($rand_num) ?>', function (e) {
                 e.preventDefault();
                 var _this = jQuery(this),
@@ -341,12 +341,14 @@ class JobSearch_Careerfy_Explore_jobs_list
         return $html;
     }
 
-    public static function load_more_top_companies($employers_posts, $list_items_color)
+    public static function load_more_top_companies($employers_posts, $list_items_color, $list_view = '')
     {
-        $list_items_color = $list_items_color != "" ? 'style="color: ' . $list_items_color . ' "' : "";
+        $list_view_icon = $list_view == 'style2' ? '<i class="careerfy-icon careerfy-next-long"></i>' : '';
+
+        $list_items_color = $list_items_color != "" ? 'style="color: ' . $list_view . ' "' : "";
         foreach ($employers_posts as $data) { ?>
             <li><a <?php echo $list_items_color ?>
-                        href="<?php echo get_permalink($data->ID) ?>"><?php echo $data->post_title ?></a></li>
+                        href="<?php echo get_permalink($data->ID) ?>"><?php echo($list_view_icon) ?>&nbsp;<?php echo $data->post_title ?></a></li>
         <?php }
     }
 
@@ -357,6 +359,7 @@ class JobSearch_Careerfy_Explore_jobs_list
         $job_order = isset($_POST['job_order']) ? $_POST['job_order'] : '';
         $jobs_numbers = isset($_POST['jobs_numbers']) ? $_POST['jobs_numbers'] : '';
         $list_items_color = isset($_POST['list_items_color']) ? $_POST['list_items_color'] : '';
+        $list_view = isset($_POST['list_view']) ? $_POST['list_view'] : '';
 
         $element_filter_arr = array();
         $element_filter_arr[] = array(
@@ -390,13 +393,13 @@ class JobSearch_Careerfy_Explore_jobs_list
         $employers_posts = $employers_query->posts;
 
         ob_start();
-        self::load_more_top_companies($employers_posts, $list_items_color);
+        self::load_more_top_companies($employers_posts, $list_items_color,$list_view);
         $html = ob_get_clean();
         echo json_encode(array('html' => $html));
         wp_die();
     }
 
-    public static function load_more_explore_jobs($jobs_by_detail, $list_items_color)
+    public static function load_more_explore_jobs($jobs_by_detail, $list_items_color, $list_view = '')
     {
         global $jobsearch_plugin_options, $result_page, $jobs_by;
         $job_slug;
@@ -415,14 +418,14 @@ class JobSearch_Careerfy_Explore_jobs_list
         if ($result_page <= 0 && $joptions_search_page > 0) {
             $to_result_page = $joptions_search_page;
         }
-
+        $list_view_icon = $list_view == 'style2' ? '<i class="careerfy-icon careerfy-next-long"></i>' : '';
         $to_result_page = absint($to_result_page);
         foreach ($jobs_by_detail as $data) {
             $cat_goto_link = add_query_arg(array($job_slug => $data->slug), get_permalink($to_result_page));
             $cat_goto_link = apply_filters('jobsearch_job_sector_cat_result_link', $cat_goto_link, $data->slug);
             ?>
             <li><a style="color: <?php echo $list_items_color ?>;"
-                   href="<?php echo($cat_goto_link) ?>"><?php echo $data->name ?></a></li>
+                   href="<?php echo($cat_goto_link) ?>"><?php echo($list_view_icon) ?>&nbsp;<?php echo $data->name ?></a></li>
         <?php }
     }
 

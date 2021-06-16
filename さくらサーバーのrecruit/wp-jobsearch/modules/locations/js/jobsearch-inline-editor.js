@@ -122,7 +122,9 @@ function ModoEdicion($row) {
         return false;
     }
 }
+
 var _html = '<span class="file-loader"><i class="fa fa-refresh fa-spin"></i></span>';
+
 function rowAcep(but) {
     var $row = $(but).parents('tr');  //accede a la fila
     var $tablename = $(but).parents('table').attr('class');
@@ -185,7 +187,7 @@ function rowAcep(but) {
                     }
                 });
                 request.fail(function (jqXHR, textStatus) {
-                    alert(textStatus)
+                    //alert(textStatus)
                 });
             }
         }
@@ -205,25 +207,25 @@ function rowAcep(but) {
     });
     if ($row.hasClass('loc-error')) {
         if ($tablename == 'table country-table-detail') {
-            $('#submit_country_detail').prop('disabled', true);
-            $('#submit_country_detail').addClass('loc-disabled');
+            jQuery('#submit_country_detail').prop('disabled', true);
+            jQuery('#submit_country_detail').addClass('loc-disabled');
         } else if ($tablename == 'table state-table-detail') {
-            $('#submit_states_detail').prop('disabled', true);
-            $('#submit_states_detail').addClass('loc-disabled');
+            jQuery('#submit_states_detail').prop('disabled', true);
+            jQuery('#submit_states_detail').addClass('loc-disabled');
         } else if ($tablename == 'table cities-table-detail') {
-            $('#submit_cities_detail').prop('disabled', true);
-            $('#submit_cities_detail').addClass('loc-disabled');
+            jQuery('#submit_cities_detail').prop('disabled', true);
+            jQuery('#submit_cities_detail').addClass('loc-disabled');
         }
     } else {
         if ($tablename == 'table country-table-detail') {
-            $('#submit_country_detail').prop('disabled', false);
-            $('#submit_country_detail').removeClass('loc-disabled');
+            jQuery('#submit_country_detail').prop('disabled', false);
+            jQuery('#submit_country_detail').removeClass('loc-disabled');
         } else if ($tablename == 'table state-table-detail') {
-            $('#submit_states_detail').prop('disabled', false);
-            $('#submit_states_detail').removeClass('loc-disabled');
+            jQuery('#submit_states_detail').prop('disabled', false);
+            jQuery('#submit_states_detail').removeClass('loc-disabled');
         } else if ($tablename == 'table cities-table-detail') {
-            $('#submit_cities_detail').prop('disabled', false);
-            $('#submit_cities_detail').removeClass('loc-disabled');
+            jQuery('#submit_cities_detail').prop('disabled', false);
+            jQuery('#submit_cities_detail').removeClass('loc-disabled');
         }
     }
     FijModoNormal(but);
@@ -264,14 +266,14 @@ function rowElim(but) {  //Elimina la fila actual
     var $tablename = $(but).parents('table').attr('class');
 
     if ($tablename == 'table country-table-detail') {
-        $('#submit_country_detail').prop('disabled', false);
-        $('#submit_country_detail').removeClass('loc-disabled');
+        jQuery('#submit_country_detail').prop('disabled', false);
+        jQuery('#submit_country_detail').removeClass('loc-disabled');
     } else if ($tablename == 'table state-table-detail') {
-        $('#submit_states_detail').prop('disabled', false);
-        $('#submit_states_detail').removeClass('loc-disabled');
+        jQuery('#submit_states_detail').prop('disabled', false);
+        jQuery('#submit_states_detail').removeClass('loc-disabled');
     } else if ($tablename == 'table cities-table-detail') {
-        $('#submit_cities_detail').prop('disabled', false);
-        $('#submit_cities_detail').removeClass('loc-disabled');
+        jQuery('#submit_cities_detail').prop('disabled', false);
+        jQuery('#submit_cities_detail').removeClass('loc-disabled');
     }
     params.onBeforeDelete($row);
     $row.remove();
@@ -311,7 +313,7 @@ function rowAddNew(tabId) {  //Agrega fila a la tabla indicada.
                 var div = '<div style="display: none;"></div>';  //guarda contenido
                 var input = '<input class="form-control input-sm"  value="">';
 
-                $(this).html(div + input);  //limpia contenido
+                jQuery(this).html(div + input);  //limpia contenido
             }
         });
         $ultFila.find('td:last').html(saveColHtml);
@@ -323,13 +325,13 @@ function rowAddNew(tabId) {  //Agrega fila a la tabla indicada.
 function TableToCSV(tabId, separator) {  //Convierte tabla a CSV
     var datFil = '';
     var tmp = '';
-    var $tab_en_edic = $("#" + tabId);  //Table source
+    var $tab_en_edic = jQuery("#" + tabId);  //Table source
     $tab_en_edic.find('tbody tr').each(function () {
         //Termina la edición si es que existe
-        if (ModoEdicion($(this))) {
-            $(this).find('#bAcep').click();  //acepta edición
+        if (ModoEdicion(jQuery(this))) {
+            jQuery(this).find('#bAcep').click();  //acepta edición
         }
-        var $cols = $(this).find('td');  //lee campos
+        var $cols = jQuery(this).find('td');  //lee campos
         datFil = '';
         $cols.each(function () {
             if ($(this).attr('name') == 'buttons') {
@@ -347,7 +349,8 @@ function TableToCSV(tabId, separator) {  //Convierte tabla a CSV
 }
 
 ///////////////// Jobsreach location functions///////////////////////
-var selector;
+var selector , rawFile;
+
 function readSingleCityStateFile(file, table_selector) {
     var $ = jQuery;
     selector = table_selector.find("table tbody");
@@ -386,6 +389,7 @@ function readSingleCityStateFile(file, table_selector) {
 
 
 function readsingleCountryData(file, country_code) {
+
     var $ = jQuery;
     selector = jQuery(".country-table").find("table tbody");
     rawFile = new XMLHttpRequest();
@@ -397,6 +401,7 @@ function readsingleCountryData(file, country_code) {
                 jQuery('.country-table').removeClass('loc-hidden');
                 $.each(_result_countries, function (index, element) {
                     if (country_code == element.code) {
+
                         var _newColHtml = '<tr><td>' + element.name + '</td><td>' + element.code + '</td><td>' + element.population + '</td>' +
                             '<td name="buttons"><div class="jobsearch-btn-group">' +
                             '<button id="bEdit" type="button"  onclick="rowEdit(this);">' +
@@ -424,7 +429,7 @@ function readsingleCountryData(file, country_code) {
 
 jQuery(function () {
     var $ = jQuery;
-    var request, ar_lines, each_data_value, td, i;
+    var request, ar_lines, each_data_value, td, i, rawFile;
 
     ////////// Countries Editable ////////////////////
     jQuery('#makeEditableCountries').SetEditable({$addButton: jQuery('#add_country')});
@@ -489,7 +494,7 @@ jQuery(function () {
                         }
                     });
                     request.fail(function (jqXHR, textStatus) {
-                        alert(textStatus)
+                        //alert(textStatus)
                     });
                 }
             }
@@ -521,7 +526,7 @@ jQuery(function () {
 
         selector.html('');
         selector.append('<option>' + jobsearch_location_common_text.pls_wait + '</option>');
-        var _file_name = country_json_files_loc + "" + _country_code + '/' + _country_code + '-states.json?param=' + random_num;
+        var _file_name = country_json_files_loc + "" + _country_code + '/' + _country_code + '-states.json?param=1234';
 
         rawFile = new XMLHttpRequest();
         rawFile.open("GET", _file_name, false);
@@ -547,12 +552,12 @@ jQuery(function () {
 
                                 jQuery("#submit_states_detail").remove('span').text(jobsearch_location_common_text.save_states);
                                 selector.html('');
-                                api_scrapper.readStateFile(_file_name, jQuery('#stateId'));
+                                api_scrapper.readStateFile(_country_code, jQuery('#stateId'));
                             }, 1600)
                         }
                     });
                     request.fail(function (jqXHR, textStatus) {
-                        alert(textStatus)
+
                     });
                 }
             }
@@ -568,7 +573,7 @@ jQuery(function () {
 
         var _state_name = jQuery("#stateId");
         td = TableToCSV('makeEditableCities', ',');
-        if ($.trim(td) == 'Enter Any City') {
+        if (jQuery.trim(td) == 'Enter Any City') {
             alert(jobsearch_location_common_text.req_city);
             jQuery("#submit_cities_detail").remove('span').text(jobsearch_location_common_text.sav_city);
             return false;
@@ -603,7 +608,7 @@ jQuery(function () {
             }
         });
         request.fail(function (jqXHR, textStatus) {
-            alert(textStatus)
+
         });
     });
 })

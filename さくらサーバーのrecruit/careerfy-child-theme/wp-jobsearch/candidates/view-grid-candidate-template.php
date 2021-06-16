@@ -175,7 +175,7 @@ if (class_exists('JobSearch_plugin')) {
                             ?>
                             <?php
                             if (function_exists('jobsearch_cand_urgent_pkg_iconlab')) {
-                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id);
+                                echo jobsearch_cand_urgent_pkg_iconlab($candidate_id,'cand_listv1');
                             }
                             //
                             if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img')) {

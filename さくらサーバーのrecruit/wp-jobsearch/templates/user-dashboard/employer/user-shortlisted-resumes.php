@@ -1,5 +1,10 @@
 <?php
+use WP_Jobsearch\Candidate_Profile_Restriction;
+
 global $jobsearch_plugin_options, $Jobsearch_User_Dashboard_Settings;
+
+$cand_profile_restrict = new Candidate_Profile_Restriction;
+
 $user_id = get_current_user_id();
 $user_obj = get_user_by('ID', $user_id);
 
@@ -19,7 +24,7 @@ $page_num = isset($_GET['page_num']) ? $_GET['page_num'] : 1;
 
 if ($employer_id > 0) {
     $employer_resumes_list = get_post_meta($employer_id, 'jobsearch_candidates_list', true);
-
+    
     $employer_resumes_list = apply_filters('jobsearch_emp_dash_savedcands_list_var', $employer_resumes_list);
 
     $cats_list = get_post_meta($employer_id, 'emp_resumesh_types', true);
@@ -69,18 +74,18 @@ if ($employer_id > 0) {
             </form>
             <div class="jobsearch-profile-title">
                 <h2><?php echo apply_filters('jobsearch_empdash_savedcands_maintitle', esc_html__('Saved Candidates', 'wp-jobsearch')) ?></h2>
-                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-list-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;">候補者一覧</a>
-                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">設定</a>
+                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-list-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;"><?php esc_html_e('Candidates List', 'wp-jobsearch') ?></a>
+                <a href="javascript:void(0);" class="dash-hdtabchng-btn savcands-setings-tobtn" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;"><?php esc_html_e('Settings', 'wp-jobsearch') ?></a>
                 <?php
                 echo apply_filters('jobsearch_empdash_resmsaved_aftrmacts_html', '');
-
+                
                 ob_start();
                 if (!empty($cats_list)) {
                     ?>
                     <div class="cands-savetype-filter">
-                        <span class="filtr-label">表示切り替え</span>
+                        <span class="filtr-label"><?php esc_html_e('Sort by', 'wp-jobsearch') ?></span>
                         <div class="jobsearch-profile-select">
-                            <select id="shrtlist_selctsvtyp_filtr" class="selectize-select" placeholder="カテゴリを選択">
+                            <select id="shrtlist_selctsvtyp_filtr" class="selectize-select" placeholder="<?php esc_html_e('Select Type', 'wp-jobsearch') ?>">
                                 <option value=""><?php esc_html_e('Select Type', 'wp-jobsearch') ?></option>
                                 <?php
                                 $typsh_count = 1;
@@ -102,7 +107,7 @@ if ($employer_id > 0) {
             </div>
 
             <div class="jobsearch-profile-ressetin" style="display: <?php echo ($sh_typedf == 'settings' ? 'block' : 'none') ?>;">
-                <h2>カテゴリ</h2>
+                <h2><?php esc_html_e('Resume Types', 'wp-jobsearch') ?></h2>
 
                 <form id="emp-shresumetype-form" method="post" action="<?php echo add_query_arg(array('tab' => 'user-resumes', 'sh_type' => 'settings'), $page_url) ?>">
                     <div class="res-profile-reslist">
@@ -153,7 +158,6 @@ if ($employer_id > 0) {
             <div class="jobsearch-profile-actreslis" style="display: <?php echo ($sh_typedf == 'settings' ? 'none' : 'block') ?>;">
                 <?php
                 echo apply_filters('jobsearch_empdash_resmsaved_list_bfrhtml', '');
-
                 ob_start();
                 if ($employer_resumes_list != '') {
                     $employer_resumes_list = explode(',', $employer_resumes_list);
@@ -193,7 +197,7 @@ if ($employer_id > 0) {
                                     $send_message_form_rand = rand(1000000, 99999999);
                                     $cand_savetypes = isset($_resume_typsh_list[$candidate_id]) ? $_resume_typsh_list[$candidate_id] : '';
                                     $candidate_user_id = jobsearch_get_candidate_user_id($candidate_id);
-
+                                    
                                     $user_def_avatar_url = jobsearch_candidate_img_url_comn($candidate_id);
 
                                     $candidate_jobtitle = get_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', true);
@@ -201,22 +205,89 @@ if ($employer_id > 0) {
 
                                     $get_user_linkedin_url = get_post_meta($candidate_id, 'jobsearch_field_user_linkedin_url', true);
 
+                                    $popup_args = array('employer_id' => $employer_id, 'candidate_id' => $candidate_id, 'masg_rand' => $send_message_form_rand);
+                                    add_action('wp_footer', function () use ($popup_args) {
+
+                                        extract(shortcode_atts(array(
+                                            'employer_id' => '',
+                                            'candidate_id' => '',
+                                            'masg_rand' => ''
+                                                        ), $popup_args));
+                                        $cats_list = jobsearch_candsh_btn_catlist();
+                                        ?>
+                                        <div class="jobsearch-modal fade" id="JobSearchModalCandShPopup<?php echo ($candidate_id) ?>">
+                                            <div class="modal-inner-area">&nbsp;</div>
+                                            <div class="modal-content-area">
+                                                <div class="modal-box-area">
+                                                    <div class="jobsearch-modal-title-box">
+                                                        <h2><?php esc_html_e('Choose Type', 'wp-jobsearch') ?></h2>
+                                                        <span class="modal-close"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <?php
+                                                    if (!empty($cats_list)) {
+                                                        ?>
+                                                        <div id="usercand-shrtlistsecs-<?php echo($candidate_id) ?>" class="jobsearch-usercand-shrtlistsec">
+                                                            <div class="shcand-types-list">
+                                                                <div class="jobsearch-profile-select">
+                                                                    <select name="shrtlist_type[]" multiple="multiple" class="selectize-select" placeholder="<?php esc_html_e('Select Types', 'wp-jobsearch') ?>">
+                                                                        <?php
+                                                                        $typse_count = 1;
+                                                                        foreach ($cats_list as $sh_type_key => $sh_type) {
+                                                                            ?>
+                                                                            <option value="<?php echo($sh_type_key) ?>"><?php echo($sh_type) ?></option>
+                                                                            <?php
+                                                                            $typse_count++;
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="usercand-shrtlist-btnsec">
+                                                                <a href="javascript:void(0);"
+                                                                   class="jobsearch-candidate-default-btn jobsearch-updcand-withtyp-tolist"
+                                                                   data-id="<?php echo($candidate_id) ?>"><i class="jobsearch-icon jobsearch-add-list"></i> 
+                                                                       <?php esc_html_e('Update Candidate', 'wp-jobsearch') ?>
+                                                                </a>
+                                                                <span class="resume-loding-msg"></span>
+                                                            </div>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }, 11, 1);
                                     ob_start();
                                     ?>
                                     <li class="jobsearch-column-6">
                                         <script>
+                                            jQuery(document).on('click', '.modeleupditm-btn-<?php echo ($candidate_id) ?>', function () {
+                                                jobsearch_modal_popup_open('JobSearchModalCandShPopup<?php echo ($candidate_id) ?>');
+                                            });
                                             jQuery(document).on('click', '.jobsearch-modelemail-btn-<?php echo ($send_message_form_rand) ?>', function () {
                                                 jobsearch_modal_popup_open('JobSearchModalSendEmail<?php echo ($send_message_form_rand) ?>');
                                             });
                                         </script>
                                         <div class="jobsearch-employer-resumes-wrap">
+                                            <a href="javascript:void(0);" class="jobsearch-updresmuesh-item-cc modeleupditm-btn-<?php echo ($candidate_id) ?>" data-id="<?php echo ($candidate_id) ?>"><i class="fa fa-pencil"></i></a>
                                             <a href="javascript:void(0);" class="jobsearch-rem-empresmue jobsearch-remresmuesh-item-cc modeledelitm-btn-<?php echo ($send_message_form_rand) ?>" data-id="<?php echo ($candidate_id) ?>"><i class="fa fa-times"></i></a>
                                             <figure>
                                                 <a href="<?php echo get_permalink($candidate_id) ?>" class="jobsearch-resumes-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
                                                 <figcaption>
                                                     <h2 class="jobsearch-pst-title">
-                                                        <a href="<?php echo get_permalink($candidate_id) ?>"><?php echo get_the_title($candidate_id) ?></a>
                                                         <?php
+                                                        if ($cand_profile_restrict::cand_field_is_locked('profile_fields|display_name')) {
+                                                            $user_displayname = $cand_profile_restrict::cand_restrict_display_name();
+                                                            ?>
+                                                            <a href="<?php echo get_permalink($candidate_id) ?>"><?php echo ($user_displayname) ?></a> 
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <a href="<?php echo get_permalink($candidate_id) ?>"><?php echo get_the_title($candidate_id) ?></a> 
+                                                            <?php
+                                                        }
                                                         echo apply_filters('jobsearch_dash_stats_apps_list_slist_btn', '', $candidate_id, 10);
                                                         $candidate_cv_file = get_post_meta($candidate_id, 'candidate_cv_file', true);
 
@@ -331,14 +402,14 @@ if ($employer_id > 0) {
                                                                                 </li>
                                                                                 <li>
                                                                                     <div class="input-field-submit">
-                                                                                        <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="Send"/>
+                                                                                        <input type="submit" class="applicantto-email-submit-btn" data-jid="<?php echo absint($p_job_id); ?>" data-eid="<?php echo absint($p_emp_id); ?>" data-cid="<?php echo absint($cand_id); ?>" data-randid="<?php echo esc_html($p_masg_rand); ?>" name="send_message_content" value="<?php echo esc_html__('Send','wp-jobsearch') ?>"/>
                                                                                         <span class="loader-box loader-box-<?php echo esc_html($p_masg_rand); ?>"></span>
                                                                                     </div>
                                                                                 </li>
-                                                                            </ul>
+                                                                            </ul> 
                                                                             <div class="message-box message-box-<?php echo esc_html($p_masg_rand); ?>" style="display:none;"></div>
                                                                         </div>
-                                                                    </form>
+                                                                    </form>    
                                                                 </div>
 
                                                             </div>

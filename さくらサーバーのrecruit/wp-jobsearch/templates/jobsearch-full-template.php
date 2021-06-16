@@ -1,6 +1,10 @@
 <?php
 global $jobsearch_plugin_options;
-get_header();
+if (wp_is_mobile()) {
+    get_header('mobile');
+} else {
+    get_header();
+}
 
 $plugin_default_view = isset($jobsearch_plugin_options['jobsearch-default-page-view']) ? $jobsearch_plugin_options['jobsearch-default-page-view'] : 'full';
 $plugin_default_view_with_str = '';

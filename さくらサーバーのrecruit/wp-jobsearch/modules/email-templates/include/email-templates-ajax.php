@@ -1,9 +1,7 @@
 <?php
-
 /*
   Class : EmailTemplateAjax
  */
-
 
 // this is an include only WP file
 if (!defined('ABSPATH')) {
@@ -28,7 +26,6 @@ class Jobsearch_EmailTemplateAjax {
         $email_template_entity = isset($post_data['entitytype']) ? $post_data['entitytype'] : '';
         $error_msg = '';
         if ($error == 0) {
-            
             //
             if ( function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') ) {
                 $lang_code = $sitepress->get_current_language();

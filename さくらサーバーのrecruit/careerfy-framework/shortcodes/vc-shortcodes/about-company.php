@@ -7,7 +7,6 @@ add_shortcode('careerfy_about_company', 'careerfy_about_company_shortcode');
 
 function careerfy_about_company_shortcode($atts, $content = '')
 {
-
     $about_param = array(
         'ab_view' => '',
         'title' => '',
@@ -97,7 +96,6 @@ function careerfy_about_company_shortcode($atts, $content = '')
         <?php
     }
     $html = ob_get_clean();
-
     return $html;
 }
     

@@ -33,6 +33,28 @@ if (!function_exists('jobsearch_employer_team_fields_save_callback')) {
                 update_post_meta($post_id, $jobsearch_field_team_linkedin, $team_linkedin);
                 update_post_meta($post_id, $jobsearch_field_team_description, $team_description);
                 
+                if (isset($_POST['jobsearch_field_affiliation_title'])) {
+                    update_post_meta($post_id, 'jobsearch_field_affiliation_title', $_POST['jobsearch_field_affiliation_title']);
+                } else {
+                    update_post_meta($post_id, 'jobsearch_field_affiliation_title', '');
+                }
+                if (isset($_POST['jobsearch_field_affiliation_image'])) {
+                    update_post_meta($post_id, 'jobsearch_field_affiliation_image', $_POST['jobsearch_field_affiliation_image']);
+                } else {
+                    update_post_meta($post_id, 'jobsearch_field_affiliation_image', '');
+                }
+                
+                if (isset($_POST['jobsearch_field_award_title'])) {
+                    update_post_meta($post_id, 'jobsearch_field_award_title', $_POST['jobsearch_field_award_title']);
+                } else {
+                    update_post_meta($post_id, 'jobsearch_field_award_title', '');
+                }
+                if (isset($_POST['jobsearch_field_award_image'])) {
+                    update_post_meta($post_id, 'jobsearch_field_award_image', $_POST['jobsearch_field_award_image']);
+                } else {
+                    update_post_meta($post_id, 'jobsearch_field_award_image', '');
+                }
+                
                 //
                 $get_team_size_count = 0;
                 $get_team_size_title = get_post_meta($post_id, $jobsearch_field_team_title, true);

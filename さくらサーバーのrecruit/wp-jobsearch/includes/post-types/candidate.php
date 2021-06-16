@@ -29,24 +29,28 @@ if (!class_exists('post_type_candidate')) {
             add_filter('parse_query', array($this, 'candidates_query_filter'), 11, 1);
             add_filter('bulk_actions-edit-candidate', array($this, 'custom_job_filters'));
             add_action('handle_bulk_actions-edit-candidate', array($this, 'jobs_bulk_actions_handle'), 10, 3);
-            
+            //
             add_action('wp_ajax_jobsearch_calc_candidates_applied_jobs_bklist', array($this, 'cand_aplied_calc_in_column'));
-            
             add_action('wp_ajax_jobsearch_bkaddin_candidate_advsrch_filters', array($this, 'bkaddin_advsrch_filters'));
+            
+            add_action('wp_ajax_jobsearch_bkadmin_resend_activation_mail', array($this, 'resend_activation_mail'));
         }
 
         function my_admin_custom_styles() {
-            $output_css = '<style type="text/css"> 
-                .column-candidate_title { min-width:200px !important; max-width:500px !important; overflow:hidden }
-                .column-location { min-width:150px !important; max-width:300px !important; overflow:hidden }
-                .column-jobtitle { min-width:150px !important; max-width:300px !important; overflow:hidden }
-                .column-featured { width:10px !important; overflow:hidden }
-                .post-type-candidate .column-applied_jobs { width:108px !important; overflow:hidden; } 
-                .column-filled { width:30px !important; overflow:hidden }
-                .column-status { width:30px !important; overflow:hidden }
-                .column-action { text-align:right !important; width:150px !important; overflow:hidden }
-            </style>';
-            echo $output_css;
+            global $pagenow;
+            if ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'candidate') {
+                $output_css = '<style type="text/css"> 
+                    .column-candidate_title { min-width:200px !important; max-width:500px !important; overflow:hidden }
+                    .column-location { min-width:150px !important; max-width:300px !important; overflow:hidden }
+                    .column-jobtitle { min-width:150px !important; max-width:300px !important; overflow:hidden }
+                    .column-featured { width:10px !important; overflow:hidden }
+                    .post-type-candidate .column-applied_jobs { width:108px !important; overflow:hidden; } 
+                    .column-filled { width:30px !important; overflow:hidden }
+                    .column-status { width:30px !important; overflow:hidden }
+                    .column-action { text-align:right !important; width:150px !important; overflow:hidden }
+                </style>';
+                echo $output_css;
+            }
         }
 
         public function jobsearch_candidate_register() {
@@ -92,6 +96,7 @@ if (!class_exists('post_type_candidate')) {
             );
 
             if ($reg_post_type == '1') {
+				$args = apply_filters('jobsearch_reg_post_type_cand_args', $args);
                 register_post_type('candidate', $args);
             }
         }
@@ -136,9 +141,12 @@ if (!class_exists('post_type_candidate')) {
                         <ul>
                             <li>
                                 <div>
-                                    <input placeholder="<?php esc_html_e('Title, Keywords, or Phrase', 'wp-jobsearch') ?>" name="search_title" value="<?php echo($search_title_val) ?>" type="text">
+                                    <input placeholder="<?php esc_html_e('ID, Title, Keywords, or Phrase', 'wp-jobsearch') ?>" name="search_title" value="<?php echo($search_title_val) ?>" type="text">
                                 </div>
                             </li>
+                            <?php
+                            ob_start();
+                            ?>
                             <li>
                                 <div class="jobsearch_searchloc_div">
                                     <span class="loc-loader"></span>
@@ -147,6 +155,9 @@ if (!class_exists('post_type_candidate')) {
                                 </div>
                             </li>
                             <?php
+                            $srch_loc_html = ob_get_clean();
+                            echo apply_filters('jobsearch_cand_bk_advsrch_location_field', $srch_loc_html, $location_val);
+                            
                             $sectors_args = array(
                                 'orderby' => 'name',
                                 'order' => 'ASC',
@@ -270,6 +281,9 @@ if (!class_exists('post_type_candidate')) {
                     jQuery('.selectize-select').selectize();
                     </script>
                 </div>
+                <?php
+                echo apply_filters('jobsearch_candpost_bk_cus_srchform_after', '');
+                ?>
             </div>
             <?php
             $html = ob_get_clean();
@@ -344,6 +358,7 @@ if (!class_exists('post_type_candidate')) {
                                 method: "POST",
                                 data: {
                                     adding: 'candidate_advsrch_filters',
+                                    candidate_ids: _candidtes_ids,
                                     <?php
                                     if (isset($_REQUEST) && !empty($_REQUEST)) {
                                         foreach ($_REQUEST as $requs_key => $requs_val) {
@@ -366,15 +381,54 @@ if (!class_exists('post_type_candidate')) {
                             });
                         }
                     });
+
                     jQuery(document).on('click', '.adv-srch-toggle-btn', function () {
                         jQuery(this).parents('.candidate-bkend-advncesrh-con').find('.adv-search-options').slideToggle();
                         var slider_input_con = jQuery(this).parents('.candidate-bkend-advncesrh-con').find('.adv-search-options').find('.filter-slider-range');
                         var def_radius_val = slider_input_con.find('#loc-def-radiusval').val();
                         slider_input_con.find('input[name=loc_radius]').val(def_radius_val);
                     });
+                    
+                    jQuery(document).on('click', '.resend-active-mail', function () {
+                        var _this = jQuery(this);
+                        var _u_id = _this.attr('data-id');
+                        var this_parent = _this.parent('div');
+                        var pre_tag = this_parent.find('strong');
+                        
+                        pre_tag.html('');
+                        this_parent.append('<span class="spinner is-active"></span>');
+                        var _resnd_mail_request = jQuery.ajax({
+                            url: ajaxurl,
+                            method: "POST",
+                            data: {
+                                doing: 'resend_activation_mail',
+                                u_id: _u_id,
+                                action: 'jobsearch_bkadmin_resend_activation_mail',
+                            },
+                            dataType: "json"
+                        });
+                        _resnd_mail_request.done(function (response) {
+                            pre_tag.html('<i class="dashicons dashicons-yes" style="color: #94e80d;"></i>');
+                        });
+                        _resnd_mail_request.complete(function () {
+                            this_parent.find('span').remove();
+                        });
+                    });
                 </script>
                 <?php
             }
+        }
+        
+        public function resend_activation_mail() {
+            $user_id = $_POST['u_id'];
+            $user_objj = get_user_by('id', $user_id);
+            $code = wp_generate_password(20, false);
+            update_user_meta($user_id, 'jobsearch_accaprov_key', $code);
+            update_user_meta($user_id, 'jobsearch_accaprov_allow', '0');
+            do_action('jobsearch_new_candidate_approval', $user_objj, '');
+
+            echo json_encode(array('success' => '1', 'msg' => ''));
+            die;
         }
         
         public function cand_aplied_calc_in_column() {
@@ -401,22 +455,32 @@ if (!class_exists('post_type_candidate')) {
         }
         
         public function custom_job_filters($actions) {
-            if (is_array($actions) && isset($actions['trash'])) {
+            if (is_array($actions)) {
                 $actions['approved'] = esc_html__('Approved', 'wp-jobsearch');
                 $actions['pending'] = esc_html__('Pending', 'wp-jobsearch');
             }
-            return $actions;
+            return apply_filters('jobsearch_add_candactions_bk_list', $actions);
         }
 
         public function jobs_bulk_actions_handle($redirect_to, $doaction, $post_ids) {
             if ($doaction == 'approved' || $doaction == 'pending') {
                 if (!empty($post_ids)) {
                     foreach ($post_ids as $candidate_id) {
+                        $user_aproved = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
+                        if ($user_aproved != 'on') {
+                            $user_id = get_post_meta($candidate_id, 'jobsearch_user_id', true);
+                            $user_obj = get_user_by('ID', $user_id);
+                            if (isset($user_obj->ID)) {
+                                do_action('jobsearch_profile_approval_to_candidate', $user_obj);
+                            }
+                        }
+                        
                         $do_save = $doaction == 'approved' ? 'on' : '';
                         update_post_meta($candidate_id, 'jobsearch_field_candidate_approved', $do_save);
                     }
                 }
             }
+            do_action('jobsearch_doing_candactions_bk_list', $doaction, $post_ids);
             return $redirect_to;
         }
 
@@ -479,6 +543,8 @@ if (!class_exists('post_type_candidate')) {
                     $post__in_query = true;
                     $post__in_isarr[] = 'search_loc';
                     $search_location = $_GET['search_loc'];
+
+                    $search_location = apply_filters('jobsearch_cand_bksrch_location_getstr', $search_location);
                     $srch_post_ids = $this->candidate_location_filter($search_location);
                     if (!empty($srch_post_ids) && count($post__in_isarr) > 1) {
                         $all_post_ids = array_intersect($all_post_ids, $srch_post_ids);
@@ -648,7 +714,8 @@ if (!class_exists('post_type_candidate')) {
         }
 
         public function jobsearch_candidate_columns_add($columns) {
-            global $sitepress;
+            global $sitepress, $jobsearch_plugin_options;
+            $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
             $new_columns = array();
             $new_columns['cb'] = '<input type="checkbox" />';
             $new_columns['candidate_title'] = esc_html('Candidate', 'wp-jobsearch');
@@ -672,6 +739,9 @@ if (!class_exists('post_type_candidate')) {
             $new_columns['jobtitle'] = esc_html__('Job Title', 'wp-jobsearch');
             $new_columns['applied_jobs'] = esc_html__('Applied Jobs', 'wp-jobsearch');
             //$new_columns['featured'] = force_balance_tags('<strong class="jobsearch-tooltip" title="' . esc_html__('Featured', 'wp-jobsearch') . '"><i class="dashicons dashicons-star-filled"></i></strong>');
+            if ($candidate_auto_approve == 'email' || $candidate_auto_approve == 'admin_email') {
+                $new_columns['active_email'] = esc_html__('Activation Email', 'wp-jobsearch');
+            }
             $new_columns['status'] = force_balance_tags('<strong class="jobsearch-tooltip" title="' . esc_html__('Status', 'wp-jobsearch') . '"><i class="dashicons dashicons-clock"></i></strong>');
             $new_columns['action'] = esc_html__('Action', 'wp-jobsearch');
             //return array_merge($columns, $new_columns);
@@ -681,6 +751,7 @@ if (!class_exists('post_type_candidate')) {
         public function jobsearch_candidate_columns($column) {
             global $post;
             $_post_id = $post->ID;
+            $candidate_user_id = get_post_meta($_post_id, 'jobsearch_user_id', true);
             switch ($column) {
                 case 'candidate_title' :
                     echo '<div class="candidate_position">';
@@ -702,6 +773,18 @@ if (!class_exists('post_type_candidate')) {
                         printf('%1$s', $candidatetype_list);
                     }
                     echo '</div>';
+                    
+                    if (class_exists('w357LoginAsUser')) {
+                        $w357LoginAsUser = new w357LoginAsUser;
+                        $user_obj = get_user_by('ID', $candidate_user_id);
+                        if (isset($user_obj->ID)) {
+
+                            $the_user_obj = new WP_User($candidate_user_id);
+                            $login_as_user_url = $w357LoginAsUser->build_the_login_as_user_url($the_user_obj);
+                            $login_as_link = '<a class="button w357-login-as-user-btn" href="' . esc_url($login_as_user_url) . '" title="'.esc_html__('Login as', 'login-as-user').': ' . $w357LoginAsUser->login_as_type($the_user_obj, false) . '"><span class="dashicons dashicons-admin-users"></span> '.esc_html__('Login as', 'login-as-user').': <strong>' . $w357LoginAsUser->login_as_type($the_user_obj) . '</strong></a>';
+                            echo ($login_as_link);
+                        }
+                    }
 
                     echo '</div>';
                     break;
@@ -737,7 +820,7 @@ if (!class_exists('post_type_candidate')) {
                         $locat_str .= $full_addrs;
                     }
                     
-                    echo ($locat_str);
+                    echo jobsearch_esc_html($locat_str);
                     break;
                 case 'applied_jobs' :
                     echo '<div id="cand-apliedjobs-' . $post->ID . '" data-id="' . $post->ID . '" class="cand-apliedjobs-span"><span class="spinner is-active"></span></div>';
@@ -752,7 +835,7 @@ if (!class_exists('post_type_candidate')) {
                     break;
                 case 'jobtitle' :
                     $jobtitle = get_post_meta($post->ID, 'jobsearch_field_candidate_jobtitle', true);
-                    echo esc_html($jobtitle);
+                    echo jobsearch_esc_html($jobtitle);
                     break;
                 case "status" :
                     global $jobsearch_plugin_options;
@@ -777,6 +860,18 @@ if (!class_exists('post_type_candidate')) {
                         echo force_balance_tags('<a href="javascript:void(0);" class="jobsearch-tooltip" title="' . esc_html__('Approved', 'wp-jobsearch') . '"><i ' . $approved_color_str . ' class="dashicons dashicons-yes" aria-hidden="true"></i></a>');
                     } else {
                         echo force_balance_tags('<a href="javascript:void(0);" class="jobsearch-tooltip" title="' . esc_html__('Pending', 'wp-jobsearch') . '"><i ' . $pending_color_str . ' class="dashicons dashicons-clock fa-spin fa-lg" aria-hidden="true"></i></a>');
+                    }
+                    break;
+                case 'active_email':
+                    $user_login_auth = get_user_meta($candidate_user_id, 'jobsearch_accaprov_allow', true);
+                    if ($user_login_auth == '0') {
+                        ?>
+                        <div class="resend-mail-con">
+                            <a href="javascript:void(0);" class="resend-active-mail" data-id="<?php echo ($candidate_user_id) ?>"><?php esc_html_e('Resend Email', 'wp-jobsearch') ?></a> <strong></strong>
+                        </div>
+                        <?php
+                    } else {
+                        echo '-';
                     }
                     break;
                 case 'action' :
@@ -818,7 +913,6 @@ if (!class_exists('post_type_candidate')) {
                             }
                         }
                     }
-
                     echo '</div>';
                     break;
             }
@@ -894,6 +988,5 @@ if (!class_exists('post_type_candidate')) {
         }
 
     }
-
     return new post_type_candidate();
 }

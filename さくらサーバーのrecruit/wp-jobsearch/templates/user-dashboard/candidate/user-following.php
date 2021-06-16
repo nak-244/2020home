@@ -8,6 +8,21 @@ $page_id = $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, '
 $page_url = jobsearch_wpml_lang_page_permalink($page_id, 'page'); //get_permalink($page_id);
 
 $candidate_id = jobsearch_get_user_candidate_id($user_id);
+$emp_det_full_address_switch = true;
+$locations_view_type = isset($jobsearch_plugin_options['emp_det_loc_listing']) ? $jobsearch_plugin_options['emp_det_loc_listing'] : '';
+$loc_view_country = $loc_view_state = $loc_view_city = false;
+if (!empty($locations_view_type)) {
+    if (is_array($locations_view_type) && in_array('country', $locations_view_type)) {
+        $loc_view_country = true;
+
+    }
+    if (is_array($locations_view_type) && in_array('state', $locations_view_type)) {
+        $loc_view_state = true;
+    }
+    if (is_array($locations_view_type) && in_array('city', $locations_view_type)) {
+        $loc_view_city = true;
+    }
+}
 
 $reults_per_page = isset($jobsearch_plugin_options['user-dashboard-per-page']) && $jobsearch_plugin_options['user-dashboard-per-page'] > 0 ? $jobsearch_plugin_options['user-dashboard-per-page'] : 10;
 
@@ -46,8 +61,14 @@ if ($candidate_id > 0) {
                     <?php
                     foreach ($user_followings_oarr as $employer_id) {
 
-                        $employer_location = jobsearch_post_city_contry_txtstr($employer_id, true, false, true);
 
+                        $employer_address = get_post_meta($employer_id, 'jobsearch_field_location_address', true);
+                        if (function_exists('jobsearch_post_city_contry_txtstr')) {
+                            $employer_address = jobsearch_post_city_contry_txtstr($employer_id, $loc_view_country, $loc_view_state, $loc_view_city, $emp_det_full_address_switch);
+                        }
+
+
+                        $user_def_avatar_url = '';
                         $user_avatar_id = get_post_thumbnail_id($employer_id);
                         if ($user_avatar_id > 0) {
                             $user_thumbnail_image = wp_get_attachment_image_src($user_avatar_id, 'thumbnail');
@@ -106,9 +127,9 @@ if ($candidate_id > 0) {
                                             <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($employer_id) ?>"><?php echo get_the_title($employer_id) ?></a></h2>
                                             <ul>
                                                 <?php
-                                                if ($employer_location != '') {
-                                                    ?>
-                                                    <li><i class="fa fa-map-marker"></i> <?php echo ($employer_location) ?></li>
+
+                                                if ($employer_address != '') { ?>
+                                                    <li><i class="fa fa-map-marker"></i> <?php echo jobsearch_esc_html($employer_address) ?></li>
                                                     <?php
                                                 }
                                                 if ($emp_sector != '') {

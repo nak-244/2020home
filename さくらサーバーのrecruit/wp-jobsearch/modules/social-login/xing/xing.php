@@ -17,6 +17,7 @@ class JobsearchXingLogin {
 
     public function jobsearch_xing_response_data_callback() {
         global $jobsearch_plugin_options;
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
 
         $json_arr = array();
 
@@ -68,11 +69,14 @@ class JobsearchXingLogin {
                 $username .= '_' . rand(10000, 99999);
             }
             // Creating our user
-            $new_user = wp_create_user($username, wp_generate_password(), $email);
+            $user_pass = wp_generate_password();
+            $new_user = wp_create_user($username, $user_pass, $email);
             if (is_wp_error($new_user)) {
                 $json_arr['status'] = false;
                 $json_arr['msg'] = $new_user->get_error_message();
             } else {
+                
+                $user_candidate_id = jobsearch_get_user_candidate_id($new_user);
                 // user role
                 $user_role = 'jobsearch_candidate';
                 wp_update_user(array('ID' => $new_user, 'role' => $user_role));
@@ -80,6 +84,13 @@ class JobsearchXingLogin {
                 update_user_meta($new_user, 'jobsearch_xing_id', $user_id);
                 $candidate_id = get_user_meta($new_user, 'jobsearch_candidate_id', true);
                 update_post_meta($candidate_id, 'jobsearch_field_candidate_jobtitle', $job_title);
+                
+                if ($candidate_auto_approve == 'on' || $candidate_auto_approve == 'email') {
+                    update_post_meta($user_candidate_id, 'jobsearch_field_candidate_approved', 'on');
+                }
+                
+                $c_user = get_user_by('ID', $new_user);
+                do_action('jobsearch_new_user_register', $c_user, $user_pass);
 
                 wp_set_auth_cookie($new_user);
             }

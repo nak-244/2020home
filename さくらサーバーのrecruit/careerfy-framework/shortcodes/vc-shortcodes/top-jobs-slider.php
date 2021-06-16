@@ -31,7 +31,7 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
             'job_list_loc_listing' => 'country,city',
 
         ), $atts));
-        
+
         if (class_exists('JobSearch_plugin')) {
             $rand_num = rand(10000000, 99909999);
             $jobsearch__options = get_option('jobsearch_plugin_options');
@@ -91,86 +91,90 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                     } ?>
                 </div>
 
-            <?php } ?>
-            <!-- Main Section -->
-            <script type="text/javascript">
-                jQuery(document).ready(function ($) {
-                    <?php if ($top_job_style == 'slider' || $top_job_style == 'slider2') {  ?>
-                    //*** Function Testimonial Slider
-                    jQuery('#top-recruiters-slider-<?php echo $rand_num ?>').slick({
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        autoplay: true,
-                        autoplaySpeed: 5000,
-                        infinite: true,
-                        dots: false,
-                        arrows: false,
-                        //prevArrow: "<span class='slick-arrow-left'><i class='careerfy-icon careerfy-next'></i></span>",
-                        //nextArrow: "<span class='slick-arrow-right'><i class='careerfy-icon careerfy-next'></i></span>",
-                        responsive: [
-                            {
-                                breakpoint: 1024,
-                                settings: {
-                                    slidesToShow: 1,
-                                    slidesToScroll: 1,
-                                    infinite: true,
+                <?php
+            }
+            
+            if ($totl_found_top_recruiter > 0) {
+                ?>
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($) {
+                        <?php if ($top_job_style == 'slider' || $top_job_style == 'slider2') {  ?>
+                        //*** Function Testimonial Slider
+                        jQuery('#top-recruiters-slider-<?php echo $rand_num ?>').slick({
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            autoplay: true,
+                            autoplaySpeed: 5000,
+                            infinite: true,
+                            dots: false,
+                            arrows: false,
+                            //prevArrow: "<span class='slick-arrow-left'><i class='careerfy-icon careerfy-next'></i></span>",
+                            //nextArrow: "<span class='slick-arrow-right'><i class='careerfy-icon careerfy-next'></i></span>",
+                            responsive: [
+                                {
+                                    breakpoint: 1024,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1,
+                                        infinite: true,
+                                    }
+                                },
+                                {
+                                    breakpoint: 800,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                },
+                                {
+                                    breakpoint: 400,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
                                 }
-                            },
-                            {
-                                breakpoint: 800,
-                                settings: {
-                                    slidesToShow: 1,
-                                    slidesToScroll: 1
-                                }
-                            },
-                            {
-                                breakpoint: 400,
-                                settings: {
-                                    slidesToShow: 1,
-                                    slidesToScroll: 1
-                                }
-                            }
-                        ]
-                    });
+                            ]
+                        });
 
-                    <?php } else { ?>
-                    jQuery('.careerfy-sixteen-jobs-slider').slick({
-                        slidesToShow: 4,
-                        slidesToScroll: 1,
-                        autoplay: true,
-                        autoplaySpeed: 3000,
-                        infinite: true,
-                        dots: true,
-                        arrows: false,
-                        responsive: [
-                            {
-                                breakpoint: 1024,
-                                settings: {
-                                    slidesToShow: 2,
-                                    slidesToScroll: 1,
-                                    infinite: true,
+                        <?php } else { ?>
+                        jQuery('.careerfy-sixteen-jobs-slider').slick({
+                            slidesToShow: 4,
+                            slidesToScroll: 1,
+                            autoplay: true,
+                            autoplaySpeed: 3000,
+                            infinite: true,
+                            dots: true,
+                            arrows: false,
+                            responsive: [
+                                {
+                                    breakpoint: 1024,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 1,
+                                        infinite: true,
+                                    }
+                                },
+                                {
+                                    breakpoint: 800,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 1
+                                    }
+                                },
+                                {
+                                    breakpoint: 400,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
                                 }
-                            },
-                            {
-                                breakpoint: 800,
-                                settings: {
-                                    slidesToShow: 2,
-                                    slidesToScroll: 1
-                                }
-                            },
-                            {
-                                breakpoint: 400,
-                                settings: {
-                                    slidesToShow: 1,
-                                    slidesToScroll: 1
-                                }
-                            }
-                        ]
+                            ]
+                        });
+                        <?php } ?>
                     });
-                    <?php } ?>
-                });
-            </script>
-            <?php
+                </script>
+                <?php
+            }
             $html = ob_get_clean();
             return $html;
         }
@@ -216,7 +220,7 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
             $wp_date_formate = get_option('date_format');
             $jobsearch_job_featured = get_post_meta($top_recruiter_id, 'jobsearch_field_job_featured', true);
             $job_deadline = get_post_meta($top_recruiter_id, 'jobsearch_field_job_application_deadline_date', true);
-
+            $postby_emp_id = get_post_meta($top_recruiter_id, 'jobsearch_field_job_posted_by', true);
             $top_recruiter_date_date = get_post_meta($top_recruiter_id, 'jobsearch_field_job_publish_date', true);
             $top_recruiter_date_date = absint($top_recruiter_date_date);
             $current_time = current_time('timestamp');
@@ -241,11 +245,20 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                 }
 
             }
+
+
             if ($top_job_style == 'slider') { ?>
                 <div class="careerfy-top-recruiters-slider-layer">
                     <div class="careerfy-top-recruiters">
                         <div class="careerfy-top-recruiters-slider-image">
+                            <?php
+                            if ($jobsearch_job_featured == 'on') { ?>
+                                <strong class="promotepof-badge"><i class="fa fa-star"></i></strong>
+                            <?php } ?>
                             <img src="<?php echo $post_thumbnail_src ?>" alt="">
+                            <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
+                                jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'job_listv1');
+                            } ?>
                         </div>
                         <div class="careerfy-top-recruiters-inner">
                             <?php
@@ -256,13 +269,18 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                                 <a href="<?php echo get_permalink($top_recruiter_id) ?>"><?php echo substr(get_the_title($top_recruiter_id), 0, 20) . (strlen(get_the_title($top_recruiter_id)) > 20 ? '...' : '') ?><?php echo($elaspedtime > $hourz ? '' : '<span class="careerfy-featuredjobs-listnew">' . esc_html__('New', 'careerfy-frame') . '</span>') ?></a>
                             </h2>
                             <ul>
-                                <li><i class="careerfy-icon careerfy-calendar"></i>
-                                    <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(date($wp_date_formate, $job_deadline), 'careerfy-frame') . "<br>"; ?>
-                                </li>
-                                <?php if ($get_top_recruiter_job_location != "") { ?>
+                                <?php
+                                if ($job_deadline > 0) {
+                                    ?>
+                                    <li><i class="careerfy-icon careerfy-calendar"></i>
+                                        <span><?php echo esc_html__('Deadline:', 'careerfy-frame') ?></span> <?php echo esc_html__(date($wp_date_formate, $job_deadline), 'careerfy-frame') . "<br>"; ?>
+                                    </li>
+                                    <?php
+                                }
+                                if ($get_top_recruiter_job_location != "") { ?>
                                     <li><i class="careerfy-icon careerfy-pin"></i>
                                         <span><?php echo esc_html__('Location:', 'careerfy-frame') ?></span>
-                                        <?php echo esc_html($get_top_recruiter_job_location); ?>
+                                        <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?>
                                     </li>
                                 <?php } ?>
                             </ul>
@@ -275,8 +293,12 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                     </div>
                 </div>
             <?php } else if ($top_job_style == 'slider2') { ?>
+
                 <div class="careerfy-top-recruiters-slider-layer">
                     <div class="careerfy-recruiters-top-list">
+                        <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
+                            jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'job_listv1');
+                        } ?>
                         <div class="careerfy-top-recruiters-slider-image">
                             <img src="<?php echo $post_thumbnail_src ?>" alt="">
                         </div>
@@ -294,7 +316,7 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                             }
                             if ($get_top_recruiter_job_location != "") { ?>
                                 <small>
-                                    <i class="careerfy-icon careerfy-pin"></i> <?php echo esc_html($get_top_recruiter_job_location); ?>
+                                    <i class="careerfy-icon careerfy-pin"></i> <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?>
                                 </small>
                             <?php } ?>
                         </div>
@@ -310,13 +332,24 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
 
                 <div class="careerfy-sixteen-jobs-layer">
                     <div class="careerfy-sixteen-jobs-grid">
-                        <figure><a <?php echo($employer_cover_image_src_style_str) ?>
+                        <figure>
+                            <?php if ($jobsearch_job_featured == 'on') { ?>
+                                <span class="careerfy-jobs-style9-featured jobsearch-tooltipcon" title="Featured"><i
+                                            class="fa fa-star"></i></span>
+                            <?php } ?>
+                            <div class="">
+                                <?php if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
+                                    jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $top_recruiter_id, 'style10');
+                                } ?>
+                            </div>
+                            <a <?php echo($employer_cover_image_src_style_str) ?>
                                     href="<?php echo get_permalink($top_recruiter_id) ?>"><img
-                                        src="<?php echo $post_thumbnail_src ?>" alt=""></a></figure>
+                                        src="<?php echo $post_thumbnail_src ?>" alt=""></a>
+                        </figure>
                         <div class="careerfy-sixteen-jobs-grid-text">
                             <div class="careerfy-sixteen-jobs-grid-top">
                                 <?php if ($get_top_recruiter_job_location != "") { ?>
-                                    <span><i class="fa fa-map-marker"></i> <?php echo esc_html($get_top_recruiter_job_location); ?></span>
+                                    <span><i class="fa fa-map-marker"></i> <?php echo jobsearch_esc_html($get_top_recruiter_job_location); ?></span>
                                 <?php } ?>
                                 <h2>
                                     <a href="<?php echo get_permalink($top_recruiter_id) ?>"><?php echo $get_job_title ?></a>
@@ -331,7 +364,7 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                                 do_action('jobsearch_job_shortlist_button_frontend', $book_mark_args);
                                 ?>
                             </div>
-                            <p><?php echo limit_text($top_recruiter_post_content, 12) ?></p>
+                            <p><?php echo limit_text(filter_var($top_recruiter_post_content, FILTER_SANITIZE_STRING), 12) ?></p>
                             <?php
                             if ($job_type_str != '' && $job_types_switch == 'on') {
                                 echo force_balance_tags($job_type_str);
@@ -343,21 +376,22 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
         }
     }
 
-    private static function JobDetail($emporler_approval, $featured_only, $top_recruiter_per_page, $top_recruiter_order, $top_recruiter_orderby, $top_recruiter_cat) {
+    private static function JobDetail($emporler_approval, $featured_only, $top_recruiter_per_page, $top_recruiter_order, $top_recruiter_orderby, $top_recruiter_cat)
+    {
         global $jobsearch_shortcode_jobs_frontend;
-        
+
         $jobsearch__options = get_option('jobsearch_plugin_options');
         $is_filled_jobs = isset($jobsearch__options['job_allow_filled']) ? $jobsearch__options['job_allow_filled'] : '';
-        
+
         $jobsearch_jobs_listin_sh = $jobsearch_shortcode_jobs_frontend;
-        
+
         $sh_atts = array();
         $post_ids = array();
         $all_post_ids = array();
         if (is_object($jobsearch_jobs_listin_sh)) {
             $all_post_ids = $jobsearch_jobs_listin_sh->job_general_query_filter($post_ids, $sh_atts);
         }
-        
+
         $element_filter_arr = array();
 //        $element_filter_arr[] = array(
 //            'key' => 'jobsearch_field_job_publish_date',
@@ -376,7 +410,7 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
 //            'value' => 'approved',
 //            'compare' => '=',
 //        );
-        
+
         if ($is_filled_jobs == 'on') {
             $element_filter_arr[] = array(
                 'relation' => 'OR',
@@ -427,11 +461,11 @@ class JobSearch_Careerfy_Top_Recruiters_Slider
                 'terms' => $top_recruiter_cat
             );
         }
-        
+
         if (!empty($all_post_ids)) {
             $args['post__in'] = $all_post_ids;
         }
-        
+
         return new WP_Query($args);
     }
 }

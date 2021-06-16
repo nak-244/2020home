@@ -13,22 +13,19 @@ if (!defined('ABSPATH')) {
 // main plugin class
 class JobSearch_Job_Alerts
 {
-
     public static $job_details = array();
-
     // hook things up
     public function __construct()
     {
         $this->load_files();
         add_action('wp_enqueue_scripts', array($this, 'front_enqueue_scripts'));
-
         add_action('jobsearch_job_alerts_schedule', array($this, 'job_alerts_schedule_callback'));
-
-        //add_action('init', array($this, 'job_alerts_schedule_callback'));
+        //
+        add_action('jobsearch_dashbord_instyles_list_aftr', array($this, 'enqueue_script_styles'));
+        add_action('jobsearch_jobtemp_instyles_list_aftr', array($this, 'enqueue_script_styles'), 20);
     }
 
-    public function front_enqueue_scripts()
-    {
+    public function enqueue_script_styles() {
 
         global $jobsearch_plugin_options, $sitepress;
 
@@ -36,14 +33,10 @@ class JobSearch_Job_Alerts
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
             $lang_code = $sitepress->get_current_language();
         }
-
+        
         $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
-
         if ($job_alerts_switch == 'on') {
             wp_enqueue_style('jobsearch-job-alerts', jobsearch_plugin_get_url('modules/job-alerts/css/job-alerts.css'));
-        }
-
-        if ($job_alerts_switch == 'on') {
             wp_enqueue_script('jobsearch-job-alerts-scripts', jobsearch_plugin_get_url('modules/job-alerts/js/job-alerts.js'), array(), JobSearch_plugin::get_version(), true);
             $jobsearch_plugin_arr = array(
                 'plugin_url' => jobsearch_plugin_get_url(),
@@ -56,6 +49,51 @@ class JobSearch_Job_Alerts
             );
 
             wp_localize_script('jobsearch-job-alerts-scripts', 'jobsearch_jobalerts_vars', $jobsearch_plugin_arr);
+        }
+    }
+
+    public function front_enqueue_scripts()
+    {
+        global $jobsearch_plugin_options, $sitepress;
+        $admin_ajax_url = admin_url('admin-ajax.php');
+        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+            $lang_code = $sitepress->get_current_language();
+        }
+        
+        $is_page = is_page();
+        $page_content = '';
+        if ($is_page) {
+            $page_id = get_the_ID();
+            $page_post = get_post($page_id);
+            $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
+        }
+        $is_jobs_elemnt_page = $is_cands_elemnt_page = $is_emps_elemnt_page = false;
+        if (strpos($page_content, 'job_short_counter')) {
+            $is_jobs_elemnt_page = true;
+        }
+        if (strpos($page_content, 'candidate_short_counter')) {
+            $is_cands_elemnt_page = true;
+        }
+        if (strpos($page_content, 'employer_short_counter')) {
+            $is_emps_elemnt_page = true;
+        }
+        $job_alerts_switch = isset($jobsearch_plugin_options['job_alerts_switch']) ? $jobsearch_plugin_options['job_alerts_switch'] : '';
+        if ($job_alerts_switch == 'on') {
+            if ($is_page && (has_shortcode($page_content, 'jobsearch_job_shortcode') || $is_jobs_elemnt_page) || class_exists('Addon_Jobsearch_Quick_Job_detail')) {
+                //
+                wp_enqueue_style('jobsearch-job-alerts', jobsearch_plugin_get_url('modules/job-alerts/css/job-alerts.css'));
+                wp_enqueue_script('jobsearch-job-alerts-scripts', jobsearch_plugin_get_url('modules/job-alerts/js/job-alerts.js'), array(), JobSearch_plugin::get_version(), true);
+                $jobsearch_plugin_arr = array(
+                    'plugin_url' => jobsearch_plugin_get_url(),
+                    'ajax_url' => $admin_ajax_url,
+                    'error_msg' => esc_html__('There is some problem.', 'wp-jobsearch'),
+                    'email_field_error' => esc_html__('Please enter a valid email.', 'wp-jobsearch'),
+                    'name_field_error' => esc_html__('Please enter an alert name.', 'wp-jobsearch'),
+                    'submit_txt' => esc_html__('Create Alert', 'wp-jobsearch'),
+                    'save_alert_txt' => esc_html__('Save Jobs Alert', 'wp-jobsearch'),
+                );
+                wp_localize_script('jobsearch-job-alerts-scripts', 'jobsearch_jobalerts_vars', $jobsearch_plugin_arr);
+            }
         }
     }
 
@@ -82,15 +120,15 @@ class JobSearch_Job_Alerts
 
     public function job_alerts_schedule_callback()
     {
-
+        global $wpdb;
         $jobsearch__options = get_option('jobsearch_plugin_options');
         $job_alerts_switch = isset($jobsearch__options['job_alerts_switch']) ? $jobsearch__options['job_alerts_switch'] : '';
         if ($job_alerts_switch != 'on') {
             return false;
         }
-
         // Get alerts
         $args = array(
+            'posts_per_page' => '-1',
             'post_type' => 'job-alert',
             'post_status' => 'publish',
             'fields' => 'ids',
@@ -110,6 +148,7 @@ class JobSearch_Job_Alerts
                 $frequency_fortnightly = get_post_meta($alert_id, 'jobsearch_field_alert_fortnightly', true);
                 $frequency_weekly = get_post_meta($alert_id, 'jobsearch_field_alert_weekly', true);
                 $frequency_daily = get_post_meta($alert_id, 'jobsearch_field_alert_daily', true);
+                $frequency_hourly = get_post_meta($alert_id, 'jobsearch_field_alert_hourly', true);
                 $frequency_never = get_post_meta($alert_id, 'jobsearch_field_alert_never', true);
                 $last_time_email_sent = get_post_meta($alert_id, 'last_time_email_sent', true);
 
@@ -132,6 +171,9 @@ class JobSearch_Job_Alerts
                 } else if (!empty($frequency_daily)) {
                     $selected_frequency = '+1 days';
                     $set_frequency = esc_html__('Daily', 'wp-jobsearch');
+                } else if (!empty($frequency_hourly)) {
+                    $selected_frequency = '+1 hour';
+                    $set_frequency = esc_html__('Hourly', 'wp-jobsearch');
                 } else if (!empty($frequency_never)) {
                     $selected_frequency = false;
                     $set_frequency = esc_html__('Never', 'wp-jobsearch');
@@ -154,6 +196,46 @@ class JobSearch_Job_Alerts
                                 'compare' => '>=',
                             );
                         }
+                        //
+                        $custom_fields_requstarr = array();
+                        $jobsearch_post_cus_fields = get_option('jobsearch_custom_field_job');
+                        if (is_array($jobsearch_post_cus_fields) && sizeof($jobsearch_post_cus_fields) > 0) {
+                            foreach ($jobsearch_post_cus_fields as $cus_field) {
+                                if ($cus_field['type'] == 'salary') {
+                                    $query_str_var_name = 'jobsearch_field_job_salary';
+                                    $str_salary_type_name = 'job_salary_type';
+                                    $alert_saved_saltypval = get_post_meta($alert_id, $str_salary_type_name, true);
+                                    if (!empty($alert_saved_saltypval)) {
+                                        $custom_fields_requstarr[$str_salary_type_name] = $alert_saved_saltypval;
+                                    }
+                                } else {
+                                    $f_custf_name = isset($cus_field['name']) ? $cus_field['name'] : '';
+                                    $query_str_var_name = trim(str_replace(' ', '', $f_custf_name));
+                                }
+                                $alert_saved_cfval = get_post_meta($alert_id, $query_str_var_name, true);
+                                if (!empty($alert_saved_cfval)) {
+                                    if (is_array($alert_saved_cfval)) {
+                                        $alert_saved_cfval = implode(',', $alert_saved_cfval);
+                                    }
+                                    $custom_fields_requstarr[$query_str_var_name] = $alert_saved_cfval;
+                                }
+                            }
+                        }
+                        if (!empty($custom_fields_requstarr)) {
+                            $cusfields_filter_arr = apply_filters('jobsearch_custom_fields_load_filter_array_html', 'job', array(), '', $custom_fields_requstarr);
+                            if (!empty($cusfields_filter_arr)) {
+                                $meta_post_ids_arr = jobsearch_get_query_whereclase_by_array($cusfields_filter_arr);
+                                $ids = !empty($meta_post_ids_arr) ? implode(",", $meta_post_ids_arr) : '0';
+                                $job_id_condition = " ID in (" . $ids . ") AND ";
+                                $retpost_ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE " . $job_id_condition . " post_type='job' AND post_status='publish'");
+                                $retpost_ids = !empty($retpost_ids) ? $retpost_ids : array(0);
+                                
+                                $gjobs_query['post__in'] = $retpost_ids;
+                            } else {
+                                $gjobs_query['post__in'] = array(0);
+                            }
+                        }
+                        //
                         self::$job_details = array(
                             'id' => $alert_id,
                             'title' => $alert_t_title != '' ? $alert_t_title : '-',

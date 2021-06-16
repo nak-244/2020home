@@ -12,8 +12,7 @@ function jobsearch_packages_shortcode($atts, $content = "") {
 
     ob_start();
 
-    if ($title != '') {
-        ?>
+    if ($title != '') { ?>
         <h2><?php echo ($title) ?></h2>
         <?php
     }

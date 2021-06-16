@@ -31,26 +31,41 @@ $user_dob_dd = get_post_meta($employer_id, 'jobsearch_field_user_dob_dd', true);
 $user_dob_mm = get_post_meta($employer_id, 'jobsearch_field_user_dob_mm', true);
 $user_dob_yy = get_post_meta($employer_id, 'jobsearch_field_user_dob_yy', true);
 
+$user_dob_dd = jobsearch_esc_html($user_dob_dd);
+$user_dob_mm = jobsearch_esc_html($user_dob_mm);
+$user_dob_yy = jobsearch_esc_html($user_dob_yy);
+
 $user_phone = get_post_meta($employer_id, 'jobsearch_field_user_phone', true);
 $user_justphone = get_post_meta($employer_id, 'jobsearch_field_user_justphone', true);
 $user_dial_code = get_post_meta($employer_id, 'jobsearch_field_user_dial_code', true);
 $contry_iso_code = get_post_meta($employer_id, 'jobsearch_field_contry_iso_code', true);
+
+$user_justphone = jobsearch_esc_html($user_justphone);
+$user_dial_code = jobsearch_esc_html($user_dial_code);
+$contry_iso_code = jobsearch_esc_html($contry_iso_code);
 //
 
 $emp_post_obj = get_post($employer_id);
 $employer_content = isset($emp_post_obj->post_content) ? $emp_post_obj->post_content : '';
 $employer_content = apply_filters('the_content', $employer_content);
 
+$employer_content = jobsearch_esc_wp_editor($employer_content);
+
 $user_profile_url = isset($emp_post_obj->post_name) ? $emp_post_obj->post_name : '';
 
 $user_public_pview = isset($emp_post_obj->post_status) && $emp_post_obj->post_status == 'publish' ? 'yes' : 'no';
 
 $user_facebook_url = get_post_meta($employer_id, 'jobsearch_field_user_facebook_url', true);
+$user_facebook_url = esc_url($user_facebook_url);
 $user_twitter_url = get_post_meta($employer_id, 'jobsearch_field_user_twitter_url', true);
+$user_twitter_url = esc_url($user_twitter_url);
 $user_google_plus_url = get_post_meta($employer_id, 'jobsearch_field_user_google_plus_url', true);
 $user_youtube_url = get_post_meta($employer_id, 'jobsearch_field_user_youtube_url', true);
+$user_youtube_url = esc_url($user_youtube_url);
 $user_dribbble_url = get_post_meta($employer_id, 'jobsearch_field_user_dribbble_url', true);
+$user_dribbble_url = esc_url($user_dribbble_url);
 $user_linkedin_url = get_post_meta($employer_id, 'jobsearch_field_user_linkedin_url', true);
+$user_linkedin_url = esc_url($user_linkedin_url);
 //
 
 $sectors = wp_get_post_terms($employer_id, 'sector');
@@ -92,6 +107,12 @@ if ($user_avatar_id > 0) {
                         <p><?php echo wp_kses(__('<strong>Error!</strong> You are not allowed to modify settings.', 'wp-jobsearch'), array('strong' => array())) ?></p>
                     </div>
                     <?php
+                } else if (isset($diff_form_errs['user_email_error']) && $diff_form_errs['user_email_error'] != '') {
+                    ?>
+                    <div class="jobsearch-alert jobsearch-error-alert">
+                        <p><?php echo ($diff_form_errs['user_email_error']) ?></p>
+                    </div>
+                    <?php
                 }
             }
 
@@ -105,7 +126,7 @@ if ($user_avatar_id > 0) {
                     }
                 }
             }
-            $employer_cover_image_src_style_str = ' style="background:url(' . esc_url($user_cover_img_url) . ') no-repeat center/cover;"';
+            $employer_cover_image_src_style_str = ' style="background:url(' . jobsearch_esc_html(esc_url($user_cover_img_url)) . ') no-repeat center/cover;"';
 
             if ($user_pkg_limits::emp_field_is_locked('profile_fields|jobs_cover_img')) {
                 $lock_field_html = $user_pkg_limits->emp_field_locked_html();
@@ -141,16 +162,16 @@ if ($user_avatar_id > 0) {
                 ob_start();
                 ?>
                 <li class="jobsearch-column-6">
-                    <label><?php esc_html_e('First Name', 'wp-jobsearch') ?></label>
-                    <input type="text" name="u_firstname" value="<?php echo ($user_firstname) ?>">
+                    <label><?php esc_html_e('First Name *', 'wp-jobsearch') ?></label>
+                    <input type="text" name="u_firstname" value="<?php echo jobsearch_esc_html($user_firstname) ?>" required>
                 </li>
                 <li class="jobsearch-column-6">
-                    <label><?php esc_html_e('Last Name', 'wp-jobsearch') ?></label>
-                    <input type="text" name="u_lastname" value="<?php echo ($user_lastname) ?>">
+                    <label><?php esc_html_e('Last Name *', 'wp-jobsearch') ?></label>
+                    <input type="text" name="u_lastname" value="<?php echo jobsearch_esc_html($user_lastname) ?>" required>
                 </li>
                 <li class="jobsearch-column-6">
                     <label><?php esc_html_e('Company Name *', 'wp-jobsearch') ?></label>
-                    <input type="text" name="display_name" value="<?php echo ($user_displayname) ?>">
+                    <input type="text" name="display_name" value="<?php echo jobsearch_esc_html($user_displayname) ?>">
                 </li>
                 <?php
                 $field_html = ob_get_clean();
@@ -160,8 +181,9 @@ if ($user_avatar_id > 0) {
                 ob_start();
                 ?>
                 <li class="jobsearch-column-6">
-                    <label><?php esc_html_e('Email', 'wp-jobsearch') ?></label>
-                    <input value="<?php echo ($user_email) ?>" type="text" readonly="readonly">
+                    <label><?php esc_html_e('Email *', 'wp-jobsearch') ?> <span class="chk-loder"></span></label>
+                    <input value="<?php echo jobsearch_esc_html($user_email) ?>" name="user_email_field" class="user-email-field" type="text">
+                    <div class="email-chek-msg" style="display: none;"></div>
                 </li>
                 <?php
                 $field_html = ob_get_clean();
@@ -240,7 +262,7 @@ if ($user_avatar_id > 0) {
                                 //
                             } else {
                                 ?>
-                                <input value="<?php echo ($user_phone) ?>" onkeyup="javascript:jobsearch_is_valid_phone_number(this)" type="tel" name="user_phone">
+                                <input value="<?php echo jobsearch_esc_html($user_phone) ?>" onkeyup="javascript:jobsearch_is_valid_phone_number(this)" type="tel" name="user_phone">
                                 <?php
                             }
                         }
@@ -261,7 +283,7 @@ if ($user_avatar_id > 0) {
                             echo ($lock_field_html);
                         } else {
                             ?>
-                            <input value="<?php echo ($user_website) ?>" type="text" name="user_website">
+                            <input value="<?php echo jobsearch_esc_html($user_website) ?>" type="text" name="user_website">
                             <?php
                         }
                         ?>
@@ -276,7 +298,7 @@ if ($user_avatar_id > 0) {
                 if ($sectors_enable_switch == 'on') {
                     ?>
                     <li class="jobsearch-column-6">
-                        <label><?php esc_html_e('Sector', 'wp-jobsearch') ?></label>
+                        <label><?php esc_html_e('Sector *', 'wp-jobsearch') ?></label>
                         <?php
                         if ($user_pkg_limits::emp_field_is_locked('profile_fields|sector')) {
                             $lock_field_html = $user_pkg_limits->emp_field_locked_html();
@@ -409,7 +431,7 @@ if ($user_avatar_id > 0) {
                     <?php
                     ob_start();
                     ?>
-                    <label><?php esc_html_e('About the Company', 'wp-jobsearch') ?></label>
+                    <label class="about-compny-label"><?php esc_html_e('About the Company', 'wp-jobsearch') ?></label>
                     <?php
                     $abtcmp_html = ob_get_clean();
                     echo apply_filters('jobsearch_empdash_abut_cmpny_ftitle_html', $abtcmp_html);
@@ -453,7 +475,16 @@ if ($user_avatar_id > 0) {
         $emp_alow_dribbb_smm = isset($jobsearch_plugin_options['emp_alow_dribbb_smm']) ? $jobsearch_plugin_options['emp_alow_dribbb_smm'] : '';
         $employer_social_mlinks = isset($jobsearch_plugin_options['employer_social_mlinks']) ? $jobsearch_plugin_options['employer_social_mlinks'] : '';
 
-        if (!empty($employer_social_mlinks) || ($emp_alow_fb_smm == 'on' || $emp_alow_twt_smm == 'on' || $emp_alow_gplus_smm == 'on' || $emp_alow_linkd_smm == 'on' || $emp_alow_dribbb_smm == 'on')) {
+        $employer_social_mlinks_cond = false;
+        if (!empty($employer_social_mlinks)) {
+            foreach ($employer_social_mlinks['title'] as $field_title_val) {
+                if ($field_title_val != '') {
+                    $employer_social_mlinks_cond = true;
+                }
+                break;
+            }
+        }
+        if (($employer_social_mlinks_cond) || ($emp_alow_fb_smm == 'on' || $emp_alow_twt_smm == 'on' || $emp_alow_gplus_smm == 'on' || $emp_alow_linkd_smm == 'on' || $emp_alow_dribbb_smm == 'on')) {
             ?>
             <div class="jobsearch-employer-box-section">
                 <div class="jobsearch-profile-title"><h2><?php esc_html_e('Social Links', 'wp-jobsearch') ?></h2></div>
@@ -469,7 +500,7 @@ if ($user_avatar_id > 0) {
                                 echo ($lock_field_html);
                             } else {
                                 ?>
-                                <input value="<?php echo ($user_facebook_url) ?>" name="jobsearch_field_user_facebook_url" type="text">
+                                <input value="<?php echo jobsearch_esc_html($user_facebook_url) ?>" name="emp_user_facebook_url" type="text">
                                 <?php
                             }
                             ?>
@@ -486,24 +517,7 @@ if ($user_avatar_id > 0) {
                                 echo ($lock_field_html);
                             } else {
                                 ?>
-                                <input value="<?php echo ($user_twitter_url) ?>" name="jobsearch_field_user_twitter_url" type="text">
-                                <?php
-                            }
-                            ?>
-                        </li>
-                        <?php
-                    }
-                    if ($emp_alow_gplus_smm == 'on') {
-                        ?>
-                        <li class="jobsearch-column-6">
-                            <label><?php esc_html_e('Google Plus', 'wp-jobsearch') ?></label>
-                            <?php
-                            if ($user_pkg_limits::emp_field_is_locked('social_links|google_plus')) {
-                                $lock_field_html = $user_pkg_limits->emp_field_locked_html();
-                                echo ($lock_field_html);
-                            } else {
-                                ?>
-                                <input value="<?php echo ($user_google_plus_url) ?>" name="jobsearch_field_user_google_plus_url" type="text">
+                                <input value="<?php echo jobsearch_esc_html($user_twitter_url) ?>" name="emp_user_twitter_url" type="text">
                                 <?php
                             }
                             ?>
@@ -520,7 +534,7 @@ if ($user_avatar_id > 0) {
                                 echo ($lock_field_html);
                             } else {
                                 ?>
-                                <input value="<?php echo ($user_linkedin_url) ?>" name="jobsearch_field_user_linkedin_url" type="text">
+                                <input value="<?php echo jobsearch_esc_html($user_linkedin_url) ?>" name="emp_user_linkedin_url" type="text">
                                 <?php
                             }
                             ?>
@@ -537,7 +551,7 @@ if ($user_avatar_id > 0) {
                                 echo ($lock_field_html);
                             } else {
                                 ?>
-                                <input value="<?php echo ($user_dribbble_url) ?>" name="jobsearch_field_user_dribbble_url" type="text">
+                                <input value="<?php echo jobsearch_esc_html($user_dribbble_url) ?>" name="emp_user_dribbble_url" type="text">
                                 <?php
                             }
                             ?>
@@ -564,7 +578,7 @@ if ($user_avatar_id > 0) {
                                             echo ($user_pkg_limits::emp_gen_locked_html());
                                         } else {
                                             ?>
-                                            <input value="<?php echo ($emp_dynm_social) ?>" name="employer_dynm_social<?php echo ($field_counter) ?>" type="text">
+                                            <input value="<?php echo jobsearch_esc_html($emp_dynm_social) ?>" name="employer_dynm_social<?php echo ($field_counter) ?>" type="text">
                                             <?php
                                         }
                                         ?>
@@ -738,6 +752,7 @@ if ($user_avatar_id > 0) {
                         <div class="empacc-menbers-list">
                             <?php
                             $emp_accmembers = get_post_meta($employer_id, 'emp_acount_member_acounts', true);
+                            
                             if (!empty($emp_accmembers)) {
                                 ?>
                                 <ul class="accmem-head">
@@ -981,6 +996,16 @@ if ($user_avatar_id > 0) {
                                         $team_googlefield_val = isset($team_googlefield_list[$exfield_counter]) ? $team_googlefield_list[$exfield_counter] : '';
                                         $team_twitterfield_val = isset($team_twitterfield_list[$exfield_counter]) ? $team_twitterfield_list[$exfield_counter] : '';
                                         $team_linkedinfield_val = isset($team_linkedinfield_list[$exfield_counter]) ? $team_linkedinfield_list[$exfield_counter] : '';
+                                        
+                                        $exfield = jobsearch_esc_html($exfield);
+                                        $exfield_val = jobsearch_esc_html($exfield_val);
+                                        $team_designationfield_val = jobsearch_esc_html($team_designationfield_val);
+                                        $team_experiencefield_val = jobsearch_esc_html($team_experiencefield_val);
+                                        $team_imagefield_val = jobsearch_esc_html($team_imagefield_val);
+                                        $team_facebookfield_val = jobsearch_esc_html($team_facebookfield_val);
+                                        $team_googlefield_val = jobsearch_esc_html($team_googlefield_val);
+                                        $team_twitterfield_val = jobsearch_esc_html($team_twitterfield_val);
+                                        $team_linkedinfield_val = jobsearch_esc_html($team_linkedinfield_val);
                                         ?>
                                         <li class="jobsearch-column-3">
                                             <figure>
@@ -1128,6 +1153,10 @@ if ($user_avatar_id > 0) {
 
                                         $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                                         $award_imagefield_val = isset($award_imagefield_list[$exfield_counter]) ? $award_imagefield_list[$exfield_counter] : '';
+                                        
+                                        $exfield = jobsearch_esc_html($exfield);
+                                        $exfield_val = jobsearch_esc_html($exfield_val);
+                                        $award_imagefield_val = jobsearch_esc_html($award_imagefield_val);
                                         ?>
                                         <li class="jobsearch-column-3">
                                             <figure>
@@ -1243,6 +1272,10 @@ if ($user_avatar_id > 0) {
 
                                         $exfield_val = isset($exfield_list_val[$exfield_counter]) ? $exfield_list_val[$exfield_counter] : '';
                                         $affiliation_imagefield_val = isset($affiliation_imagefield_list[$exfield_counter]) ? $affiliation_imagefield_list[$exfield_counter] : '';
+                                        
+                                        $exfield = jobsearch_esc_html($exfield);
+                                        $exfield_val = jobsearch_esc_html($exfield_val);
+                                        $affiliation_imagefield_val = jobsearch_esc_html($affiliation_imagefield_val);
                                         ?>
                                         <li class="jobsearch-column-3">
                                             <figure>
@@ -1345,6 +1378,10 @@ if ($user_avatar_id > 0) {
                                         $gal_video_url = isset($company_gal_videos[$gal_counter]) && esc_url($company_gal_videos[$gal_counter]) != '' ? $company_gal_videos[$gal_counter] : '';
                                         $gal_img_title = isset($company_gal_titles[$gal_counter]) && esc_url($company_gal_titles[$gal_counter]) != '' ? $company_gal_titles[$gal_counter] : '';
                                         $gal_img_desc = isset($company_gal_descs[$gal_counter]) && esc_url($company_gal_descs[$gal_counter]) != '' ? $company_gal_descs[$gal_counter] : '';
+                                        
+                                        $gal_video_url = jobsearch_esc_html($gal_video_url);
+                                        $gal_img_title = jobsearch_esc_html($gal_img_title);
+                                        $gal_img_desc = jobsearch_esc_html($gal_img_desc);
                                         ?>
                                         <li class="jobsearch-column-3 gal-item">
                                             <figure>

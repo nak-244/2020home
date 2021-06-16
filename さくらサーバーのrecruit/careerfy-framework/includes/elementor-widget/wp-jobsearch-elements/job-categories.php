@@ -226,6 +226,22 @@ class JobCategories extends Widget_Base
             ]
         );
         $this->add_control(
+            'sector_job_counts',
+            [
+                'label' => __('Show Jobs Counts', 'careerfy-frame'),
+                'type' => Controls_Manager::SELECT2,
+                'default' => 'yes',
+                'options' => [
+                    'yes' => __('Yes', 'careerfy-frame'),
+                    'no' => __('No', 'careerfy-frame'),
+                ],
+                'condition' => [
+                    'cats_view' => array('view1','view2','view3','view5','view6','view7','view9','slider'),
+                ],
+
+            ]
+        );
+        $this->add_control(
             'result_page',
             [
                 'label' => __('Result Page', 'careerfy-frame'),
@@ -242,6 +258,7 @@ class JobCategories extends Widget_Base
                 'default' => 'jobs_count',
                 'options' => [
                     'jobs_count' => __('By Jobs Count', 'careerfy-frame'),
+                    'title' => __('By Title', 'careerfy-frame'),
                     'id' => __('By Random', 'careerfy-frame'),
 
                 ],
@@ -306,20 +323,22 @@ class JobCategories extends Widget_Base
 
     protected function render()
     {
-        global $wpdb, $jobsearch_plugin_options, $jobsearch_shortcode_jobs_frontend;
+        global $wpdb, $jobsearch_plugin_options, $jobsearch_shortcode_jobs_frontend, $sitepress;
         $atts = $this->get_settings_for_display();
-
-        $cats_view = $atts['cats_view'];
-        $cat_title = $atts['cat_title'];
-        $num_cats = $atts['num_cats'];
-        $result_page = $atts['result_page'];
-        $cat_link_text = $atts['cat_link_text'];
-        $cat_link_text_url = $atts['cat_link_text_url'];
-        $icon_color = $atts['icon_color'];
-        $job_bg_color = $atts['job_bg_color'];
-        $num_cats_child = $atts['num_cats_child'];
-        $order_by = $atts['order_by'];
-        $sub_cats = $atts['sub_cats'];
+        extract(shortcode_atts(array(
+            'cats_view' => '',
+            'num_cats' => '',
+            'result_page' => '',
+            'cat_title' => '',
+            'sector_job_counts' => 'yes',
+            'sub_cats' => 'yes',
+            'cat_link_text' => '',
+            'cat_link_text_url' => '',
+            'icon_color' => '',
+            'job_bg_color' => '',
+            'num_cats_child' => '',
+            'order_by' => 'jobs_count',
+        ), $atts));
 
         ob_start();
         if (class_exists('JobSearch_plugin')) {
@@ -338,9 +357,16 @@ class JobCategories extends Widget_Base
             if ($order_by == 'id') {
                 $cats_query = "SELECT terms.term_id FROM $wpdb->terms AS terms";
                 $cats_query .= " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) ";
+                if (function_exists('icl_object_id')) {
+                    $trans_tble = $wpdb->prefix . 'icl_translations';
+                    $cats_query .= " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id)";
+                }
                 $cats_query .= " WHERE term_tax.taxonomy=%s";
                 if ($sub_cats == 'yes') {
                     $cats_query .= " AND term_tax.parent=0";
+                }
+                if (function_exists('icl_object_id')) {
+                    $cats_query .= " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'";
                 }
                 $cats_query .= " ORDER BY terms.term_id DESC";
                 $get_db_terms = $wpdb->get_col($wpdb->prepare($cats_query, 'sector'));
@@ -348,11 +374,22 @@ class JobCategories extends Widget_Base
                 $cats_query = "SELECT terms.term_id FROM $wpdb->terms AS terms";
                 $cats_query .= " LEFT JOIN $wpdb->term_taxonomy AS term_tax ON(terms.term_id = term_tax.term_id) ";
                 $cats_query .= " LEFT JOIN $wpdb->termmeta AS term_meta ON(terms.term_id = term_meta.term_id) ";
+                if (function_exists('icl_object_id')) {
+                    $trans_tble = $wpdb->prefix . 'icl_translations';
+                    $cats_query .= " LEFT JOIN $trans_tble AS icl_trans ON (terms.term_id = icl_trans.element_id)";
+                }
                 $cats_query .= " WHERE term_tax.taxonomy=%s AND term_meta.meta_key=%s";
                 if ($sub_cats == 'yes') {
                     $cats_query .= " AND term_tax.parent=0";
                 }
-                $cats_query .= " ORDER BY cast(term_meta.meta_value as unsigned) DESC";
+                if (function_exists('icl_object_id')) {
+                    $cats_query .= " AND icl_trans.language_code='" . $sitepress->get_current_language() . "'";
+                }
+                if ($order_by == 'title') {
+                    $cats_query .= " ORDER BY terms.name ASC";
+                } else {
+                    $cats_query .= " ORDER BY cast(term_meta.meta_value as unsigned) DESC";
+                }
                 $get_db_terms = $wpdb->get_col($wpdb->prepare($cats_query, 'sector', 'active_jobs_count'));
             }
             $cats_class = 'categories-list';
@@ -378,7 +415,7 @@ class JobCategories extends Widget_Base
                 $cats_class = 'careerfy-section-premium-wrap';
                 $rand_num = rand(1000000, 9999999);
                 $view_all_btn_class = isset($num_cats) && count($get_db_terms) <= 9 ? 'no-slider' : '';
-
+                $slider_wrapper = '';
                 if ($cat_title != '') {
                     $slider_wrapper = "\n" . '
                 <div class="careerfy-section-title-style"><h2>' . $cat_title . '</h2>
@@ -389,13 +426,16 @@ class JobCategories extends Widget_Base
             $icon_color = $icon_color != "" ? 'style="color: ' . $icon_color . ' "' : "";
             $job_bg_color = $job_bg_color != "" ? 'style="background-color: ' . $job_bg_color . ' "' : "";
             ?>
-            <div class="<?php echo($cats_class) ?>">
+            <div id="jobsearch-findby-sectors" class="<?php echo($cats_class) ?>" data-view="<?php echo($cats_view) ?>">
                 <?php if ($cats_view == 'view10'){ ?>
                 <div class="row">
                     <?php } ?>
 
                     <?php echo ($cats_view == 'slider') ? $slider_wrapper : "";
-                    //////// slider style slider wrapper
+                    /*
+                     * slider style slider wrapper
+                     * */
+
                     if ($cats_view == 'slider') { ?>
                     <div id="category-slider-<?php echo $rand_num ?>" class="careerfy-top-sectors-category-slider">
                         <div class="careerfy-top-sectors-category-slider-layer">
@@ -405,18 +445,21 @@ class JobCategories extends Widget_Base
                                     if (!empty($get_db_terms) && !is_wp_error($get_db_terms)) {
 
                                     if ($cats_view != 'slider' && $cats_view != 'view10') {
-                                    $row_class = 'class="row"';
+                                    $row_class = ' row';
                                     ?>
-                                    <ul <?php echo $cats_view != 'view4' ? $row_class : '' ?>>
+                                    <ul class="jobsearch-sects-allcon<?php echo $cats_view != 'view4' ? $row_class : '' ?>">
 
                                         <?php }
                                         $term_count = 1;
                                         $term_count_child = 0;
-                                        //$jobsearch_jobs_listin_sh = new Jobsearch_Shortcode_Jobs_Frontend;
+                                        $jobsearch_jobs_listin_sh = $jobsearch_shortcode_jobs_frontend;
 
                                         $sh_atts = array();
                                         $post_ids = array();
-                                        $all_post_ids = $jobsearch_shortcode_jobs_frontend->job_general_query_filter($post_ids, $sh_atts);
+                                        $all_post_ids = array();
+                                        if (is_object($jobsearch_jobs_listin_sh)) {
+                                            $all_post_ids = $jobsearch_jobs_listin_sh->job_general_query_filter($post_ids, $sh_atts);
+                                        }
 
                                         foreach ($get_db_terms as $term_id) {
                                             $term_sector = get_term_by('id', $term_id, 'sector');
@@ -462,11 +505,9 @@ class JobCategories extends Widget_Base
                                             }
                                             $jobs_query = new \WP_Query($job_args);
                                             $found_jobs = $jobs_query->found_posts;
-
                                             wp_reset_postdata();
-                                            $total_jobs = $found_jobs == 1 ? "Job" : "Jobs";
-                                            $term_fields = get_term_meta($term_sector->term_id, 'careerfy_frame_cat_fields', true);
 
+                                            $term_fields = get_term_meta($term_sector->term_id, 'careerfy_frame_cat_fields', true);
                                             $term_icon = isset($term_fields['icon']) ? $term_fields['icon'] : '';
                                             $term_color = isset($term_fields['color']) ? $term_fields['color'] : '';
                                             $term_image = isset($term_fields['image']) ? $term_fields['image'] : '';
@@ -482,12 +523,22 @@ class JobCategories extends Widget_Base
                                                             <i class="<?php echo($term_icon) ?>"<?php echo($term_color != '' && $cats_view == 'view4' ? ' style="color: ' . $term_color . ';"' : '') ?>></i>
                                                         <?php } ?>
                                                         <h6><?php echo($term_sector->name) ?></h6>
-                                                        <small><?php printf(esc_html__('(%s ' . $total_jobs . ')', 'careerfy-frame'), $found_jobs) ?></small>
+                                                        <?php 
+                                                        if ($sector_job_counts == 'yes') {
+                                                            if ($found_jobs == 1) {
+                                                                ?>
+                                                                <small><?php printf(esc_html__('(%s Job)', 'careerfy-frame'), $found_jobs) ?></small>
+                                                                <?php
+                                                            } else {
+                                                                ?>
+                                                                <small><?php printf(esc_html__('(%s Jobs)', 'careerfy-frame'), $found_jobs) ?></small>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
                                                     </a>
                                                 </li>
-                                            <?php } else if ($cats_view == "view10") {
-
-                                                ?>
+                                            <?php } else if ($cats_view == "view10") { ?>
                                                 <div class="col-md-3">
                                                     <a href="<?php echo($cat_goto_link) ?>"><img
                                                                 src="<?php echo $term_image ?>" alt=""></a>
@@ -497,10 +548,12 @@ class JobCategories extends Widget_Base
                                                     <?php foreach ($term_sector_child as $term_sectors_children) {
 
                                                         $child_term = get_term_by('id', $term_sectors_children, 'sector');
-                                                        $total_found_jobs = $this->getChildSectorsJobs($child_term->slug);
+                                                        $total_found_jobs = getChildSectorsJobs($child_term->slug);
                                                         $cat_child_goto_link = add_query_arg(array('sector_cat' => $child_term->slug), get_permalink($to_result_page));
-                                                        ?>
-                                                        <span><a href="<?php echo($cat_child_goto_link) ?>"><?php echo $child_term->name; ?></a><small><?php echo($total_found_jobs) ?></small></span>
+
+                                                        if ($sector_job_counts == 'yess') { ?>
+                                                            <span><a href="<?php echo($cat_child_goto_link) ?>"><?php echo $child_term->name; ?></a><small><?php echo($total_found_jobs) ?></small></span>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 </div>
 
@@ -509,7 +562,11 @@ class JobCategories extends Widget_Base
                                                 <li>
                                                     <a href="<?php echo($cat_goto_link) ?>">
                                                         <?php echo($term_sector->name) ?>
-                                                        <span><?php printf(esc_html__('(%s ' . $total_jobs . ')', 'careerfy-frame'), $found_jobs) ?></span>
+                                                        <?php if ($sector_job_counts == 'yes') { ?>
+                                                            <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                  class="jobsearchh-sect-childcount"
+                                                                  data-id="<?php echo absint($term_id) ?>">0</span>
+                                                        <?php } ?>
                                                     </a>
                                                 </li>
 
@@ -517,9 +574,8 @@ class JobCategories extends Widget_Base
                                                 <li>
                                                     <a href="<?php echo($cat_goto_link) ?>">
                                                         <?php
-                                                        if ($term_icon != '') {
-                                                            ?>
-                                                            <i class="careerfy-icon <?php echo($term_icon) ?>"></i>
+                                                        if ($term_icon != '') { ?>
+                                                            <i class="<?php echo($term_icon) ?>"></i>
                                                         <?php } ?>
 
                                                         <span><?php echo($term_sector->name) ?>​</span>
@@ -530,10 +586,15 @@ class JobCategories extends Widget_Base
                                                     <?php
                                                     if ($term_icon != '') {
                                                         ?>
-                                                        <i class="careerfy-icon <?php echo($term_icon) ?>"></i>
+                                                        <i class="<?php echo($term_icon) ?>"></i>
                                                     <?php } ?>
                                                     <span><a href="<?php echo($cat_goto_link) ?>"> <?php echo($term_sector->name) ?></a></span>
-                                                    <small><?php printf(esc_html__('%s', 'careerfy-frame'), $found_jobs) ?></small>
+                                                    <?php if ($sector_job_counts == 'yes') { ?>
+                                                        <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                               class="jobsearchh-sect-childcount"
+                                                               data-id="<?php echo absint($term_id) ?>">0
+                                                        </small>
+                                                    <?php } ?>
                                                 </li>
 
                                             <?php } else if ($cats_view == 'view6') { ?>
@@ -548,7 +609,12 @@ class JobCategories extends Widget_Base
                                                             <?php }
                                                         } ?>
                                                         <strong><?php echo($term_sector->name) ?></strong>
-                                                        <small><?php printf(esc_html__('(%s ' . $total_jobs . ')', 'careerfy-frame'), $found_jobs) ?></small>
+                                                        <?php if ($sector_job_counts == 'yes') { ?>
+                                                            <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                   class="jobsearchh-sect-childcount"
+                                                                   data-id="<?php echo absint($term_id) ?>">0
+                                                            </small>
+                                                        <?php } ?>
                                                     </a>
                                                 </li>
                                             <?php } else if ($cats_view == 'view4') { ?>
@@ -575,7 +641,12 @@ class JobCategories extends Widget_Base
                                                             <p class="jobcat-title">
                                                                 <strong <?php echo($term_color != '' ? 'style="color: ' . $term_color . ';"' : '') ?>>#</strong> <?php echo($term_sector->name) ?>
                                                             </p>
-                                                            <small><?php printf(esc_html__('(%s Jobs)', 'careerfy-frame'), $found_jobs) ?></small>
+                                                            <?php if ($sector_job_counts == 'yes') { ?>
+                                                                <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                       class="jobsearchh-sect-childcount"
+                                                                       data-id="<?php echo absint($term_id) ?>">0
+                                                                </small>
+                                                            <?php } ?>
                                                         </div>
                                                     </a>
                                                 </li>
@@ -590,7 +661,11 @@ class JobCategories extends Widget_Base
                                                                     class="<?php echo($term_icon) ?>"></i>
                                                         <?php } ?>
                                                         <h2><?php echo($term_sector->name) ?></h2>
-                                                        <span <?php echo $job_bg_color ?>><?php printf(esc_html__('%s', 'careerfy-frame'), $found_jobs) ?></span>
+                                                        <?php if ($sector_job_counts == 'yes') { ?>
+                                                            <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                  class="jobsearchh-sect-childcount"
+                                                                  data-id="<?php echo absint($term_id) ?>" <?php echo $job_bg_color ?>>0</span>
+                                                        <?php } ?>
                                                     </a>
                                                 </li>
                                                 <?php
@@ -612,15 +687,19 @@ class JobCategories extends Widget_Base
                                                         <?php
                                                         ob_start();
                                                         if ($cats_view == 'view2') {
-                                                            ?>
-                                                            <small><?php printf(esc_html__('(%s Open Vacancies)', 'careerfy-frame'), $found_jobs) ?></small>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <span><?php printf(esc_html__('(%s Open Vacancies)', 'careerfy-frame'), $found_jobs) ?></span>
-                                                            <?php
-                                                        }
-                                                        ?>
+                                                            if ($sector_job_counts == 'yes') { ?>
+                                                                <small id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                       class="jobsearchh-sect-childcount"
+                                                                       data-id="<?php echo absint($term_id) ?>">0
+                                                                </small>
+                                                            <?php } ?>
+                                                        <?php } else {
+                                                            if ($sector_job_counts == 'yes') { ?>
+                                                                <span id="jobsearchh-sect-cat-item-<?php echo absint($term_id) ?>"
+                                                                      class="jobsearchh-sect-childcount"
+                                                                      data-id="<?php echo absint($term_id) ?>">0</span>
+
+                                                            <?php } } ?>
                                                     </a>
                                                     <?php
                                                     $vacs_html = ob_get_clean();

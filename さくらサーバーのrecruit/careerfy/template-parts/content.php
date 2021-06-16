@@ -14,6 +14,7 @@ $no_img_clas = 'no-img-item';
 if ($post_thumbnail_src != '') {
     $no_img_clas = '';
 }
+
 ?>
 <li <?php echo post_class('col-md-12 ' . $no_img_clas) ?>>
 
@@ -51,9 +52,13 @@ if ($post_thumbnail_src != '') {
                     if ($categories_list) {
                         printf('%1$s', $categories_list);
                     }
+                    $comments = esc_html__('0 Comments', 'careerfy');
+                    $comment = esc_html__('1 Comment', 'careerfy');
+                    $comment_text = esc_html__('Comments', 'careerfy');
+
                     ?>
                     <li><i class="fa fa-calendar"></i> <time datetime="<?php echo date('Y-m-d H:i', strtotime(get_the_date())) ?>"><?php echo get_the_date() ?></time></li>
-                    <li><i class="fa fa-comment"></i> <a href="<?php comments_link(); ?>"><?php echo comments_number('0 Comments', '1 Comment', '% Comments'); ?></a></li>
+                    <li><i class="fa fa-comment"></i> <a href="<?php comments_link(); ?>"><?php echo comments_number($comments, $comment, '%'.$comment_text); ?></a></li>
                 </ul>
                 <?php
                 if (careerfy_excerpt(12)) {

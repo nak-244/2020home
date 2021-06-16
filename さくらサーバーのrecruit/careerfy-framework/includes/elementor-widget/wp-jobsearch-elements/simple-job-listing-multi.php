@@ -84,7 +84,7 @@ class SimpleJobsListingsMulti extends Widget_Base
      * @access protected
      */
 
-    protected static function load_more_featured_jobs_posts($jobs_posts, $job_per_page = '')
+    public static function load_more_featured_jobs_posts($jobs_posts, $job_per_page = '')
     {
         global $jobsearch_plugin_options, $sitepress;
         $carrerfy_date_formate = get_option('date_format');
@@ -100,14 +100,18 @@ class SimpleJobsListingsMulti extends Widget_Base
                 $jobsearch_sectors = wp_get_post_terms($job_id, 'sector', array("fields" => "all"));
                 $post_thumbnail_id = function_exists('jobsearch_job_get_profile_image') ? jobsearch_job_get_profile_image($job_id) : 0;
                 $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
-                $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : jobsearch_no_image_placeholder();
+                $no_placeholder_img = '';
+                if (function_exists('jobsearch_no_image_placeholder')) {
+                    $no_placeholder_img = jobsearch_no_image_placeholder();
+                }
+                $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : $no_placeholder_img;
 
                 $jobsearch_job_min_salary = get_post_meta($job_id, 'jobsearch_field_job_salary', true);
                 $jobsearch_job_max_salary = get_post_meta($job_id, 'jobsearch_field_job_max_salary', true);
                 $get_job_location = get_post_meta($job_id, 'jobsearch_field_location_address', true);
                 $job_loc_contry = get_post_meta($job_id, 'jobsearch_field_location_location1', true);
                 $job_loc_city = get_post_meta($job_id, 'jobsearch_field_location_location3', true);
-
+                $jobsearch_job_featured = get_post_meta($job_id, 'jobsearch_field_job_featured', true);
                 if ($all_locations_type == 'api') {
                     if ($job_loc_city != '' && $job_loc_contry != '') {
                         $get_job_location = $job_loc_city . ', ' . $job_loc_contry;
@@ -145,49 +149,57 @@ class SimpleJobsListingsMulti extends Widget_Base
                         $get_job_location = $job_city_title;
                     }
                 }
-
-                $job_post_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true); ?>
+                $postby_emp_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
+                $job_post_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
+                $job_salary = jobsearch_job_offered_salary($job_id);
+                ?>
                 <li class="col-md-12">
                     <div class="careerfy-refejobs-list-inner">
+                        <?php
+                        jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_listv1');
+                        ?>
                         <figure>
                             <a href="<?php echo get_permalink($job_id) ?>"><img src="<?php echo($post_thumbnail_src) ?>"
                                                                                 alt=""></a>
                             <figcaption>
                                 <h2>
-                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo limit_text(get_the_title($job_id), 3) ?></a>
+                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo wp_trim_words(get_the_title($job_id), 3) ?></a>
                                 </h2>
                                 <span><?php echo jobsearch_job_get_company_name($job_id) ?></span>
                             </figcaption>
                         </figure>
                         <small>
-                            <i class="careerfy-icon careerfy-briefcase"></i> <?php echo $jobsearch_sectors[0]->name ?>
+                            <i class="careerfy-icon careerfy-briefcase"></i> <?php echo isset($jobsearch_sectors) && count($jobsearch_sectors) > 0 ? $jobsearch_sectors[0]->name : '' ?>
                         </small>
-                        <?php if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
-                            <small><i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?></small>
-                        <?php } ?>
                         <small>
-                            <?php if ($jobsearch_job_min_salary != '' || $jobsearch_job_max_salary != '') { ?>
-                                <i class="fa fa-money"></i> <?php echo $jobsearch_job_min_salary . "K" ?>
-                                -<?php echo $jobsearch_job_max_salary . "K" ?>
+                            <?php if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
+                                <i class="careerfy-icon careerfy-pin-line"></i> <?php echo jobsearch_esc_html($get_job_location); ?>
                             <?php } ?>
                         </small>
-                        <small><i class="fa fa-calendar"></i><?php echo date($carrerfy_date_formate, $job_post_date) ?>
+                        <small>
+                            <?php if ($job_salary) { ?>
+                                <i class="careerfy-icon careerfy-money"></i><?php echo($job_salary) ?>
+                            <?php } ?>
+                        </small>
+                        <small>
+                            <i class="careerfy-icon careerfy-calendar-line"></i><?php echo date_i18n($carrerfy_date_formate, $job_post_date) ?>
                         </small>
                         <a href="<?php echo get_permalink($job_id) ?>"
                            class="careerfy-refejobs-list-btn"><span><?php echo esc_html__('View', 'careerfy-frame') ?></span></a>
+                        <?php if ($jobsearch_job_featured == 'on') { ?>
+                            <span class="careerfy-jobli-medium3"><i class="fa fa-star"></i></span>
+                        <?php } ?>
                     </div>
                 </li>
                 <?php
                 $count++;
             }
-
         }
     }
 
-    protected static function load_more_recent_jobs_posts($jobs_posts, $job_per_page = '')
+    public static function load_more_recent_jobs_posts($jobs_posts, $job_per_page = '')
     {
         global $jobsearch_plugin_options, $sitepress;
-
         $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
         $all_location_allow = isset($jobsearch_plugin_options['all_location_allow']) ? $jobsearch_plugin_options['all_location_allow'] : '';
         $job_types_switch = isset($jobsearch_plugin_options['job_types_switch']) ? $jobsearch_plugin_options['job_types_switch'] : '';
@@ -197,11 +209,16 @@ class SimpleJobsListingsMulti extends Widget_Base
             $count = 1;
             foreach ($jobs_posts as $job_id) {
                 $jobsearch_sectors = wp_get_post_terms($job_id, 'sector', array("fields" => "all"));
+
 
                 //echo $term_list[0]->description ;
                 $post_thumbnail_id = function_exists('jobsearch_job_get_profile_image') ? jobsearch_job_get_profile_image($job_id) : 0;
                 $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
-                $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : jobsearch_no_image_placeholder();
+                $no_placeholder_img = '';
+                if (function_exists('jobsearch_no_image_placeholder')) {
+                    $no_placeholder_img = jobsearch_no_image_placeholder();
+                }
+                $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : $no_placeholder_img;
 
                 $jobsearch_job_min_salary = get_post_meta($job_id, 'jobsearch_field_job_salary', true);
                 $jobsearch_job_max_salary = get_post_meta($job_id, 'jobsearch_field_job_max_salary', true);
@@ -246,34 +263,41 @@ class SimpleJobsListingsMulti extends Widget_Base
                         $get_job_location = $job_city_title;
                     }
                 }
-
+                $postby_emp_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
                 $job_post_date = get_post_meta($job_id, 'jobsearch_field_job_publish_date', true);
+                $job_salary = jobsearch_job_offered_salary($job_id);
                 ?>
                 <li class="col-md-12">
                     <div class="careerfy-refejobs-list-inner">
+                        <?php
+                        jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_listv1');
+                        ?>
                         <figure>
                             <a href="<?php echo get_permalink($job_id) ?>"><img src="<?php echo($post_thumbnail_src) ?>"
                                                                                 alt=""></a>
                             <figcaption>
                                 <h2>
-                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo limit_text(get_the_title($job_id), 3) ?></a>
+                                    <a href="<?php echo get_permalink($job_id) ?>"><?php echo wp_trim_words(get_the_title($job_id), 3) ?></a>
                                 </h2>
                                 <span><?php echo jobsearch_job_get_company_name($job_id) ?></span>
                             </figcaption>
                         </figure>
                         <small>
-                            <i class="careerfy-icon careerfy-briefcase"></i> <?php echo $jobsearch_sectors[0]->name ?>
+                            <i class="careerfy-icon careerfy-briefcase"></i> <?php echo isset($jobsearch_sectors) && count($jobsearch_sectors) > 0 ? $jobsearch_sectors[0]->name : '' ?>
                         </small>
-                        <?php if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
-                            <small><i class="fa fa-map-marker"></i> <?php echo esc_html($get_job_location); ?></small>
-                        <?php } ?>
+                        <small>
+                            <?php if (!empty($get_job_location) && $all_location_allow == 'on') { ?>
+                                <i class="careerfy-icon careerfy-pin-line"></i> <?php echo jobsearch_esc_html($get_job_location); ?>
+                            <?php } ?>
+                        </small>
                         <small>
                             <?php if ($jobsearch_job_min_salary != '' || $jobsearch_job_max_salary != '') { ?>
-                                <i class="fa fa-money"></i> <?php echo $jobsearch_job_min_salary . "K" ?>
+                                <i class="careerfy-icon careerfy-money"></i> <?php echo $jobsearch_job_min_salary . "K" ?>
                                 -<?php echo $jobsearch_job_max_salary . "K" ?>
                             <?php } ?>
                         </small>
-                        <small><i class="fa fa-calendar"></i><?php echo date($carrerfy_date_formate, $job_post_date) ?>
+                        <small>
+                            <i class="careerfy-icon careerfy-calendar-line"></i><?php echo date_i18n($carrerfy_date_formate, $job_post_date) ?>
                         </small>
                         <a href="<?php echo get_permalink($job_id) ?>"
                            class="careerfy-refejobs-list-btn"><span><?php echo esc_html__('View', 'careerfy-frame') ?></span></a>
@@ -282,6 +306,7 @@ class SimpleJobsListingsMulti extends Widget_Base
                 <?php
                 $count++;
             }
+
         }
     }
 

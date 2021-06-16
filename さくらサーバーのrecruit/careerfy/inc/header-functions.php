@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Careerfy Header functions.
  *
@@ -16,10 +15,29 @@ if (!function_exists('careerfy_site_logo')) {
         global $careerfy_framework_options;
         $logo_default_val = '';
         $careerfy_theme_options = get_option('careerfy_framework_options');
+
+        $customizer_logo_id = get_theme_mod('custom_logo');
+        $customizer_logo_arr = wp_get_attachment_image_src($customizer_logo_id, 'full');
+        $customizer_logo = isset($customizer_logo_arr[0]) && $customizer_logo_arr[0] != '' ? $customizer_logo_arr[0] : '';
+
         if (empty($careerfy_theme_options)) {
             $logo_default_val = get_template_directory_uri() . '/images/logo.png';
         }
-        $careerfy_logo = isset($careerfy_framework_options['careerfy-site-logo']['url']) && $careerfy_framework_options['careerfy-site-logo']['url'] != '' ? $careerfy_framework_options['careerfy-site-logo']['url'] : $logo_default_val;
+
+        if ($customizer_logo != '') {
+            $logo_default_val = $customizer_logo;
+        }
+
+        $site_logo_key = 'careerfy-site-logo';
+        if (function_exists('icl_get_languages') && function_exists('wpml_init_language_switcher')) {
+            global $sitepress;
+            $lang_code = $sitepress->get_current_language();
+            $default_lang = $sitepress->get_default_language();
+            if ($lang_code != $default_lang) {
+                $site_logo_key = 'careerfy_site_logo_' . $lang_code;
+            }
+        }
+        $careerfy_logo = isset($careerfy_framework_options[$site_logo_key]['url']) && $careerfy_framework_options[$site_logo_key]['url'] != '' ? $careerfy_framework_options[$site_logo_key]['url'] : $logo_default_val;
         $logo_width = isset($careerfy_framework_options['careerfy-logo-width']) && $careerfy_framework_options['careerfy-logo-width'] > 0 ? ' width="' . $careerfy_framework_options['careerfy-logo-width'] . '"' : '';
         $logo_height = isset($careerfy_framework_options['careerfy-logo-height']) && $careerfy_framework_options['careerfy-logo-height'] > 0 ? ' height="' . $careerfy_framework_options['careerfy-logo-height'] . '"' : '';
 
@@ -37,11 +55,58 @@ if (!function_exists('careerfy_site_logo')) {
 function careerfy_responsive_logo($link_class = 'jobsearch-responsive-logo')
 {
     global $careerfy_framework_options;
-    $careerfy_logo = isset($careerfy_framework_options['geek-responsive-logo']['url']) && $careerfy_framework_options['geek-responsive-logo']['url'] != '' ? $careerfy_framework_options['geek-responsive-logo']['url'] : get_template_directory_uri() . '/images/logo.png';
+
+    $customizer_logo_id = get_theme_mod('custom_logo');
+    $customizer_logo_arr = wp_get_attachment_image_src($customizer_logo_id, 'full');
+    $customizer_logo = isset($customizer_logo_arr[0]) && $customizer_logo_arr[0] != '' ? $customizer_logo_arr[0] : '';
+
+    $logo_default_val = '';
+    $careerfy_theme_options = get_option('careerfy_framework_options');
+    if (empty($careerfy_theme_options)) {
+        $logo_default_val = get_template_directory_uri() . '/images/logo.png';
+    }
+
+    if ($customizer_logo != '') {
+        $logo_default_val = $customizer_logo;
+    }
+
+    $resp_logo_key = 'geek-responsive-logo';
+    if (function_exists('icl_get_languages') && function_exists('wpml_init_language_switcher')) {
+        global $sitepress;
+        $lang_code = $sitepress->get_current_language();
+        $default_lang = $sitepress->get_default_language();
+        if ($lang_code != $default_lang) {
+            $resp_logo_key = 'careerfy_responsive_logo_' . $lang_code;
+        }
+    }
+
+    $site_logo_key = 'careerfy-site-logo';
+    if (function_exists('icl_get_languages') && function_exists('wpml_init_language_switcher')) {
+        global $sitepress;
+        $lang_code = $sitepress->get_current_language();
+        $default_lang = $sitepress->get_default_language();
+        if ($lang_code != $default_lang) {
+            $site_logo_key = 'careerfy_site_logo_' . $lang_code;
+        }
+    }
+
+    $careerfy_logo = isset($careerfy_framework_options[$resp_logo_key]['url']) && $careerfy_framework_options[$resp_logo_key]['url'] != '' ? $careerfy_framework_options[$resp_logo_key]['url'] : '';
+    if ($careerfy_logo == '') {
+        $careerfy_logo = isset($careerfy_framework_options[$site_logo_key]['url']) && $careerfy_framework_options[$site_logo_key]['url'] != '' ? $careerfy_framework_options[$site_logo_key]['url'] : '';
+    }
+    if ($careerfy_logo == '') {
+        $careerfy_logo = $logo_default_val;
+    }
     $logo_width = isset($careerfy_framework_options['geek-resp-logo-width']) && $careerfy_framework_options['geek-resp-logo-width'] > 0 ? ' width="' . $careerfy_framework_options['geek-resp-logo-width'] . '"' : '';
     $logo_height = isset($careerfy_framework_options['geek-resp-logo-height']) && $careerfy_framework_options['geek-resp-logo-height'] > 0 ? ' height="' . $careerfy_framework_options['geek-resp-logo-height'] . '"' : '';
 
-    echo '<a class="' . $link_class . '" title="' . get_bloginfo('name') . '" href="' . esc_url(home_url('/')) . '"><img src="' . esc_url($careerfy_logo) . '"' . $logo_width . $logo_height . ' alt="' . get_bloginfo('name') . '"></a>';
+    echo '<a class="' . $link_class . '" title="' . get_bloginfo('name') . '" href="' . esc_url(home_url('/')) . '">';
+    if ($careerfy_logo != '') {
+        echo '<img src="' . esc_url($careerfy_logo) . '"' . $logo_width . $logo_height . ' alt="' . get_bloginfo('name') . '">';
+    } else {
+        echo get_bloginfo('name');
+    }
+    echo '</a>';
 }
 
 if (!function_exists('careerfy_header_section')) {
@@ -57,9 +122,7 @@ if (!function_exists('careerfy_header_section')) {
         $header_style = isset($careerfy_framework_options['header-style']) ? $careerfy_framework_options['header-style'] : '';
         $header_btn_txt = isset($careerfy_framework_options['header-button-text']) ? $careerfy_framework_options['header-button-text'] : '';
         $header_btn_url = isset($careerfy_framework_options['header-button-url']) ? $careerfy_framework_options['header-button-url'] : '';
-
         $header_btn_page = isset($careerfy_framework_options['header-button-page']) ? $careerfy_framework_options['header-button-page'] : '';
-
         $header_link_page_1 = isset($careerfy_framework_options['header-button-page-1']) ? $careerfy_framework_options['header-button-page-1'] : '';
         $header_link_page_2 = isset($careerfy_framework_options['header-button-page-2']) ? $careerfy_framework_options['header-button-page-2'] : '';
         $top_header = isset($careerfy_framework_options['careerfy-top-header']) ? $careerfy_framework_options['careerfy-top-header'] : '';
@@ -79,21 +142,24 @@ if (!function_exists('careerfy_header_section')) {
         $top_days_sec = isset($careerfy_framework_options['careerfy-top-days-second']) ? $careerfy_framework_options['careerfy-top-days-second'] : '';
         $top_time_sec = isset($careerfy_framework_options['careerfy-top-time-second']) ? $careerfy_framework_options['careerfy-top-time-second'] : '';
 
-        if ($header_style == 'style22') { ?>
+        if ($header_style == 'style22') {
+            ?>
 
             <?php if ($top_strip == 'on') { ?>
                 <div class="container">
                 <div class="careerfy-header-twentytwo-strip">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <div class="careerfy-header-strip-list">
                         <ul>
                             <li><i class="careerfy-icon careerfy-clock"></i>
-                                <span><?php echo esc_html__($top_days, 'careefy') ?></span>
-                                <small><?php echo esc_html__($top_time, 'careefy') ?></small>
+                                <span><?php echo esc_html__($top_days, 'careerfy') ?></span>
+                                <small><?php echo esc_html__($top_time, 'careerfy') ?></small>
                             </li>
                             <li><i class="fa fa-map-marker"></i>
-                                <span><?php echo esc_html__($top_days_sec, 'careefy') ?></span>
-                                <small><?php echo esc_html__($top_time_sec, 'careefy') ?></small>
+                                <span><?php echo esc_html__($top_days_sec, 'careerfy') ?></span>
+                                <small><?php echo esc_html__($top_time_sec, 'careerfy') ?></small>
                             </li>
                         </ul>
                     </div>
@@ -110,10 +176,12 @@ if (!function_exists('careerfy_header_section')) {
                 </nav>
                 <div class="top-strip-social-links">
                     <ul class="careerfy-header-twentytwo-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
 
                     <?php if ($top_phone != '') { ?>
@@ -130,31 +198,35 @@ if (!function_exists('careerfy_header_section')) {
                 <div class="careerfy-header-twentyone-strip">
                     <div class="container">
                         <?php if ($top_phone != '') { ?>
-                            <!-- <p><i class="fa fa-phone"></i><?php echo esc_html__('Call us on:', 'careefy') ?> <?php echo($top_phone) ?></p> -->
+                            <p>
+                                <i class="fa fa-phone"></i><?php echo esc_html__('Call us on:', 'careerfy') ?> <a
+                                        href="tel:<?php echo($top_phone) ?>"><?php echo($top_phone) ?></a>
+                            </p>
                         <?php } ?>
                         <div class="top-strip-social-links">
                             <?php
                             if ($top_social == 'on') {
                                 do_action('careerfy_social_icons', 'careerfy-header-twentyone-social', '');
-                            } ?>
+                            }
+                            ?>
 
                             <ul class="careerfy-header-twentyone-user">
-                                <?php $args = array(
+                                <?php
+                                $args = array(
                                     'is_popup' => true,
                                 );
-                                do_action('jobsearch_user_account_links', $args); ?>
-
-                                <li><?php echo do_shortcode('[gtranslate]'); ?></li>
-
+                                do_action('jobsearch_user_account_links', $args);
+                                ?>
                             </ul>
-
                         </div>
                     </div>
                 </div>
             <?php } ?>
             <div class="careerfy-header-twentyone-wrapper">
                 <div class="container">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <nav class="jobsearch-navigation">
                         <div class="collapse" id="jobsearch-navbar-collapse-1">
                             <ul class="navbar-nav">
@@ -170,14 +242,18 @@ if (!function_exists('careerfy_header_section')) {
 
             <div class="container">
                 <div class="careerfy-header-twenty-wrapper">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <div class="careerfy-header-twenty-inner-wrapper">
 
                         <ul class="careerfy-header-twenty-user">
-                            <?php $args = array(
+                            <?php
+                            $args = array(
                                 'is_popup' => true,
                             );
-                            do_action('jobsearch_user_account_links', $args); ?>
+                            do_action('jobsearch_user_account_links', $args);
+                            ?>
                         </ul>
                         <nav class="jobsearch-navigation">
                             <div class="collapse" id="jobsearch-navbar-collapse-1">
@@ -194,27 +270,30 @@ if (!function_exists('careerfy_header_section')) {
         <?php } else if ($header_style == 'style19') { ?>
 
             <div class="container">
-                <?php careerfy_site_logo() ?>
+                <?php
+                careerfy_site_logo();
+                ?>
                 <div class="careerfy-header-nineteen-wrapper">
                     <?php if ($top_strip == 'on') { ?>
                         <div class="careerfy-header-nineteen-strip">
 
-                            <?php if ($top_social == 'on') {
+                            <?php
+                            if ($top_social == 'on') {
                                 do_action('careerfy_social_icons', 'careerfy-header-nineteen-social', '');
-                            } ?>
-
-                            <?php if ($top_location != '') { ?>
-                                <p><i class="careerfy-icon careerfy-clock"></i><?php echo($top_location) ?></p>
-                            <?php } ?>
-
-                            <p>
-                                <i class="careerfy-icon careerfy-clock"></i><?php echo esc_html__($top_time, 'careefy') ?>
-                            </p>
+                            }
+                            ?>
 
                             <?php if ($top_phone != '') { ?>
                                 <p><i class="fa fa-phone"></i><?php echo($top_phone) ?></p>
                             <?php } ?>
-
+                            <?php if (!empty($top_time)) { ?>
+                                <p>
+                                    <i class="fa fa-clock-o"></i><?php echo esc_html__($top_time, 'careerfy') ?>
+                                </p>
+                            <?php } ?>
+                            <?php if ($top_location != '') { ?>
+                                <p><i class="fa fa-map-marker"></i><?php echo($top_location) ?></p>
+                            <?php } ?>
                         </div>
                     <?php } ?>
 
@@ -227,10 +306,12 @@ if (!function_exists('careerfy_header_section')) {
                     </nav>
 
                     <ul class="careerfy-headerninteen-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -239,7 +320,9 @@ if (!function_exists('careerfy_header_section')) {
 
             <div class="careerfy-header-eighteen-main">
                 <div class="careerfy-blockeighteen-element">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <nav class="jobsearch-navigation">
                         <div class="collapse" id="jobsearch-navbar-collapse-1">
                             <ul class="navbar-nav">
@@ -250,10 +333,12 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
                 <div class="careerfy-blockeighteen-element">
                     <ul class="careerfy-headereighteen-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
                     <?php
                     $btn_page_obj = '';
@@ -269,9 +354,10 @@ if (!function_exists('careerfy_header_section')) {
                         </a>
                         <?php
                         $btn_html = ob_get_clean();
-                        echo($btn_html);
+                        echo apply_filters('careerfy_header_button_html', $btn_html);
                     } else {
-                        if ($header_btn_txt != '' && $header_btn_url != '') { ?>
+                        if ($header_btn_txt != '' && $header_btn_url != '') {
+                            ?>
                             <a href="<?php echo($header_btn_url) ?>"
                                class="careerfy-headerfifteen-btn"><?php echo($header_btn_txt) ?>
                             </a>
@@ -281,7 +367,8 @@ if (!function_exists('careerfy_header_section')) {
                     ?>
                 </div>
             </div>
-        <?php } else if ($header_style == 'style17') {
+            <?php
+        } else if ($header_style == 'style17') {
 
             $top_strip = isset($careerfy_framework_options['geek-top-strip']) ? $careerfy_framework_options['geek-top-strip'] : '';
             $top_phone = isset($careerfy_framework_options['geek-top-phone']) ? $careerfy_framework_options['geek-top-phone'] : '';
@@ -289,33 +376,41 @@ if (!function_exists('careerfy_header_section')) {
             $top_social = isset($careerfy_framework_options['geek-top-social']) ? $careerfy_framework_options['geek-top-social'] : '';
 
             ob_start();
-            if ($top_strip == 'on') { ?>
+            if ($top_strip == 'on') {
+                ?>
                 <div class="careerfy-header-seventeen-strip">
                     <div class="container">
                         <?php if ($top_email != '') { ?>
                             <p><i class="fa fa-envelope"></i><a
                                         href="mailto:<?php echo($top_email) ?>"><?php echo($top_email) ?></a></p>
-                        <?php }
-                        if ($top_phone != '') { ?>
+                            <?php
+                        }
+                        if ($top_phone != '') {
+                            ?>
                             <p><i class="fa fa-phone"></i><a
                                         href="tel:<?php echo $top_phone ?>"><?php echo $top_phone ?></a></p>
                         <?php } ?>
                         <?php
                         if ($top_social == 'on') {
                             do_action('careerfy_social_icons', 'careerfy-header-seventeen-social', '');
-                        } ?>
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="careerfy-header-seventeen-main">
                     <div class="container">
-                        <?php careerfy_site_logo() ?>
+                        <?php
+                        careerfy_site_logo();
+                        ?>
                         <div class="careerfy-header-seventeen-right">
                             <div class="careerfy-blockseventeen-element">
                                 <ul class="careerfy-headerseventeen-user">
-                                    <?php $args = array(
+                                    <?php
+                                    $args = array(
                                         'is_popup' => true,
                                     );
-                                    do_action('jobsearch_user_account_links', $args); ?>
+                                    do_action('jobsearch_user_account_links', $args);
+                                    ?>
                                 </ul>
                                 <?php
                                 $btn_page_obj = '';
@@ -330,7 +425,7 @@ if (!function_exists('careerfy_header_section')) {
                                     </a>
                                     <?php
                                     $btn_html = ob_get_clean();
-                                    echo($btn_html);
+                                    echo apply_filters('careerfy_header_button_html', $btn_html);
                                 } else {
                                     if ($header_btn_txt != '' && $header_btn_url != '') {
                                         ?>
@@ -354,11 +449,16 @@ if (!function_exists('careerfy_header_section')) {
 
                 </div>
             <?php } ?>
-        <?php } else if ($header_style == 'style16') {
-            ob_start(); ?>
+            <?php
+        } else if ($header_style == 'style16') {
+            ob_start();
+            ?>
             <div class="careerfy-header-sixteen-main">
                 <div class="careerfy-blocksixteen-element">
-                    <?php careerfy_site_logo('careerfy-logo-sixteen') ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
+
                     <nav class="jobsearch-navigation">
                         <div class="collapse" id="jobsearch-navbar-collapse-1">
                             <ul class="navbar-nav">
@@ -369,10 +469,12 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
                 <div class="careerfy-blocksixteen-element">
                     <ul class="careerfy-headersixteen-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
                     <?php
                     $btn_page_obj = '';
@@ -387,9 +489,10 @@ if (!function_exists('careerfy_header_section')) {
                         </a>
                         <?php
                         $btn_html = ob_get_clean();
-                        echo($btn_html);
+                        echo apply_filters('careerfy_header_button_html', $btn_html);
                     } else {
-                        if ($header_btn_txt != '' && $header_btn_url != '') { ?>
+                        if ($header_btn_txt != '' && $header_btn_url != '') {
+                            ?>
                             <a href="<?php echo($header_btn_url) ?>"
                                class="careerfy-headersixteen-btn"><?php echo($header_btn_txt) ?>
                             </a>
@@ -400,11 +503,14 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
 
             </div>
-        <?php } else if ($header_style == 'style15') {
+            <?php
+        } else if ($header_style == 'style15') {
             ob_start();
             ?>
             <div class="careerfy-header-fifteen-main">
-                <?php careerfy_site_logo() ?>
+                <?php
+                careerfy_site_logo();
+                ?>
                 <nav class="jobsearch-navigation">
                     <div class="collapse" id="jobsearch-navbar-collapse-1">
                         <ul class="navbar-nav">
@@ -415,10 +521,12 @@ if (!function_exists('careerfy_header_section')) {
 
                 <div class="careerfy-blockfifteen-element">
                     <ul class="careerfy-headerfifteen-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
                     <?php
                     $btn_page_obj = '';
@@ -433,9 +541,10 @@ if (!function_exists('careerfy_header_section')) {
                         </a>
                         <?php
                         $btn_html = ob_get_clean();
-                        echo($btn_html);
+                        echo apply_filters('careerfy_header_button_html', $btn_html);
                     } else {
-                        if ($header_btn_txt != '' && $header_btn_url != '') { ?>
+                        if ($header_btn_txt != '' && $header_btn_url != '') {
+                            ?>
                             <a href="<?php echo($header_btn_url) ?>"
                                class="careerfy-headerfifteen-btn"><?php echo($header_btn_txt) ?>
                             </a>
@@ -446,7 +555,8 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
             </div>
         <?php } else if ($header_style == 'style14') {
-            ob_start(); ?>
+            ob_start();
+            ?>
             <div class="careerfy-header-fourteen-main">
                 <nav class="jobsearch-navigation">
                     <div class="collapse" id="jobsearch-navbar-collapse-1">
@@ -455,13 +565,17 @@ if (!function_exists('careerfy_header_section')) {
                         </ul>
                     </div>
                 </nav>
-                <?php careerfy_site_logo('careerfy-logo-fourteen') ?>
+                <?php
+                careerfy_site_logo('careerfy-logo-fourteen');
+                ?>
                 <div class="careerfy-blockfourteen-element">
                     <ul class="careerfy-headerfourteen-user">
-                        <?php $args = array(
+                        <?php
+                        $args = array(
                             'is_popup' => true,
                         );
-                        do_action('jobsearch_user_account_links', $args); ?>
+                        do_action('jobsearch_user_account_links', $args);
+                        ?>
                     </ul>
                     <?php
                     $btn_page_obj = '';
@@ -476,7 +590,7 @@ if (!function_exists('careerfy_header_section')) {
                         </a>
                         <?php
                         $btn_html = ob_get_clean();
-                        echo($btn_html);
+                        echo apply_filters('careerfy_header_button_html', $btn_html);
                     } else {
                         if ($header_btn_txt != '' && $header_btn_url != '') {
                             ?>
@@ -490,12 +604,16 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
             </div>
 
-        <?php } else if ($header_style == "style13") {
-            ob_start(); ?>
+            <?php
+        } else if ($header_style == "style13") {
+            ob_start();
+            ?>
             <!-- Header Main -->
             <div class="careerfy-header-thirteen-main">
                 <div class="careerfy-blockthirteen-element">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <nav class="jobsearch-navigation">
                         <div class="collapse " id="jobsearch-navbar-collapse-1">
                             <ul class="navbar-nav">
@@ -569,12 +687,18 @@ if (!function_exists('careerfy_header_section')) {
                     ?>
                 </div>
             </div>
-        <?php } else if ($header_style == "style12") {
+            <?php
+        } else if ($header_style == "style12") {
             ob_start();
-            if ($top_header == 'on') { ?>
+            if ($top_header == 'on') {
+                ?>
                 <div class="careerfy-header-twelve-main">
                     <div class="container">
-                        <div class="careerfy-block-element"><?php careerfy_site_logo() ?></div>
+                        <div class="careerfy-block-element">
+                            <?php
+                            careerfy_site_logo();
+                            ?>
+                        </div>
                         <div class="careerfy-block-element">
                             <?php
                             do_action('careerfy_header_twelve_top_navigation');
@@ -582,7 +706,8 @@ if (!function_exists('careerfy_header_section')) {
                         </div>
                         <div class="careerfy-block-element">
                             <ul class="careerfy-user-section">
-                                <?php $args = array(
+                                <?php
+                                $args = array(
                                     'is_popup' => true,
                                 );
                                 do_action('jobsearch_user_account_links', $args);
@@ -592,10 +717,14 @@ if (!function_exists('careerfy_header_section')) {
                     </div>
                 </div>
             <?php } ?>
-        <?php } else if ($header_style == "style11") {
-            ob_start(); ?>
+            <?php
+        } else if ($header_style == "style11") {
+            ob_start();
+            ?>
             <div class="careerfy-header-eleven-main">
-                <?php careerfy_site_logo() ?>
+                <?php
+                careerfy_site_logo();
+                ?>
                 <nav class="jobsearch-navigation">
                     <div class="collapse" id="jobsearch-navbar-collapse-1">
                         <ul class="navbar-nav">
@@ -628,7 +757,6 @@ if (!function_exists('careerfy_header_section')) {
                         <?php
                         $btn_html = ob_get_clean();
                         echo apply_filters('careerfy_header_button_html', $btn_html);
-
                     } else {
 
                         if ($header_btn_txt != '' && $header_btn_url != '') {
@@ -642,18 +770,20 @@ if (!function_exists('careerfy_header_section')) {
                     ?>
                 </div>
             </div>
-        <?php } else if ($header_style == "style10") {
-            ob_start(); ?>
+            <?php
+        } else if ($header_style == "style10") {
+            ob_start();
+            ?>
             <div class="careerfy-header10-main">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <?php careerfy_site_logo() ?>
+                            <?php
+                            careerfy_site_logo();
+                            ?>
                             <div class="careerfy-header10-usersec-wrap">
                                 <ul class="careerfy-header10-usersec">
-                                    <li>
-                                        <?php careerfy_wpml_lang_switcher(); ?>
-                                    </li>
+                                    <?php careerfy_wpml_lang_switcher(); ?>
                                     <?php
                                     $args = array(
                                         'is_popup' => true,
@@ -696,7 +826,6 @@ if (!function_exists('careerfy_header_section')) {
                                 <?php
                                 $btn_html = ob_get_clean();
                                 echo apply_filters('careerfy_header_button_html', $btn_html);
-
                             } else {
                                 if ($header_btn_txt != '' && $header_btn_url != '') {
                                     ?>
@@ -713,8 +842,10 @@ if (!function_exists('careerfy_header_section')) {
                 </div>
             </div>
             <!-- MainHeader -->
-        <?php } else if ($header_style == "style9") {
-            ob_start(); ?>
+            <?php
+        } else if ($header_style == "style9") {
+            ob_start();
+            ?>
             <!-- TopStrip -->
             <?php
             ob_start();
@@ -755,7 +886,9 @@ if (!function_exists('careerfy_header_section')) {
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <?php careerfy_site_logo() ?>
+                            <?php
+                            careerfy_site_logo();
+                            ?>
                             <div class="careerfy-right">
                                 <nav class="jobsearch-navigation">
 
@@ -800,35 +933,35 @@ if (!function_exists('careerfy_header_section')) {
             $top_email = isset($careerfy_framework_options['geek-top-email']) ? $careerfy_framework_options['geek-top-email'] : '';
             $top_social = isset($careerfy_framework_options['geek-top-social']) ? $careerfy_framework_options['geek-top-social'] : '';
             if (!(class_exists('Careerfy_MMC') && true == Careerfy_MMC::is_construction_mode_enabled(false))) {
-                if ($top_strip == 'on') { ?>
+                if ($top_strip == 'on') {
+                    ?>
                     <div class="jobsearch-top-strip">
                         <ul class="jobsearch-strip-info">
                             <?php
                             if ($top_location != '') {
                                 ?>
-                                <li><i class="careerfy-icon careerfy-placeholder"></i> <?php echo($top_location) ?>
-                                </li>
+                                <li><i class="careerfy-icon careerfy-pin-line"></i> <?php echo($top_location) ?></li>
                                 <?php
                             }
                             if ($top_phone != '') {
                                 ?>
                                 <li>
-                                    <i class="careerfy-icon careerfy-technology"></i> <?php printf(esc_html__('Phone %s', 'careerfy'), $top_phone) ?>
+                                    <i class="careerfy-icon careerfy-technology"></i> <a
+                                            href="tel:<?php echo($top_phone) ?>"><?php printf(esc_html__('%s', 'careerfy'), $top_phone) ?></a>
                                 </li>
                                 <?php
                             }
                             if ($top_email != '') {
                                 ?>
                                 <li><i class="careerfy-icon careerfy-envelope"></i> <a
-                                            href="mailto:"><?php echo($top_email) ?></a></li>
-                                <?php
-                            }
-                            ?>
+                                            href="mailto:<?php echo($top_email) ?>"><?php echo($top_email) ?></a></li>
+                            <?php } ?>
                         </ul>
                         <?php
-                        if ($top_social != '') {
+                        if ($top_social == 'on') {
                             do_action('careerfy_social_icons', 'jobsearch-strip-media', '');
-                        } ?>
+                        }
+                        ?>
                     </div>
                 <?php } ?>
                 <div class="jobsearch-main-header">
@@ -836,11 +969,8 @@ if (!function_exists('careerfy_header_section')) {
                         <div class="header-row">
                             <div class="eight-cell">
                                 <?php
-                                if (wp_is_mobile()) {
-                                    careerfy_responsive_logo();
-                                } else {
-                                    careerfy_site_logo('jobsearch-logo');
-                                } ?>
+                                careerfy_site_logo();
+                                ?>
                             </div>
 
                             <div class="eight-cell">
@@ -869,15 +999,11 @@ if (!function_exists('careerfy_header_section')) {
                                         ?>
                                     </ul>
                                     <?php do_action('careerfy_header8_navigation') ?>
-
-                                    <?php if (!wp_is_mobile()) { ?>
                                 </div>
                             </div>
-                            <?php } ?>
                         </div>
                     </div>
                 </div>
-
                 <?php
             }
         } else if ($header_style == 'style4') { ?>
@@ -886,7 +1012,9 @@ if (!function_exists('careerfy_header_section')) {
                     <div class="header-tabel">
                         <div class="header-row">
                             <div class="careerfy-logo-con">
-                                <?php careerfy_site_logo() ?>
+                                <?php
+                                careerfy_site_logo();
+                                ?>
                                 <div class="careerfy-nav-area-wrap">
                                     <a href="javascript:void(0);" class="nav-list-mode careerfy-nav-toogle"><img
                                                 src="<?php echo get_template_directory_uri() ?>/images/nav-list-icon.png"
@@ -914,7 +1042,8 @@ if (!function_exists('careerfy_header_section')) {
                                             <li>
                                                 <a href="<?php echo apply_filters('careerfy_header_button_url', get_permalink($btn_page_obj->ID), $btn_page_obj->ID) ?>"><i
                                                             class="careerfy-icon careerfy-upload-arrow"></i> <?php echo apply_filters('careerfy_header_button_text', get_the_title($btn_page_obj->ID), $btn_page_obj->ID) ?>
-                                                </a></li>
+                                                </a>
+                                            </li>
                                             <?php
                                             $btn_html = ob_get_clean();
                                             echo apply_filters('careerfy_header_button_html', $btn_html);
@@ -940,7 +1069,9 @@ if (!function_exists('careerfy_header_section')) {
             </div>
         <?php } else if ($header_style == 'style5') { ?>
             <div class="container">
-                <?php careerfy_site_logo() ?>
+                <?php
+                careerfy_site_logo();
+                ?>
                 <div class="careerfy-right">
                     <div class="careerfy-nav-wrap">
                         <div class="careerfy-navigation-wrap">
@@ -991,7 +1122,9 @@ if (!function_exists('careerfy_header_section')) {
         <?php } else if ($header_style == 'style6') { ?>
             <div class="container">
                 <div class="row">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <div class="careerfy-right">
                         <div class="careerfy-navigation-wrapper">
                             <?php do_action('careerfy_header_navigation') ?>
@@ -1035,12 +1168,12 @@ if (!function_exists('careerfy_header_section')) {
                     </div>
                 </div>
             </div>
-            <?php
-        } else if ($header_style == 'style7') {
-            ?>
+        <?php } else if ($header_style == 'style7') { ?>
             <div class="container">
                 <div class="row">
-                    <?php careerfy_site_logo() ?>
+                    <?php
+                    careerfy_site_logo();
+                    ?>
                     <div class="careerfy-right">
                         <div class="careerfy-navigation-wrap">
                             <?php do_action('careerfy_header_navigation') ?>
@@ -1087,13 +1220,58 @@ if (!function_exists('careerfy_header_section')) {
                     </div>
                 </div>
             </div>
-        <?php } else if ($header_style == 'style3') { ?>
+        <?php } else if ($header_style == 'style3') {
+            $top_strip = isset($careerfy_framework_options['geek-top-strip']) ? $careerfy_framework_options['geek-top-strip'] : '';
+            $top_location = isset($careerfy_framework_options['geek-top-location']) ? $careerfy_framework_options['geek-top-location'] : '';
+            $top_phone = isset($careerfy_framework_options['geek-top-phone']) ? $careerfy_framework_options['geek-top-phone'] : '';
+            $top_email = isset($careerfy_framework_options['geek-top-email']) ? $careerfy_framework_options['geek-top-email'] : '';
+            $top_social = isset($careerfy_framework_options['geek-top-social']) ? $careerfy_framework_options['geek-top-social'] : '';
+            if (!(class_exists('Careerfy_MMC') && true == Careerfy_MMC::is_construction_mode_enabled(false))) {
+                if ($top_strip == 'on') {
+                    ob_start();
+                    ?>
+                    <div class="jobsearch-top-strip">
+                        <ul class="jobsearch-strip-info">
+                            <?php
+                            if ($top_location != '') {
+                                ?>
+                                <li><i class="careerfy-icon careerfy-pin-line"></i> <?php echo($top_location) ?></li>
+                                <?php
+                            }
+                            if ($top_phone != '') {
+                                ?>
+                                <li>
+                                    <i class="careerfy-icon careerfy-technology"></i> <a
+                                            href="tel:<?php echo($top_phone) ?>"><?php printf(esc_html__('%s', 'careerfy'), $top_phone) ?></a>
+                                </li>
+                                <?php
+                            }
+                            if ($top_email != '') {
+                                ?>
+                                <li><i class="careerfy-icon careerfy-envelope"></i> <a
+                                            href="mailto:<?php echo($top_email) ?>"><?php echo($top_email) ?></a></li>
+                            <?php } ?>
+                        </ul>
+                        <?php
+                        if ($top_social == 'on') {
+                            do_action('careerfy_social_icons', 'jobsearch-strip-media', '');
+                        }
+                        ?>
+                    </div>
+                    <?php
+                    $topstrip_html = ob_get_clean();
+                    echo apply_filters('careerfy_header_style_3_html', $topstrip_html);
+                }
+            }
+            ?>
             <div class="container">
                 <div class="row">
                     <div class="header-tabel">
                         <div class="header-row">
                             <div class="careerfy-logo-con">
-                                <?php careerfy_site_logo() ?>
+                                <?php
+                                careerfy_site_logo();
+                                ?>
                             </div>
                             <div class="careerfy-menu-con">
 
@@ -1123,7 +1301,11 @@ if (!function_exists('careerfy_header_section')) {
         <?php } else if ($header_style == 'style2') { ?>
             <div class="header-tabel">
                 <div class="header-row">
-                    <div class="careerfy-logo-con"> <?php careerfy_site_logo() ?> </div>
+                    <div class="careerfy-logo-con">
+                        <?php
+                        careerfy_site_logo();
+                        ?>
+                    </div>
                     <div class="careerfy-menu-con">
                         <div class="careerfy-right">
                             <?php do_action('careerfy_header_navigation') ?>
@@ -1178,40 +1360,26 @@ if (!function_exists('careerfy_header_section')) {
                         <div class="header-row">
                             <?php
                             ob_start();
-                            if (wp_is_mobile()) {
-                                ?>
-                                <div class="careerfy-logo-con"><?php careerfy_site_logo() ?></div>
+                            ?>
+                            <div class="careerfy-logo-con">
+                                <?php careerfy_site_logo() ?>
                                 <?php
-                            } else {
+                                ob_start();
                                 ?>
-                                <div class="careerfy-logo-con">
-                                    <?php careerfy_site_logo() ?>
-                                    <?php
-                                    ob_start();
-                                    ?>
-                                    <div class="navigation-sub">
-                                        <?php do_action('careerfy_header_navigation') ?>
-                                    </div>
-                                    <?php
-                                    $navmenu_html = ob_get_clean();
-                                    echo apply_filters('careerfy_hder1_nav_menuplace_html', $navmenu_html);
-                                    ?>
+                                <div class="navigation-sub">
+                                    <?php do_action('careerfy_header_navigation') ?>
                                 </div>
                                 <?php
-                            }
+                                $navmenu_html = ob_get_clean();
+                                echo apply_filters('careerfy_hder1_nav_menuplace_html', $navmenu_html);
+                                ?>
+                            </div>
+                            <?php
+
                             if (class_exists('Careerfy_framework')) {
                                 ?>
                                 <div class="careerfy-btns-con">
                                     <div class="careerfy-right">
-                                        <?php
-                                        if (wp_is_mobile()) {
-                                            ?>
-                                            <div class="navigation-sub">
-                                                <?php do_action('careerfy_header_navigation') ?>
-                                            </div>
-                                            <?php
-                                        }
-                                        ?>
                                         <ul class="careerfy-user-section">
                                             <?php
                                             $args = array(
@@ -1243,7 +1411,6 @@ if (!function_exists('careerfy_header_section')) {
                                                 <?php
                                             }
                                         }
-
                                         do_action('careerfy_header_top_after_btns');
                                         ?>
                                     </div>
@@ -1295,10 +1462,7 @@ if (!function_exists('careerfy_header8_navigation')) {
     {
         global $careerfy_framework_options;
         $header_btn_page = isset($careerfy_framework_options['header-button-page']) ? $careerfy_framework_options['header-button-page'] : '';
-        if (wp_is_mobile()) {
-            ?>
-            <div class="eight-nav-wrap">
-        <?php } ?>
+        ?>
         <!-- Navigation -->
         <a href="#menu" class="menu-link active"><span></span></a>
         <nav id="menu" class="careerfy-navigation navbar navbar-default menu">
@@ -1319,29 +1483,11 @@ if (!function_exists('careerfy_header8_navigation')) {
             ?>
         </nav>
         <!-- Navigation -->
-        <?php if (wp_is_mobile()) { ?>
-        </div>
         <?php
-        if ($header_btn_page != '') {
-            $btn_page_obj = get_page_by_path($header_btn_page, 'OBJECT', 'page');
-        }
-        if (is_object($btn_page_obj) && isset($btn_page_obj->ID)) {
-            ob_start();
-            ?>
-            <a class="eight-post-btn"
-               href="<?php echo apply_filters('careerfy_header_button_url', get_permalink($btn_page_obj->ID), $btn_page_obj->ID) ?>"><i
-                        class="careerfy-icon careerfy-upload-arrow"></i> <?php echo apply_filters('careerfy_header_button_text', get_the_title($btn_page_obj->ID), $btn_page_obj->ID) ?>
-            </a>
-            <?php
-            $btn_html = ob_get_clean();
-            echo apply_filters('careerfy_header_button_html', $btn_html);
-        }
-    }
     }
 
     add_action('careerfy_header8_navigation', 'careerfy_header8_navigation', 10);
 }
-
 
 if (!function_exists('careerfy_header_navigation')) {
 
@@ -1375,6 +1521,170 @@ if (!function_exists('careerfy_header_navigation')) {
     }
 
     add_action('careerfy_header_navigation', 'careerfy_header_navigation', 10);
+}
+
+if (!function_exists('careerfy_mobile_navigation')) {
+
+    /**
+     * Mobile Navigation.
+     * @return markup
+     */
+    function careerfy_mobile_navigation()
+    {
+        ?>
+        <div class="careerfy-sidebar-navigation careerfy-inmobile-itemsgen" style="display: none;">
+            <?php
+            $args = array(
+                'theme_location' => 'primary',
+                'menu_id' => 'careerfy-mobile-navbar-nav',
+                'menu_class' => 'careerfy-mobile-navbar',
+                'container_class' => '',
+                'container_id' => '',
+                'container' => '',
+                'fallback_cb' => 'careerfy_nav_fallback',
+            );
+            $args['walker'] = new careerfy_mobile_menu_walker();
+            wp_nav_menu($args);
+            ?>
+        </div>
+        <?php
+    }
+
+    add_action('careerfy_mobile_navigation', 'careerfy_mobile_navigation', 10);
+}
+
+add_filter('careerfy_header_after_html', 'mobile_hder_strip', 35);
+
+function mobile_hder_strip()
+{
+    global $careerfy_framework_options;
+    $header_btn_page = isset($careerfy_framework_options['header-button-page']) ? $careerfy_framework_options['header-button-page'] : '';
+
+    $mobile_header_style = isset($careerfy_framework_options['mobile_header_style']) ? $careerfy_framework_options['mobile_header_style'] : '';
+    $mobile_hder_class = 'mobile-hder-style1';
+    if ($mobile_header_style == 'style2') {
+        $mobile_hder_class = 'mobile-hder-style2';
+    } else if ($mobile_header_style == 'style3') {
+        $mobile_hder_class = 'mobile-hder-style3';
+    }
+
+    //
+    $menu_btn_display = true;
+    if (has_nav_menu('primary')) {
+        $theme_locations = get_nav_menu_locations();
+        $theme_location_id = isset($theme_locations['primary']) ? $theme_locations['primary'] : '';
+        $primary_menu_obj = get_term($theme_location_id, 'nav_menu');
+        if (isset($primary_menu_obj->term_id)) {
+            $menu_id = $primary_menu_obj->term_id;
+            $menu_items = wp_get_nav_menu_items($menu_id);
+            if (empty($menu_items)) {
+                $menu_btn_display = false;
+            }
+        } else {
+            $menu_btn_display = false;
+        }
+    }
+    ?>
+    <div class="careerfy-mobilehder-strip <?php echo($mobile_hder_class) ?>" style="display: none;">
+        <?php
+        if ($mobile_header_style == 'style3') {
+            ?>
+            <div class="mobile-hder-topcon">
+                <div class="mobile-logocon">
+                    <?php
+                    if ($menu_btn_display) {
+                        ?>
+                        <a id="careerfy-mobile-navbtn" href="javascript:void(0);" class="mobile-navigation-togglebtn"><i
+                                    class="fa fa-bars"></i></a>
+                        <?php
+                    }
+                    careerfy_responsive_logo();
+                    ?>
+                </div>
+                <div class="mobile-right-btnscon">
+                    <?php echo apply_filters('careerfy_mobile_hderstrip_btns_bfore_html', ''); ?>
+                    <?php echo apply_filters('careerfy_mobile_hderstrip_btns_after_html', ''); ?>
+                </div>
+            </div>
+            <?php
+        } else if ($mobile_header_style == 'style2') {
+            ?>
+            <div class="mobile-hder-topcon">
+                <div class="mobile-right-btnscon">
+                    <?php
+                    if ($menu_btn_display) {
+                        ?>
+                        <a id="careerfy-mobile-navbtn" href="javascript:void(0);" class="mobile-navigation-togglebtn"><i
+                                    class="fa fa-bars"></i></a>
+                        <?php
+                    }
+                    echo apply_filters('careerfy_mobile_hderstrip_btns_bfore_html', ''); ?>
+                    <?php echo apply_filters('careerfy_mobile_hderstrip_btns_after_html', ''); ?>
+                </div>
+                <div class="mobile-logocon">
+                    <?php careerfy_responsive_logo() ?>
+                </div>
+            </div>
+            <?php
+        } else {
+            ?>
+            <div class="mobile-hder-topcon">
+                <div class="mobile-logocon">
+                    <?php careerfy_responsive_logo() ?>
+                </div>
+                <div class="mobile-right-btnscon">
+                    <?php
+                    if ($menu_btn_display) {
+                        ?>
+                        <a id="careerfy-mobile-navbtn" href="javascript:void(0);" class="mobile-navigation-togglebtn"><i
+                                    class="fa fa-bars"></i></a>
+                        <?php
+                    }
+                    echo apply_filters('careerfy_mobile_hderstrip_btns_bfore_html', ''); ?>
+                    <?php echo apply_filters('careerfy_mobile_hderstrip_btns_after_html', ''); ?>
+                </div>
+            </div>
+            <?php
+        }
+        $btn_page_obj = '';
+        if ($header_btn_page != '') {
+            $btn_page_obj = get_page_by_path($header_btn_page, 'OBJECT', 'page');
+        }
+        if (is_object($btn_page_obj) && isset($btn_page_obj->ID)) {
+            ob_start();
+            ?>
+            <a href="<?php echo apply_filters('careerfy_header_button_url', get_permalink($btn_page_obj->ID), $btn_page_obj->ID) ?>"
+               class="mobile-hdr-custombtn"><i
+                        class="careerfy-icon careerfy-upload-arrow"></i> <?php echo apply_filters('careerfy_header_button_text', get_the_title($btn_page_obj->ID), $btn_page_obj->ID) ?>
+            </a>
+            <?php
+            $btn_html = ob_get_clean();
+            echo apply_filters('careerfy_header_button_html', $btn_html);
+        }
+        ?>
+    </div>
+    <?php
+}
+
+add_filter('careerfy_theme_after_body_tag_html', 'careerfy_mobile_sidebar_html');
+
+function careerfy_mobile_sidebar_html()
+{
+    global $careerfy_framework_options;
+    $mobile_header_style = isset($careerfy_framework_options['mobile_header_style']) ? $careerfy_framework_options['mobile_header_style'] : '';
+    $mobile_menu_class = 'mobile-menu-style1';
+    if ($mobile_header_style == 'style2') {
+        $mobile_menu_class = 'mobile-menu-style2';
+    } else if ($mobile_header_style == 'style3') {
+        $mobile_menu_class = 'mobile-menu-style3';
+    }
+    ?>
+    <div class="careerfy-mobile-hdr-sidebar <?php echo($mobile_menu_class) ?>">
+        <?php do_action('careerfy_mobile_navigation'); ?>
+        <?php do_action('careerfy_mobile_navigation_after'); ?>
+        <a href="javascript:void(0);" class="mobile-navclose-btn"><i class="fa fa-times"></i></a>
+    </div>
+    <?php
 }
 
 if (!function_exists('careerfy_header_class')) {
@@ -1553,7 +1863,8 @@ if (!function_exists('careerfy_top_menu_login_links')) {
                 return $links;
             }
             ob_start();
-            if ($register_link_view === true) { ?>
+            if ($register_link_view === true) {
+                ?>
                 <li><a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-signin-tab"><i
                                 class="careerfy-icon careerfy-user-plus"></i><?php echo esc_html__('Login', 'careerfy'); ?>
                     </a></li>
@@ -1570,12 +1881,24 @@ if (!function_exists('careerfy_top_menu_login_links')) {
             ob_start();
             if ($register_link_view === true) {
                 ?>
-                <li><a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-signin-tab"><i
-                                class="careerfy-icon careerfy-login"></i><?php echo esc_html__('Login', 'careerfy'); ?>
-                    </a></li>
-                <li><a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-register-tab"><i
-                                class="careerfy-icon careerfy-password"></i><?php echo esc_html__('Signup', 'careerfy'); ?>
-                    </a></li>
+                <li>
+                  <a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-signin-tab">
+                    <i class="careerfy-icon careerfy-login"></i>
+<!--
+                    <?php echo esc_html__('Login', 'careerfy'); ?>
+-->
+ログイン
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0)" class="careerfy-open-signup-tab jobsearch-open-register-tab">
+                    <i class="careerfy-icon careerfy-password"></i>
+<!--
+                    <?php echo esc_html__('Signup', 'careerfy'); ?>
+-->
+新規登録
+                  </a>
+                </li>
                 <?php
             }
             $links = ob_get_clean();
@@ -1584,14 +1907,16 @@ if (!function_exists('careerfy_top_menu_login_links')) {
                 return $links;
             }
             ob_start();
-            if ($register_link_view === true) { ?>
+            if ($register_link_view === true) {
+                ?>
                 <li><a href="javascript:void(0)"
                        class="careerfy-open-signup-tab jobsearch-open-signin-tab"><?php echo esc_html__('Login', 'careerfy'); ?>
                         <i class="careerfy-icon careerfy-next-2"></i></a></li>
                 <li><a href="javascript:void(0)"
                        class="careerfy-open-signup-tab jobsearch-open-register-tab"><?php echo esc_html__('Signup', 'careerfy'); ?>
                         <i class="careerfy-icon careerfy-user"></i></a></li>
-            <?php }
+                <?php
+            }
             $links = ob_get_clean();
         }
         return $links;
@@ -1601,6 +1926,7 @@ if (!function_exists('careerfy_top_menu_login_links')) {
 }
 
 if (!function_exists('header_advance_search')) {
+
     function header_advance_search()
     {
         global $careerfy_framework_options;
@@ -1613,7 +1939,8 @@ if (!function_exists('header_advance_search')) {
         $header_slider = isset($careerfy_framework_options['careerfy-header-slider']) ? $careerfy_framework_options['careerfy-header-slider'] : '';
         $header_slider_list = isset($careerfy_framework_options['careerfy-header-slider-list']) ? $careerfy_framework_options['careerfy-header-slider-list'] : '';
 
-        if (($header_bg_img != "" || $header_overlay_color != "") && $header_style == 'style12' && $header_advance_search == 'on') { ?>
+        if (($header_bg_img != "" || $header_overlay_color != "") && $header_style == 'style12' && $header_advance_search == 'on') {
+            ?>
             <style>
                 .careerfy-banner-twelve {
                     background: url('<?php echo $header_bg_img['url'] ?>');
@@ -1623,17 +1950,22 @@ if (!function_exists('header_advance_search')) {
                     background-color: <?php echo $header_overlay_color['rgba'] ?>
                 }
             </style>
-        <?php }
-        if ($header_style == 'style12' && $top_header == 'on' && $header_slider == 'off') { ?>
+            <?php
+        }
+        if ($header_style == 'style12' && $top_header == 'on' && $header_slider == 'off') {
+            ?>
             <div class="careerfy-banner-twelve">
                 <span class="careerfy-banner-twelve-transparent"></span>
-                <?php if ($header_advance_search == 'on') {
-                    echo do_shortcode($header_adv_shortcode); ?>
+                <?php
+                if ($header_advance_search == 'on') {
+                    echo do_shortcode($header_adv_shortcode);
+                    ?>
                 <?php } ?>
             </div>
             <?php
         }
-        if ($header_style == 'style12' && $top_header == 'on' && $header_slider == 'on') { ?>
+        if ($header_style == 'style12' && $top_header == 'on' && $header_slider == 'on') {
+            ?>
             <?php echo do_shortcode('[rev_slider alias="' . $header_slider_list . '"]') ?>
             <?php
         }
@@ -1643,6 +1975,7 @@ if (!function_exists('header_advance_search')) {
 }
 
 if (!function_exists('header_navigation_style_twelve')) {
+
     function header_navigation_style_twelve()
     {
         global $careerfy_framework_options;
@@ -1654,7 +1987,8 @@ if (!function_exists('header_navigation_style_twelve')) {
         }
         $theme_locations = get_nav_menu_locations();
 
-        if ($theme_locations != "" || count($theme_locations['primary']) > 0) { ?>
+        if ($theme_locations != "" || count($theme_locations['primary']) > 0) {
+            ?>
             <div class="careerfy-twelve-navigation">
                 <nav class="jobsearch-navigation">
                     <div class="navbar-collapse" id="jobsearch-navbar-collapse-1">
@@ -1665,13 +1999,15 @@ if (!function_exists('header_navigation_style_twelve')) {
                 </nav>
             </div>
 
-        <?php }
+            <?php
+        }
     }
 
     add_action('header_navigation_style_twelve', 'header_navigation_style_twelve', 10);
 }
 
 if (!function_exists('careerfy_header_twelve_top_location')) {
+
     function careerfy_header_twelve_top_location()
     {
         global $careerfy_framework_options;
@@ -1710,7 +2046,6 @@ if (!function_exists('careerfy_header_twelve_top_navigation')) {
             $args['walker'] = new careerfy_mega_menu_walker();
         }
         wp_nav_menu($args);
-
     }
 
     add_action('careerfy_header_twelve_top_navigation', 'careerfy_header_twelve_top_navigation', 10);

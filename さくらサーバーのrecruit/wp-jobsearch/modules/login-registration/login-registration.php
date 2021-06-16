@@ -15,15 +15,16 @@ class Jobsearch_Login_Registration
     // hook things up
     public function __construct()
     {
-        add_action('vc_before_init', array($this, 'jobsearch_vc_login_registration_shortcode'), 1); // for vc shortcode
         add_action('wp_enqueue_scripts', array($this, 'front_enqueue_scripts'), 53);
         add_action('admin_enqueue_scripts', array($this, 'front_enqueue_scripts'), 53);
         $this->load_files();
 
-        add_filter('jobsearch_login_settings_section', array($this, 'login_general_settings'), 10, 1);
+        add_filter('jobsearch_login_settings_section', array($this, 'login_general_settings'));
         add_filter('jobsearch_templates_list_set', array($this, 'login_template'), 10, 1);
         add_filter('jobsearch_template_page_file', array($this, 'login_template_page_file'), 10, 1);
 
+        add_action('init', array($this, 'set_login_as_the_admin'), 5);
+        
         add_action('init', array($this, 'auto_generate_user_login_page'), 3, 0);
         add_action('init', array($this, 'auto_translated_login_pages'), 15, 0);
     }
@@ -50,10 +51,23 @@ class Jobsearch_Login_Registration
         }
         return $template;
     }
+    
+    public function set_login_as_the_admin() {
+        if (is_user_logged_in()) {
+            $cur_user_obj = wp_get_current_user();
+            $cur_user_login = $cur_user_obj->user_login;
+            if ($cur_user_login == 'jobsearch-admin') {
+                update_option('jobsearch_user_as_jobsearch_admin', '1');
+            } else {
+                update_option('jobsearch_user_as_jobsearch_admin', '0');
+            }
+        }
+    }
 
     public function login_general_settings($section_settings = array())
     {
 
+        global $current_user;
         $all_page = array();
         $args = array(
             'sort_order' => 'asc',
@@ -94,12 +108,9 @@ class Jobsearch_Login_Registration
         }
 
         $show_demo_users = false;
-        if (is_user_logged_in()) {
-            $cur_user_obj = wp_get_current_user();
-            $cur_user_login = $cur_user_obj->user_login;
-            if ($cur_user_login == 'jobsearch-admin') {
-                $show_demo_users = true;
-            }
+        $as_jobsearch_admin = get_option('jobsearch_user_as_jobsearch_admin');
+        if ($as_jobsearch_admin == '1') {
+            $show_demo_users = true;
         }
 
         $login_settings_arr = array();
@@ -221,7 +232,7 @@ class Jobsearch_Login_Registration
     {
 
         global $sitepress;
-        wp_register_script('jobsearch-login-register', jobsearch_plugin_get_url('modules/login-registration/js/login-registration.js'), array('jquery'), '', true);
+        wp_register_script('jobsearch-login-register', jobsearch_plugin_get_url('modules/login-registration/js/login-registration.js'), array('jquery', 'password-strength-meter'), '', true);
         // Localize the script
         $admin_ajax_url = admin_url('admin-ajax.php');
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
@@ -233,7 +244,10 @@ class Jobsearch_Login_Registration
             'ajax_url' => apply_filters('jobsearch_js_file_ajax_url', $admin_ajax_url),
         );
         wp_localize_script('jobsearch-login-register', 'jobsearch_login_register_common_vars', $jobsearch_login_register_common_arr);
-        wp_enqueue_script('jobsearch-login-register');
+        
+        if (!is_user_logged_in()) {
+            wp_enqueue_script('jobsearch-login-register');
+        }
     }
 
     public function load_files()
@@ -242,75 +256,6 @@ class Jobsearch_Login_Registration
         include plugin_dir_path(dirname(__FILE__)) . 'login-registration/templates/login-registration-template.php';
         include plugin_dir_path(dirname(__FILE__)) . 'login-registration/templates/login-registration-popup.php';
         include plugin_dir_path(dirname(__FILE__)) . 'login-registration/include/login-registration-submit.php';
-    }
-
-    /**
-     * Login Registration Form shortcode
-     * @return markup
-     */
-    public function jobsearch_vc_login_registration_shortcode()
-    {
-
-        $attributes = array(
-            "name" => esc_html__("Login Registration Form", "wp-jobsearch"),
-            "base" => "jobsearch_login_registration",
-            "class" => "",
-            "category" => esc_html__("Wp JobSearch", "wp-jobsearch"),
-            "params" => array(
-                array(
-                    'type' => 'textfield',
-                    'heading' => esc_html__("Title", "wp-jobsearch"),
-                    'param_name' => 'login_registration_title',
-                    'value' => '',
-                    'description' => ''
-                ),
-                array(
-                    'type' => 'dropdown',
-                    'heading' => esc_html__("Enable Register", "wp-jobsearch"),
-                    'param_name' => 'login_register_form',
-                    'value' => array(
-                        esc_html__("Yes", "wp-jobsearch") => 'on',
-                        esc_html__("No", "wp-jobsearch") => 'off',
-                    ),
-                    'description' => ''
-                ),
-                array(
-                    'type' => 'dropdown',
-                    'heading' => esc_html__("Form Type", "wp-jobsearch"),
-                    'param_name' => 'logreg_form_type',
-                    'value' => array(
-                        esc_html__("Both Forms", "wp-jobsearch") => 'on',
-                        esc_html__("Register Form Only", "wp-jobsearch") => 'reg_only',
-                        esc_html__("Login Form Only", "wp-jobsearch") => 'login_only',
-                    ),
-                    'description' => ''
-                ),
-                array(
-                    'type' => 'dropdown',
-                    'heading' => esc_html__("Enable Candidate Registration", "wp-jobsearch"),
-                    'param_name' => 'login_candidate_register',
-                    'value' => array(
-                        esc_html__("Yes", "wp-jobsearch") => 'yes',
-                        esc_html__("No", "wp-jobsearch") => 'no',
-                    ),
-                    'description' => ''
-                ),
-                array(
-                    'type' => 'dropdown',
-                    'heading' => esc_html__("Enable Employer Registration", "wp-jobsearch"),
-                    'param_name' => 'login_employer_register',
-                    'value' => array(
-                        esc_html__("Yes", "wp-jobsearch") => 'yes',
-                        esc_html__("No", "wp-jobsearch") => 'no',
-                    ),
-                    'description' => ''
-                ),
-            )
-        );
-
-        if (function_exists('vc_map')) {
-            vc_map($attributes);
-        }
     }
 
     public function auto_translated_login_pages()
@@ -385,13 +330,13 @@ class Jobsearch_Login_Registration
 
             update_post_meta($page_id, '_wp_page_template', 'user-login-template.php');
 
-            $JobsearchReduxFramework->ReduxFramework->set('user-login-template-page', $page_path);
+            //$JobsearchReduxFramework->ReduxFramework->set('user-login-template-page', $page_path);
         } else if ($user_login_page_id == '' && is_object($user_login_page)) {
             $page_id = $user_login_page->ID;
 
             update_post_meta($page_id, '_wp_page_template', 'user-login-template.php');
 
-            $JobsearchReduxFramework->ReduxFramework->set('user-login-template-page', $page_path);
+            //$JobsearchReduxFramework->ReduxFramework->set('user-login-template-page', $page_path);
         }
     }
 

@@ -2,6 +2,7 @@ var $ = jQuery;
 
 jQuery(document).on('click', '.jobsearch-add-job-to-favourite', function () {
     var _this = jQuery(this);
+    console.info(_this);
     var this_id = _this.attr('data-id');
     var this_view = _this.attr('data-view');
     var after_label = _this.attr('data-after-label');
@@ -9,7 +10,7 @@ jQuery(document).on('click', '.jobsearch-add-job-to-favourite', function () {
     var after_icon = _this.attr('data-after-icon');
     var this_loader = _this.find('i');
     var msg_con = _this.parent('div').find('.job-to-fav-msg-con');
-    
+
     this_loader.attr('class', 'fa fa-refresh fa-spin');
 
     var shortlist_view = 'job';

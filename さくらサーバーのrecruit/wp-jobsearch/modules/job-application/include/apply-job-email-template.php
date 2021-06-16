@@ -32,12 +32,12 @@ if (!class_exists('jobsearch_apply_job_by_email_template')) {
             add_action('init', array($this, 'jobsearch_apply_job_by_email_template_init'), 1, 0);
             add_filter('jobsearch_apply_job_by_email_filter', array($this, 'jobsearch_apply_job_by_email_filter_callback'), 1, 4);
             add_filter('jobsearch_email_template_settings', array($this, 'template_settings_callback'), 12, 1);
-            add_action('jobsearch_new_apply_job_by_email', array($this, 'jobsearch_apply_job_by_email_callback'), 10, 1);
+            add_action('jobsearch_new_apply_job_by_email', array($this, 'jobsearch_apply_job_by_email_callback'), 15, 1);
         }
 
         public function jobsearch_apply_job_by_email_template_init() {
             $this->apply_detail = array();
-            $this->rand = rand(0, 99999);
+            $this->rand = rand(1000, 999999);
             $this->group = 'job';
             $this->type = 'apply_job_by_email';
             $this->filter = 'apply_job_by_email';
@@ -84,7 +84,7 @@ if (!class_exists('jobsearch_apply_job_by_email_template')) {
                 ),
                 array(
                     'var' => '{candidate_job_title}',
-                    'display_text' => esc_html__('Job Title', 'wp-jobsearch'),
+                    'display_text' => esc_html__('User Job Title', 'wp-jobsearch'),
                     'function_callback' => array($this, 'get_cand_job_title'),
                 ),
                 array(
@@ -107,7 +107,7 @@ if (!class_exists('jobsearch_apply_job_by_email_template')) {
                     'display_text' => esc_html__('User accepts email communication', 'wp-jobsearch'),
                     'function_callback' => array($this, 'user_accepts_email_communication'),
                 ),
-            ));
+            ), $this);
 
             $this->default_var = array(
                 'switch_label' => $this->switch_label,

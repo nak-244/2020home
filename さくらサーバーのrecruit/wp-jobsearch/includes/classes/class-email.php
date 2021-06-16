@@ -107,7 +107,6 @@ if (!class_exists('JobSearch_Email')) {
                 'post_status' => 'publish',
                 'post_type' => 'email',
             );
-
             // Insert the post into the database.
             $id = wp_insert_post($email_post);
 
@@ -129,11 +128,13 @@ if (!class_exists('JobSearch_Email')) {
                 $field_db_slug = "jobsearch_email_templates";
                 $email_all_templates_saved_data = get_option($field_db_slug);
                 $from = isset($email_all_templates_saved_data['jobsearch_email_template_sender_email']) ? $email_all_templates_saved_data['jobsearch_email_template_sender_email'] : '';
+                
+                $site_email_addr = get_bloginfo('admin_email');
+                if ($site_email_addr != '') {
+                    $original_email_address = $site_email_addr;
+                }
                 if ($from != '') {
                     $original_email_address = $from;
-                }
-                if (isset($mail_args['from_email'])) {
-                    $original_email_address = $mail_args['from_email'];
                 }
                 return $original_email_address;
             });
@@ -155,11 +156,13 @@ if (!class_exists('JobSearch_Email')) {
                     }
                 }
 
+                $site_name = get_bloginfo('name');
+                if ($site_name != '') {
+                    $original_email_from = $site_name;
+                }
+
                 if ($from_name != '') {
                     $original_email_from = $from_name;
-                }
-                if (isset($mail_args['from_name'])) {
-                    $original_email_from = $mail_args['from_name'];
                 }
                 return $original_email_from;
             });
@@ -209,6 +212,14 @@ if (!class_exists('JobSearch_Email')) {
                                 return 'text/plain';
                             });
                         }
+                    }
+                    
+                    $headers = !empty($headers) ? $headers : array();
+                    $email_from_name = isset($mail_args['from_name']) ? $mail_args['from_name'] : '';
+                    $email_from_email = isset($mail_args['from_email']) ? $mail_args['from_email'] : '';
+                    
+                    if ($email_from_name != '' && $email_from_email != '') {
+                        $headers[] = 'Reply-To: ' . $email_from_name . ' <' . $email_from_email . '>';
                     }
 
                     $attachment = '';

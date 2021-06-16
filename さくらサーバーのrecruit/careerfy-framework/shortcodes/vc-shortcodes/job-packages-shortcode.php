@@ -4,10 +4,8 @@
  * @return html
  */
 add_shortcode('careerfy_job_packages', 'careerfy_job_packages_shortcode');
-
 function careerfy_job_packages_shortcode($atts, $content = '')
 {
-
     global $view;
     extract(shortcode_atts(array(
         'view' => 'style1',
@@ -84,7 +82,9 @@ function careerfy_job_package_item_shortcode($atts)
                             </div>
                             <ul>
                                 <?php
-                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                                if (function_exists('vc_param_group_parse_atts')) {
+                                    $pckg_features = vc_param_group_parse_atts($pckg_features);
+                                }
                                 if (!empty($pckg_features) || !empty($pkg_exfield_title)) { ?>
                                     <ul>
                                         <?php
@@ -128,7 +128,7 @@ function careerfy_job_package_item_shortcode($atts)
                 <?php } else if ($view == 'view5') { ?>
                     <div class="col-md-3">
                         <div class="careerfy-priceplan-twelve <?php echo($featured == 'yes' ? ' active' : '') ?>">
-                            <div class="careerfy-priceplan-twelve-top" >
+                            <div class="careerfy-priceplan-twelve-top">
                                 <div><?php echo get_the_title($att_pck) ?></div>
                                 <?php
                                 if ($pkg_type == 'paid') {
@@ -153,7 +153,9 @@ function careerfy_job_package_item_shortcode($atts)
                             </div>
                             <ul>
                                 <?php
-                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                                if (function_exists('vc_param_group_parse_atts')) {
+                                    $pckg_features = vc_param_group_parse_atts($pckg_features);
+                                }
                                 if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
                                     ?>
                                     <ul>
@@ -204,7 +206,9 @@ function careerfy_job_package_item_shortcode($atts)
                         <div class="careerfy-dream-packages <?php echo($featured == 'yes' ? ' active' : '') ?>">
                             <h3><?php echo get_the_title($att_pck) ?></h3>
                             <?php
-                            $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            if (function_exists('vc_param_group_parse_atts')) {
+                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            }
                             if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
                                 ?>
                                 <ul>
@@ -264,7 +268,7 @@ function careerfy_job_package_item_shortcode($atts)
                             </div>
                         </div>
                     </div>
-                    <?php } elseif ($view == 'view3') { ?>
+                <?php } elseif ($view == 'view3') { ?>
                     <div class="col-md-4 <?php echo($featured == 'yes' ? 'active' : '') ?>">
                         <div class="careerfy-priceplan-style5">
                             <?php echo($featured == 'yes' ? '<div class="active-plan">' . esc_html__('Most popular', 'careerfy-frame') . '</div>' : '') ?>
@@ -276,7 +280,9 @@ function careerfy_job_package_item_shortcode($atts)
                                 echo '<span>' . esc_html__('Free', 'careerfy-frame') . '</span>';
                             }
 
-                            $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            if (function_exists('vc_param_group_parse_atts')) {
+                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            }
                             if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
 
                                 ?>
@@ -301,7 +307,7 @@ function careerfy_job_package_item_shortcode($atts)
                                     }
                                     ?>
                                 </ul>
-                                <?php } ?>
+                            <?php } ?>
                             <div class="clearfix"></div>
                             <?php if (is_user_logged_in()) { ?>
                                 <a href="javascript:void(0);"
@@ -329,7 +335,9 @@ function careerfy_job_package_item_shortcode($atts)
                                 echo '<span>' . esc_html__('Free', 'careerfy-frame') . '</span>';
                             }
 
-                            $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            if (function_exists('vc_param_group_parse_atts')) {
+                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            }
                             if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
                                 ?>
                                 <ul>
@@ -395,9 +403,10 @@ function careerfy_job_package_item_shortcode($atts)
                                 ?>
                             </div>
                             <?php
-                            $pckg_features = vc_param_group_parse_atts($pckg_features);
-                            if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
-                                ?>
+                            if (function_exists('vc_param_group_parse_atts')) {
+                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            }
+                            if (!empty($pckg_features) || !empty($pkg_exfield_title)) { ?>
                                 <ul>
                                     <?php
                                     if (!empty($pkg_exfield_title)) {

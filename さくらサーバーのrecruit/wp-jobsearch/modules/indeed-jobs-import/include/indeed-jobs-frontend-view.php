@@ -16,22 +16,73 @@ class JobSearch_Indeed_Jobs_Front {
     public function __construct() {
 
         //jobsearch_job_detail_content_info
-        add_filter('jobsearch_job_detail_content_info', array($this, 'job_detail_content_info'), 10, 2);
+        //add_filter('jobsearch_job_detail_content_info', array($this, 'job_detail_content_info'), 10, 2);
 
         //jobsearch_job_detail_content_fields
-        add_filter('jobsearch_job_detail_content_fields', array($this, 'job_detail_content_none'), 10, 2);
+        //add_filter('jobsearch_job_detail_content_fields', array($this, 'job_detail_content_none'), 10, 2);
 
         //jobsearch_job_detail_content_detail
-        add_filter('jobsearch_job_detail_content_detail', array($this, 'job_detail_content_detail'), 10, 2);
+        //add_filter('jobsearch_job_detail_content_detail', array($this, 'job_detail_content_detail'), 10, 2);
 
         //jobsearch_job_detail_content_skills
-        add_filter('jobsearch_job_detail_content_skills', array($this, 'job_detail_content_none'), 10, 2);
+        //add_filter('jobsearch_job_detail_content_skills', array($this, 'job_detail_content_none'), 10, 2);
 
         //jobsearch_job_detail_content_related
         //jobsearch_job_detail_sidebar_apply_btns
-        add_filter('jobsearch_job_detail_sidebar_apply_btns', array($this, 'job_detail_content_none'), 10, 2);
+        //add_filter('jobsearch_job_detail_sidebar_apply_btns', array($this, 'job_detail_content_none'), 10, 2);
+        
+        //add_filter('jobsearch_job_defdet_applybtn_boxhtml', array($this, 'job_detail_apply_btn'), 10, 2);
+        
+        //add_filter('jobsearch_job_defdetail_after_detcont_html', array($this, 'job_detail_remove_html'), 100, 2);
+        //add_filter('jobsearch_job_det_apply_mobile_btn_html', array($this, 'job_detail_remove_html'), 100, 2);
 
         //jobsearch_job_detail_sidebar_related_jobs
+    }
+    
+    public function job_detail_remove_html($html, $job_id) {
+        $job_referral = get_post_meta($job_id, 'jobsearch_job_referral', true);
+        if ($job_referral == 'indeed' || $job_referral == 'ziprecruiter' || $job_referral == 'careerbuilder' || $job_referral == 'careerjet') {
+            $html = '';
+        }
+        
+        return $html;
+    }
+    
+    public function job_detail_apply_btn($apply_bbox, $job_id) {
+        global $jobsearch_plugin_options;
+        $job_referral = get_post_meta($job_id, 'jobsearch_job_referral', true);
+        if ($job_referral == 'indeed' || $job_referral == 'ziprecruiter' || $job_referral == 'careerbuilder' || $job_referral == 'careerjet') {
+            
+            $without_login_signin_restriction = isset($jobsearch_plugin_options['without-login-apply-restriction']) ? $jobsearch_plugin_options['without-login-apply-restriction'] : '';
+            
+            $apply_without_login = isset($jobsearch_plugin_options['job-apply-without-login']) ? $jobsearch_plugin_options['job-apply-without-login'] : '';
+
+            $external_signin_switch = false;
+            if (isset($without_login_signin_restriction) && is_array($without_login_signin_restriction) && sizeof($without_login_signin_restriction) > 0) {
+                foreach ($without_login_signin_restriction as $restrict_signin_switch) {
+                    if ($restrict_signin_switch == 'external') {
+                        $external_signin_switch = true;
+                    }
+                }
+            }
+
+            $url_target = '_blank';
+            $login_class = '';
+            $job_detail_url = get_post_meta($job_id, 'jobsearch_field_job_detail_url', true);
+            if ($apply_without_login == 'off' && $external_signin_switch && !is_user_logged_in()) {
+                $job_detail_url = 'javascript:void(0);';
+                $url_target = '_self';
+                $login_class = ' jobsearch-open-signin-tab';
+            }
+            
+            ob_start();
+            ?>
+            <a href="<?php echo ($job_detail_url) ?>" target="<?php echo ($url_target) ?>" class="jobsearch-applyjob-btn<?php echo ($login_class) ?>"><?php esc_html_e('Apply for the job', 'wp-jobsearch') ?></a>
+            <?php
+            $apply_bbox = ob_get_clean();
+        }
+        
+        return $apply_bbox;
     }
 
     public function job_detail_content_info($content, $post_id) {
@@ -44,7 +95,8 @@ class JobSearch_Indeed_Jobs_Front {
             $jobsearch_job_posted = get_post_meta($post_id, 'jobsearch_field_job_publish_date', true);
             $jobsearch_job_posted_ago = jobsearch_time_elapsed_string($jobsearch_job_posted);
             $jobsearch_job_posted_formated = date_i18n(get_option('date_format'), ($jobsearch_job_posted));
-            
+
+
             $job_views_count = get_post_meta($post_id, 'jobsearch_job_views_count', true);
 
             $job_type_str = jobsearch_job_get_all_jobtypes($post_id, 'jobsearch-jobdetail-type', '', '', '<small>', '</small>');
@@ -111,11 +163,33 @@ class JobSearch_Indeed_Jobs_Front {
     }
 
     public function job_detail_content_detail($content, $post_id) {
+        
+        global $jobsearch_plugin_options;
 
         $job_referral = get_post_meta($post_id, 'jobsearch_job_referral', true);
-        $job_detail_url = get_post_meta($post_id, 'jobsearch_field_job_detail_url', true);
-        if ($job_referral == 'indeed' && $job_detail_url != '') {
-            $content .= '<div class="view-more-link"><a href="' . $job_detail_url . '">' . esc_html__('view more', 'wp-jobsearch') . '</a></div>';
+        if ($job_referral == 'indeed') {
+
+            $without_login_signin_restriction = isset($jobsearch_plugin_options['without-login-apply-restriction']) ? $jobsearch_plugin_options['without-login-apply-restriction'] : '';
+
+            $apply_without_login = isset($jobsearch_plugin_options['job-apply-without-login']) ? $jobsearch_plugin_options['job-apply-without-login'] : '';
+
+            $external_signin_switch = false;
+            if (isset($without_login_signin_restriction) && is_array($without_login_signin_restriction) && sizeof($without_login_signin_restriction) > 0) {
+                foreach ($without_login_signin_restriction as $restrict_signin_switch) {
+                    if ($restrict_signin_switch == 'external') {
+                        $external_signin_switch = true;
+                    }
+                }
+            }
+
+            $login_class = '';
+            $job_detail_url = get_post_meta($post_id, 'jobsearch_field_job_detail_url', true);
+            if ($apply_without_login == 'off' && $external_signin_switch && !is_user_logged_in()) {
+                $job_detail_url = 'javascript:void(0);';
+                $login_class = ' jobsearch-open-signin-tab';
+            }
+        
+            $content .= '<div class="view-more-link"><a href="' . $job_detail_url . '" class="view-more-btn' . $login_class . '">' . esc_html__('view more', 'wp-jobsearch') . '</a></div>';
         }
         return $content;
     }

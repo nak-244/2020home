@@ -57,17 +57,18 @@ if ($candidate_id > 0) {
                             <div class="jobsearch-table-row">
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Order ID', 'wp-jobsearch') ?></div>
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Package', 'wp-jobsearch') ?></div>
-                                <div class="jobsearch-table-cell"><?php esc_html_e('Total Applications', 'wp-jobsearch') ?></div>
-                                <div class="jobsearch-table-cell"><?php esc_html_e('Used', 'wp-jobsearch') ?></div>
-                                <div class="jobsearch-table-cell"><?php esc_html_e('Remaining', 'wp-jobsearch') ?></div>
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Package Expiry', 'wp-jobsearch') ?></div>
                                 <div class="jobsearch-table-cell"><?php esc_html_e('Status', 'wp-jobsearch') ?></div>
+                                <div class="jobsearch-table-cell">&nbsp;</div>
                             </div>
                         </div>
                         <?php
                         while ($pkgs_query->have_posts()) : $pkgs_query->the_post();
                             $pkg_rand = rand(10000000, 99999999);
                             $pkg_order_id = get_the_ID();
+                            
+                            $pkg_order_expiry = get_post_meta($pkg_order_id, 'package_expiry_timestamp', true);
+                            
                             $pkg_order_name = get_post_meta($pkg_order_id, 'package_name', true);
 
                             $unlimited_pkg = get_post_meta($pkg_order_id, 'unlimited_pkg', true);
@@ -129,10 +130,6 @@ if ($candidate_id > 0) {
                                     <div class="jobsearch-table-cell">#<?php echo($pkg_order_id) ?></div>
                                     <div class="jobsearch-table-cell"><span><?php echo($pkg_order_name) ?></span></div>
 
-                                    <div class="jobsearch-table-cell"><?php echo($total_apps) ?></div>
-                                    <div class="jobsearch-table-cell"><?php echo($used_apps) ?></div>
-                                    <div class="jobsearch-table-cell"><?php echo($remaining_apps) ?></div>
-
                                     <?php
                                     if ($unlimited_pkg == 'yes') {
                                         ?>
@@ -143,6 +140,52 @@ if ($candidate_id > 0) {
                                     <div class="jobsearch-table-cell"><i
                                                 class="fa fa-circle <?php echo($status_class) ?>"></i> <?php echo($status_txt) ?>
                                     </div>
+                                    <div class="jobsearch-table-cell"><a href="javascript:void(0);" class="jobsearch-pckg-mordetail" data-id="<?php echo ($pkg_order_id) ?>" data-mtxt="<?php esc_html_e('More detail', 'wp-jobsearch'); ?>" data-ctxt="<?php esc_html_e('Close', 'wp-jobsearch'); ?>"><?php esc_html_e('More detail', 'wp-jobsearch'); ?> <i class="fa fa-angle-right"></i></a></div>
+                                </div>
+                                <div id="packge-detail-box<?php echo ($pkg_order_id) ?>" class="packge-detail-sepbox" style="display: none;">
+                                    <table class="packge-detail-table">
+                                        <tbody>
+                                            <tr class="pakcge-itm-stats">
+                                                <td class="pakcge-one-hding"><?php esc_html_e('Applications', 'wp-jobsearch'); ?></td>
+                                                <?php
+                                                if ($unlimited_numcapps == 'yes') {
+                                                    ?>
+                                                    <td colspan="3"><?php esc_html_e('Unlimited', 'wp-jobsearch') ?></td>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <td><?php printf(__('Total: %s', 'wp-jobsearch'), $total_apps) ?></td>
+                                                    <td><?php printf(__('Used: %s', 'wp-jobsearch'), $used_apps) ?></td>
+                                                    <td><?php printf(__('Remaininig: %s', 'wp-jobsearch'), $remaining_apps) ?></td>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </tr>
+                                            <tr class="pakcge-itm-footr">
+                                                <td class="pakcge-active-date" colspan="2">
+                                                    <div class="date-sec">
+                                                        <i class="jobsearch-icon jobsearch-calendar"></i> 
+                                                        <?php
+                                                        printf(esc_html__('Purchase Date: %s', 'wp-jobsearch'), get_the_date());
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="pakcge-expiry-date" colspan="2">
+                                                    <div class="date-sec">
+                                                        <i class="jobsearch-icon jobsearch-calendar"></i> 
+                                                        <?php
+                                                        $pkg_expires_date = $pkg_order_expiry > 0 ? date_i18n(get_option('date_format'), $pkg_order_expiry) : '';
+                                                        if ($unlimited_pkg == 'yes') {
+                                                            esc_html_e('Never Expire', 'wp-jobsearch');
+                                                        } else {
+                                                            printf(esc_html__('Expiry Date: %s', 'wp-jobsearch'), $pkg_expires_date);
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         <?php

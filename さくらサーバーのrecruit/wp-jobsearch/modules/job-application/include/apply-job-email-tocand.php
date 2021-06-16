@@ -32,7 +32,7 @@ if (!class_exists('jobsearch_apply_by_email_tocand_template')) {
             add_action('init', array($this, 'jobsearch_apply_by_email_tocand_template_init'), 1, 0);
             add_filter('jobsearch_apply_by_email_tocand_filter', array($this, 'jobsearch_apply_by_email_tocand_filter_callback'), 1, 4);
             add_filter('jobsearch_email_template_settings', array($this, 'template_settings_callback'), 12, 1);
-            add_action('jobsearch_new_apply_by_email_tocand', array($this, 'jobsearch_apply_by_email_tocand_callback'), 10, 1);
+            add_action('jobsearch_new_apply_by_email_tocand', array($this, 'jobsearch_apply_by_email_tocand_callback'), 15, 1);
         }
 
         public function jobsearch_apply_by_email_tocand_template_init() {
@@ -112,7 +112,7 @@ if (!class_exists('jobsearch_apply_by_email_tocand_template')) {
                     'display_text' => esc_html__('Posted by logo', 'wp-jobsearch'),
                     'function_callback' => array($this, 'get_job_added_employer_logo'),
                 ),
-            ));
+            ), $this);
 
             $this->default_var = array(
                 'switch_label' => $this->switch_label,
@@ -415,13 +415,19 @@ if (!class_exists('jobsearch_apply_by_email_tocand_template')) {
         }
         
         public function get_job_added_posted_by() {
-            $job_posted_by = get_post_meta($this->job_id, 'jobsearch_field_job_posted_by', true);
+            if (isset($this->apply_detail['id']) && $this->apply_detail['id'] != '') {
+                $job_id = $this->apply_detail['id'];
+            }
+            $job_posted_by = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             $job_posted_by_user = get_the_title($job_posted_by);
             return $job_posted_by_user;
         }
 
         public function get_job_added_employer_logo() {
-            $job_posted_by = get_post_meta($this->job_id, 'jobsearch_field_job_posted_by', true);
+            if (isset($this->apply_detail['id']) && $this->apply_detail['id'] != '') {
+                $job_id = $this->apply_detail['id'];
+            }
+            $job_posted_by = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
             $post_thumbnail_id = get_post_thumbnail_id($job_posted_by);
             $post_thumbnail_image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
             $post_thumbnail_src = isset($post_thumbnail_image[0]) && esc_url($post_thumbnail_image[0]) != '' ? $post_thumbnail_image[0] : '';

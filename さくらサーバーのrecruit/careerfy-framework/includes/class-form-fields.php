@@ -29,6 +29,8 @@ class Careerfy_Frame_Form_Fields {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
+        
+        $_POST = careerfy_frame_input_post_vals_validate($_POST);
 
         foreach ($_POST as $key => $value) {
             if (strstr($key, $this->prefix)) {

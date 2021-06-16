@@ -83,7 +83,6 @@ class JobSearch_Page_Templates {
         global $jobsearch_plugin_options, $JobsearchReduxFramework;
 
         $user_dashboard_page_id = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
-
         $page_path = 'user-dashboard';
         $user_dash_page = get_page_by_path($page_path, OBJECT, 'page');
 
@@ -99,13 +98,17 @@ class JobSearch_Page_Templates {
 
             update_post_meta($page_id, '_wp_page_template', 'user-dashboard-template.php');
 
-            $JobsearchReduxFramework->ReduxFramework->set('user-dashboard-template-page', $page_path);
+            if ($JobsearchReduxFramework !== NULL) {
+                //$JobsearchReduxFramework->ReduxFramework->set('user-dashboard-template-page', $page_path);
+            }
         } else if ($user_dashboard_page_id == '' && is_object($user_dash_page)) {
             $page_id = $user_dash_page->ID;
 
             update_post_meta($page_id, '_wp_page_template', 'user-dashboard-template.php');
 
-            $JobsearchReduxFramework->ReduxFramework->set('user-dashboard-template-page', $page_path);
+            if ($JobsearchReduxFramework !== NULL) {
+                //$JobsearchReduxFramework->ReduxFramework->set('user-dashboard-template-page', $page_path);
+            }
         }
     }
 

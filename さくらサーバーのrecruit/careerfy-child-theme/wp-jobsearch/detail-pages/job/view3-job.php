@@ -99,6 +99,7 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                     $job_salary = jobsearch_job_offered_salary($post_id);
                     $job_applicants_list = get_post_meta($post_id, 'jobsearch_job_applicants_list', true);
                     $job_applicants_list = jobsearch_is_post_ids_array($job_applicants_list, 'candidate');
+                    $jobsearch_job_featured = get_post_meta($job_id, 'jobsearch_field_job_featured', true);
                     if (empty($job_applicants_list)) {
                         $job_applicants_list = array();
                     }
@@ -117,13 +118,16 @@ if (isset($subheader_employer_bg_color['rgba'])) {
                                 <div class="jobsearch_box_jobdetail_three_apply_wrap">
                                     <?php
                                     if (function_exists('jobsearch_empjobs_urgent_pkg_iconlab')) {
-                                        jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_v_grid');
+                                        jobsearch_empjobs_urgent_pkg_iconlab($postby_emp_id, $job_id, 'job_listv1');
                                     }
                                     ?>
                                     <?php if ($post_thumbnail_src != '') { ?>
                                         <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
                                         <?php
                                     }
+                                     if ($jobsearch_job_featured == 'on') { ?>
+                                    <span class="careerfy-jobli-medium3"><i class="fa fa-star"></i></span>
+                                    <?php }
                                     if ($company_name != '') {
                                         echo '<h2>';
                                         ob_start();

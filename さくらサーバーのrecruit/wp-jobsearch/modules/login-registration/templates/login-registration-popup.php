@@ -2,23 +2,23 @@
 /*
   Class : Login Registration Popup
  */
-
-
 // this is an include only WP file
 if (!defined('ABSPATH')) {
     die;
 }
 
 // main plugin class
-class JobSearch_Login_Registration_Popup {
-
+class JobSearch_Login_Registration_Popup
+{
     // hook things up
-    public function __construct() {
+    public function __construct()
+    {
         add_action('wp_footer', array($this, 'popup_html_callback'), 10, 1);
         add_action('wp_footer', array($this, 'accaprov_popup_callback'), 999, 1);
     }
 
-    public function popup_html_callback($args = array()) {
+    public function popup_html_callback($args = array())
+    {
         $rand_numb = rand(1000000, 9999999);
         if (!is_user_logged_in()) {
             $args = array(
@@ -37,7 +37,8 @@ class JobSearch_Login_Registration_Popup {
         }
     }
 
-    public function accaprov_popup_callback($args = array()) {
+    public function accaprov_popup_callback($args = array())
+    {
         $rand_numb = rand(1000000, 9999999);
         if (!is_user_logged_in()) {
             $args = array(
@@ -72,7 +73,7 @@ If you entered an incorrect email address, you will need to re-register with the
                                                 <?php echo esc_html__('Your Email', 'wp-jobsearch'); ?>:
                                             </label>
                                             <div class="input-field">
-                                                <input type="text" name="user_email" />
+                                                <input type="text" name="user_email"/>
                                             </div>
                                         </li>
                                         <li>
@@ -80,49 +81,49 @@ If you entered an incorrect email address, you will need to re-register with the
                                                 <?php echo esc_html__('Activation Code', 'wp-jobsearch'); ?>:
                                             </label>
                                             <div class="input-field">
-                                                <input type="text" name="activ_code" />
+                                                <input type="text" name="activ_code"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="input-field-submit">
-                                                <input type="submit" class="user-activeacc-submit-btn" value="<?php esc_html_e('Activate Account', 'wp-jobsearch'); ?>"/>
+                                                <input type="submit" class="user-activeacc-submit-btn"
+                                                       value="<?php esc_html_e('Activate Account', 'wp-jobsearch'); ?>"/>
                                                 <span class="loader-box"></span>
                                             </div>
                                         </li>
-                                    </ul> 
-                                    <div class="message-opbox" style="display: none; float: left;width: 100%;margin: 10px 0 0;"></div>
+                                    </ul>
+                                    <div class="message-opbox"
+                                         style="display: none; float: left;width: 100%;margin: 10px 0 0;"></div>
                                 </div>
-                            </form>    
+                            </form>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <script>
+            <script type="text/javascript">
+                jQuery(document).ready(function() {
                 <?php
                 if (isset($_GET['login_action']) && $_GET['login_action'] == 'jobsearch_accaprov') {
-                    $ac_code = isset($_GET['key']) ? $_GET['key'] : '';
-                    $ac_login = isset($_GET['login']) ? $_GET['login'] : '';
-                    
-                    $c_user = get_user_by('login', $ac_login);
-                    $user_email = isset($c_user->user_email) ? $c_user->user_email : '';
-                    ?>
-                    var accact_form = jQuery('#jobsearch_uaccont_aprov_form');
-                    var accact_code = accact_form.find('input[name="activ_code"]');
-                    var accact_email = accact_form.find('input[name="user_email"]');
-                    accact_code.val('<?php echo ($ac_code) ?>');
-                    accact_email.val('<?php echo ($user_email) ?>');
-                    jobsearch_modal_popup_open('JobSearchModalAccountActivationForm');
-                    accact_form.find('input[type="submit"]').trigger('click');
-                    <?php
-                }
+                $ac_code = isset($_GET['key']) ? $_GET['key'] : '';
+                $ac_login = isset($_GET['login']) ? $_GET['login'] : '';
+
+                $c_user = get_user_by('login', $ac_login);
+                $user_email = isset($c_user->user_email) ? $c_user->user_email : '';
                 ?>
+                var accact_form = jQuery('#jobsearch_uaccont_aprov_form');
+                var accact_code = accact_form.find('input[name="activ_code"]');
+                var accact_email = accact_form.find('input[name="user_email"]');
+                accact_code.val('<?php echo($ac_code) ?>');
+                accact_email.val('<?php echo($user_email) ?>');
+                jobsearch_modal_popup_open('JobSearchModalAccountActivationForm');
+                accact_form.find('input[type="submit"]').trigger('click');
+                <?php } ?>
+                });
             </script>
             <?php
         }
     }
-
 }
-
 // class JobSearch_Login_Registration_Template 
 $JobSearch_Login_Registration_Popup_obj = new JobSearch_Login_Registration_Popup();

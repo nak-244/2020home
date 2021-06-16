@@ -12,12 +12,13 @@ if (!defined('ABSPATH')) {
 
 add_filter('wp_authenticate_user', 'jobsearch_ghghgh_user_auth_callback', 11, 2);
 
-function jobsearch_ghghgh_user_auth_callback($user, $password = '') {
+function jobsearch_ghghgh_user_auth_callback($user, $password = '')
+{
     global $pagenow;
     ob_start();
     ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
+    <script type="text/javascript">
         jQuery(document).on('click', '.jobsearch-resend-accactbtn', function (e) {
             e.preventDefault();
             var _this = jQuery(this);
@@ -55,7 +56,7 @@ function jobsearch_ghghgh_user_auth_callback($user, $password = '') {
     if ($user_login_auth == '0') {
         $user_login = $user->user_login;
         $errors = new WP_Error();
-        
+
         $active_popup_btnmsg = ' ' . __('If you have activation code then <a href="javascript:void(0);" class="jobsearch-activcode-popupbtn">Click here</a> to activate account.', 'wp-jobsearch');
 
         if ($pagenow == 'wp-login.php') {
@@ -80,10 +81,12 @@ function jobsearch_ghghgh_user_auth_callback($user, $password = '') {
 }
 
 // main plugin class
-class Jobsearch_Login_Registration_Submit {
+class Jobsearch_Login_Registration_Submit
+{
 
     // hook things up
-    public function __construct() {
+    public function __construct()
+    {
         add_action('wp_ajax_jobsearch_login_member_submit', array($this, 'jobsearch_login_member_submit_callback'), 1);
         add_action('wp_ajax_nopriv_jobsearch_login_member_submit', array($this, 'jobsearch_login_member_submit_callback'), 1);
         add_action('wp_ajax_nopriv_jobsearch_reset_password', array($this, 'jobsearch_reset_password_callback'), 1);
@@ -105,10 +108,16 @@ class Jobsearch_Login_Registration_Submit {
         add_action('wp_ajax_nopriv_jobsearch_activememb_accont_by_activation_url', array($this, 'user_account_activation'));
 
         add_action('user_register', array($this, 'jobsearch_registration_save'), 10, 1);
-        //add_action('wp_login', array($this, 'jobsearch_login_function'), 10, 2);
+        add_action('jobsearch_when_user_update_at_bkend', array($this, 'jobsearch_registration_save'), 10, 1);
+        
+        // for mobile reg
+        add_action('wp_ajax_jobsearch_check_mob_no_otp', array($this, 'sendcheck_mob_no_otp'));
+        add_action('wp_ajax_nopriv_jobsearch_check_mob_no_otp', array($this, 'sendcheck_mob_no_otp'));
     }
 
-    public function demo_user_login() {
+    public function demo_user_login()
+    {
+
         global $jobsearch_plugin_options;
         $user_type = isset($_POST['user_type']) ? $_POST['user_type'] : '';
         $demo_candidate = isset($jobsearch_plugin_options['demo_candidate']) ? $jobsearch_plugin_options['demo_candidate'] : '';
@@ -121,13 +130,16 @@ class Jobsearch_Login_Registration_Submit {
         if ($user_type == 'employer') {
             $_demo_user_obj = get_user_by('login', $demo_employer);
             if (isset($_demo_user_obj->ID)) {
+                apply_filters('update_login_status', '', $_demo_user_obj);
                 wp_set_current_user($_demo_user_obj->ID, $_demo_user_obj->user_login);
                 wp_set_auth_cookie($_demo_user_obj->ID);
                 echo json_encode(array('redirect' => $page_url, 'msg' => ''));
             }
         } else {
             $_demo_user_obj = get_user_by('login', $demo_candidate);
+
             if (isset($_demo_user_obj->ID)) {
+                apply_filters('update_login_status', '', $_demo_user_obj);
                 wp_set_current_user($_demo_user_obj->ID, $_demo_user_obj->user_login);
                 wp_set_auth_cookie($_demo_user_obj->ID);
                 echo json_encode(array('redirect' => $page_url, 'msg' => ''));
@@ -136,13 +148,15 @@ class Jobsearch_Login_Registration_Submit {
         die;
     }
 
-    public function jobsearch_login_member_submit_callback() {
+    public function jobsearch_login_member_submit_callback()
+    {
         global $jobsearch_plugin_options;
         // Get variables
 
         $user_login = $_POST['pt_user_login'];
         $user_pass = $_POST['pt_user_pass'];
-        
+        $remember_password = isset($_POST['remember_password']) && $_POST['remember_password'] == 'on' ? true : false;
+
         $before_signon_error = false;
 
         $wredirct_url = isset($_POST['jobsearch_wredirct_url']) ? $_POST['jobsearch_wredirct_url'] : '';
@@ -151,10 +165,10 @@ class Jobsearch_Login_Registration_Submit {
         $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
         $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
         $page_url = jobsearch_wpml_lang_page_permalink($user_dashboard_page, 'page'); //get_permalink($user_dashboard_page);
+
         //
-        if ($wredirct_url != '') {
-            $page_url = $wredirct_url;
-        }
+        $cand_opt_redirect_url = isset($jobsearch_plugin_options['cand-login-redirect-url']) ? $jobsearch_plugin_options['cand-login-redirect-url'] : '';
+        $emp_opt_redirect_url = isset($jobsearch_plugin_options['emp-login-redirect-url']) ? $jobsearch_plugin_options['emp-login-redirect-url'] : '';
 
         // for already logged-in user
         if (is_user_logged_in()) {
@@ -162,11 +176,6 @@ class Jobsearch_Login_Registration_Submit {
                 echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Please fill all form fields', 'wp-jobsearch') . '</div>'));
             }
             wp_logout();
-        }
-
-        // Check CSRF token
-        if (!check_ajax_referer('ajax-login-nonce', 'login-security', false)) {
-            //echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Session token has expired, please reload the page and try again', 'wp-jobsearch') . '</div>'));
         }
 
         // Check if input variables are empty
@@ -183,20 +192,44 @@ class Jobsearch_Login_Registration_Submit {
                 $user_objj = get_user_by('login', $user_login);
             }
             $user_id = isset($user_objj->ID) ? $user_objj->ID : '0';
+
+            $user_is_candiadte = jobsearch_user_is_candidate($user_id);
+            $user_is_employer = jobsearch_user_is_employer($user_id);
+
             $user_login_auth = get_user_meta($user_id, 'jobsearch_accaprov_allow', true);
+
+            $not_active_popup_btnmsg = sprintf(__('Before you can login, you must active your account with the code sent to your email address. If you did not receive this email, please check your junk/spam folder. <a href="javascript:void(0);" class="jobsearch-resend-accactbtn" %s >Click here</a> to resend the activation email.', 'wp-jobsearch'), 'data-login="' . $user_login . '"');
+
             if ($user_login_auth == '0' && isset($user_objj->ID)) {
-                echo json_encode(array('error' => false, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . apply_filters('jobsearch_loginerr_msg_no_activ_account', __('Before you can login, you must active your account with the code sent to your email address. If you did not receive this email, please check your junk/spam folder. <a href="javascript:void(0);" class="jobsearch-resend-accactbtn" data-login="' . $user_login . '">Click here</a> to resend the activation email.', 'wp-jobsearch'), $user_login) . $active_popup_btnmsg . '</div>'));
+                echo json_encode(array('error' => false, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . apply_filters('jobsearch_loginerr_msg_no_activ_account', $not_active_popup_btnmsg, $user_login) . $active_popup_btnmsg . '</div>'));
                 die;
             }
-            
+
             $before_signon_error = apply_filters('jobsearch_user_login_err_before_signon', $before_signon_error, $user_login, $user_pass);
 
             if ($before_signon_error) {
                 echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $before_signon_error . '</div>'));
                 die;
             }
-          
-            $user = wp_signon(array('user_login' => $user_login, 'user_password' => $user_pass), true);
+
+            // setting redirect url here
+            if ($user_is_candiadte && $cand_opt_redirect_url != '') {
+                $page_url = esc_url_raw($cand_opt_redirect_url);
+            } else if ($user_is_employer && $emp_opt_redirect_url != '') {
+                $page_url = esc_url_raw($emp_opt_redirect_url);
+            }
+
+            if ($wredirct_url != '') {
+                $page_url = $wredirct_url;
+            }
+
+            $creds = array();
+            $creds['user_login'] = $user_login;
+            $creds['user_password'] = $user_pass;
+            $creds['remember'] = $remember_password;
+
+            $user = wp_signon($creds, false);
+
 
             if (is_wp_error($user)) {
                 $errors_html = wp_kses($user->get_error_message(), array('strong' => array(), 'p' => array()));
@@ -211,11 +244,13 @@ class Jobsearch_Login_Registration_Submit {
                     'wredirct_url' => $wredirct_url,
                 );
                 echo apply_filters('jobsearch_after_logged_in_before_msg', '', $login_args);
-                
+
                 $cur_user_obj = get_user_by('ID', $user_id);
-                if (in_array('administrator', (array) $cur_user_obj->roles)) {
-                    wp_set_current_user($cur_user_obj->ID, $cur_user_obj->user_login);
-                    wp_set_auth_cookie($cur_user_obj->ID);
+
+                wp_set_current_user($cur_user_obj->ID, $cur_user_obj->user_login);
+                wp_set_auth_cookie($cur_user_obj->ID);
+                
+                if (in_array('administrator', (array)$cur_user_obj->roles)) {
                     $page_url = admin_url();
                 }
 
@@ -226,15 +261,12 @@ class Jobsearch_Login_Registration_Submit {
         die();
     }
 
-    public function jobsearch_reset_password_callback() {
+    public function jobsearch_reset_password_callback()
+    {
         // Get variables
         $username_or_email = $_POST['pt_user_or_email'];
 
-        // Check CSRF token
-        if (!check_ajax_referer('ajax-login-nonce', 'password-security', false)) {
-            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Session token has expired, please reload the page and try again', 'wp-jobsearch') . '</div>'));
-        } // Check if input variables are empty
-        elseif (empty($username_or_email)) {
+        if (empty($username_or_email)) {
             echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Please fill all form fields', 'wp-jobsearch') . '</div>'));
         } else {
 
@@ -261,7 +293,8 @@ class Jobsearch_Login_Registration_Submit {
         die();
     }
 
-    private function lost_password_retrieve($user_input) {
+    private function lost_password_retrieve($user_input)
+    {
 
         global $wpdb, $wp_hasher;
         $errors = new WP_Error();
@@ -314,10 +347,10 @@ class Jobsearch_Login_Registration_Submit {
         if (is_multisite())
             $blogname = $GLOBALS['current_site']->site_name;
         else
-        /*
-         * The blogname option is escaped with esc_html on the way into the database
-         * in sanitize_option we want to reverse this for the plain text arena of emails.
-         */
+            /*
+             * The blogname option is escaped with esc_html on the way into the database
+             * in sanitize_option we want to reverse this for the plain text arena of emails.
+             */
             $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
         $title = sprintf(__('[%s] Password Reset', 'wp-jobsearch'), $blogname);
@@ -351,7 +384,8 @@ class Jobsearch_Login_Registration_Submit {
         return true;
     }
 
-    public function reset_password_form() {
+    public function reset_password_form()
+    {
         $user_login = isset($_GET['login']) ? $_GET['login'] : '';
         $reg_key = isset($_GET['key']) ? $_GET['key'] : '';
         $get_action = isset($_GET['login_action']) ? $_GET['login_action'] : '';
@@ -380,7 +414,7 @@ class Jobsearch_Login_Registration_Submit {
                         'p_user_login' => '',
                         'p_reg_key' => '',
                         'p_user_id' => '',
-                                    ), $popup_args));
+                    ), $popup_args));
                     ?>
                     <div class="jobsearch-modal fade" id="JobSearchModalResetPassForm">
                         <div class="modal-inner-area">&nbsp;</div>
@@ -399,7 +433,8 @@ class Jobsearch_Login_Registration_Submit {
                                                         <?php echo esc_html__('New Password', 'wp-jobsearch'); ?>:
                                                     </label>
                                                     <div class="input-field">
-                                                        <input type="password" class="jobsearch_chk_passfield" name="new_pass"/>
+                                                        <input type="password" class="jobsearch_chk_passfield"
+                                                               name="new_pass"/>
                                                         <span class="passlenth-chk-msg"></span>
                                                     </div>
                                                 </li>
@@ -413,7 +448,9 @@ class Jobsearch_Login_Registration_Submit {
                                                 </li>
                                                 <li>
                                                     <div class="input-field-submit">
-                                                        <input type="submit" class="user-passreset-submit-btn jobsearch-regpass-frmbtn jobsearch-disable-btn" disabled
+                                                        <input type="submit"
+                                                               class="user-passreset-submit-btn jobsearch-regpass-frmbtn jobsearch-disable-btn"
+                                                               disabled
                                                                data-id="<?php echo($p_user_id) ?>"
                                                                data-key="<?php echo($p_reg_key) ?>"
                                                                value="<?php esc_html_e('Reset Password', 'wp-jobsearch'); ?>"/>
@@ -429,8 +466,10 @@ class Jobsearch_Login_Registration_Submit {
                             </div>
                         </div>
                     </div>
-                    <script>
-                        jobsearch_modal_popup_open('JobSearchModalResetPassForm');
+                    <script type="text/javascript">
+                        jQuery(document).ready(function () {
+                            jobsearch_modal_popup_open('JobSearchModalResetPassForm');
+                        });
                     </script>
                     <?php
                 }, 99, 1);
@@ -438,7 +477,8 @@ class Jobsearch_Login_Registration_Submit {
         }
     }
 
-    public function reset_password_from_redirect() {
+    public function reset_password_from_redirect()
+    {
         $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : '';
         $user_key = isset($_POST['user_key']) ? $_POST['user_key'] : '';
         $new_pass = isset($_POST['new_pass']) ? $_POST['new_pass'] : '';
@@ -466,12 +506,15 @@ class Jobsearch_Login_Registration_Submit {
         die;
     }
 
-    public function user_account_activation() {
+    public function user_account_activation()
+    {
         $jobsearch__options = get_option('jobsearch_plugin_options');
-        
         $user_dashboard_page = isset($jobsearch__options['user-dashboard-template-page']) ? $jobsearch__options['user-dashboard-template-page'] : '';
         $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
         $page_url = jobsearch_wpml_lang_page_permalink($user_dashboard_page, 'page');
+
+        $cand_opt_redirect_url = isset($jobsearch_plugin_options['cand-login-redirect-url']) ? $jobsearch_plugin_options['cand-login-redirect-url'] : '';
+        $emp_opt_redirect_url = isset($jobsearch_plugin_options['emp-login-redirect-url']) ? $jobsearch_plugin_options['emp-login-redirect-url'] : '';
 
         $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : '';
         $active_code = isset($_POST['active_code']) ? $_POST['active_code'] : '';
@@ -483,8 +526,17 @@ class Jobsearch_Login_Registration_Submit {
         $user_id = isset($c_user->ID) ? $c_user->ID : '';
         $user_s_key = get_user_meta($user_id, 'jobsearch_accaprov_key', true);
 
+        do_action('jobsearch_before_user_acc_activation_incall', $user_id);
+
         $user_is_candidate = jobsearch_user_is_candidate($user_id);
         $user_is_employer = jobsearch_user_is_employer($user_id);
+
+        // setting redirect url here
+        if ($user_is_candiadte && $cand_opt_redirect_url != '') {
+            $page_url = esc_url_raw($cand_opt_redirect_url);
+        } else if ($user_is_employer && $emp_opt_redirect_url != '') {
+            $page_url = esc_url_raw($emp_opt_redirect_url);
+        }
 
         if ($active_code == $user_s_key) {
             if ($user_is_candidate && $candidate_auto_approve == 'email') {
@@ -496,9 +548,10 @@ class Jobsearch_Login_Registration_Submit {
                 update_post_meta($employer_id, 'jobsearch_field_employer_approved', 'on');
             }
             update_user_meta($user_id, 'jobsearch_accaprov_allow', '1');
-            
+
             $user_pass = get_user_meta($user_id, 'jobsearch_new_user_regtpass', true);
             if ($user_pass != '') {
+                $user_pass = base64_decode($user_pass);
                 do_action('jobsearch_new_user_register', $c_user, $user_pass);
             }
             wp_set_current_user($user_id, $c_user->user_login);
@@ -510,7 +563,8 @@ class Jobsearch_Login_Registration_Submit {
         die;
     }
 
-    public function resend_user_account_activation() {
+    public function resend_user_account_activation()
+    {
         $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : '';
 
         $user_pass = '';
@@ -527,7 +581,9 @@ class Jobsearch_Login_Registration_Submit {
             $accaprov_key_resent = get_user_meta($user_id, 'jobsearch_accaprov_key_resent', true);
 
             if ($accaprov_key_resent != '1') {
-                
+
+                do_action('jobsearch_before_user_resent_activation_incall', $user_id, $user_objj);
+
                 $user_is_candidate = jobsearch_user_is_candidate($user_id);
                 $user_is_employer = jobsearch_user_is_employer($user_id);
 
@@ -540,7 +596,7 @@ class Jobsearch_Login_Registration_Submit {
 
                     update_user_meta($user_id, 'jobsearch_accaprov_key_resent', '1');
 
-                    echo json_encode(array('success' => '1'));
+                    echo json_encode(array('success' => '1', 'msg' => ''));
                     die;
                 }
                 //
@@ -553,26 +609,33 @@ class Jobsearch_Login_Registration_Submit {
 
                     update_user_meta($user_id, 'jobsearch_accaprov_key_resent', '1');
 
-                    echo json_encode(array('success' => '1'));
+                    echo json_encode(array('success' => '1', 'msg' => ''));
                     die;
                 }
             }
+            echo json_encode(array('success' => '0', 'msg' => esc_html__('Resent activation email limit exceeded. Please contact the admin.', 'wp-jobsearch')));
+            die;
         }
-        echo json_encode(array('success' => '0'));
+        echo json_encode(array('success' => '0', 'msg' => ''));
         die;
     }
 
     // REGISTER
-    public function jobsearch_register_member_submit_callback() {
-
+    public function jobsearch_register_member_submit_callback()
+    {
         global $jobsearch_plugin_options;
-
+        //
+        $cand_opt_redirect_url = isset($jobsearch_plugin_options['cand-login-redirect-url']) ? $jobsearch_plugin_options['cand-login-redirect-url'] : '';
+        $emp_opt_redirect_url = isset($jobsearch_plugin_options['emp-login-redirect-url']) ? $jobsearch_plugin_options['emp-login-redirect-url'] : '';
 
         $pass_from_user = isset($jobsearch_plugin_options['signup_user_password']) ? $jobsearch_plugin_options['signup_user_password'] : '';
 
         $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
         $employer_auto_approve = isset($jobsearch_plugin_options['employer_auto_approve']) ? $jobsearch_plugin_options['employer_auto_approve'] : '';
 
+        $signup_user_phone = isset($jobsearch_plugin_options['signup_user_phone']) ? $jobsearch_plugin_options['signup_user_phone'] : '';
+
+        $_POST = jobsearch_input_post_vals_validate($_POST);
         // Get variables
         $user_login = isset($_POST['pt_user_login']) ? $_POST['pt_user_login'] : '';
         $user_email = isset($_POST['pt_user_email']) ? $_POST['pt_user_email'] : '';
@@ -583,12 +646,15 @@ class Jobsearch_Login_Registration_Submit {
         if ($user_login == '' && $user_email != '') {
             $user_login = $user_email;
         }
+        
+        $user_email = apply_filters('jobsearch_user_reg_submit_post_useremail', $user_email);
+        $user_login = apply_filters('jobsearch_user_reg_submit_post_username', $user_login);
 
         $user_role = isset($_POST['pt_user_role']) ? $_POST['pt_user_role'] : '';
         $wredirct_url = isset($_POST['jobsearch_wredirct_url']) ? $_POST['jobsearch_wredirct_url'] : '';
         $extra_params = isset($_POST['extra_login_params']) ? $_POST['extra_login_params'] : '';
 
-        $user_role_array = array('jobsearch_candidate', 'jobsearch_employer');
+        $user_role_array = apply_filters('jobsearch_user_roles_check_arr_reg_callback', array('jobsearch_candidate', 'jobsearch_employer'));
         if (!in_array($user_role, $user_role_array)) {
             $user_role = 'jobsearch_candidate';
         }
@@ -600,65 +666,93 @@ class Jobsearch_Login_Registration_Submit {
         $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
         $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
         $page_url = jobsearch_wpml_lang_page_permalink($user_dashboard_page, 'page'); //get_permalink($user_dashboard_page);
-        //
-        if ($wredirct_url != '') {
-            $page_url = $wredirct_url;
-        }
+
         // Check CSRF token
         if (!check_ajax_referer('ajax-login-nonce', 'register-security', false)) {
             echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Session token has expired, please reload the page and try again', 'wp-jobsearch') . '</div>'));
             die();
-        } // Check if input variables are empty
-        else if (empty($user_login) || empty($user_email) || empty($user_pass) || empty($user_cpass)) {
-            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Please fill all form fields', 'wp-jobsearch') . '</div>'));
-            die();
         }
-        if ($user_role == 'jobsearch_employer' && isset($_POST['pt_user_organization']) && $_POST['pt_user_organization'] == '') {
-            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Organization Name is ajobsearch-register-submit-btn required field.', 'wp-jobsearch') . '</div>'));
-            die();
+        
+        if (apply_filters('jobsearch_user_reg_submit_email_validate', true)) {
+            if ($user_email == '') {
+                $msg = esc_html__('Email address is a required field.', 'wp-jobsearch');
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
+                die();
+            }
+            if ($user_email != '' && filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+                $user_email = esc_html($user_email);
+                if (email_exists($user_email)) {
+                    $msg = esc_html__('Sorry! This email is already taken.', 'wp-jobsearch');
+                    echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
+                    die();
+                }
+            } else {
+                $msg = esc_html__('Please Enter a valid email.', 'wp-jobsearch');
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
+                die();
+            }
         }
-        if ($user_email != '' && filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-            $user_email = esc_html($user_email);
-        } else {
-            $msg = esc_html__('Please Enter a valid email.', 'wp-jobsearch');
-            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
-            die();
+        if (apply_filters('jobsearch_user_reg_submit_password_validate', true)) {
+            if (empty($user_pass)) {
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Password field is required.', 'wp-jobsearch') . '</div>'));
+                die();
+            }
         }
+        if (apply_filters('jobsearch_user_reg_submit_company_name_validate', true)) {
+            if ($user_role == 'jobsearch_employer' && isset($_POST['pt_user_organization']) && $_POST['pt_user_organization'] == '') {
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Organization Name is a required field.', 'wp-jobsearch') . '</div>'));
+                die();
+            }
+        }
+
+        if (apply_filters('jobsearch_user_reg_submit_username_validate', true)) {
+            if (preg_match("/\\s/", $user_login)) {
+                // there are spaces
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Username is incorrect.', 'wp-jobsearch') . '</div>'));
+                die();
+            }
+        }
+
+        if ($signup_user_phone == 'on_req' && apply_filters('jobsearch_user_reg_submit_phone_validate', true)) {
+            $user_phone = isset($_POST['pt_user_phone']) ? $_POST['pt_user_phone'] : '';
+            if ($user_phone == '') {
+                $msg = esc_html__('Please enter your phone number.', 'wp-jobsearch');
+                echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
+                die();
+            }
+        }
+
         $user_ptype = 'candidate';
         if ($user_role == 'jobsearch_employer') {
             $user_ptype = 'employer';
         }
-        do_action('jobsearch_register_custom_fields_error', 0, $user_ptype);
+        $user_ptype = apply_filters('jobsearch_in_user_reg_custom_fields_error_ptype', $user_ptype);
+        //
+        if (apply_filters('jobsearch_user_reg_submit_cus_fields_validate', true)) {
+            do_action('jobsearch_register_custom_fields_error', 0, $user_ptype);
+        }
 
-        if ($user_pass != $user_cpass) {
+        if ($user_pass != $user_cpass && apply_filters('jobsearch_user_reg_submit_conf_pass_validate', true)) {
             echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Confirm password field does not match with your password.', 'wp-jobsearch') . '</div>'));
             die();
         }
 
-        if (username_exists($user_login)) {
+        if (username_exists($user_login) && apply_filters('jobsearch_user_reg_submit_username_exst_validate', true)) {
             //$user_login = $user_login . rand(1000000, 9999999);
             $msg = esc_html__('Username already exists. Please try another username.', 'wp-jobsearch');
             echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . $msg . '</div>'));
             die();
         }
 
-        if (preg_match("/\\s/", $user_login)) {
-            // there are spaces
-            echo json_encode(array('error' => true, 'message' => '<div class="alert alert-danger"><i class="fa fa-times"></i> ' . __('Username is incorrect.', 'wp-jobsearch') . '</div>'));
-            die();
+        if (apply_filters('jobsearch_user_reg_submit_recaptcha_validate', true)) {
+            jobsearch_captcha_verify();
         }
-
-        jobsearch_captcha_verify();
-
         
         $create_user = wp_create_user($user_login, $user_pass, $user_email);
 
         if (is_wp_error($create_user)) {
-
             $registration_error_messages = $create_user->errors;
-
             $display_errors = '<div class="alert alert-danger">';
-
             foreach ($registration_error_messages as $error) {
                 $display_errors .= '<p>' . $error[0] . '</p>';
             }
@@ -667,9 +761,10 @@ class Jobsearch_Login_Registration_Submit {
 
             echo json_encode(array('error' => true, 'message' => $display_errors));
         } else {
+            $set_user_role = apply_filters('jobsearch_user_in_register_set_role', $user_role);
             $update_user_arr = array(
                 'ID' => $create_user,
-                'role' => $user_role
+                'role' => $set_user_role
             );
 
             if (isset($_POST['pt_user_fname']) && $_POST['pt_user_fname'] != '') {
@@ -681,6 +776,10 @@ class Jobsearch_Login_Registration_Submit {
 
             wp_update_user($update_user_arr);
             $user_id = $create_user;
+            do_action('jobsearch_green_tech_save_inputs', $user_id, $_POST);
+            
+            do_action('jobsearch_user_regform_fields_saving', $user_id);
+
             $_user_obj = get_user_by('ID', $create_user);
             $user_is_candidate = jobsearch_user_is_candidate($user_id);
             $user_is_employer = jobsearch_user_is_employer($user_id);
@@ -693,6 +792,18 @@ class Jobsearch_Login_Registration_Submit {
                     wp_set_current_user($_user_obj->ID, $_user_obj->user_login);
                     wp_set_auth_cookie($_user_obj->ID);
                 }
+            }
+
+            // setting redirect url here
+            if ($user_is_candiadte && $cand_opt_redirect_url != '') {
+                $page_url = esc_url_raw($cand_opt_redirect_url);
+            } else if ($user_is_employer && $emp_opt_redirect_url != '') {
+                $page_url = esc_url_raw($emp_opt_redirect_url);
+            }
+
+            //
+            if ($wredirct_url != '') {
+                $page_url = $wredirct_url;
             }
 
             //
@@ -729,7 +840,7 @@ class Jobsearch_Login_Registration_Submit {
             // to admin
             do_action('jobsearch_new_user_reg_toadmin', $c_user, $user_pass);
             //
-            
+
             $send_reg_email = true;
             if ($user_is_candidate) {
                 if ($candidate_auto_approve == 'email' || $candidate_auto_approve == 'admin_email') {
@@ -756,6 +867,7 @@ class Jobsearch_Login_Registration_Submit {
             if ($send_reg_email) {
                 do_action('jobsearch_new_user_register', $c_user, $user_pass);
             } else {
+                $user_pass = base64_encode($user_pass);
                 update_user_meta($user_id, 'jobsearch_new_user_regtpass', $user_pass);
             }
         }
@@ -763,10 +875,13 @@ class Jobsearch_Login_Registration_Submit {
         die();
     }
 
-    public function jobsearch_registration_save($user_id) {
-        global $jobsearch_plugin_options, $sitepress;
+    public function jobsearch_registration_save($user_id)
+    {
+        global $jobsearch_plugin_options, $sitepress, $wpdb;
         $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
         $employer_auto_approve = isset($jobsearch_plugin_options['employer_auto_approve']) ? $jobsearch_plugin_options['employer_auto_approve'] : '';
+
+        $_POST = jobsearch_input_post_vals_validate($_POST);
 
         $user_role = isset($_POST['pt_user_role']) ? $_POST['pt_user_role'] : '';
 
@@ -784,6 +899,12 @@ class Jobsearch_Login_Registration_Submit {
             }
         }
 
+        //
+        $to_allow_makepost = apply_filters('jobsearch_reguser_allow_to_makepost', 'yes', $user_id);
+        if ($to_allow_makepost == 'no') {
+            return false;
+        }
+
         if ($user_role == 'jobsearch_employer') {
             $memb_profile_name = $user_obj->display_name;
             if (isset($_POST['pt_user_fname']) && $_POST['pt_user_fname'] != '') {
@@ -792,11 +913,11 @@ class Jobsearch_Login_Registration_Submit {
                     $memb_profile_name .= ' ' . $_POST['pt_user_lname'];
                 }
             }
-            
+
             if (isset($_POST['pt_user_organization']) && $_POST['pt_user_organization'] != '') {
                 $memb_profile_name = sanitize_text_field($_POST['pt_user_organization']);
             }
-            
+
             $post_status = 'publish';
             if (isset($_POST['public_profile_visible']) && $_POST['public_profile_visible'] == 'no') {
                 $post_status = 'draft';
@@ -871,7 +992,7 @@ class Jobsearch_Login_Registration_Submit {
             //
             update_user_meta($user_id, 'jobsearch_employer_id', $employer_id);
             do_action('jobsearch_user_data_save_onprofile', $user_id, $employer_id, 'employer');
-            
+
             do_action('jobsearch_employer_register_on_signup', $user_id, $employer_id, 'employer');
 
         } else {
@@ -882,7 +1003,7 @@ class Jobsearch_Login_Registration_Submit {
                 $pos_emails[] = 'emp-dummy' . $i . '@eyecix.com';
             }
             if (!in_array($user_obj->user_email, $pos_emails)) {
-                
+
                 $memb_profile_name = $user_obj->display_name;
                 if (isset($_POST['pt_user_fname']) && $_POST['pt_user_fname'] != '') {
                     $memb_profile_name = $_POST['pt_user_fname'];
@@ -890,13 +1011,21 @@ class Jobsearch_Login_Registration_Submit {
                         $memb_profile_name .= ' ' . $_POST['pt_user_lname'];
                     }
                 }
-                
+
                 $memb_profile_name = str_replace(array('-', '_'), array(' ', ' '), $memb_profile_name);
 
                 $post_status = 'publish';
                 if (isset($_POST['public_profile_visible']) && $_POST['public_profile_visible'] == 'no') {
                     $post_status = 'draft';
                 }
+
+                $user_def_array = array(
+                    'ID' => $user_id,
+                    'display_name' => $memb_profile_name,
+                );
+
+                wp_update_user($user_def_array);
+
                 $candidate_post = array(
                     'post_title' => $memb_profile_name,
                     'post_type' => 'candidate',
@@ -935,7 +1064,7 @@ class Jobsearch_Login_Registration_Submit {
                     $user_sector = sanitize_text_field($_POST['pt_user_category']);
                     wp_set_post_terms($candidate_id, array($user_sector), 'sector', false);
                 }
-                
+
                 // cv file
                 $atach_url = jobsearch_upload_candidate_cv('candidate_cv_file', $candidate_id);
 
@@ -1005,6 +1134,8 @@ class Jobsearch_Login_Registration_Submit {
         }
 
         do_action('jobsearch_member_after_making_cand_or_emp', $user_id, $user_role);
+
+        jobsearch_onuser_update_wc_update($user_id);
 
         //remove user admin bar
         update_user_option($user_id, 'show_admin_bar_front', false);

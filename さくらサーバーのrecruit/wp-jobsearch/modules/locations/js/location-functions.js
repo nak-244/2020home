@@ -46,6 +46,7 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
     var flyToCond = false;
     var fadresVal = jQuery('input[name=jobsearch_field_location_address]').val();
     
+    //console.log(jQuery('#cityId').val());
     if (_this.attr('id') == 'countryId') {
         jQuery('#stateId').val('');
         jQuery('#cityId').val('');
@@ -53,6 +54,7 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
     if (_this.attr('id') == 'stateId') {
         jQuery('#cityId').val('');
     }
+    //console.log(_this.attr('id'));
     if (fadresVal != '') {
         flyToCond = false;
     } else {
@@ -65,6 +67,7 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
     var locAddr = _this.val();
     if (locAddr != '' && is_map_allow != 'no' && flyToCond === true) {
         var newAddr = '';
+        //console.log(cityVal);
         if (cityVal != '' && cityVal != null) {
             var comaDelb = '';
             if (stateVal != '' || contryVal != '') {
@@ -72,7 +75,7 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
             }
             newAddr += cityVal + comaDelb;
         }
-        if (stateVal != '' && stateVal != null) {
+        if (stateVal != '' && stateVal != null && newAddr == '') {
             var comaDelb = '';
             if (contryVal != '') {
                 comaDelb = ', ';
@@ -82,8 +85,11 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
         if (contryVal != '') {
             newAddr += contryVal;
         }
+        console.log(newAddr);
+
         if (locMapType == 'mapbox' && mapbox_access_token != '') {
             var cords_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURI(newAddr) + '.json?access_token=' + mapbox_access_token;
+            console.log(cords_url);
             jobsearch_common_getJSON(cords_url, function(status, response) {
                 //console.log(response);
                 if (typeof response.features[0].geometry.coordinates !== 'undefined') {
@@ -116,18 +122,59 @@ function jobsearch_loc_levels_to_mapcords(_this, rand_num) {
                     }
                 }
             });
+        } else {
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({address: newAddr}, function (results, status) {
+
+                //alert(addres);
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var new_latitude = results[0].geometry.location.lat();
+                    var new_longitude = results[0].geometry.location.lng();
+                    document.getElementById("jobsearch_location_lat_" + rand_num).value = new_latitude;
+                    document.getElementById("jobsearch_location_lng_" + rand_num).value = new_longitude;
+                    //
+                    map.setCenter(results[0].geometry.location);//center the map over the result
+
+                    // clear markers
+                    for (var i = 0; i < markers.length; i++) {
+                        markers[i].setMap(null);
+                    }
+
+                    //place a marker at the location
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        draggable: true,
+                        title: '',
+                    });
+
+                    markers.push(marker);
+
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        document.getElementById("jobsearch_location_lat_" + rand_num).value = this.getPosition().lat();
+                        document.getElementById("jobsearch_location_lng_" + rand_num).value = this.getPosition().lng();
+                    });
+                }
+            });
         }
     }
     //
 }
 
-jQuery(document).on('change', '#countryId,#stateId,#cityId', function () {
+jQuery(document).on('change', '#countryId,#stateId,#cityId,select[name^=jobsearch_field_location_location]', function () {
     var _this = jQuery(this);
     var this_rand = _this.attr('data-randid');
     if (typeof this_rand === 'undefined') {
         this_rand = _this.parents('li').attr('data-randid');
     }
-    jobsearch_loc_levels_to_mapcords(_this, this_rand);
+    if (_this.attr('id') == 'cityId') {
+        var chngeCityLocIntrvl = setInterval(function() {
+            jobsearch_loc_levels_to_mapcords(_this, this_rand);
+            clearInterval(chngeCityLocIntrvl);
+        }, 1000);
+    } else {
+        jobsearch_loc_levels_to_mapcords(_this, this_rand);
+    }
 });
 
 jQuery(document).ready(function () {

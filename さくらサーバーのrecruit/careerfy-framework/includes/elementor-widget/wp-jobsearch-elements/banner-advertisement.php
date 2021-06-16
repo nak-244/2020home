@@ -1,18 +1,14 @@
 <?php
-
 namespace CareerfyElementor\Widgets;
-
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
 if (!defined('ABSPATH')) exit;
-
 /**
  * @since 1.1.0
  */
 class BannerAdvertisement extends Widget_Base
 {
-
     /**
      * Retrieve the widget name.
      *

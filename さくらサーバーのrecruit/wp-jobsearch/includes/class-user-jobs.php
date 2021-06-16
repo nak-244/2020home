@@ -9,7 +9,7 @@ class Jobsearch_User_Job_Functions {
     public function __construct() {
         //
 
-        add_action('wp_loaded', array($this, 'user_job_header'));
+        add_action('wp', array($this, 'user_job_header'));
 
         //
         add_action('jobsearch_add_new_package_fields_for_job', array($this, 'add_new_package_fields_for_job'), 10, 2);
@@ -26,6 +26,8 @@ class Jobsearch_User_Job_Functions {
         add_action('jobsearch_add_featjob_id_to_order', array($this, 'add_featjob_id_to_order'), 10, 2);
         //
         add_action('jobsearch_add_allinjob_id_to_order', array($this, 'add_allinjob_id_to_order'), 10, 2);
+        //
+        add_action('jobsearch_add_emprofjob_id_to_order', array($this, 'add_emprofjob_id_to_order'), 10, 2);
 
         //
         add_action('jobsearch_create_new_job_packg_order', array($this, 'create_new_job_packg_order'), 10, 2);
@@ -42,19 +44,43 @@ class Jobsearch_User_Job_Functions {
      */
 
     public function user_job_header() {
-        global $jobsearch_plugin_options, $sitepress, $job_form_errs, $package_form_errs;
+        global $jobsearch_plugin_options, $sitepress, $job_with_alrdyreg_user, $job_userreg_withmail, $job_form_errs, $package_form_errs;
+
+        $user_id = get_current_user_id();
+        $user_id = apply_filters('jobsearch_job_postinhder_top_user_id', $user_id);
+        
+        $edit_the_joballow = isset($jobsearch_plugin_options['dash_edit_the_job']) ? $jobsearch_plugin_options['dash_edit_the_job'] : '';
 
         $free_jobs_allow = isset($jobsearch_plugin_options['free-jobs-allow']) ? $jobsearch_plugin_options['free-jobs-allow'] : '';
         $page_id = $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
         $page_id = $user_dashboard_page = jobsearch__get_post_id($page_id, 'page');
         $page_url = jobsearch_wpml_lang_page_permalink($page_id, 'page'); //get_permalink($page_id);
+        
+        if ($edit_the_joballow != 'on' && isset($_GET['tab']) && $_GET['tab'] == 'user-job' && isset($_GET['job_id'])) {
+            
+            $goto_redirect = true;
+            if (isset($_GET['step']) && ($_GET['step'] == 'package' || $_GET['step'] == 'confirm')) {
+                $goto_redirect = false;
+            }
+            
+            if ($goto_redirect) {
+                wp_safe_redirect(add_query_arg(array('tab' => 'user-job'), $page_url));
+                exit();
+            }
+        }
+        
         // job post/update actions
+        $job_userreg_withmail = false;
+        $job_with_alrdyreg_user = false;
         $job_form_errs = $package_form_errs = array();
+        
+        $this_page_id = get_the_ID();
         if (isset($_POST['user_job_posting']) && $_POST['user_job_posting'] == '1') {
 
+            $_POST = jobsearch_input_post_vals_validate($_POST);
+            
             $do_insert_job = $do_update_job = false;
 
-            $user_id = get_current_user_id();
             $user_obj = get_user_by('ID', $user_id);
 
             if (jobsearch_employer_not_allow_to_mod()) {
@@ -91,62 +117,6 @@ class Jobsearch_User_Job_Functions {
                     $job_form_errs['post_errors'] = esc_html__('Only an employer can post a job.', 'wp-jobsearch');
                 }
             }
-            if (!is_user_logged_in() && isset($_POST['reg_user_email'])) {
-                $signup_username_allow = isset($jobsearch_plugin_options['signup_username_allow']) ? $jobsearch_plugin_options['signup_username_allow'] : '';
-                $employer_auto_approve = isset($jobsearch_plugin_options['employer_auto_approve']) ? $jobsearch_plugin_options['employer_auto_approve'] : '';
-                $reguser_email = sanitize_text_field($_POST['reg_user_email']);
-                if ($signup_username_allow == 'on') {
-                    $reguser_name = sanitize_text_field($_POST['reg_user_uname']);
-                } else {
-                    $reguser_name = $reguser_email;
-                }
-                if ($reguser_email == '' || !filter_var($reguser_email, FILTER_VALIDATE_EMAIL)) {
-                    $job_form_errs['post_errors'] = esc_html__('Please enter the proper user Email Address.', 'wp-jobsearch');
-                }
-                if ($reguser_name == '') {
-                    $job_form_errs['post_errors'] = esc_html__('The username field should not be blank.', 'wp-jobsearch');
-                }
-
-                $becomin_user_pass = wp_generate_password();
-                $new_reguser = wp_create_user($reguser_name, $becomin_user_pass, $reguser_email);
-
-                if (is_wp_error($new_reguser)) {
-                    $job_form_errs['post_errors'] = $new_reguser->get_error_message();
-                } else {
-                    //
-                    $user_id = $new_reguser;
-                    wp_update_user(array('ID' => $user_id, 'role' => 'jobsearch_employer'));
-                    $user_obj = get_user_by('ID', $user_id);
-                    
-//                    if ($employer_auto_approve == 'email' || $employer_auto_approve == 'admin_email') {
-//                        $uverify_code = wp_generate_password(20);
-//                        $uverify_code = str_replace(array('#', '&', '?'), array('-', '_', 'q'), $uverify_code);
-//                        update_user_meta($user_id, 'jobsearch_accaprov_key', $uverify_code);
-//                        update_user_meta($user_id, 'jobsearch_accaprov_allow', '0');
-//                        do_action('jobsearch_new_employer_approval', $user_obj, $becomin_user_pass);
-//                        update_user_meta($user_id, 'jobsearch_new_user_regtpass', $becomin_user_pass);
-//                    } else {
-                    wp_set_current_user($user_id);
-                    wp_set_auth_cookie($user_id, true);
-//                    }
-                    
-                    $user_is_employer = jobsearch_user_is_employer($user_id);
-                    if (jobsearch_user_isemp_member($user_id)) {
-                        $user_is_employer = true;
-                    }
-                    $employer_id = '';
-                    if (is_user_logged_in() && $user_is_employer) {
-                        if (jobsearch_user_isemp_member($user_id)) {
-                            $employer_id = jobsearch_user_isemp_member($user_id);
-                        } else {
-                            $employer_id = jobsearch_get_user_employer_id($user_id);
-                        }
-                        if ($employer_id <= 0) {
-                            $job_form_errs['post_errors'] = esc_html__('Only an employer can post a job.', 'wp-jobsearch');
-                        }
-                    }
-                }
-            }
             //
 
             $job_title_max_len = isset($jobsearch_plugin_options['job_title_length']) && $jobsearch_plugin_options['job_title_length'] > 0 ? $jobsearch_plugin_options['job_title_length'] : 1000;
@@ -168,6 +138,89 @@ class Jobsearch_User_Job_Functions {
             }
 
             if (empty($job_form_errs)) {
+                
+                if (!is_user_logged_in() && isset($_POST['reg_user_email'])) {
+                    $signup_username_allow = isset($jobsearch_plugin_options['signup_username_allow']) ? $jobsearch_plugin_options['signup_username_allow'] : '';
+                    $employer_auto_approve = isset($jobsearch_plugin_options['employer_auto_approve']) ? $jobsearch_plugin_options['employer_auto_approve'] : '';
+                    $reguser_email = sanitize_text_field($_POST['reg_user_email']);
+                    if ($signup_username_allow == 'on') {
+                        $reguser_name = sanitize_text_field($_POST['reg_user_uname']);
+                    } else {
+                        $reguser_name = $reguser_email;
+                    }
+                    
+                    $user_reg_err = false;
+                    if ($reguser_email == '' || !filter_var($reguser_email, FILTER_VALIDATE_EMAIL)) {
+                        $user_reg_err = true;
+                        $job_form_errs['post_errors'] = esc_html__('Please enter the proper user Email Address.', 'wp-jobsearch');
+                    }
+                    if ($reguser_name == '') {
+                        $user_reg_err = true;
+                        $job_form_errs['post_errors'] = esc_html__('The username field should not be blank.', 'wp-jobsearch');
+                    }
+                    
+                    if ($user_reg_err === false) {
+                        
+                        if (email_exists($reguser_email)) {
+                            $_user_obj = get_user_by('email', $reguser_email);
+                            $employer_id = jobsearch_get_user_employer_id($_user_obj->ID);
+                            if ($employer_id > 0) {
+                                $user_is_employer = true;
+                                $user_id = $_user_obj->ID;
+                                $job_with_alrdyreg_user = true;
+                            } else {
+                                $job_form_errs['post_errors'] = esc_html__('Only an employer can post a job.', 'wp-jobsearch');
+                            }
+                        } else {
+                            $becomin_user_pass = wp_generate_password();
+                            $new_reguser = wp_create_user($reguser_name, $becomin_user_pass, $reguser_email);
+
+                            if (is_wp_error($new_reguser)) {
+                                $job_form_errs['post_errors'] = $new_reguser->get_error_message();
+                            } else {
+                                //
+                                
+                                $user_id = $new_reguser;
+                                wp_update_user(array('ID' => $user_id, 'role' => 'jobsearch_employer'));
+                                $user_obj = get_user_by('ID', $user_id);
+
+                                if ($employer_auto_approve == 'email' || $employer_auto_approve == 'admin_email') {
+                                    $job_userreg_withmail = true;
+                                    $uverify_code = wp_generate_password(20, false);
+                                    update_user_meta($user_id, 'jobsearch_accaprov_key', $uverify_code);
+                                    update_user_meta($user_id, 'jobsearch_accaprov_allow', '0');
+                                    do_action('jobsearch_new_employer_approval', $user_obj, $becomin_user_pass);
+                            
+                                    $becomin_user_pass = base64_encode($becomin_user_pass);
+                                    update_user_meta($user_id, 'jobsearch_new_user_regtpass', $becomin_user_pass);
+                                } else {
+                                    do_action('jobsearch_new_user_register', $user_obj, $becomin_user_pass);
+                                    wp_set_current_user($user_id);
+                                    wp_set_auth_cookie($user_id, true);
+                                }
+
+                                $user_is_employer = jobsearch_user_is_employer($user_id);
+                                if (jobsearch_user_isemp_member($user_id)) {
+                                    $user_is_employer = true;
+                                }
+
+                                if (jobsearch_user_isemp_member($user_id)) {
+                                    $employer_id = jobsearch_user_isemp_member($user_id);
+                                } else {
+                                    $employer_id = jobsearch_get_user_employer_id($user_id);
+                                }
+                                if (is_user_logged_in() && $user_is_employer) {
+                                    if ($employer_id <= 0) {
+                                        $job_form_errs['post_errors'] = esc_html__('Only an employer can post a job.', 'wp-jobsearch');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (empty($job_form_errs)) {
 
                 if ($job_id > 0) {
 
@@ -185,9 +238,13 @@ class Jobsearch_User_Job_Functions {
 
                     $do_update_job = true;
                 } else {
+                    $job_def_status = 'awaiting-payment';
+                    if ($free_jobs_allow == 'on') {
+                        $job_def_status = 'publish';
+                    }
                     $ins_post = array(
                         'post_type' => 'job',
-                        'post_status' => 'publish',
+                        'post_status' => $job_def_status,
                         'post_title' => wp_strip_all_tags($job_title),
                         'post_content' => $job_desc,
                     );
@@ -215,11 +272,6 @@ class Jobsearch_User_Job_Functions {
                 if (!$is_updating) {
                     // job insert time
                     update_post_meta($job_id, 'jobsearch_field_job_publish_date', strtotime(current_time('d-m-Y H:i:s')));
-                    if ($free_jobs_allow == 'on') {
-                        //
-                    } else {
-                        update_post_meta($job_id, 'jobsearch_field_job_status', 'pending');
-                    }
                 } else {
                     $job_expiry_date = get_post_meta($job_id, 'jobsearch_field_job_expiry_date', true);
                     if ($job_expiry_date != '' && $job_expiry_date > strtotime(current_time('d-m-Y H:i:s'))) {
@@ -255,8 +307,9 @@ class Jobsearch_User_Job_Functions {
 
                 //
                 if (isset($_POST['job_sector'])) {
-                    $job_sector = sanitize_text_field($_POST['job_sector']);
-                    wp_set_post_terms($job_id, array($job_sector), 'sector', false);
+                    $job_sector = ($_POST['job_sector']);
+                    $job_sector = is_array($job_sector) ? $job_sector : array($job_sector);
+                    wp_set_post_terms($job_id, $job_sector, 'sector', false);
                 }
                 // job filled
                 if (isset($_POST['job_filled'])) {
@@ -357,8 +410,9 @@ class Jobsearch_User_Job_Functions {
                 }
 
                 if (isset($_POST['job_type'])) {
-                    $job_type = sanitize_text_field($_POST['job_type']);
-                    wp_set_post_terms($job_id, array($job_type), 'jobtype', false);
+                    $job_type = ($_POST['job_type']);
+                    $job_type_tosave = is_array($job_type) ? $job_type : array($job_type);
+                    wp_set_post_terms($job_id, $job_type_tosave, 'jobtype', false);
                 }
 
                 // after saving all fields
@@ -377,6 +431,8 @@ class Jobsearch_User_Job_Functions {
                     $users_result = $users_query->get_results();
                     $adm_user_obj = isset($users_result[0]) ? $users_result[0] : array();
                     do_action('jobsearch_job_submitted_admin', $adm_user_obj, $job_id);
+                    
+                    do_action('jobsearch_job_postin_dashf_after_create_new', $job_id);
                 }
 
                 //
@@ -389,6 +445,18 @@ class Jobsearch_User_Job_Functions {
                 }
                 
                 if ($free_jobs_allow != 'on') {
+                    if (!is_user_logged_in() && $job_with_alrdyreg_user === true && $user_is_employer) {
+                        $this_page_url = get_permalink($this_page_id);
+                        $redirect_url = add_query_arg(array('job_id' => $job_id, 'step' => 'confirm_user_job'), $this_page_url);
+                        wp_safe_redirect($redirect_url);
+                        exit();
+                    }
+                    if (!is_user_logged_in() && $job_userreg_withmail === true && $user_is_employer) {
+                        $this_page_url = get_permalink($this_page_id);
+                        $redirect_url = add_query_arg(array('job_id' => $job_id, 'step' => 'confirm_detail'), $this_page_url);
+                        wp_safe_redirect($redirect_url);
+                        exit();
+                    }
                     if (is_user_logged_in() && $user_is_employer && !$is_updating) {
                         $redirct_step = apply_filters('jobsearch_jobdsave_redirct_step_newjob', 'package');
                         $redirect_url = add_query_arg(array('tab' => 'user-job', 'job_id' => $job_id, 'step' => $redirct_step, 'action' => 'update'), $page_url);
@@ -408,6 +476,18 @@ class Jobsearch_User_Job_Functions {
                         exit();
                     }
                 } else {
+                    if (!is_user_logged_in() && $job_with_alrdyreg_user === true && $user_is_employer) {
+                        $this_page_url = get_permalink($this_page_id);
+                        $redirect_url = add_query_arg(array('job_id' => $job_id, 'step' => 'confirm_user_job'), $this_page_url);
+                        wp_safe_redirect($redirect_url);
+                        exit();
+                    }
+                    if (!is_user_logged_in() && $job_userreg_withmail === true && $user_is_employer) {
+                        $this_page_url = get_permalink($this_page_id);
+                        $redirect_url = add_query_arg(array('job_id' => $job_id, 'step' => 'confirm_detail'), $this_page_url);
+                        wp_safe_redirect($redirect_url);
+                        exit();
+                    }
                     if ($user_is_employer) {
                         $redirct_step = apply_filters('jobsearch_jobdsave_redirct_step_toconfrm', 'confirm');
                         $redirect_url = add_query_arg(array('tab' => 'user-job', 'job_id' => $job_id, 'step' => $redirct_step, 'action' => 'update'), $page_url);
@@ -449,19 +529,18 @@ class Jobsearch_User_Job_Functions {
                 $subs_pkge_exp = jobsearch_pckg_order_is_expired($package_order_id);
                 if ($pkg_type == 'featured_jobs') {
                     $subs_pkge_exp = jobsearch_fjobs_pckg_order_is_expired($package_order_id);
-                }
-                if ($pkg_type == 'emp_allin_one') {
+                } else if ($pkg_type == 'emp_allin_one') {
                     $subs_pkge_exp = jobsearch_allinpckg_order_is_expired($package_order_id, 'jobs');
-                    if ($subs_pkge_exp === true) {
-                        $subs_pkge_exp = jobsearch_allinpckg_order_is_expired($package_order_id, 'fjobs');
-                    }
+                } else if ($pkg_type == 'employer_profile') {
+                    $subs_pkge_exp = jobsearch_emprofpckg_order_is_expired($package_order_id, 'jobs');
                 }
-                if ($is_updating && empty($package_form_errs) && ($pkg_type == 'job' || $pkg_type == 'featured_jobs' || $pkg_type == 'emp_allin_one') && $subs_pkge_exp === false) {
+                if ($is_updating && empty($package_form_errs) && ($pkg_type == 'job' || $pkg_type == 'featured_jobs' || $pkg_type == 'emp_allin_one' || $pkg_type == 'employer_profile') && $subs_pkge_exp === false) {
                     // Saving Package Fields and Values in Job
                     do_action('jobsearch_add_subscribed_package_fields_for_job', $package_order_id, $job_id);
                     do_action('jobsearch_add_job_id_to_order', $job_id, $package_order_id);
                     do_action('jobsearch_add_featjob_id_to_order', $job_id, $package_order_id);
                     do_action('jobsearch_add_allinjob_id_to_order', $job_id, $package_order_id);
+                    do_action('jobsearch_add_emprofjob_id_to_order', $job_id, $package_order_id);
                     do_action('jobsearch_set_job_expiry_and_status', $job_id, $package_order_id);
 
                     // if feature pckg too selected
@@ -526,6 +605,12 @@ class Jobsearch_User_Job_Functions {
                     }
                 } else {
                     if ($is_updating && empty($package_form_errs)) {
+                        // update job status
+                        $up_post = array(
+                            'ID' => $job_id,
+                            'post_status' => 'publish',
+                        );
+                        wp_update_post($up_post);
                         // creating order and adding product to order
                         do_action('jobsearch_create_new_job_packg_order', $package_id, $job_id);
                         $go_to_confirm = true;
@@ -538,15 +623,13 @@ class Jobsearch_User_Job_Functions {
                 $package_id = isset($_POST['job_package_new']) ? $_POST['job_package_new'] : '';
 
                 $pkg__type = get_post_meta($package_id, 'jobsearch_field_package_type', true);
-                $pkg_subs_check = jobsearch_pckg_is_subscribed($package_id);
+                $pkg_subs_check = jobsearch_pckg_is_subscribed($package_id, $user_id);
                 if ($pkg__type == 'featured_jobs') {
-                    $pkg_subs_check = jobsearch_fjobs_pckg_is_subscribed($package_id);
-                }
-                if ($pkg__type == 'emp_allin_one') {
-                    $pkg_subs_check = jobsearch_allinpckg_is_subscribed($package_id, 'jobs');
-                    if (!$pkg_subs_check) {
-                        $pkg_subs_check = jobsearch_allinpckg_is_subscribed($package_id, 'fjobs');
-                    }
+                    $pkg_subs_check = jobsearch_fjobs_pckg_is_subscribed($package_id, $user_id);
+                } else if ($pkg__type == 'emp_allin_one') {
+                    $pkg_subs_check = jobsearch_allinpckg_is_subscribed($package_id, $user_id);
+                } else if ($pkg__type == 'employer_profile') {
+                    $pkg_subs_check = jobsearch_emprofpckg_is_subscribed($package_id, $user_id);
                 }
 
                 if ($pkg_subs_check) {
@@ -590,6 +673,12 @@ class Jobsearch_User_Job_Functions {
                         $package_form_errs[] = esc_html__('WooCommerce Plugin not exist.', 'wp-jobsearch');
                     }
                     if ($is_updating && empty($package_form_errs)) {
+                        // update job status
+                        $up_post = array(
+                            'ID' => $job_id,
+                            'post_status' => 'publish',
+                        );
+                        wp_update_post($up_post);
                         // creating order and adding product to order
                         if (isset($_POST['job_package_featured']) && $_POST['job_package_featured'] != '') {
                             do_action('jobsearch_create_new_job_packg_order', $package_id, $job_id);
@@ -616,8 +705,9 @@ class Jobsearch_User_Job_Functions {
 
         if ($is_updating) {
             $def_status_toset = isset($jobsearch_plugin_options['job-default-status']) ? $jobsearch_plugin_options['job-default-status'] : '';
+            $update_status_toset = isset($jobsearch_plugin_options['job-onupdate-status']) ? $jobsearch_plugin_options['job-onupdate-status'] : '';
             $job_status = get_post_meta($job_id, 'jobsearch_field_job_status', true);
-            if ($job_status == 'approved' && $def_status_toset == 'admin-review') {
+            if ($job_status == 'approved' && $def_status_toset == 'admin-review' && $update_status_toset == 'admin-review') {
                 update_post_meta($job_id, 'jobsearch_field_job_status', 'admin-review');
             }
         }
@@ -632,6 +722,9 @@ class Jobsearch_User_Job_Functions {
         }
         if ($pkg_type == 'emp_allin_one') {
             $job_package_fields = apply_filters('jobsearch_get_all_in_one_package_fields_list', array());
+        }
+        if ($pkg_type == 'employer_profile') {
+            $job_package_fields = apply_filters('jobsearch_get_emp_profpkg_cfields_list', array());
         }
         $job_package_fields = apply_filters('jobsearch_set_package_fields_ch_list', $job_package_fields, $pkg_type);
 
@@ -674,6 +767,25 @@ class Jobsearch_User_Job_Functions {
                 }
                 if ($is_unlimited_cvs == 'on') {
                     $packge_fields_arr['allin_num_cvs'] = '1000000';
+                }
+            } else if ($pkg_type == 'employer_profile') {
+                $is_unlimited_jobs = get_post_meta($package_id, 'jobsearch_field_unlim_emprofjobs', true);
+                $is_unlimited_fjobs = get_post_meta($package_id, 'jobsearch_field_unlim_emproffjobs', true);
+                $is_unlimited_jobexp = get_post_meta($package_id, 'jobsearch_field_unlim_emprofjobexp', true);
+                $is_unlimited_cvs = get_post_meta($package_id, 'jobsearch_field_unlim_emprofnumcvs', true);
+
+                if ($is_unlimited_jobexp == 'on') {
+                    $packge_fields_arr['emprofjob_expiry_time'] = '10';
+                    $packge_fields_arr['emprofjob_expiry_time_unit'] = 'years';
+                }
+                if ($is_unlimited_jobs == 'on') {
+                    $packge_fields_arr['emprof_num_jobs'] = '1000000';
+                }
+                if ($is_unlimited_fjobs == 'on') {
+                    $packge_fields_arr['emprof_num_fjobs'] = '1000000';
+                }
+                if ($is_unlimited_cvs == 'on') {
+                    $packge_fields_arr['emprof_num_cvs'] = '1000000';
                 }
             } else if ($pkg_type == 'featured_jobs') {
                 $is_unlimited_numfjobs = get_post_meta($package_id, 'jobsearch_field_unlimited_numfjobs', true);
@@ -721,6 +833,9 @@ class Jobsearch_User_Job_Functions {
         if ($pkg_type == 'emp_allin_one') {
             $job_package_fields = apply_filters('jobsearch_get_all_in_one_package_fields_list', array());
         }
+        if ($pkg_type == 'employer_profile') {
+            $job_package_fields = apply_filters('jobsearch_get_emp_profpkg_cfields_list', array());
+        }
         if ($pkg_type == 'featured_jobs') {
             $job_package_fields = apply_filters('jobsearch_get_featured_jobs_package_fields_list', array());
         }
@@ -761,6 +876,25 @@ class Jobsearch_User_Job_Functions {
                 }
                 if ($is_unlimited_cvs == 'yes') {
                     $packge_fields_arr['allin_num_cvs'] = '1000000';
+                }
+            } else if ($pkg_type == 'employer_profile') {
+                $is_unlimited_jobs = get_post_meta($order_id, 'unlim_emprofjobs', true);
+                $is_unlimited_fjobs = get_post_meta($order_id, 'unlim_emproffjobs', true);
+                $is_unlimited_jobexp = get_post_meta($order_id, 'unlim_emprofjobexp', true);
+                $is_unlimited_cvs = get_post_meta($order_id, 'unlim_emprofnumcvs', true);
+
+                if ($is_unlimited_jobexp == 'yes') {
+                    $packge_fields_arr['emprofjob_expiry_time'] = '10';
+                    $packge_fields_arr['emprofjob_expiry_time_unit'] = 'years';
+                }
+                if ($is_unlimited_jobs == 'yes') {
+                    $packge_fields_arr['emprof_num_jobs'] = '1000000';
+                }
+                if ($is_unlimited_fjobs == 'yes') {
+                    $packge_fields_arr['emprof_num_fjobs'] = '1000000';
+                }
+                if ($is_unlimited_cvs == 'yes') {
+                    $packge_fields_arr['emprof_num_cvs'] = '1000000';
                 }
             } else if ($pkg_type == 'featured_jobs') {
                 $is_unlimited_numfjobs = get_post_meta($order_id, 'unlimited_numfjobs', true);
@@ -811,6 +945,8 @@ class Jobsearch_User_Job_Functions {
             $_package_fields = apply_filters('jobsearch_get_featured_jobs_package_fields_list', array());
         } else if ($pkg_type == 'emp_allin_one') {
             $_package_fields = apply_filters('jobsearch_get_all_in_one_package_fields_list', array());
+        } else if ($pkg_type == 'employer_profile') {
+            $_package_fields = apply_filters('jobsearch_get_emp_profpkg_cfields_list', array());
         } else if ($pkg_type == 'promote_profile') {
             $_package_fields = apply_filters('jobsearch_get_promote_profile_package_fields_list', array());
         } else if ($pkg_type == 'urgent_pkg') {
@@ -882,10 +1018,17 @@ class Jobsearch_User_Job_Functions {
             $is_unlimited_numfjobs = get_post_meta($package_id, 'jobsearch_field_unlimited_numfjobs', true);
             $is_unlimited_fjobscr = get_post_meta($package_id, 'jobsearch_field_unlimited_fjobscr', true);
             $is_unlimited_fjobexp = get_post_meta($package_id, 'jobsearch_field_unlimited_fjobexp', true);
+            $is_unlimited_fcredexp = get_post_meta($package_id, 'jobsearch_field_unlimited_fcredexp', true);
+            
             if ($is_unlimited_fjobexp == 'on') {
                 $packge_fields_arr['fjob_expiry_time'] = '10';
                 $packge_fields_arr['fjob_expiry_time_unit'] = 'years';
                 $packge_fields_arr['unlimited_fjobexp'] = 'yes';
+            }
+            if ($is_unlimited_fcredexp == 'on') {
+                $packge_fields_arr['fcred_expiry_time'] = '10';
+                $packge_fields_arr['fcred_expiry_time_unit'] = 'years';
+                $packge_fields_arr['unlimited_fcredexp'] = 'yes';
             }
             if ($is_unlimited_numfjobs == 'on') {
                 $packge_fields_arr['num_of_fjobs'] = '1000000';
@@ -899,12 +1042,18 @@ class Jobsearch_User_Job_Functions {
             $is_unlimited_jobs = get_post_meta($package_id, 'jobsearch_field_unlim_allinjobs', true);
             $is_unlimited_fjobs = get_post_meta($package_id, 'jobsearch_field_unlim_allinfjobs', true);
             $is_unlimited_jobexp = get_post_meta($package_id, 'jobsearch_field_unlim_allinjobexp', true);
+            $is_unlimited_fcredexp = get_post_meta($package_id, 'jobsearch_field_unlimited_fall_credexp', true);
             $is_unlimited_cvs = get_post_meta($package_id, 'jobsearch_field_unlim_allinnumcvs', true);
 
             if ($is_unlimited_jobexp == 'on') {
                 $packge_fields_arr['allinjob_expiry_time'] = '10';
                 $packge_fields_arr['allinjob_expiry_time_unit'] = 'years';
                 $packge_fields_arr['unlimited_jobsexp'] = 'yes';
+            }
+            if ($is_unlimited_fcredexp == 'on') {
+                $packge_fields_arr['fall_cred_expiry_time'] = '10';
+                $packge_fields_arr['fall_cred_expiry_time_unit'] = 'years';
+                $packge_fields_arr['unlimited_fcredexp'] = 'yes';
             }
             if ($is_unlimited_jobs == 'on') {
                 $packge_fields_arr['allin_num_jobs'] = '1000000';
@@ -917,6 +1066,53 @@ class Jobsearch_User_Job_Functions {
             if ($is_unlimited_cvs == 'on') {
                 $packge_fields_arr['allin_num_cvs'] = '1000000';
                 $packge_fields_arr['unlimited_numcvs'] = 'yes';
+            }
+        } else if ($pkg_type == 'employer_profile') {
+            $is_unlimited_jobs = get_post_meta($package_id, 'jobsearch_field_unlim_emprofjobs', true);
+            $is_unlimited_fjobs = get_post_meta($package_id, 'jobsearch_field_unlim_emproffjobs', true);
+            $is_unlimited_jobexp = get_post_meta($package_id, 'jobsearch_field_unlim_emprofjobexp', true);
+            $is_unlimited_fcredexp = get_post_meta($package_id, 'jobsearch_field_unlimited_emprof_fcredexp', true);
+            $is_unlimited_cvs = get_post_meta($package_id, 'jobsearch_field_unlim_emprofnumcvs', true);
+            $is_unlimited_promote_expiry = get_post_meta($package_id, 'jobsearch_field_unlimited_emprof_promote_exp', true);
+
+            if ($is_unlimited_jobexp == 'on') {
+                $packge_fields_arr['emprofjob_expiry_time'] = '10';
+                $packge_fields_arr['emprofjob_expiry_time_unit'] = 'years';
+                $packge_fields_arr['unlimited_jobsexp'] = 'yes';
+            }
+            if ($is_unlimited_fcredexp == 'on') {
+                $packge_fields_arr['emprof_fcred_expiry_time'] = '10';
+                $packge_fields_arr['emprof_fcred_expiry_time_unit'] = 'years';
+                $packge_fields_arr['unlimited_fcredexp'] = 'yes';
+            }
+            if ($is_unlimited_jobs == 'on') {
+                $packge_fields_arr['emprof_num_jobs'] = '1000000';
+                $packge_fields_arr['unlimited_numjobs'] = 'yes';
+            }
+            if ($is_unlimited_fjobs == 'on') {
+                $packge_fields_arr['emprof_num_fjobs'] = '1000000';
+                $packge_fields_arr['unlimited_numfjobs'] = 'yes';
+            }
+            if ($is_unlimited_cvs == 'on') {
+                $packge_fields_arr['emprof_num_cvs'] = '1000000';
+                $packge_fields_arr['unlimited_numcvs'] = 'yes';
+            }
+            
+            //
+            if (isset($packge_fields_arr['emprof_promote_expiry_time']) && $packge_fields_arr['emprof_promote_expiry_time'] > 0 && isset($packge_fields_arr['emprof_promote_expiry_time_unit'])) {
+                $promote_expiry = $packge_fields_arr['emprof_promote_expiry_time'];
+                $promote_expiry_unit = $packge_fields_arr['emprof_promote_expiry_time_unit'];
+                $promote_expiry_time = strtotime("+" . $promote_expiry . " " . $promote_expiry_unit, strtotime(current_time('d-m-Y H:i:s')));
+            } else {
+                $promote_expiry_time = strtotime(current_time('d-m-Y H:i:s'));
+            }
+            $packge_fields_arr['emprof_promote_expiry_timestamp'] = $promote_expiry_time;
+            if ($is_unlimited_promote_expiry == 'on') {
+                $promote_expiry_time = strtotime("+10 years", current_time('timestamp'));
+                $packge_fields_arr['emprof_promote_expiry_time'] = '10';
+                $packge_fields_arr['emprof_promote_expiry_time_unit'] = 'years';
+                $packge_fields_arr['emprof_promote_expiry_timestamp'] = $promote_expiry_time;
+                $packge_fields_arr['unlimited_promote_expiry'] = 'yes';
             }
         } else if ($act_pkg_type == 'cv') {
             $is_unlimited_numcvs = get_post_meta($package_id, 'jobsearch_field_unlimited_numcvs', true);
@@ -976,6 +1172,10 @@ class Jobsearch_User_Job_Functions {
                     $packge_fields_arr['jobsearch_order_fjobs_list'] = '';
                     $packge_fields_arr['jobsearch_order_jobs_list'] = '';
                     $packge_fields_arr['jobsearch_order_cvs_list'] = '';
+                } else if ($pkg_type == 'employer_profile') {
+                    $packge_fields_arr['jobsearch_order_fjobs_list'] = '';
+                    $packge_fields_arr['jobsearch_order_jobs_list'] = '';
+                    $packge_fields_arr['jobsearch_order_cvs_list'] = '';
                 } else if ($pkg_type == 'candidate') {
                     $packge_fields_arr['jobsearch_order_apps_list'] = '';
                 }
@@ -997,20 +1197,24 @@ class Jobsearch_User_Job_Functions {
 
         $user_id = get_current_user_id();
 
+        $post_to_approve = false;
+        
+        $job_is_alrdy_post = get_post_meta($job_id, 'jobsearch_job_is_already_posted', true);
+        
         if ($free_jobs_allow == 'on') {
             // job expiry in days
             $job_expiry_days = isset($jobsearch_plugin_options['free-job-post-expiry']) && $jobsearch_plugin_options['free-job-post-expiry'] > 0 ? $jobsearch_plugin_options['free-job-post-expiry'] : 30;
             // job expiry time
             if ($job_expiry_days > 0) {
                 $job_expiry_date = strtotime("+" . $job_expiry_days . " day", strtotime(current_time('d-m-Y H:i:s')));
+                $job_expiry_date = apply_filters('jobsearch_job_assign_expiry_date_front', $job_expiry_date);
                 update_post_meta($job_id, 'jobsearch_field_job_expiry_date', $job_expiry_date);
             }
             do_action('jobsearch_after_set_job_expiry_infree', $job_id);
 
             //
-            do_action('jobsearch_newjob_posted_at_frontend', $job_id);
+            $post_to_approve = true;
         } else {
-            $job_is_alrdy_post = get_post_meta($job_id, 'jobsearch_job_is_already_posted', true);
             
             $job_packages_arr = get_post_meta($job_id, 'attach_packages_array', true);
             if (!empty($job_packages_arr)) {
@@ -1024,41 +1228,40 @@ class Jobsearch_User_Job_Functions {
                 } else if ($pkg_type == 'emp_allin_one') {
                     $pkg_job_expiry = isset($job_package_fields['allinjob_expiry_time']) ? $job_package_fields['allinjob_expiry_time'] : 0;
                     $pkg_job_expiry_unit = isset($job_package_fields['allinjob_expiry_time_unit']) ? $job_package_fields['allinjob_expiry_time_unit'] : 'days';
+                } else if ($pkg_type == 'employer_profile') {
+                    $pkg_job_expiry = isset($job_package_fields['emprofjob_expiry_time']) ? $job_package_fields['emprofjob_expiry_time'] : 0;
+                    $pkg_job_expiry_unit = isset($job_package_fields['emprofjob_expiry_time_unit']) ? $job_package_fields['emprofjob_expiry_time_unit'] : 'days';
                 } else {
                     $pkg_job_expiry = isset($job_package_fields['job_expiry_time']) ? $job_package_fields['job_expiry_time'] : 0;
                     $pkg_job_expiry_unit = isset($job_package_fields['job_expiry_time_unit']) ? $job_package_fields['job_expiry_time_unit'] : 'days';
                 }
                 if ($pkg_job_expiry > 0) {
                     $job_expiry_date = strtotime("+" . $pkg_job_expiry . " " . $pkg_job_expiry_unit, strtotime(current_time('d-m-Y H:i:s')));
+                    $job_expiry_date = apply_filters('jobsearch_job_assign_expiry_date_front', $job_expiry_date);
                     update_post_meta($job_id, 'jobsearch_field_job_expiry_date', $job_expiry_date);
                     
                     //
-                    if ($job_is_alrdy_post != 'yes') {
-                        do_action('jobsearch_newjob_posted_at_frontend', $job_id);
-                        update_post_meta($job_id, 'jobsearch_job_is_already_posted', 'yes');
-                    }
+                    $post_to_approve = true;
                 }
+                
+                //
+                $up_post = array(
+                    'ID' => $job_id,
+                    'post_status' => 'publish',
+                );
+                wp_update_post($up_post);
             }
         }
 
         // set a cron for job expiry
-        $cronevnt_timestamp = wp_next_scheduled('jobsearch_job_expiry_cron_event_' . $job_id);
-        if (!$cronevnt_timestamp && $job_expiry_date > current_time('timestamp')) {
+        if ($job_expiry_date > current_time('timestamp')) {
+            wp_clear_scheduled_hook('jobsearch_job_expiry_cron_event_' . $job_id, array($job_id, $user_id));
             wp_schedule_single_event($job_expiry_date, 'jobsearch_job_expiry_cron_event_' . $job_id, array($job_id, $user_id));
+            update_post_meta($job_id, 'jobsearch_job_single_exp_cron', 'yes');
         }
-        add_action('jobsearch_job_expiry_cron_event_' . $job_id, function () use ($job_id, $user_id) {
-            $up_post = array(
-                'ID' => $job_id,
-                'post_status' => 'draft',
-            );
-            wp_update_post($up_post);
-            update_post_meta($job_id, 'jobsearch_field_job_status', 'pending');
-
-            //
-            $c_user = get_user_by('ID', $user_id);
-            do_action('jobsearch_job_expire_to_employer', $c_user, $job_id);
-        }, 11, 2);
         //
+        
+        do_action('jobsearch_front_job_expiry_set_after', $job_id);
 
         $employer_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
 
@@ -1069,19 +1272,33 @@ class Jobsearch_User_Job_Functions {
         // then don't change status
         if ($job_status != 'approved') {
             if ($job_def_status == 'admin-review') {
+                $post_to_approve = false;
                 update_post_meta($job_id, 'jobsearch_field_job_status', 'admin-review');
             } else {
                 $employer_status = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
 
                 if ($employer_status == 'on') {
+                    $post_to_approve = true;
                     update_post_meta($job_id, 'jobsearch_field_job_status', 'approved');
+                    update_post_meta($job_id, 'jobsearch_job_employer_status', 'approved');
                     $c_user = wp_get_current_user();
                     do_action('jobsearch_job_approved_to_employer', $c_user, $job_id);
                 } else {
+                    $post_to_approve = false;
                     update_post_meta($job_id, 'jobsearch_field_job_status', 'admin-review');
                 }
             }
+            //
+            if ($job_is_alrdy_post != 'yes') {
+                if ($post_to_approve) {
+                    do_action('jobsearch_newjob_posted_at_frontend', $job_id);
+                } else {
+                    update_post_meta($job_id, 'jobsearch_job_is_under_review', 'yes');
+                }
+            }
+            //
             do_action('jobsearch_job_post_after_approve_review', $job_id);
+            update_post_meta($job_id, 'jobsearch_job_is_already_posted', 'yes');
         }
     }
 
@@ -1089,6 +1306,8 @@ class Jobsearch_User_Job_Functions {
         global $woocommerce;
 
         $user_id = get_current_user_id();
+        $user_id = apply_filters('jobsearch_in_creatjobpkg_order_user_id', $user_id);
+        
         $user_obj = get_user_by('ID', $user_id);
         $user_displayname = $user_obj->display_name;
         $user_displayname = apply_filters('jobsearch_user_display_name', $user_displayname, $user_obj);
@@ -1270,10 +1489,15 @@ class Jobsearch_User_Job_Functions {
     public function add_featjob_id_to_order($job_id, $order_id) {
         $make_feature = get_post_meta($job_id, 'make_it_to_feature', true);
         $pkg_type = get_post_meta($order_id, 'package_type', true);
-        $remain_featjob_credits = jobsearch_pckg_order_remain_featjob_credits($order_id);
-        
-        if ($job_id > 0 && $pkg_type == 'featured_jobs' && $remain_featjob_credits > 0) {
-            $order_jobs = get_post_meta($order_id, 'jobsearch_order_featc_list', true);
+        if ($pkg_type == 'featured_jobs') {
+            
+            $current_date = current_time('timestamp');
+            
+            $remain_normal_jobs = jobsearch_pckg_order_remaining_fjobs($order_id);
+            $remain_feature_jobs = jobsearch_pckg_order_remain_featjob_credits($order_id);
+            
+            //
+            $order_jobs = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
             if ($order_jobs != '') {
                 $order_jobs = explode(',', $order_jobs);
                 $order_jobs[] = $job_id;
@@ -1281,21 +1505,31 @@ class Jobsearch_User_Job_Functions {
             } else {
                 $order_jobs = $job_id;
             }
-            update_post_meta($order_id, 'jobsearch_order_featc_list', $order_jobs);
-            
-        }
-        if ($pkg_type == 'featured_jobs') {
-            if ($make_feature == 'yes') {
+            update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_jobs);
 
-                // Also make job featured
+            //            
+            if ($remain_feature_jobs > 0 && $make_feature == 'yes') {
+                
+                $order_featc_list = get_post_meta($order_id, 'jobsearch_order_featc_list', true);
+                if ($order_featc_list != '') {
+                    $order_featc_list = explode(',', $order_featc_list);
+                    $order_featc_list[] = $job_id;
+                    $order_featc_list = implode(',', $order_featc_list);
+                } else {
+                    $order_featc_list = $job_id;
+                }
+                update_post_meta($order_id, 'jobsearch_order_featc_list', $order_featc_list);
+
                 update_post_meta($job_id, 'jobsearch_field_job_featured', 'on');
-                $order_expiry_time = get_post_meta($order_id, 'package_expiry_timestamp', true);
-                if ($order_expiry_time > 0) {
-                    $order_expiry_datetime = date('d-m-Y H:i:s', $order_expiry_time);
-                    update_post_meta($job_id, 'jobsearch_field_job_feature_till', $order_expiry_datetime);
+                
+                $fcred_exp_time = get_post_meta($order_id, 'fcred_expiry_time', true);
+                $fcred_exp_time_unit = get_post_meta($order_id, 'fcred_expiry_time_unit', true);
+                $tofeat_expiry_time = strtotime("+" . $fcred_exp_time . " " . $fcred_exp_time_unit, $current_date);
+                if ($tofeat_expiry_time > 0) {
+                    $feature_expiry_datetime = date('d-m-Y H:i:s', $tofeat_expiry_time);
+                    update_post_meta($job_id, 'jobsearch_field_job_feature_till', $feature_expiry_datetime);
                 }
             }
-            //
             update_post_meta($job_id, 'make_it_to_feature', '');
         }
     }
@@ -1303,66 +1537,95 @@ class Jobsearch_User_Job_Functions {
     public function add_allinjob_id_to_order($job_id, $order_id) {
         $make_feature = get_post_meta($job_id, 'make_it_to_feature', true);
         $pkg_type = get_post_meta($order_id, 'package_type', true);
-        
         //
         if ($pkg_type == 'emp_allin_one') {
+        
+            $current_date = current_time('timestamp');
+            
             $remain_normal_jobs = jobsearch_allinpckg_order_remaining_jobs($order_id);
             $remain_feature_jobs = jobsearch_allinpckg_order_remaining_fjobs($order_id);
             
             //
-            if ($make_feature == 'yes') {
-                if ($remain_feature_jobs > 0) {
-                    $order_jobs = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
-                    if ($order_jobs != '') {
-                        $order_jobs = explode(',', $order_jobs);
-                        $order_jobs[] = $job_id;
-                        $order_jobs = implode(',', $order_jobs);
-                    } else {
-                        $order_jobs = $job_id;
-                    }
-                    update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_jobs);
-                } else {
-                    $order_jobs = get_post_meta($order_id, 'jobsearch_order_jobs_list', true);
-                    if ($order_jobs != '') {
-                        $order_jobs = explode(',', $order_jobs);
-                        $order_jobs[] = $job_id;
-                        $order_jobs = implode(',', $order_jobs);
-                    } else {
-                        $order_jobs = $job_id;
-                    }
-                    update_post_meta($order_id, 'jobsearch_order_jobs_list', $order_jobs);
-                }
+            $order_jobs = get_post_meta($order_id, 'jobsearch_order_jobs_list', true);
+            if ($order_jobs != '') {
+                $order_jobs = explode(',', $order_jobs);
+                $order_jobs[] = $job_id;
+                $order_jobs = implode(',', $order_jobs);
             } else {
-                if ($remain_normal_jobs > 0) {
-                    $order_jobs = get_post_meta($order_id, 'jobsearch_order_jobs_list', true);
-                    if ($order_jobs != '') {
-                        $order_jobs = explode(',', $order_jobs);
-                        $order_jobs[] = $job_id;
-                        $order_jobs = implode(',', $order_jobs);
-                    } else {
-                        $order_jobs = $job_id;
-                    }
-                    update_post_meta($order_id, 'jobsearch_order_jobs_list', $order_jobs);
+                $order_jobs = $job_id;
+            }
+            update_post_meta($order_id, 'jobsearch_order_jobs_list', $order_jobs);
+
+            //
+            if ($remain_feature_jobs > 0 && $make_feature == 'yes') {
+                
+                $order_featc_list = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
+                if ($order_featc_list != '') {
+                    $order_featc_list = explode(',', $order_featc_list);
+                    $order_featc_list[] = $job_id;
+                    $order_featc_list = implode(',', $order_featc_list);
                 } else {
-                    $order_jobs = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
-                    if ($order_jobs != '') {
-                        $order_jobs = explode(',', $order_jobs);
-                        $order_jobs[] = $job_id;
-                        $order_jobs = implode(',', $order_jobs);
-                    } else {
-                        $order_jobs = $job_id;
-                    }
-                    update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_jobs);
+                    $order_featc_list = $job_id;
+                }
+                update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_featc_list);
+
+                update_post_meta($job_id, 'jobsearch_field_job_featured', 'on');
+                
+                $fcred_exp_time = get_post_meta($order_id, 'fall_cred_expiry_time', true);
+                $fcred_exp_time_unit = get_post_meta($order_id, 'fall_cred_expiry_time_unit', true);
+                $tofeat_expiry_time = strtotime("+" . $fcred_exp_time . " " . $fcred_exp_time_unit, $current_date);
+                if ($tofeat_expiry_time > 0) {
+                    $feature_expiry_datetime = date('d-m-Y H:i:s', $tofeat_expiry_time);
+                    update_post_meta($job_id, 'jobsearch_field_job_feature_till', $feature_expiry_datetime);
                 }
             }
-            //
+            update_post_meta($job_id, 'make_it_to_feature', '');
+        }
+    }
+
+    public function add_emprofjob_id_to_order($job_id, $order_id) {
+        $make_feature = get_post_meta($job_id, 'make_it_to_feature', true);
+        $pkg_type = get_post_meta($order_id, 'package_type', true);
+        //
+        if ($pkg_type == 'employer_profile') {
+        
+            $current_date = current_time('timestamp');
             
+            $remain_normal_jobs = jobsearch_emprofpckg_order_remaining_jobs($order_id);
+            $remain_feature_jobs = jobsearch_emprofpckg_order_remaining_fjobs($order_id);
+            
+            //
+            $order_jobs = get_post_meta($order_id, 'jobsearch_order_jobs_list', true);
+            if ($order_jobs != '') {
+                $order_jobs = explode(',', $order_jobs);
+                $order_jobs[] = $job_id;
+                $order_jobs = implode(',', $order_jobs);
+            } else {
+                $order_jobs = $job_id;
+            }
+            update_post_meta($order_id, 'jobsearch_order_jobs_list', $order_jobs);
+
+            //
             if ($remain_feature_jobs > 0 && $make_feature == 'yes') {
+                
+                $order_featc_list = get_post_meta($order_id, 'jobsearch_order_fjobs_list', true);
+                if ($order_featc_list != '') {
+                    $order_featc_list = explode(',', $order_featc_list);
+                    $order_featc_list[] = $job_id;
+                    $order_featc_list = implode(',', $order_featc_list);
+                } else {
+                    $order_featc_list = $job_id;
+                }
+                update_post_meta($order_id, 'jobsearch_order_fjobs_list', $order_featc_list);
+
                 update_post_meta($job_id, 'jobsearch_field_job_featured', 'on');
-                $order_expiry_time = get_post_meta($order_id, 'package_expiry_timestamp', true);
-                if ($order_expiry_time > 0) {
-                    $order_expiry_datetime = date('d-m-Y H:i:s', $order_expiry_time);
-                    update_post_meta($job_id, 'jobsearch_field_job_feature_till', $order_expiry_datetime);
+                
+                $fcred_exp_time = get_post_meta($order_id, 'emprof_fcred_expiry_time', true);
+                $fcred_exp_time_unit = get_post_meta($order_id, 'emprof_fcred_expiry_time_unit', true);
+                $tofeat_expiry_time = strtotime("+" . $fcred_exp_time . " " . $fcred_exp_time_unit, $current_date);
+                if ($tofeat_expiry_time > 0) {
+                    $feature_expiry_datetime = date('d-m-Y H:i:s', $tofeat_expiry_time);
+                    update_post_meta($job_id, 'jobsearch_field_job_feature_till', $feature_expiry_datetime);
                 }
             }
             update_post_meta($job_id, 'make_it_to_feature', '');
@@ -1373,6 +1636,8 @@ class Jobsearch_User_Job_Functions {
         $job_id = isset($_POST['job_id']) ? ($_POST['job_id']) : '';
 
         $user_id = get_current_user_id();
+        $user_id = apply_filters('jobsearch_in_jobremve_fromdash_user_id', $user_id, $job_id);
+        
         if (jobsearch_user_isemp_member($user_id)) {
             $employer_id = jobsearch_user_isemp_member($user_id);
         } else {

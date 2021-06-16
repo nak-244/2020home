@@ -121,16 +121,18 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
             if (isset($apply_data['att_file_args'])) {
                 update_post_meta($app_id, 'jobsearch_att_file_args', $apply_data['att_file_args']);
             }
+            
+            do_action('jobsearch_job_applying_byemail_save_action', $app_id, $job_id);
         }
 
         public function email_applicants_create_menu() {
             //create new top-level menu
-            add_submenu_page('jobsearch-applicants-list', esc_html__('Email Applicants', 'wp-jobsearch'), esc_html__('Email Applicants', 'wp-jobsearch'), 'administrator', 'jobsearch-emailapps-list', function () {
+            add_submenu_page('jobsearch-applicants-list', esc_html__('Email Applicants', 'wp-jobsearch'), esc_html__('Email Applicants', 'wp-jobsearch'), apply_filters('jobsearch_bk_all_emailapplics_capability', 'administrator'), 'jobsearch-emailapps-list', function () {
 
                 $args = array(
                     'post_type' => 'job',
                     'posts_per_page' => 5,
-                    'post_status' => 'publish',
+                    'post_status' => array('publish', 'draft'),
                     'fields' => 'ids',
                     'order' => 'DESC',
                     'orderby' => 'ID',
@@ -146,6 +148,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                 if ($get_job_id > 0 && get_post_type($get_job_id) == 'job') {
                     $args['post__in'] = array($get_job_id);
                 }
+                $args = apply_filters('jobsearch_bk_all_emailapplics_queryargs', $args);
                 $jobs_query = new WP_Query($args);
                 $totl_found_jobs = $jobs_query->found_posts;
                 $jobs_posts = $jobs_query->posts;
@@ -235,7 +238,8 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
             global $jobsearch_plugin_options;
             //update_post_meta($_job_id, 'jobsearch_job_emailapps_list', '');
             $job_applicants_list = get_post_meta($_job_id, 'jobsearch_job_emailapps_list', true);
-
+            arsort($job_applicants_list);
+            
             if (empty($job_applicants_list)) {
                 $job_applicants_list = array();
             }
@@ -347,6 +351,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                                             <li><a href="<?php echo ($file_url) ?>" class="preview-candidate-profile btn-downlod-cvbtn" oncontextmenu="javascript: return false;" onclick="javascript: if ((event.button == 0 && event.ctrlKey)) {return false};" download="<?php echo ($filename) ?>"><?php esc_html_e('Download CV', 'wp-jobsearch') ?></a></li>
                                             <?php
                                         }
+                                        echo apply_filters('bckend_email_apps_acts_list_after_download_link', '', $app_id, $job_id);
                                         ?>
                                     </ul>
                                 </div>
@@ -420,7 +425,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
             $args = array(
                 'posts_per_page' => "-1",
                 'post_type' => $posttype,
-                'post_status' => 'publish',
+                'post_status' => array('publish', 'draft'),
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',
@@ -432,7 +437,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                     ),
                 ),
             );
-
+            $args = apply_filters('jobsearch_bk_all_emailapplics_queryargs', $args);
             $custom_query = new WP_Query($args);
             $all_records = $custom_query->posts;
 
@@ -456,7 +461,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                 'post_type' => 'job',
                 'posts_per_page' => 5,
                 'paged' => $page_num,
-                'post_status' => 'publish',
+                'post_status' => array('publish', 'draft'),
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',
@@ -468,6 +473,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                     ),
                 ),
             );
+            $args = apply_filters('jobsearch_bk_all_emailapplics_queryargs', $args);
             $jobs_query = new WP_Query($args);
             $jobs_posts = $jobs_query->posts;
 
@@ -511,7 +517,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
             $args = array(
                 'post_type' => 'job',
                 'posts_per_page' => -1,
-                'post_status' => 'publish',
+                'post_status' => array('publish', 'draft'),
                 'fields' => 'ids',
                 'order' => 'DESC',
                 'orderby' => 'ID',
@@ -523,6 +529,7 @@ if (!class_exists('jobsearch_allemail_applicants_handle')) {
                     ),
                 ),
             );
+            $args = apply_filters('jobsearch_bk_all_emailapplics_queryargs', $args);
             $jobs_query = new WP_Query($args);
             $jobs_posts = $jobs_query->posts;
 

@@ -432,15 +432,13 @@ if (!class_exists('Package_Limits')) {
 
         public static function emp_gen_locked_html() {
 
-            $html = 'This Field is locked';
-
+            $html = esc_html__('This Field is locked', 'wp-jobsearch');
             return $html;
         }
 
         public function emp_field_locked_html($cus_html = '') {
 
             $html = self::emp_gen_locked_html();
-                
             if ($cus_html != '') {
                 $html = $cus_html;
             }

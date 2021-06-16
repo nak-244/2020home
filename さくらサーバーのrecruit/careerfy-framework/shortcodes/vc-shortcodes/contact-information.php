@@ -4,8 +4,8 @@
  * @return html
  */
 add_shortcode('careerfy_contact_info', 'careerfy_contact_info_shortcode');
-function careerfy_contact_info_shortcode($atts) {
-
+function careerfy_contact_info_shortcode($atts)
+{
     extract(shortcode_atts(array(
         'con_info_title' => '',
         'con_form_title' => '',
@@ -16,7 +16,7 @@ function careerfy_contact_info_shortcode($atts) {
         'con_phone' => '',
         'con_fax' => '',
         'social_links' => '',
-                    ), $atts));
+    ), $atts));
 
     ob_start();
     ?>
@@ -24,12 +24,12 @@ function careerfy_contact_info_shortcode($atts) {
         <?php
         if ($con_info_title != '') {
             ?>
-            <h2><?php echo ($con_info_title) ?></h2>
+            <h2><?php echo($con_info_title) ?></h2>
             <?php
         }
         if ($con_desc != '') {
             ?>
-            <p><?php echo ($con_desc) ?></p>
+            <p><?php echo($con_desc) ?></p>
             <?php
         }
         ?>
@@ -37,22 +37,27 @@ function careerfy_contact_info_shortcode($atts) {
             <?php
             if ($con_address != '') {
                 ?>
-                <li><i class="careerfy-icon careerfy-placeholder"></i> <?php echo ($con_address) ?></li>
+                <li><i class="careerfy-icon careerfy-map-marker"></i> <?php echo esc_html($con_address) ?></li>
                 <?php
             }
             if ($con_email != '') {
                 ?>
-                <li><i class="careerfy-icon careerfy-envelope"></i> <a href="mailto:<?php echo ($con_email) ?>"><?php printf(esc_html__('Email: %s', 'careerfy-frame'), $con_email) ?></a></li>
+                <li><i class="careerfy-icon careerfy-envelope"></i> <a
+                            href="mailto:<?php echo($con_email) ?>"><?php echo esc_html__('Email: ', 'careerfy-frame') . $con_email ?></a>
+                </li>
                 <?php
             }
-            if ($con_phone != '') {
-                ?>
-                <li><i class="careerfy-icon careerfy-technology"></i> <?php printf(esc_html__('Call: %s', 'careerfy-frame'), $con_phone) ?></li>
+            if ($con_phone != '') { ?>
+                <li>
+                    <i class="careerfy-icon careerfy-technology"></i> <?php echo esc_html__('Call: ', 'careerfy-frame').$con_phone ?>
+                </li>
                 <?php
             }
             if ($con_fax != '') {
                 ?>
-                <li><i class="careerfy-icon careerfy-fax"></i> <?php printf(esc_html__('Fax: %s', 'careerfy-frame'), $con_fax) ?></li>
+                <li>
+                    <i class="careerfy-icon careerfy-fax"></i> <?php echo esc_html__('Fax: ', 'careerfy-frame') . $con_fax ?>
+                </li>
                 <?php
             }
             ?>
@@ -72,21 +77,21 @@ function careerfy_contact_info_shortcode($atts) {
 
                     if ($soc_icon != '') {
                         ?>
-                        <a href="<?php echo ($soc_link) ?>">
-                            <i class="<?php echo ($soc_icon) ?>"></i>
+                        <a href="<?php echo($soc_link) ?>">
+                            <i class="<?php echo($soc_icon) ?>"></i>
                         </a>
                         <?php
                     }
                 }
                 ?>
             </div>
-            <?php } ?>
+        <?php } ?>
     </div>
     <div class="careerfy-contact-form">
         <?php
         if ($con_form_title != '') {
             ?>
-            <h2><?php echo ($con_form_title) ?></h2>
+            <h2><?php echo($con_form_title) ?></h2>
             <?php
         }
         $cnt_counter = rand(1000000, 99999999);
@@ -97,31 +102,38 @@ function careerfy_contact_info_shortcode($atts) {
         } else {
             ob_start();
             ?>
-            <form id="ct-form-<?php echo absint($cnt_counter) ?>" data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')) ?>" method="post">
+            <form id="ct-form-<?php echo absint($cnt_counter) ?>"
+                  data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')) ?>" method="post">
                 <ul>
                     <li>
-                        <input type="text" name="u_name" placeholder="<?php esc_html_e('Enter Your Name', 'careerfy-frame') ?>">
+                        <input type="text" name="u_name"
+                               placeholder="<?php esc_html_e('Enter Your Name', 'careerfy-frame') ?>">
                         <i class="careerfy-icon careerfy-user"></i>
                     </li>
                     <li>
-                        <input placeholder="<?php esc_html_e('Subject', 'careerfy-frame') ?>" type="text" name="u_subject">
+                        <input placeholder="<?php esc_html_e('Subject', 'careerfy-frame') ?>" type="text"
+                               name="u_subject">
                         <i class="careerfy-icon careerfy-user"></i>
                     </li>
                     <li>
-                        <input placeholder="<?php esc_html_e('Enter Your Email Address', 'careerfy-frame') ?>" type="text" name="u_email">
+                        <input placeholder="<?php esc_html_e('Enter Your Email Address', 'careerfy-frame') ?>"
+                               type="text" name="u_email">
                         <i class="careerfy-icon careerfy-mail"></i>
                     </li>
                     <li>
-                        <input placeholder="<?php esc_html_e('Enter Your Phone Number', 'careerfy-frame') ?>" type="text" name="u_number">
+                        <input placeholder="<?php esc_html_e('Enter Your Phone Number', 'careerfy-frame') ?>"
+                               type="text" name="u_number">
                         <i class="careerfy-icon careerfy-technology"></i>
                     </li>
                     <li class="careerfy-contact-form-full">
-                        <textarea name="u_msg" placeholder="<?php esc_html_e('Enter Your Message', 'careerfy-frame') ?>"></textarea>
+                        <textarea name="u_msg"
+                                  placeholder="<?php esc_html_e('Enter Your Message', 'careerfy-frame') ?>"></textarea>
                     </li>
                     <li>
-                        <input type="submit" class="careerfy-ct-form" data-id="<?php echo absint($cnt_counter) ?>" value="<?php esc_html_e('Submit', 'careerfy-frame') ?>">
+                        <input type="submit" class="careerfy-ct-form" data-id="<?php echo absint($cnt_counter) ?>"
+                               value="<?php esc_html_e('Submit', 'careerfy-frame') ?>">
                         <span class="careerfy-bt-msg careerfy-ct-msg"></span>
-                        <input type="hidden" name="u_type" value="content" />
+                        <input type="hidden" name="u_type" value="content"/>
                     </li>
                 </ul>
             </form>

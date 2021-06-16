@@ -75,10 +75,7 @@ if ($candidate_id > 0) {
                             ?>
                             <li class="jobsearch-column-12">
                                 <div class="jobsearch-applied-jobs-wrap">
-                                    <a class="jobsearch-applied-jobs-thumb">
-                                      <!-- <img src="<?php echo ($user_def_avatar_url) ?>" alt=""> -->
-                                      <img src="<?php the_field('cfimg',$job_id); ?>" alt="">
-                                    </a>
+                                    <a class="jobsearch-applied-jobs-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
                                     <div class="jobsearch-applied-jobs-text">
                                         <div class="jobsearch-applied-jobs-left">
                                             <span>@ <?php echo get_the_title($job_post_employer) ?></span>
@@ -97,7 +94,7 @@ if ($candidate_id > 0) {
                                                 }
                                                 if ($job_post_date != '') {
                                                     ?>
-                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
+                                                    <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n(get_option('date_format'), $job_post_date) ?></li>
                                                     <?php
                                                 }
                                                 ?>
@@ -195,7 +192,7 @@ if ($candidate_id > 0) {
                                                     }
                                                     if ($job_post_date != '') {
                                                         ?>
-                                                        <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n('Y/m/d', $job_post_date) ?></li>
+                                                        <li><i class="jobsearch-icon jobsearch-calendar"></i> <?php echo date_i18n(get_option('date_format'), $job_post_date) ?></li>
                                                         <?php
                                                     }
                                                     ?>

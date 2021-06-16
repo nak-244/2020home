@@ -90,7 +90,7 @@ class Jobsearch_EmailTemplateHTML {
                             <input type="text" name="<?php echo esc_html($email_template_name_slug); ?>[subject]" value="<?php echo esc_html($subject_value); ?>" />
                         </div>
                         <label>
-                            <?php echo esc_html__('Recipients', 'wp-jobsearch'); ?>:
+                            <?php echo esc_html__('Test Email Address', 'wp-jobsearch'); ?>:
                         </label>
                         <div class="input-field">
                             <input type="text" name="<?php echo esc_html($email_template_name_slug); ?>[recipients]" value="<?php echo esc_html($recipients_value); ?>" />

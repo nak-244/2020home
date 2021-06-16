@@ -80,11 +80,13 @@ add_shortcode('jobsearch_user_job', 'jobsearch_user_job_shortcode');
 
 function jobsearch_user_job_shortcode($atts)
 {
-    global $jobsearch_plugin_options, $job_form_errs, $package_form_errs, $jobsearch_currencies_list, $sitepress, $wpdb, $jobsearch_gdapi_allocation;
+    global $jobsearch_plugin_options, $job_userreg_withmail, $job_form_errs, $package_form_errs, $jobsearch_currencies_list, $sitepress, $wpdb, $jobsearch_gdapi_allocation, $in_jobpost_form_sh;
     $all_locations_type = isset($jobsearch_plugin_options['all_locations_type']) ? $jobsearch_plugin_options['all_locations_type'] : '';
     $page_id = $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
     $page_id = $user_dashboard_page = jobsearch__get_post_id($user_dashboard_page, 'page');
 
+    $in_jobpost_form_sh = true;
+    
     if (!is_page($page_id) && $all_locations_type == 'api') {
         $jobsearch_gdapi_allocation->load_locations_js(true, false);
     }
@@ -95,6 +97,7 @@ function jobsearch_user_job_shortcode($atts)
     wp_enqueue_script('jobsearch-user-job-posting');
     ob_start();
     $user_id = get_current_user_id();
+    $user_id = apply_filters('jobsearch_job_postinsh_top_user_id', $user_id);
 
     $is_candidate = false;
     $is_employer = false;
@@ -231,6 +234,7 @@ function jobsearch_user_job_shortcode($atts)
 
                 // location
                 $loc1_val = get_post_meta($job_id, 'jobsearch_field_location_location1', true);
+
                 if ($loc1_val != '') {
                     $loc_term_obj = get_term_by('slug', $loc1_val, 'job-location');
                     if (is_object($loc_term_obj) && isset($loc_term_obj->term_id)) {
@@ -349,7 +353,7 @@ function jobsearch_user_job_shortcode($atts)
         }
 
         $post_obj = get_post($job_id);
-        $job_content = $post_obj->post_content;
+        $job_content = isset($post_obj->post_content) ? $post_obj->post_content : '';
 
         $sectors = wp_get_post_terms($job_id, 'sector');
         $job_sector = isset($sectors[0]->term_id) ? $sectors[0]->term_id : '';
@@ -359,7 +363,7 @@ function jobsearch_user_job_shortcode($atts)
 
         $application_deadline = get_post_meta($job_id, 'jobsearch_field_job_application_deadline_date', true);
         if ($application_deadline != '') {
-            $application_deadline = date('d-m-Y H:i:s', $application_deadline);
+            $application_deadline = date(get_option('date_format').' '.get_option('time_format'), $application_deadline);
         }
 
         $_job_filled = get_post_meta($job_id, 'jobsearch_field_job_filled', true);
@@ -385,6 +389,8 @@ function jobsearch_user_job_shortcode($atts)
         if (!is_user_logged_in() && $post_job_without_reg != 'on') {
             $restrict_img = isset($jobsearch_plugin_options['job_post_restrict_img']) ? $jobsearch_plugin_options['job_post_restrict_img'] : '';
             $restrict_img_url = isset($restrict_img['url']) ? $restrict_img['url'] : '';
+            
+            $op_emp_register_allow = isset($jobsearch_plugin_options['login_employer_register']) ? $jobsearch_plugin_options['login_employer_register'] : '';
             ?>
             <div class="restrict-candidate-sec">
                 <img src="<?php echo($restrict_img_url) ?>" alt="">
@@ -394,9 +400,15 @@ function jobsearch_user_job_shortcode($atts)
                     <a href="javascript:void(0);" class="jobsearch-open-signin-tab"><i
                                 class="jobsearch-icon jobsearch-user"></i><?php esc_html_e('Login', 'wp-jobsearch') ?>
                     </a>
-                    <a href="javascript:void(0);" class="jobsearch-open-register-tab"><i
-                                class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'wp-jobsearch') ?>
-                    </a>
+                    <?php
+                    if ($op_emp_register_allow != 'no') {
+                        ?>
+                        <a href="javascript:void(0);" class="jobsearch-open-register-tab company-register-tab"><i
+                                    class="jobsearch-icon jobsearch-plus"></i><?php esc_html_e('Become an Employer', 'wp-jobsearch') ?>
+                        </a>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
             <?php
@@ -449,10 +461,60 @@ function jobsearch_user_job_shortcode($atts)
                         </nav>
                     <?php
                     $job_detail_tab = true;
+                    if (isset($_GET['step']) && $_GET['step'] == 'confirm_user_job') {
+                        $job_detail_tab = false;
+                        $job_confirm_tab = true;
+                        
+                        $_job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
+                        ?>
+                        <div class="jobsearch-employer-confitmation">
+                            <?php
+                            if ($_job_id > 0 && get_post_type($_job_id) == 'job') {
+                                if ($job_submit_img_url != '') {
+                                    ?>
+                                    <img src="<?php echo($job_submit_img_url) ?>" alt="">
+                                    <?php
+                                }
+                                ?>
+                                <h2><?php echo ($job_submit_title) ?></h2>
+                                <p><?php esc_html_e('Your job is submitted. Logged in your account to manage this job.', 'wp-jobsearch') ?></p>
+                                <div class="clearfix"></div>
+                                <a href="javascript:void(0);" class="jobsearch-open-signin-tab"><?php esc_html_e('Sign In', 'wp-jobsearch') ?></a>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    }
+                    if (isset($_GET['step']) && $_GET['step'] == 'confirm_detail') {
+                        $job_detail_tab = false;
+                        $job_confirm_tab = true;
+                        
+                        $_job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
+                        ?>
+                        <div class="jobsearch-employer-confitmation">
+                            <?php
+                            if ($_job_id > 0 && get_post_type($_job_id) == 'job') {
+                                if ($job_submit_img_url != '') {
+                                    ?>
+                                    <img src="<?php echo($job_submit_img_url) ?>" alt="">
+                                    <?php
+                                }
+                                ?>
+                                <h2><?php echo($job_submit_title) ?></h2>
+                                <p><?php esc_html_e('Your job is submitted. But you have to verify your email address in order to manage your job. Kindly check your email.', 'wp-jobsearch') ?></p>
+                                <div class="clearfix"></div>
+                                <a href="javascript:void(0);" class="jobsearch-open-signin-tab"><?php esc_html_e('Sign In', 'wp-jobsearch') ?></a>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    }
                     if ($is_updating && isset($_GET['step']) && $_GET['step'] == 'confirm') {
-                    $job_detail_tab = false;
-                    $job_confirm_tab = true;
-                    ?>
+                        $job_detail_tab = false;
+                        $job_confirm_tab = true;
+                        ?>
                         <div class="jobsearch-employer-confitmation">
                             <?php
                             if ($job_submit_img_url != '') {
@@ -467,7 +529,7 @@ function jobsearch_user_job_shortcode($atts)
                             <a href="<?php echo add_query_arg(array('tab' => 'manage-jobs'), $page_url) ?>"><?php esc_html_e('Manage Jobs', 'wp-jobsearch') ?></a>
                             <a href="<?php echo get_permalink($job_id) ?>"><?php esc_html_e('View Job', 'wp-jobsearch') ?></a>
                         </div>
-                    <?php
+                        <?php
                     }
                     if ($free_jobs_allow != 'on' && $is_updating && isset($_GET['step']) && $_GET['step'] == 'package') {
                     $job_detail_tab = false;
@@ -582,7 +644,7 @@ function jobsearch_user_job_shortcode($atts)
                             'meta_query' => array(
                                 array(
                                     'key' => 'package_type',
-                                    'value' => apply_filters('jobsearch_emp_postjob_pkg_job_metakey', array('job', 'featured_jobs', 'emp_allin_one')),
+                                    'value' => apply_filters('jobsearch_emp_postjob_pkg_job_metakey', array('job', 'featured_jobs', 'emp_allin_one', 'employer_profile')),
                                     'compare' => 'IN',
                                 ),
                                 array(
@@ -661,11 +723,11 @@ function jobsearch_user_job_shortcode($atts)
                                     $remaining_jobs = '-';
                                 }
                                 //
-                                $used_fjobs = jobsearch_allinpckg_order_used_fjobs($pkg_order_id);
-                                $remaining_fjobs = jobsearch_allinpckg_order_remaining_fjobs($pkg_order_id);
+                                $used_fcrds = jobsearch_allinpckg_order_used_fjobs($pkg_order_id);
+                                $remaining_fcrds = $remain_featjobs;
                                 if ($unlimited_numfjobs == 'yes') {
-                                    $used_fjobs = '-';
-                                    $remaining_fjobs = '-';
+                                    $used_fcrds = '-';
+                                    $remaining_fcrds = '-';
                                 }
                                 
                                 //
@@ -676,11 +738,60 @@ function jobsearch_user_job_shortcode($atts)
                                 if ($pkg_expired) {
                                     continue;
                                 }
+                            } else if ($pkg_type == 'employer_profile') {
+                                $total_jobs = get_post_meta($pkg_order_id, 'emprof_num_jobs', true);
+                                $unlimited_numjobs = get_post_meta($pkg_order_id, 'unlimited_numjobs', true);
+                                if ($unlimited_numjobs == 'yes') {
+                                    $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                }
+                                //
+                                $total_fjobs = get_post_meta($pkg_order_id, 'emprof_num_fjobs', true);
+                                $unlimited_numfjobs = get_post_meta($pkg_order_id, 'unlimited_numfjobs', true);
+                                if ($unlimited_numfjobs == 'yes') {
+                                    $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                }
+
+                                $job_exp_dur = get_post_meta($pkg_order_id, 'emprofjob_expiry_time', true);
+                                $job_exp_dur_unit = get_post_meta($pkg_order_id, 'emprofjob_expiry_time_unit', true);
+
+                                $remain_featjobs = jobsearch_emprofpckg_order_remaining_fjobs($pkg_order_id);
+                                if ($remain_featjobs > 0) {
+                                    $featjob_pkg_clas = 'class="with_feature_jobs"';
+                                }
+
+                                $used_jobs = jobsearch_emprofpckg_order_used_jobs($pkg_order_id);
+                                $remaining_jobs = jobsearch_emprofpckg_order_remaining_jobs($pkg_order_id);
+                                if ($unlimited_numjobs == 'yes') {
+                                    $used_jobs = '-';
+                                    $remaining_jobs = '-';
+                                }
+                                //
+                                $used_fcrds = jobsearch_emprofpckg_order_used_fjobs($pkg_order_id);
+                                $remaining_fcrds = $remain_featjobs;
+                                if ($unlimited_numfjobs == 'yes') {
+                                    $used_fcrds = '-';
+                                    $remaining_fcrds = '-';
+                                }
+                                
+                                //
+                                $pkg_expired = jobsearch_emprofpckg_order_is_expired($pkg_order_id);
+                                if ($pkg_expired) {
+                                    $pkg_expired = jobsearch_emprofpckg_order_is_expired($pkg_order_id, 'fjobs');
+                                }
+                                if ($pkg_expired) {
+                                    continue;
+                                }
                             } else if ($pkg_type == 'featured_jobs') {
                                 $total_jobs = get_post_meta($pkg_order_id, 'num_of_fjobs', true);
                                 $unlimited_numfjobs = get_post_meta($pkg_order_id, 'unlimited_numfjobs', true);
                                 if ($unlimited_numfjobs == 'yes') {
                                     $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                }
+                                
+                                $total_fjobs = get_post_meta($pkg_order_id, 'feat_job_credits', true);
+                                $unlimited_numfcrds = get_post_meta($pkg_order_id, 'unlimited_fjobcrs', true);
+                                if ($unlimited_numfcrds == 'yes') {
+                                    $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
                                 }
 
                                 $job_exp_dur = get_post_meta($pkg_order_id, 'fjob_expiry_time', true);
@@ -697,6 +808,15 @@ function jobsearch_user_job_shortcode($atts)
                                     $used_jobs = '-';
                                     $remaining_jobs = '-';
                                 }
+
+                                //
+                                $used_fcrds = jobsearch_pckg_order_used_featjob_credits($pkg_order_id);
+                                $remaining_fcrds = $remain_featjob_credits;
+                                if ($unlimited_numfjobs == 'yes') {
+                                    $used_fcrds = '-';
+                                    $remaining_fcrds = '-';
+                                }
+                                
                                 $pkg_expired = jobsearch_fjobs_pckg_order_is_expired($pkg_order_id);
                                 if ($pkg_expired) {
                                     continue;
@@ -738,22 +858,22 @@ function jobsearch_user_job_shortcode($atts)
                                     <td><?php echo absint($job_exp_dur) . ' ' . jobsearch_get_duration_unit_str($job_exp_dur_unit) ?></td>
                                     <?php
                                 }
-                                if ($pkg_type == 'emp_allin_one') {
+                                if ($pkg_type == 'emp_allin_one' || $pkg_type == 'featured_jobs' || $pkg_type == 'employer_profile') {
                                     ?>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s'), $total_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s','wp-jobsearch'), $total_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s'), $total_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Credits: %s' ,'wp-jobsearch'), $total_fjobs) ?>
                                     </td>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s'), $used_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s','wp-jobsearch'), $used_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s'), $used_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Credits: %s' ,'wp-jobsearch'), $used_fcrds) ?>
                                     </td>
                                     <td>
-                                        <?php printf(esc_html__('Normal Jobs: %s'), $remaining_jobs) ?>
+                                        <?php printf(esc_html__('Normal Jobs: %s','wp-jobsearch'), $remaining_jobs) ?>
                                         <br>
-                                        <?php printf(esc_html__('Featured Jobs: %s'), $remaining_fjobs) ?>
+                                        <?php printf(esc_html__('Featured Credits: %s' ,'wp-jobsearch'), $remaining_fcrds) ?>
                                     </td>
                                     <?php
                                 } else {
@@ -838,7 +958,7 @@ function jobsearch_user_job_shortcode($atts)
                                 'meta_query' => array(
                                     array(
                                         'key' => 'jobsearch_field_package_type',
-                                        'value' => apply_filters('jobsearch_emp_postjob_pkg_job_metakey', array('job', 'featured_jobs', 'emp_allin_one')),
+                                        'value' => apply_filters('jobsearch_emp_postjob_pkg_job_metakey', array('job', 'featured_jobs', 'emp_allin_one', 'employer_profile')),
                                         'compare' => 'IN',
                                     ),
                                 ),
@@ -891,6 +1011,9 @@ function jobsearch_user_job_shortcode($atts)
                                         $job_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_job_expiry_time', true);
                                         $job_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_job_expiry_time_unit', true);
 
+                                        //
+                                        $is_pckg_subscribed = jobsearch_pckg_is_subscribed($pkg_id);
+                                        
                                         $featjob_pkg_clas = '';
                                         if ($pkg_otype == 'emp_allin_one') {
                                             $unlimited_numjobs = get_post_meta($pkg_id, 'jobsearch_field_unlim_allinjobs', true);
@@ -914,8 +1037,37 @@ function jobsearch_user_job_shortcode($atts)
 
                                             $job_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_allinjob_expiry_time', true);
                                             $job_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_allinjob_expiry_time_unit', true);
+                                            
+                                            //
+                                            $is_pckg_subscribed = jobsearch_allinpckg_is_subscribed($pkg_id);
+                                        } else if ($pkg_otype == 'employer_profile') {
+                                            $unlimited_numjobs = get_post_meta($pkg_id, 'jobsearch_field_unlim_emprofjobs', true);
+                                            $unlimited_numfjobs = get_post_meta($pkg_id, 'jobsearch_field_unlim_emproffjobs', true);
+                                            $unlimited_jobexptm = get_post_meta($pkg_id, 'jobsearch_field_unlim_emprofjobexp', true);
+
+                                            $total_jobs = get_post_meta($pkg_id, 'jobsearch_field_emprof_num_jobs', true);
+                                            if ($unlimited_numjobs == 'on') {
+                                                $total_jobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                            }
+                                            //
+                                            $total_fjobs = get_post_meta($pkg_id, 'jobsearch_field_emprof_num_fjobs', true);
+                                            if ($unlimited_numfjobs == 'on') {
+                                                $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                            }
+
+                                            $feat_job_credits = get_post_meta($pkg_id, 'jobsearch_field_emprof_num_fjobs', true);
+                                            if ($feat_job_credits > 0) {
+                                                $featjob_pkg_clas = 'class="with_feature_jobs"';
+                                            }
+
+                                            $job_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_emprofjob_expiry_time', true);
+                                            $job_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_emprofjob_expiry_time_unit', true);
+                                            
+                                            //
+                                            $is_pckg_subscribed = jobsearch_emprofpckg_is_subscribed($pkg_id);
                                         } else if ($pkg_otype == 'featured_jobs') {
                                             $unlimited_numfjobs = get_post_meta($pkg_id, 'jobsearch_field_unlimited_numfjobs', true);
+                                            $unlimited_numfcrds = get_post_meta($pkg_id, 'jobsearch_field_unlimited_fjobscr', true);
                                             $unlimited_jobexptm = get_post_meta($pkg_id, 'jobsearch_field_unlimited_fjobexp', true);
 
                                             $total_jobs = get_post_meta($pkg_id, 'jobsearch_field_num_of_fjobs', true);
@@ -924,18 +1076,24 @@ function jobsearch_user_job_shortcode($atts)
                                             }
 
                                             $feat_job_credits = get_post_meta($pkg_id, 'jobsearch_field_feat_job_credits', true);
+                                            $total_fjobs = $feat_job_credits;
+                                            if ($unlimited_numfcrds == 'on') {
+                                                $total_fjobs = esc_html__('Unlimited', 'wp-jobsearch');
+                                            }
                                             if ($feat_job_credits > 0) {
                                                 $featjob_pkg_clas = 'class="with_feature_jobs"';
                                             }
 
                                             $job_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_fjob_expiry_time', true);
                                             $job_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_fjob_expiry_time_unit', true);
+                                            
+                                            //
+                                            $is_pckg_subscribed = jobsearch_fjobs_pckg_is_subscribed($pkg_id);
                                         }
 
                                         $pkg_exp_dur = get_post_meta($pkg_id, 'jobsearch_field_package_expiry_time', true);
                                         $pkg_exp_dur_unit = get_post_meta($pkg_id, 'jobsearch_field_package_expiry_time_unit', true);
 
-                                        $is_pckg_subscribed = jobsearch_pckg_is_subscribed($pkg_id);
                                         ob_start();
                                         ?>
                                         <tr id="buy-newpkgitem-<?php echo absint($pkg_rand) ?>"<?php echo($is_pckg_subscribed ? ' class="pkg-disabled"' : '') ?>>
@@ -978,12 +1136,12 @@ function jobsearch_user_job_shortcode($atts)
                                                 ?>
                                             </td>
                                             <?php
-                                            if ($pkg_otype == 'emp_allin_one') {
+                                            if ($pkg_otype == 'emp_allin_one' || $pkg_otype == 'featured_jobs' || $pkg_otype == 'employer_profile') {
                                                 ?>
                                                 <td>
-                                                    <?php printf(esc_html__('Normal Jobs: %s'), $total_jobs) ?>
+                                                    <?php printf(esc_html__('Normal Jobs: %s','wp-jobsearch'), $total_jobs) ?>
                                                     <br>
-                                                    <?php printf(esc_html__('Featured Jobs: %s'), $total_fjobs) ?>
+                                                    <?php printf(esc_html__('Featured Credits: %s' ,'wp-jobsearch'), $total_fjobs) ?>
                                                 </td>
                                                 <?php
                                             } else {
@@ -1094,6 +1252,60 @@ function jobsearch_user_job_shortcode($atts)
                         echo($buy_new_html);
                     } else {
                         if ($job_detail_tab && !isset($_GET['step'])) {
+                        // Canned msgs script add
+                        add_action('wp_footer', function() {
+                            $jobsearch__options = get_option('jobsearch_plugin_options');
+
+                            $caned_resps_title = isset($jobsearch__options['caned_resp_jobpost_title']) && $jobsearch__options['caned_resp_jobpost_title'] != '' ? $jobsearch__options['caned_resp_jobpost_title'] : __('Canned Messages', 'wp-jobsearch');
+                            $caned_resps_switch = isset($jobsearch__options['caned_resp_switch']) ? $jobsearch__options['caned_resp_switch'] : '';
+                            if ($caned_resps_switch != 'on') {
+                                return false;
+                            }
+
+                            $args = array(
+                                'post_type' => 'jobdesctemp',
+                                'posts_per_page' => 100,
+                                'post_status' => 'publish',
+                                'fields' => 'ids',
+                                'order' => 'DESC',
+                                'orderby' => 'ID',
+                            );
+                            $temps_query = new WP_Query($args);
+                            $temps_posts = $temps_query->posts;
+                            wp_reset_postdata();
+                            ?>
+                            <script type="text/javascript">
+                                var joblistin_caned_msgstitl = '<?php echo($caned_resps_title) ?>';
+                                var joblistin_caned_msgs;
+                                <?php
+                                if (!empty($temps_posts)) {
+                                $to_ret_aray = array();
+                                $msgs_count = 0;
+                                foreach ($temps_posts as $temps_postid) {
+                                    $the_title = get_the_title($temps_postid);
+                                    $post_obj = get_post($temps_postid);
+                                    $cont_desc = isset($post_obj->post_content) ? $post_obj->post_content : '';
+                                    ob_start();
+                                    echo apply_filters('the_content', $cont_desc);
+                                    $the_desc = ob_get_clean();
+                                    if ($the_title != '' && $cont_desc != '') {
+                                        $to_ret_aray[] = array('title' => $the_title, 'desc' => $the_desc);
+                                    }
+                                    $msgs_count++;
+                                }
+                                if (!empty($to_ret_aray)) {
+                                $to_ret_aray = json_encode($to_ret_aray);
+                                ?>
+                                joblistin_caned_msgs = jQuery.parseJSON('<?php echo addslashes($to_ret_aray) ?>');
+                                <?php
+                                }
+                                }
+                                ?>
+                            </script>
+                            <?php
+                        }, 11);
+                        //
+                            
                         $job_desc_with_media = isset($jobsearch_plugin_options['job_desc_with_media']) ? $jobsearch_plugin_options['job_desc_with_media'] : '';
                         if (isset($job_form_errs['post_errors']) && $job_form_errs['post_errors'] != '') {
                             ?>
@@ -1160,18 +1372,23 @@ function jobsearch_user_job_shortcode($atts)
                             });
                         </script>
                         <ul class="jobsearch-row jobsearch-employer-profile-form">
-                            <li class="jobsearch-column-12">
-                                <label><?php esc_html_e('Job Title *', 'wp-jobsearch') ?></label>
-                                <input id="ad-posting-title"
-                                       class="jobsearch-req-field" <?php echo($is_updating ? 'value="' . get_the_title($job_id) . '"' : '') ?>
-                                       name="job_title" type="text">
-                                <span class="field-error"></span>
-                            </li>
                             <?php
                             ob_start();
                             ?>
                             <li class="jobsearch-column-12">
-                                <label><?php esc_html_e('Description *', 'wp-jobsearch') ?></label>
+                                <label><?php esc_html_e('Job Title *', 'wp-jobsearch') ?></label>
+                                <input id="ad-posting-title"
+                                       class="jobsearch-req-field" <?php echo($is_updating ? 'value="' . jobsearch_esc_html(get_the_title($job_id)) . '"' : '') ?>
+                                       name="job_title" type="text" placeholder="<?php esc_html_e('Example: php developer', 'wp-jobsearch') ?>">
+                                <span class="field-error"></span>
+                            </li>
+                            <?php
+                            $jobtitle_html = ob_get_clean();
+                            echo apply_filters('jobsearch_empdash_job_posting_jobtitle_html', $jobtitle_html, $job_id);
+                            ob_start();
+                            ?>
+                            <li class="jobsearch-column-12">
+                                <label class="job-dashdesc-label"><?php esc_html_e('Job Description *', 'wp-jobsearch') ?></label>
                                 <?php
 
                                 $settings = array(
@@ -1184,6 +1401,7 @@ function jobsearch_user_job_shortcode($atts)
                                         'toolbar3' => '',
                                     ),
                                 );
+                                $job_content = jobsearch_esc_wp_editor($job_content);
                                 wp_editor($job_content, 'job_detail', $settings);
                                 ?>
                                 <span class="field-error"></span>
@@ -1195,7 +1413,7 @@ function jobsearch_user_job_shortcode($atts)
                             //
                             if (!is_user_logged_in()) {
                                 $signup_username_allow = isset($jobsearch_plugin_options['signup_username_allow']) ? $jobsearch_plugin_options['signup_username_allow'] : '';
-                                $email_con_class = 'jobsearch-column-12';
+                                $email_con_class = 'jobsearch-column-6';
                                 if ($signup_username_allow == 'on') {
                                     $email_con_class = 'jobsearch-column-6';
                                 }
@@ -1215,6 +1433,12 @@ function jobsearch_user_job_shortcode($atts)
                                     </li>
                                     <?php
                                 }
+                                ?>
+                                <li class="jobsearch-column-6">
+                                    <label><?php esc_html_e('Company Name', 'wp-jobsearch') ?></label>
+                                    <input type="text" name="pt_user_organization">
+                                </li>
+                                <?php
                             }
 
                             $sectors_enable_switch = isset($jobsearch_plugin_options['sectors_onoff_switch']) ? $jobsearch_plugin_options['sectors_onoff_switch'] : '';
@@ -1230,21 +1454,24 @@ function jobsearch_user_job_shortcode($atts)
                                 $job_applicants_list = jobsearch_is_post_ids_array($job_applicants_list, 'candidate');
 
                                 if ($job_status == 'approved') {
-                                    if ($job_apply_deadline_sw == 'on') {
+                                    if ($job_apply_deadline_sw != 'off') {
                                         $fil_col_class = 'jobsearch-column-6';
                                     }
                                     $fill_field = true;
                                 }
-                            } else if ($job_apply_deadline_sw != 'on') {
+                            } else if ($job_apply_deadline_sw == 'off') {
                                 $fil_col_class = 'jobsearch-column-6';
                             }
-                            if ($job_apply_deadline_sw == 'on') {
+                            if ($job_apply_deadline_sw != 'off') {
+                                ob_start();
                                 ?>
                                 <li class="<?php echo($fil_col_class) ?>">
-                                    <label><?php esc_html_e('Application Deadline', 'wp-jobsearch') ?></label>
-                                    <input type="text" id="jobsearch_job_application_deadline" name="application_deadline" <?php echo($is_updating ? 'value="' . ($application_deadline) . '"' : '') ?>>
+                                    <label><?php esc_html_e('Application Deadline', 'wp-jobsearch') ?><?php echo ($job_apply_deadline_sw == 'on_req' ? ' *' : '') ?></label>
+                                    <input type="text" id="jobsearch_job_application_deadline" class="job-aplication-deadline<?php echo ($job_apply_deadline_sw == 'on_req' ? ' jobsearch-req-field' : '') ?>" name="application_deadline" <?php echo($is_updating ? 'value="' . jobsearch_esc_html($application_deadline) . '"' : '') ?>>
                                 </li>
                                 <?php
+                                $dedline_html = ob_get_clean();
+                                echo apply_filters('jobsearch_jobpost_deadline_field_html', $dedline_html, $job_id, $fil_col_class);
                             }
                             $job_allow_filled = isset($jobsearch_plugin_options['job_allow_filled']) ? $jobsearch_plugin_options['job_allow_filled'] : '';
                             if ($fill_field && $job_allow_filled == 'on') {
@@ -1262,18 +1489,16 @@ function jobsearch_user_job_shortcode($atts)
                             }
 
                             if ($sectors_enable_switch == 'on') {
+                                ob_start();
                                 ?>
                                 <li class="<?php echo ($fil_col_class) ?>">
-                                    <?php
-                                    ob_start();
-                                    ?>
                                     <label><?php esc_html_e('Job Sector *', 'wp-jobsearch') ?></label>
                                     <div class="jobsearch-profile-select">
                                         <?php
                                         $sector_args = array(
                                             'show_option_all' => esc_html__('Select Sector', 'wp-jobsearch'),
                                             'show_option_none' => '',
-                                            'class' => 'selectize-select',
+                                            'class' => 'jobsearch-req-field selectize-select',
                                             'option_none_value' => '',
                                             'orderby' => 'title',
                                             'order' => 'ASC',
@@ -1294,15 +1519,14 @@ function jobsearch_user_job_shortcode($atts)
                                         echo apply_filters('jobsearch_posting_job_sector_select', $sector_sel_html, $job_id);
                                         ?>
                                     </div>
-                                    <?php
-                                    $sector_whole_html = ob_get_clean();
-                                    echo apply_filters('jobsearch_jobpostin_sector_select_html', $sector_whole_html, $job_id);
-                                    ?>
                                 </li>
                                 <?php
+                                $sector_whole_html = ob_get_clean();
+                                echo apply_filters('jobsearch_jobpostin_sector_select_html', $sector_whole_html, $job_id, $fil_col_class);
                             }
                             $job_types_switch = isset($jobsearch_plugin_options['job_types_switch']) ? $jobsearch_plugin_options['job_types_switch'] : '';
                             if ($job_types_switch == 'on') {
+                                ob_start();
                                 ?>
                                 <li class="<?php echo($fil_col_class) ?>">
                                     <label><?php esc_html_e('Job Type *', 'wp-jobsearch') ?></label>
@@ -1334,7 +1558,10 @@ function jobsearch_user_job_shortcode($atts)
                                     </div>
                                 </li>
                                 <?php
+                                $type_whole_html = ob_get_clean();
+                                echo apply_filters('jobsearch_jobpostin_jobtype_select_html', $type_whole_html, $job_id, $fil_col_class);
                             }
+                            echo apply_filters('jobsearch_jobpostin_jobtype_after_html', '', $job_id, $fil_col_class);
                             // for urgent job
                             if (isset($employer_id) && $employer_id > 0) {
                                 $att_urgent_pckg = get_post_meta($employer_id, 'att_urgent_pkg_orderid', true);
@@ -1371,43 +1598,49 @@ function jobsearch_user_job_shortcode($atts)
                                     }
                                     ?>
                                     <div class="jobseach-skills-con">
-                                        <script type="text/javascript">
-                                            jQuery(document).ready(function () {
-                                                jQuery('#job-skills').tagit({
-                                                    allowSpaces: true,
-                                                    tagLimit: '<?php echo($job_max_skills_allow) ?>',
-                                                    placeholderText: '<?php esc_html_e('Add Skills', 'wp-jobsearch') ?>',
-                                                    fieldName: 'get_job_skills[]',
-                                                    onTagLimitExceeded: function (event, ui) {
-                                                        jQuery(".tagit-new input").val("");
-                                                        alert('<?php printf(esc_html__('Only %s skills allowed.', 'wp-jobsearch'), $job_max_skills_allow) ?>');
+                                        <?php
+                                        add_action('wp_footer', function() use($job_max_skills_allow) {
+                                            ?>
+                                            <script type="text/javascript">
+                                                jQuery(document).ready(function () {
+                                                    jQuery('#job-skills').tagit({
+                                                        allowSpaces: true,
+                                                        tagLimit: '<?php echo($job_max_skills_allow) ?>',
+                                                        placeholderText: '<?php esc_html_e('Add Skills', 'wp-jobsearch') ?>',
+                                                        fieldName: 'get_job_skills[]',
+                                                        onTagLimitExceeded: function (event, ui) {
+                                                            jQuery(".tagit-new input").val("");
+                                                            alert('<?php printf(esc_html__('Only %s skills allowed.', 'wp-jobsearch'), $job_max_skills_allow) ?>');
+                                                        }
+                                                    });
+                                                });
+                                                jQuery(document).on('focus', '.tagit-new input', function () {
+                                                    var _this = jQuery(this);
+                                                    _this.parents('.jobseach-skills-con').find('.suggested-skills-con').slideDown();
+                                                });
+                                                jQuery(document).on('click', 'body', function (evt) {
+                                                    var target = evt.target;
+                                                    var this_box = jQuery('.jobseach-skills-con');
+                                                    if (!this_box.is(evt.target) && this_box.has(evt.target).length === 0) {
+                                                        this_box.find('.suggested-skills-con').slideUp();
                                                     }
                                                 });
-                                            });
-                                            jQuery(document).on('focus', '.tagit-new input', function () {
-                                                var _this = jQuery(this);
-                                                _this.parents('.jobseach-skills-con').find('.suggested-skills-con').slideDown();
-                                            });
-                                            jQuery(document).on('click', 'body', function (evt) {
-                                                var target = evt.target;
-                                                var this_box = jQuery('.jobseach-skills-con');
-                                                if (!this_box.is(evt.target) && this_box.has(evt.target).length === 0) {
-                                                    this_box.find('.suggested-skills-con').slideUp();
-                                                }
-                                            });
 
-                                            function jobsearch_add_skill_tolist(the_tag) {
-                                                jQuery("#job-skills").tagit("createTag", the_tag);
-                                                return false;
-                                            }
-                                        </script>
+                                                function jobsearch_add_skill_tolist(the_tag) {
+                                                    jQuery("#job-skills").tagit("createTag", the_tag);
+                                                    return false;
+                                                }
+                                            </script>
+                                            <?php
+                                        }, 30)
+                                        ?>
                                         <label><?php esc_html_e('Required Skills', 'wp-jobsearch') ?></label>
                                         <ul id="job-skills" class="jobseach-job-skills">
                                             <?php
                                             if (!empty($job_saved_skills)) {
                                                 foreach ($job_saved_skills as $job_saved_skill) {
                                                     ?>
-                                                    <li><?php echo($job_saved_skill->name) ?></li>
+                                                    <li><?php echo jobsearch_esc_html($job_saved_skill->name) ?></li>
                                                     <?php
                                                 }
                                             }
@@ -1443,9 +1676,11 @@ function jobsearch_user_job_shortcode($atts)
                                                                 $sector_skills_count = 1;
                                                                 foreach ($sector_skills as $sector_skill_sid) {
                                                                     $skill_term_obj = get_term_by('id', $sector_skill_sid, 'skill');
+                                                                    $skill_trmobj_name = $skill_term_obj->name;
+                                                                    $skill_trmobj_name = str_replace("'", "\'", $skill_trmobj_name);
                                                                     ?>
                                                                     <li class="skills-cloud"
-                                                                        onclick="return jobsearch_add_skill_tolist('<?php echo($skill_term_obj->name) ?>');"><?php echo($skill_term_obj->name) ?></li>
+                                                                        onclick="return jobsearch_add_skill_tolist('<?php echo ($skill_trmobj_name) ?>');"><?php echo jobsearch_esc_html($skill_term_obj->name) ?></li>
                                                                     <?php
                                                                     if ($sector_skills_count >= $job_sugg_skills_allow) {
                                                                         break;
@@ -1461,9 +1696,11 @@ function jobsearch_user_job_shortcode($atts)
                                                     <ul class="suggested-skills all-suggs-skills">
                                                         <?php
                                                         foreach ($skills_terms as $skill_term) {
+                                                            $skill_trm_name = $skill_term->name;
+                                                            $skill_trm_name = str_replace("'", "\'", $skill_trm_name);
                                                             ?>
                                                             <li class="skills-cloud"
-                                                                onclick="return jobsearch_add_skill_tolist('<?php echo($skill_term->name) ?>');"><?php echo($skill_term->name) ?></li>
+                                                                onclick="return jobsearch_add_skill_tolist('<?php echo($skill_trm_name) ?>');"><?php echo($skill_term->name) ?></li>
                                                             <?php
                                                         }
                                                         ?>
@@ -1495,6 +1732,8 @@ function jobsearch_user_job_shortcode($atts)
                                 $skills_html = ob_get_clean();
                                 echo apply_filters('jobsearch_job_postin_skills_html', $skills_html, $job_id);
                             }
+                            
+                            echo apply_filters('jobsearch_jobpostin_jobskills_after_html', '', $job_id);
 
                             $job_apply_switch = isset($jobsearch_plugin_options['job-apply-switch']) ? $jobsearch_plugin_options['job-apply-switch'] : 'on';
 
@@ -1563,8 +1802,7 @@ function jobsearch_user_job_shortcode($atts)
                                 }
                                 if (!$dropdown_flag) {
                                     ?>
-                                    <input type="hidden" name="job_apply_type"
-                                           value="<?php echo($type_hidden_value); ?>"/>
+                                    <input type="hidden" name="job_apply_type" value="<?php echo jobsearch_esc_html($type_hidden_value); ?>"/>
                                     <?php
                                 }
                                 if ($external_flag) {
@@ -1579,7 +1817,7 @@ function jobsearch_user_job_shortcode($atts)
                                         style="display: <?php echo($external_final_flag ? 'inline-block' : 'none') ?>;">
                                         <label><?php esc_html_e('External URL for Apply Job', 'wp-jobsearch') ?></label>
                                         <input type="text"
-                                               name="job_apply_url" <?php echo($is_updating ? 'value="' . ($_job_apply_url) . '"' : '') ?>>
+                                               name="job_apply_url" <?php echo($is_updating ? 'value="' . jobsearch_esc_html($_job_apply_url) . '"' : '') ?>>
                                     </li>
                                     <?php
                                 }
@@ -1595,7 +1833,7 @@ function jobsearch_user_job_shortcode($atts)
                                         style="display: <?php echo($email_final_flag ? 'inline-block' : 'none') ?>;">
                                         <label><?php esc_html_e('Job Apply Email', 'wp-jobsearch') ?></label>
                                         <input type="text"
-                                               name="job_apply_email" <?php echo($is_updating ? 'value="' . ($_job_apply_email) . '"' : '') ?>>
+                                               name="job_apply_email" <?php echo($is_updating ? 'value="' . jobsearch_esc_html($_job_apply_email) . '"' : '') ?>>
                                     </li>
                                     <?php
                                 }
@@ -1606,9 +1844,9 @@ function jobsearch_user_job_shortcode($atts)
                             //
                             ob_start();
                             $salary_onoff_switch = isset($jobsearch_plugin_options['salary_onoff_switch']) ? $jobsearch_plugin_options['salary_onoff_switch'] : '';
-                            if ($salary_onoff_switch == 'on') { ?>
+                            if ($salary_onoff_switch != 'off') { ?>
                                 <li class="jobsearch-column-12">
-                                    <label><?php esc_html_e('Salary *', 'wp-jobsearch') ?></label>
+                                    <label><?php esc_html_e('Salary', 'wp-jobsearch') ?><?php echo ($salary_onoff_switch == 'on_req' ? ' *' : '') ?></label>
                                     
                                     <div class="salary-type">
                                         <div class="jobsearch-profile-select">
@@ -1633,25 +1871,28 @@ function jobsearch_user_job_shortcode($atts)
                                         </div>
                                     </div>
                                     
-                                    <div class="salary-input" style="display: <?php echo ($_job_salary_type == 'negotiable' ? 'none' : 'block') ?>;">
+                                    <div class="salary-input salary-input-fordev<?php echo ($salary_onoff_switch == 'on_req' ? ' required-field' : '') ?>" style="display: <?php echo ($_job_salary_type == 'negotiable' ? 'none' : 'block') ?>;">
                                         <?php
                                         $_job_currency_sym = isset($jobsearch_currencies_list[$_job_salary_currency]['symbol']) ? $jobsearch_currencies_list[$_job_salary_currency]['symbol'] : jobsearch_get_currency_symbol();
                                         ?>
                                         <div class="min-salary">
                                             <span><?php echo($_job_currency_sym); ?></span>
-                                            <input type="text" placeholder="<?php esc_html_e('Min', 'wp-jobsearch') ?>"
-                                                   name="job_salary" <?php echo($is_updating ? 'value="' . ($_job_salary) . '"' : '') ?>>
+                                            <input type="text" placeholder="<?php esc_html_e('Min', 'wp-jobsearch') ?>" name="job_salary" <?php echo ($is_updating ? 'value="' . jobsearch_esc_html($_job_salary) . '"' : '') ?>>
                                         </div>
                                         <div class="max-salary">
                                             <span><?php echo($_job_currency_sym); ?></span>
-                                            <input type="text" placeholder="<?php esc_html_e('Max', 'wp-jobsearch') ?>"
-                                                   name="job_max_salary" <?php echo($is_updating ? 'value="' . ($_job_max_salary) . '"' : '') ?>>
+                                            <input type="text" placeholder="<?php esc_html_e('Max', 'wp-jobsearch') ?>" name="job_max_salary" <?php echo ($is_updating ? 'value="' . jobsearch_esc_html($_job_max_salary) . '"' : '') ?>>
                                         </div>
                                     </div>
                                 </li>
                                 <?php
                                 $job_custom_currency_switch = isset($jobsearch_plugin_options['job_custom_currency']) ? $jobsearch_plugin_options['job_custom_currency'] : '';
                                 if (!empty($jobsearch_currencies_list) && $job_custom_currency_switch == 'on') {
+                                    
+                                    $_job_salary_currency = jobsearch_esc_html($_job_salary_currency);
+                                    $_job_salary_pos = jobsearch_esc_html($_job_salary_pos);
+                                    $_job_salary_sep = jobsearch_esc_html($_job_salary_sep);
+                                    $_job_salary_deci = jobsearch_esc_html($_job_salary_deci);
                                     ?>
                                     <li class="jobsearch-column-12 jobsalary-curency-con" style="display: <?php echo ($_job_salary_type == 'negotiable' ? 'none' : 'block') ?>;">
                                         <div class="jobsearch-row">
@@ -1712,8 +1953,12 @@ function jobsearch_user_job_shortcode($atts)
                 <?php
                 if (!$is_candidate) {
                     if (isset($job_detail_tab) && $job_detail_tab && !isset($_GET['step'])) {
+                        echo apply_filters('jobsearch_jobpost_steps_b4r_custom_fields', '', $job_id);
                         do_action('jobsearch_post_job_sh_before_custom_fields', $job_id);
                         do_action('jobsearch_dashboard_custom_fields_load', $job_id, 'job');
+                        
+                        do_action('jobsearch_post_job_apply_job_questions', $job_id);
+                        
                         $job_attachments_switch = isset($jobsearch_plugin_options['job_attachments']) ? $jobsearch_plugin_options['job_attachments'] : '';
                         if ($job_attachments_switch == 'on') { ?>
                             <div class="jobsearch-employer-box-section">
@@ -1786,14 +2031,14 @@ function jobsearch_user_job_shortcode($atts)
                             $job_expiry_date = get_post_meta($job_id, 'jobsearch_field_job_expiry_date', true);
                             $_updtjob_title = esc_html__('Update Job', 'wp-jobsearch');
                             ?>
-                            <input type="submit" class="jobsearch-employer-profile-submit"
+                            <input type="submit" class="jobsearch-employer-profile-submit jobsearch-postjob-btn"
                                    value="<?php echo($_updtjob_title) ?>">
                             <?php
                             if ($job_expiry_date == '' || ($job_expiry_date != '' && $job_expiry_date <= current_time('timestamp'))) {
                                 if ($republish_jobs_allow == 'on') {
                                     ?>
                                     <input type="submit"
-                                           class="jobsearch-employer-profile-submit jobsearch-repblishin-jobtn"
+                                           class="jobsearch-employer-profile-submit jobsearch-postjob-btn jobsearch-repblishin-jobtn"
                                            style="margin-left: 10px;"
                                            value="<?php esc_html_e('Republish Job', 'wp-jobsearch') ?>">
                                     <input type="hidden" name="republishin_job" value="0">
@@ -1806,16 +2051,17 @@ function jobsearch_user_job_shortcode($atts)
                             echo apply_filters('jobsearch_translate_job_with_wpml_btn_html', $btns_html);
                         } else {
                             jobsearch_terms_and_con_link_txt();
+                            ob_start();
                             ?>
-                            <input type="submit" class="jobsearch-employer-profile-submit"
-                                   value="<?php esc_html_e('Post Job', 'wp-jobsearch') ?>">
-                            <div class="clearfix"></div>
+                            <input type="submit" class="jobsearch-employer-profile-submit jobsearch-postjob-btn" value="<?php esc_html_e('Post Job', 'wp-jobsearch') ?>">
                             <?php
+                            $btns_html = ob_get_clean();
+                            echo apply_filters('jobsearch_user_dash_jobpost_btn_html', $btns_html);
                         }
                     }
                     if (isset($job_package_tab)) { ?>
                         <input type="hidden" name="user_job_package_chose" value="1">
-                        <input type="submit" class="jobsearch-employer-profile-submit"
+                        <input type="submit" class="jobsearch-employer-profile-submit jobsearch-postjob-btn"
                                value="<?php esc_html_e('Update Package', 'wp-jobsearch') ?>">
                     <?php
                     }

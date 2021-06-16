@@ -79,7 +79,7 @@ if (!function_exists('award_meta_fields_callback')) {
                             ?>
                         </div>
                     </div> 
-                    <div class="addto-list-btn"><a id="jobsearch-add-award-exfield" data-id="<?php echo absint($rand_num) ?>" class="jobsearch-bk-btn" href="javascript:void(0)"><?php esc_html_e('Add to List', 'wp-jobsearch') ?></a><span class="ajax-loader"></span></div>
+                    <div class="addto-list-btn"><a id="jobsearch-add-award-exfield" class="jobsearch-bk-btn" href="javascript:void(0)"><?php esc_html_e('Add to List', 'wp-jobsearch') ?></a><span class="ajax-loader"></span></div>
                 </div>
                 <?php
                 $exfield_list = get_post_meta($post->ID, 'jobsearch_field_award_title', true);

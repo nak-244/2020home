@@ -5,7 +5,7 @@
  * Plugin Name:       Careerfy Framework
  * Plugin URI:        http://eyecix.com/demo/careerfy/
  * Description:       Careerfy Framework is a supporting plugin.
- * Version:           3.3.0
+ * Version:           5.0.0
  * Author:            Eyecix
  * Author URI:        http://eyecix.com
  * License:           GPL-2.0+

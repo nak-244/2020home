@@ -51,6 +51,13 @@ class JobSearch_plugin_Activator {
         }
         
         //
+        //$import_schedules_timestamp = wp_next_scheduled('jobsearch_job_import_schedules_cron');
+        //if (!$import_schedules_timestamp) {
+            wp_schedule_event(time(), 'every_five_mins', 'jobsearch_job_import_schedules_cron');
+        //}
+        wp_schedule_event(time(), 'every_half_hourly', 'jobsearch_half_hour_common_schedule');
+        
+        //
         $jobalerts_cron_event = wp_next_scheduled('jobsearch_job_alerts_schedule');
         if (!$jobalerts_cron_event) {
             wp_schedule_event(time(), 'daily', 'jobsearch_job_alerts_schedule');

@@ -68,13 +68,15 @@ if (!class_exists('post_type_package')) {
                 case 'pckg_type' :
                     $pckg_type = get_post_meta($post->ID, 'jobsearch_field_package_type', true);
                     if ($pckg_type == 'feature_job') {
-                        $type = esc_html__('Featured Job', 'wp-jobsearch');
+                        $type = esc_html__('Single Featured Job credit', 'wp-jobsearch');
                     } else if ($pckg_type == 'featured_jobs') {
-                        $type = esc_html__('Featured Jobs', 'wp-jobsearch');
+                        $type = esc_html__('Jobs Package with featured credits', 'wp-jobsearch');
+                    } else if ($pckg_type == 'emp_allin_one') {
+                        $type = esc_html__('All in one', 'wp-jobsearch');
                     } else if ($pckg_type == 'cv') {
-                        $type = esc_html__('CV Package', 'wp-jobsearch');
+                        $type = esc_html__('Employer download CV\'s Package', 'wp-jobsearch');
                     } else if ($pckg_type == 'candidate') {
-                        $type = esc_html__('Candidates Package', 'wp-jobsearch');
+                        $type = esc_html__('Candidate Job Apply Package', 'wp-jobsearch');
                     } else if ($pckg_type == 'promote_profile') {
                         $type = esc_html__('Promote Profile', 'wp-jobsearch');
                     } else if ($pckg_type == 'urgent_pkg') {
@@ -83,7 +85,7 @@ if (!class_exists('post_type_package')) {
                         $type = esc_html__('Candidate Profile Package', 'wp-jobsearch');
                     } else if ($pckg_type == 'employer_profile') {
                         $type = esc_html__('Employer Profile Package', 'wp-jobsearch');
-                    } else {
+                    }  else {
                         $type = esc_html__('Job Package', 'wp-jobsearch');
                     }
                     echo apply_filters('jobsearch_pkgs_admin_columns_title', $type, $post->ID);

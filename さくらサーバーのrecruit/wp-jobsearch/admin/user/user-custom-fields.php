@@ -84,6 +84,7 @@ function jobsearch_show_extra_profile_fields($user) {
         </table>
         <?php
     }
+    echo apply_filters('jobsearch_user_editpage_attch_fields_after', '', $user);
     ?>
     <div class="jobsearch-memb-fields">
         <h3><?php esc_html_e('Jobsearch Member Fields', 'wp-jobsearch') ?></h3>
@@ -137,4 +138,21 @@ function jobsearch_save_extra_profile_fields($user_id) {
             update_post_meta($employer_id, 'jobsearch_user_id', $user_id);
         }
     }
+    
+    do_action('jobsearch_user_adminedit_save_fields', $user_id);
 }
+
+add_action('set_user_role', function($user_id, $role, $old_roles) {
+    global $pagenow;
+    $jobsearch_roles = array('jobsearch_candidate', 'jobsearch_employer');
+    if (is_array($old_roles) && (!in_array('jobsearch_candidate', $old_roles) && !in_array('jobsearch_employer', $old_roles)) && in_array($role, $jobsearch_roles) && $pagenow == 'users.php') {
+        if (!isset($_POST['role'])) {
+            $_POST['role'] = $role;
+        }
+        $user_emp_id = get_user_meta($user_id, 'jobsearch_employer_id', true);
+        $user_cand_id = get_user_meta($user_id, 'jobsearch_candidate_id', true);
+        if (!$user_emp_id && !$user_cand_id) {
+            do_action('jobsearch_when_user_update_at_bkend', $user_id);
+        }
+    }
+}, 15, 3);

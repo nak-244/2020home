@@ -1,6 +1,7 @@
 <?php
 
-Class WpJobSearchLogin {
+Class WpJobSearchLogin
+{
 
     const _AUTHORIZE_URL = 'https://www.linkedin.com/uas/oauth2/authorization';
     const _TOKEN_URL = 'https://www.linkedin.com/uas/oauth2/accessToken';
@@ -22,7 +23,8 @@ Class WpJobSearchLogin {
     // Stores our LinkedIn options 
     public $li_options;
 
-    public function __construct() {
+    public function __construct()
+    {
 
         global $jobsearch_plugin_options;
         $user_login_page_id = isset($jobsearch_plugin_options['user-login-template-page']) ? $jobsearch_plugin_options['user-login-template-page'] : '';
@@ -32,11 +34,13 @@ Class WpJobSearchLogin {
 
         $linkedin_secret = isset($jobsearch_plugin_options['jobsearch_linkedin_secret']) ? $jobsearch_plugin_options['jobsearch_linkedin_secret'] : '';
 
+        add_shortcode('jobsearch_linkedin_login', array($this, 'display_login_button'));
+
         //
         add_action('jobsearch_do_apply_job_linkedin', array($this, 'do_apply_job_with_linkedin'), 10, 1);
 
         // This action displays the LinkedIn Login button on the default WordPress Login Page
-        add_shortcode('jobsearch_linkedin_login', array($this, 'display_login_button'));
+
 
         // This action processes any LinkedIn Login requests
         //add_action('init', array($this, 'process_login'));
@@ -60,7 +64,11 @@ Class WpJobSearchLogin {
         $this->oauth = new Wp_JobSearch_OAuth2Client($this->li_api_key, $this->li_secret_key);
 
         // Set Oauth URLs
-        $this->oauth->redirect_uri = home_url('/') . '?action=linkedin_login';
+        $home_url = home_url('/');
+        if (strpos($home_url, '?') > 0) {
+            $home_url = substr($home_url, 0, strpos($home_url, '?'));
+        }
+        $this->oauth->redirect_uri = $home_url . '?action=linkedin_login';
         $this->oauth->authorize_url = self::_AUTHORIZE_URL;
         $this->oauth->token_url = self::_TOKEN_URL;
         $this->oauth->api_base_url = self::_BASE_URL;
@@ -83,14 +91,31 @@ Class WpJobSearchLogin {
         do_action('jobsearch_linkedin_dologin_inend_constr', $this);
     }
 
-    public function do_apply_job_with_linkedin($user_id) {
+    public function do_apply_job_with_linkedin($user_id)
+    {
+
+        global $jobsearch_plugin_options;
+
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
+
+        $user_is_candidate = jobsearch_user_is_candidate($user_id);
+
+        $apply_job_cond = true;
+        if ($candidate_auto_approve != 'on') {
+            $apply_job_cond = false;
+            if ($user_is_candidate) {
+                $candidate_id = jobsearch_get_user_candidate_id($user_id);
+                $candidate_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
+                if ($candidate_status == 'on') {
+                    $apply_job_cond = true;
+                }
+            }
+        }
 
         if (isset($_COOKIE['jobsearch_apply_linkedin_jobid']) && $_COOKIE['jobsearch_apply_linkedin_jobid'] > 0) {
             $job_id = $_COOKIE['jobsearch_apply_linkedin_jobid'];
 
             //
-            $user_is_candidate = jobsearch_user_is_candidate($user_id);
-
             if ($user_is_candidate) {
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
 
@@ -117,7 +142,8 @@ Class WpJobSearchLogin {
     }
 
     // Returns LinkedIn authorization URL
-    public function get_auth_url($redirect = false) {
+    public function get_auth_url($redirect = false)
+    {
 
         $state = wp_generate_password(12, false);
         $authorize_url = $this->oauth->authorizeUrl(array('scope' => 'r_liteprofile r_emailaddress',
@@ -135,23 +161,20 @@ Class WpJobSearchLogin {
     }
 
     // This function displays the login button on the default WP login page
-    public function display_login_button() {
+    public function display_login_button()
+    {
 
         // User is not logged in, display login button
         echo '<li><a class="jobsearch-linkedin-bg" href="' . $this->get_auth_url() . '" data-original-title="linkedin"><i class="fa fa-linkedin"></i>' . __('Login with Linkedin', 'wp-jobsearch') . '</a></li>';
     }
 
     // Logs in a user after he has authorized his LinkedIn account
-    function process_login() {
+    function process_login()
+    {
         global $jobsearch_plugin_options;
         // If this is not a linkedin sign-in request, do nothing
         if (!$this->is_linkedin_signin()) {
             return;
-        }
-                
-        // Start session
-        if (!session_id()) {
-            session_start();
         }
 
         // If this is a user sign-in request, but the user denied granting access, redirect to login URL
@@ -176,7 +199,6 @@ Class WpJobSearchLogin {
             error_log("WP_LinkedIn Login Error\nError: $error\nDescription: $error_description");
         }
 
-
         // Get profile XML response
         $profile_xml = $this->get_linkedin_profile();
         $email_xml = $this->get_linkedin_profile_email();
@@ -198,6 +220,10 @@ Class WpJobSearchLogin {
         // Otherwise, we create a new account
         $this->createUser();
         //
+        $home_url = home_url('/');
+        if (strpos($home_url, '?') > 0) {
+            $home_url = substr($home_url, 0, strpos($home_url, '?'));
+        }
         if (isset($_COOKIE['linkedin_redirect_url']) && $_COOKIE['linkedin_redirect_url'] != '') {
             $real_redirect_url = $_COOKIE['linkedin_redirect_url'];
             unset($_COOKIE['linkedin_redirect_url']);
@@ -205,10 +231,10 @@ Class WpJobSearchLogin {
         } else {
             $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
             $user_dashboard_page = isset($user_dashboard_page) && !empty($user_dashboard_page) ? jobsearch__get_post_id($user_dashboard_page, 'page') : 0;
-            $real_redirect_url = $user_dashboard_page > 0 ? get_permalink($user_dashboard_page) : home_url('/');
+            $real_redirect_url = $user_dashboard_page > 0 ? get_permalink($user_dashboard_page) : $home_url;
         }
 
-        
+
         $this->redirect_url = $real_redirect_url;
         //
 
@@ -220,14 +246,15 @@ Class WpJobSearchLogin {
      * Get the user LinkedIN profile and return it as XML
      */
 
-    private function get_linkedin_profile() {
+    private function get_linkedin_profile()
+    {
 
         // Use GET method since POST isn't working
         $this->oauth->curl_authenticate_method = 'GET';
 
         // Request access token
         $response = $this->oauth->authenticate($_REQUEST['code']);
-        
+
         if ($response) {
             $this->access_token = $response->{'access_token'};
         }
@@ -235,18 +262,19 @@ Class WpJobSearchLogin {
         // Get first name, last name and email address, and load 
         // response into XML object
         $xml = ($this->oauth->get('https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,email-address,profilePicture(displayImage~:playableStreams))'));
-        
+
         return $xml;
     }
-    
-    private function get_linkedin_profile_email() {
+
+    private function get_linkedin_profile_email()
+    {
 
         // Use GET method since POST isn't working
         $this->oauth->curl_authenticate_method = 'GET';
 
         // Request access token
         $response = $this->oauth->authenticate($_REQUEST['code']);
-        
+
         if ($response) {
             $this->access_token = $response->{'access_token'};
         }
@@ -254,7 +282,7 @@ Class WpJobSearchLogin {
         // Get first name, last name and email address, and load 
         // response into XML object
         $xml = ($this->oauth->get('https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))'));
-        
+
         return $xml;
     }
 
@@ -262,7 +290,8 @@ Class WpJobSearchLogin {
      * Checks if this is a LinkedIn sign-in request for our plugin
      */
 
-    private function is_linkedin_signin() {
+    private function is_linkedin_signin()
+    {
 
         // If no action is requested or the action is not ours
         if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != "linkedin_login")) {
@@ -288,12 +317,13 @@ Class WpJobSearchLogin {
         return true;
     }
 
-    private function loginUser() {
+    private function loginUser()
+    {
         global $jobsearch_plugin_options;
         $linkedin_user = $this->linkedin_details;
         $user_id = isset($linkedin_user['id']) ? $linkedin_user['id'] : '';
-        
-        
+
+
         // We look for the `eo_linkedin_id` to see if there is any match
         $wp_users = get_users(array(
             'meta_key' => 'jobsearch_linkedin_id',
@@ -307,7 +337,11 @@ Class WpJobSearchLogin {
             return false;
         }
 
-        
+        $home_url = home_url('/');
+        if (strpos($home_url, '?') > 0) {
+            $home_url = substr($home_url, 0, strpos($home_url, '?'));
+        }
+
         if (isset($_COOKIE['linkedin_redirect_url']) && $_COOKIE['linkedin_redirect_url'] != '') {
             $real_redirect_url = $_COOKIE['linkedin_redirect_url'];
             unset($_COOKIE['linkedin_redirect_url']);
@@ -315,10 +349,10 @@ Class WpJobSearchLogin {
         } else {
             $user_dashboard_page = isset($jobsearch_plugin_options['user-dashboard-template-page']) ? $jobsearch_plugin_options['user-dashboard-template-page'] : '';
             $user_dashboard_page = isset($user_dashboard_page) && !empty($user_dashboard_page) ? jobsearch__get_post_id($user_dashboard_page, 'page') : 0;
-            $real_redirect_url = $user_dashboard_page > 0 ? get_permalink($user_dashboard_page) : home_url('/');
+            $real_redirect_url = $user_dashboard_page > 0 ? get_permalink($user_dashboard_page) : $home_url;
         }
 
-        
+
         $this->redirect_url = $real_redirect_url;
         //
         // Log the user ?
@@ -335,19 +369,34 @@ Class WpJobSearchLogin {
     /**
      * Create a new WordPress account using Linkedin Details
      */
-    private function createUser() {
+    private function createUser()
+    {
 
+        global $jobsearch_plugin_options;
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
         $linkedin_user = $this->linkedin_details;
         $linkedin_user_email = $this->linkedin_email_details;
-             
+
+        $img_get_arry = isset($linkedin_user['profilePicture']['displayImage~']['elements']) ? $linkedin_user['profilePicture']['displayImage~']['elements'] : '';
+        $pitcure_url = isset($img_get_arry[3]['identifiers'][0]['identifier']) ? $img_get_arry[3]['identifiers'][0]['identifier'] : '';
+        if ($pitcure_url == '') {
+            $pitcure_url = isset($img_get_arry[2]['identifiers'][0]['identifier']) ? $img_get_arry[3]['identifiers'][0]['identifier'] : '';
+        }
+        if ($pitcure_url == '') {
+            $pitcure_url = isset($img_get_arry[1]['identifiers'][0]['identifier']) ? $img_get_arry[3]['identifiers'][0]['identifier'] : '';
+        }
+        if ($pitcure_url == '') {
+            $pitcure_url = isset($img_get_arry[0]['identifiers'][0]['identifier']) ? $img_get_arry[3]['identifiers'][0]['identifier'] : '';
+        }
+
         $user_id = isset($linkedin_user['id']) ? $linkedin_user['id'] : '';
-        
+
         $first_name = '';
         $last_name = '';
-        
+
         $first_name_arr = isset($linkedin_user['firstName']['localized']) ? $linkedin_user['firstName']['localized'] : '';
         $last_name_arr = isset($linkedin_user['lastName']['localized']) ? $linkedin_user['lastName']['localized'] : '';
-        
+
         if (!empty($first_name_arr)) {
             foreach ($first_name_arr as $firs_name_key => $firs_name_val) {
                 $first_name = $firs_name_val;
@@ -378,11 +427,11 @@ Class WpJobSearchLogin {
         if (username_exists($username)) {
             $username .= '_' . rand(10000, 99999);
         }
-        
-        $pasword = wp_generate_password();
-        
+
+        $user_pass = wp_generate_password();
+
         // Creating our user
-        $new_user = wp_create_user($username, $pasword, $email);
+        $new_user = wp_create_user($username, $user_pass, $email);
 
         if (is_wp_error($new_user)) {
             // Report our errors
@@ -390,7 +439,7 @@ Class WpJobSearchLogin {
             echo $new_user->get_error_message();
             die;
         } else {
-
+            $user_candidate_id = jobsearch_get_user_candidate_id($new_user);
             // user role
             $user_role = 'jobsearch_candidate';
             wp_update_user(array('ID' => $new_user, 'role' => $user_role));
@@ -403,18 +452,35 @@ Class WpJobSearchLogin {
             update_user_meta($new_user, 'first_name', $first_name);
             update_user_meta($new_user, 'last_name', $last_name);
             update_user_meta($new_user, 'jobsearch_linkedin_id', $user_id);
+            
+            if ($candidate_auto_approve == 'on' || $candidate_auto_approve == 'email') {
+                update_post_meta($user_candidate_id, 'jobsearch_field_candidate_approved', 'on');
+            }
+
+            if ($pitcure_url != '') {
+                jobsearch_upload_attach_with_external_url($pitcure_url, $user_candidate_id);
+            }
+            $c_user = get_user_by('ID', $new_user);
+            do_action('jobsearch_new_user_register', $c_user, $user_pass);
             // Log the user ?
             wp_set_auth_cookie($new_user);
         }
     }
 
-    public function applying_job_with_linkedin() {
+    public function applying_job_with_linkedin()
+    {
+        global $jobsearch_plugin_options;
+
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
+
         $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
         if ($job_id > 0 && get_post_type($job_id) == 'job') {
-            $real_redirect_url = get_permalink($job_id);
+
             setcookie('jobsearch_apply_linkedin_jobid', $job_id, time() + 180, "/");
-            setcookie('linkedin_redirect_url', $real_redirect_url, time() + 360, "/");
-            
+            if ($candidate_auto_approve == 'on') {
+                $real_redirect_url = get_permalink($job_id);
+                setcookie('linkedin_redirect_url', $real_redirect_url, time() + 360, "/");
+            }
             echo json_encode(array('redirect_url' => $this->get_auth_url()));
             die;
         } else {
@@ -423,7 +489,8 @@ Class WpJobSearchLogin {
         }
     }
 
-    public function apply_job_with_linkedin($args = array()) {
+    public function apply_job_with_linkedin($args = array())
+    {
         global $jobsearch_plugin_options;
         $linkedin_login = isset($jobsearch_plugin_options['linkedin-social-login']) ? $jobsearch_plugin_options['linkedin-social-login'] : '';
         if ($linkedin_login == 'on') {
@@ -433,21 +500,27 @@ Class WpJobSearchLogin {
             $label = isset($args['label']) ? $args['label'] : '';
             $view = isset($args['view']) ? $args['view'] : '';
 
-            if ($view == 'job2') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><?php echo ($label); ?></a>
-                <?php
-            } elseif ($view == 'job3') {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"></a></li>
-                <?php
-            } elseif ($view == 'job4') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"> <?php esc_html_e('Apply with Linkedin', 'wp-jobsearch') ?></a>
-                <?php
-            } else {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="jobsearch-icon jobsearch-linkedin-logo"></i> <?php esc_html_e('Linkedin', 'wp-jobsearch') ?></a></li>
+            if ($view == 'job2') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"><?php echo($label); ?></a>
+            <?php } elseif ($view == 'job3') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"></a>
+                </li>
+            <?php } elseif ($view == 'job4') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"><i class="careerfy-icon careerfy-linkedin"></i><?php esc_html_e('Apply with Linkedin', 'wp-jobsearch') ?></a>
+            <?php } elseif ($view == 'job5') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                            class="careerfy-icon careerfy-linkedin"></i> <?php echo ($label) ?>
+                </a>
+            <?php } elseif ($view == 'job6') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                                class="jobsearch-icon jobsearch-linkedin-logo"></i> <?php echo ($label) ?>
+                    </a></li>
+            <?php } else { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                                class="jobsearch-icon jobsearch-linkedin-logo"></i> <?php esc_html_e('Linkedin', 'wp-jobsearch') ?>
+                    </a></li>
                 <?php
             }
         }

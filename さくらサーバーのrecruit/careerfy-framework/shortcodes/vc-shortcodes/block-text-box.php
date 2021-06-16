@@ -5,7 +5,8 @@
  */
 add_shortcode('careerfy_block_text_box', 'careerfy_block_text_box_shortcode');
 
-function careerfy_block_text_box_shortcode($atts, $content = '') {
+function careerfy_block_text_box_shortcode($atts, $content = '')
+{
 
     extract(shortcode_atts(array(
         'title' => '',
@@ -15,7 +16,7 @@ function careerfy_block_text_box_shortcode($atts, $content = '') {
         'btn_url' => '',
         'video_url' => '',
         'poster_img' => '',
-                    ), $atts));
+    ), $atts));
 
     ob_start();
 
@@ -28,31 +29,31 @@ function careerfy_block_text_box_shortcode($atts, $content = '') {
     }
     ?>
     <div class="row">
-        <div class="col-md-6 careerfy-parallex-box" <?php echo ($style_str != '' ? 'style="' . $style_str . '"' : '') ?>>
+        <div class="col-md-6 careerfy-parallex-box" <?php echo($style_str != '' ? 'style="' . $style_str . '"' : '') ?>>
             <div class="careerfy-parallex-box-wrap">
-                <h2><?php echo ($title) ?></h2>
+                <h2><?php echo($title) ?></h2>
                 <?php
                 if ($content != '') {
                     ?>
-                    <p><?php echo ($content) ?></p>
+                    <p><?php echo($content) ?></p>
                     <?php
                 }
                 if ($btn_txt != '') {
                     ?>
-                    <a href="<?php echo ($btn_url) ?>" class="careerfy-parallex-box-btn"><?php echo ($btn_txt) ?></a>
+                    <a href="<?php echo($btn_url) ?>" class="careerfy-parallex-box-btn"><?php echo($btn_txt) ?></a>
                     <?php
                 }
                 ?>
             </div>
         </div>
-        <?php
-        if ($video_url != '') {
+        <?php if ($video_url != '') {
             wp_enqueue_script('careerfy-mediaelement');
             ?>
             <div class="col-md-6 careerfy-media-player">
-                <video src="<?php echo ($video_url) ?>" poster="<?php echo ($poster_img) ?>" controls="controls" preload=""></video>
+                <video src="<?php echo($video_url) ?>" poster="<?php echo($poster_img) ?>" controls="controls"
+                       preload=""></video>
             </div>
-            <script>
+            <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery('video').mediaelementplayer({
                         success: function (player, node) {
@@ -61,12 +62,10 @@ function careerfy_block_text_box_shortcode($atts, $content = '') {
                     });
                 });
             </script>
-            <?php
-        }
-        ?>
+        <?php } ?>
     </div>
     <?php
-    $html = ob_get_clean();
 
+    $html = ob_get_clean();
     return $html;
 }

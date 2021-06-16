@@ -8,6 +8,8 @@
        -moz-box-sizing: border-box;
             box-sizing: border-box;
 }
+body {
+    position: relative; }
 .jobsearch-typo-wrap {
     font-family: 'Roboto', sans-serif;
     color: #999999;
@@ -40,7 +42,7 @@ a,a:focus {
 .jobsearch-column-11, .jobsearch-column-12,
 .jobsearch-typo-wrap .jobsearch-column-1, .jobsearch-typo-wrap .jobsearch-column-2, .jobsearch-typo-wrap .jobsearch-column-3, .jobsearch-typo-wrap .jobsearch-column-4, .jobsearch-typo-wrap .jobsearch-column-5,
 .jobsearch-typo-wrap .jobsearch-column-6, .jobsearch-typo-wrap .jobsearch-column-7, .jobsearch-typo-wrap .jobsearch-column-8,.jobsearch-typo-wrap .jobsearch-column-9, .jobsearch-typo-wrap .jobsearch-column-10,
-.jobsearch-typo-wrap .jobsearch-column-11, .jobsearch-typo-wrap .jobsearch-column-12 {
+.jobsearch-typo-wrap .jobsearch-column-11, .jobsearch-typo-wrap .jobsearch-column-12,.careerfy-featured-jobs-list [class*="col-md-"] {
   float: left;
   padding: 0px 15px;
 }
@@ -238,7 +240,7 @@ font-weight: normal;
 .jobsearch-banner-search input[type="submit"] {
     height: 60px;
     border: none;
-    background-color: transparent;
+    background-color: transparent !important;
     position: relative;
     z-index: 5;
     cursor: pointer;
@@ -486,7 +488,7 @@ font-weight: normal;
 .jobsearch-filterable ul li {
     float: left;
     list-style: none;
-    padding: 0px 2px;
+    padding: 0px 2px 4px 2px;
 }
 .jobsearch-filterable ul li:first-child                                             { padding-left: 0px; }
 .jobsearch-filterable ul li:last-child                                              { padding-right: 0px; }
@@ -789,9 +791,8 @@ font-weight: normal;
     width: 27px;
     height: 27px;
     border-radius: 100%;
-    border: 1px solid #ededed;
+    border: 1px solid;
     text-align: center;
-    color: #8bb300;
     font-size: 12px;
     line-height: 1;
     padding-top: 6px;
@@ -801,13 +802,24 @@ font-weight: normal;
          -o-transition: all 0.4s ease-in-out;
             transition: all 0.4s ease-in-out;
 }
-.jobsearch-job-like:hover {
-    background-color: #8bb300;
+.jobsearch-job-like i {
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.jobsearch-job-like:hover,
+.jobsearch-job-like:hover i,
+.jobsearch-add-job-to-favourite.jobsearch-job-like:hover i,
+.jobsearch-job-like i {
     color: #ffffff;
+}
+.jobsearch-add-job-to-favourite.jobsearch-job-like {
+    background-color: #fff;
 }
 .jobsearch-joblisting-classic > ul > li                                                 { margin-bottom: 20px; }
 .jobsearch-joblisting-classic figure ~ .jobsearch-joblisting-text                       { margin-left: 90px; }
-.jobsearch-job-userlist .jobsearch-job-like                                             { border-color: #8bb300; }
 .jobsearch-list-option ul li i                                                          { margin-right: 6px; color: #999; }
 .jobsearch-list-option                                                                  { float: left; }
 .jobsearch-list-option .jobsearch-pst-title {
@@ -859,11 +871,12 @@ font-weight: normal;
     position: relative;
     float: left;
     width: 100%;
+    overflow: hidden;
 }
 .job-to-fav-msg-con {
     position: absolute;
     right: 24px;
-    top: 0px;
+    top: 6px;
     color: #8bb300;
 }
 .jobsearch-joblisting-classic .jobsearch-table-cell {
@@ -875,7 +888,7 @@ font-weight: normal;
 .jobsearch-joblisting-classic .jobsearch-job-like { padding-top: 7px; }
 /* JobDetail SubHeader */
 .jobsearch-job-subheader {
-    display: inline-block;
+    float: left;
     width: 100%;
     text-align: center;
     position: relative;
@@ -1058,6 +1071,7 @@ font-weight: normal;
     display: block;
     font-size: 14px;
     line-height: 1;
+    margin-bottom: 12px;s
 }
 .jobsearch-description {
     float: left;
@@ -1177,7 +1191,7 @@ font-weight: normal;
          -o-transition: all 0.4s ease-in-out;
             transition: all 0.4s ease-in-out;
 }   
-.jobsearch-applyjob-btn:hover { background-color: transparent; }
+.jobsearch-applyjob-btn:hover { background-color: transparent; color: #53b427 !important; }
 .instastcky-aplybtn-con .jobsearch-applyjob-btn:hover { background-color: #53b427; color: #ffffff; }
 .instastcky-aplybtn-con .jobsearch-applyjob-btn {
     border-radius: 0px;
@@ -1372,6 +1386,7 @@ font-weight: normal;
     margin-bottom: 0px;
     line-height: 1;
     font-size: 18px;
+    word-break: break-all;
 }
 .jobsearch-employer-list span {
     font-size: 12px;
@@ -1641,7 +1656,7 @@ font-weight: normal;
     border-top: 1px solid #eceeef;
 }
 .jobsearch-employer-dashboard-nav ul li a {
-    padding: 16px 24px;
+    padding: 16px 24px 16px 62px;
     line-height: 1;
     color: #333333;
     font-size: 16px;
@@ -1661,9 +1676,9 @@ font-weight: normal;
     padding: 12px 0px 0px 0px;
     font-size: 24px;
     text-align: center;
-    margin: 0;
-    right: 0;
-    top: 0;
+    margin: 0px;
+    left: 0px;
+    top: 0px;
     height: 100%;
     width: 50px;
 }
@@ -1681,8 +1696,10 @@ font-weight: normal;
 .jobsearch-employer-dashboard-nav ul li.profile-del-btnlink i { color: #ffffff !important; }
 .jobsearch-employer-dashboard-nav ul li i {
     color: #aaaaaa;
-    display: inline-block;
-    margin: 0px 14px 0px 0px;
+    position: absolute;
+    left: 24px;
+    top: 14px;
+    margin: 0px 0px 0px 0px;
     font-size: 20px;
     vertical-align: text-top;
     -webkit-transition: all 0.4s ease-in-out;
@@ -1945,7 +1962,8 @@ font-weight: normal;
 /* Candidate Portfolio */
 .candidate_portfolio,.candidate_portfolio figure,
 .candidate_portfolio figure img,.grid-item-thumb,
-.jobsearch-simple-gallery figure {
+.jobsearch-simple-gallery figure,
+.careerfy-simple-gallery figure {
     float: left;
     width: 100%;
 }
@@ -1958,7 +1976,7 @@ font-weight: normal;
 }
 .candidate_portfolio figure { position: relative; }
 .grid-item-thumb {
-    height: 182px;
+    height: 124px;
 }
 .grid-item-thumb small {
     float: left;
@@ -1966,8 +1984,10 @@ font-weight: normal;
     height: 100%;
     background-size: cover;
 }
-.jobsearch-column-6 .grid-item-thumb { height: 266px; }
-.candidate_portfolio figure figcaption {
+.jobsearch-column-6 .grid-item-thumb,
+.careerfy-gallery.careerfy-simple-gallery .careerfy-column-6 .grid-item-thumb { height: 266px; }
+.candidate_portfolio figure figcaption,
+.careerfy-simple-gallery figure figcaption {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -1980,9 +2000,10 @@ font-weight: normal;
          -o-transition: all 0.4s ease-in-out;
             transition: all 0.4s ease-in-out;
 }
-.candidate_portfolio figure:hover figcaption,li.grid-item:hover figcaption { opacity: 1; }
+.careerfy-simple-gallery figure:hover figcaption,.candidate_portfolio figure:hover figcaption,li.grid-item:hover figcaption { opacity: 1; }
 .jobsearch-simple-gallery li:hover figcaption:before { opacity: 0.40; }
-.candidate_portfolio figure figcaption:before {
+.candidate_portfolio figure figcaption:before,
+.careerfy-simple-gallery figure figcaption:before {
     content: '';
     position: absolute;
     left: 0px;
@@ -2013,7 +2034,8 @@ font-weight: normal;
             transition: all 0.4s ease-in-out;
 }
 .candidate_portfolio figure:hover .img-icons,li:hover .img-icons { opacity: 1; }
-.img-icons {
+.img-icons,
+.careerfy-typo-wrap .img-icons {
     position: absolute;
     left: 0px;
     top: 50%;
@@ -2607,7 +2629,8 @@ font-weight: normal;
     line-height: 1;
 }
 h2.jobsearch-pst-title,
-.jobsearch-pst-title {
+.jobsearch-pst-title,
+h2.jobsearch-pst-title a {
     font-size: 16px !important;
     line-height: 1 !important;
 }
@@ -3013,7 +3036,6 @@ h2.jobsearch-fltcount-title,
 .jobsearch-candidate-section {
     float: left;
     width: 100%;
-    padding-left: 12px;
 }
 .jobsearch-candidate-dashboard-editor {
     padding-left: 57px;
@@ -3238,6 +3260,32 @@ h2.jobsearch-fltcount-title,
 .jobsearch-applied-jobs-wrap {
     border: 1px solid #ececec;
     padding: 14px;
+    position: relative;
+}
+.jobsearch-instamatch-applic {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    overflow: hidden;
+    z-index: 2;
+    width: 90px;
+    height: 39px;
+}
+.jobsearch-instamatch-applic strong {
+    position: absolute;
+    right: -31px;
+    top: 7px;
+    background-color: #d72c2c;
+    color: #ffffff;
+    font-size: 11px;
+    text-transform: lowercase;
+    padding: 4px 30px;
+    line-height: 1;
+    -webkit-transform: rotate(24deg);
+       -moz-transform: rotate(24deg);
+        -ms-transform: rotate(24deg);
+         -o-transform: rotate(24deg);
+            transform: rotate(24deg);
 }
 .jobsearch-applied-jobs ul li {
     list-style: none;
@@ -4050,6 +4098,13 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     padding: 0px;
     margin-bottom: 8px;
 }
+a.jobsearch-showpass-btn {
+    position: absolute;
+    right: 22px;
+    bottom: 14px;
+    font-size: 16px;
+    color: #13b5ea;
+}
 /* Login Or Register */
 .jobsearch-login-box,.jobsearch-login-box h2,.jobsearch-login-box span,.jobsearch-login-box form,.jobsearch-login-with,
 .jobsearch-login-box form ul,.jobsearch-login-box form ul li,.jobsearch-login-with a,.jobsearch-login-with span,.jobsearch-register-box { 
@@ -4080,7 +4135,8 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
 .jobsearch-login-box span {
     margin:0px 0px 23px 0px;
 }
-.jobsearch-login-box form ul { margin: 0px; padding: 0px; }
+.jobsearch-login-box form ul,
+.entry-content .jobsearch-login-box form ul, #left-area .jobsearch-login-box form ul { margin: 0px; padding: 0px; }
 .jobsearch-login-box form ul li {
     padding: 0px 0px 12px 0px;
     list-style: none;
@@ -4088,7 +4144,8 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
 .jobsearch-login-box form ul li input[type="text"],
 .jobsearch-login-box form ul li input[type="password"],
 .jobsearch-login-box form ul li input[type="email"],
-.jobsearch-login-box form ul li input[type="tel"] {
+.jobsearch-login-box form ul li input[type="tel"],
+.jobsearch-login-box form ul li input[type="number"] {
     font-size: 13px;
     margin: 0px;
     color: #444;
@@ -4116,8 +4173,9 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     font-weight: 600;
     margin: 0px 0px 0px 0px;
     text-transform: uppercase;
-    padding: 8px 39px 6px 39px;
+    padding: 11px 39px 8px 39px;
     float: left;
+    line-height: 1;
 }
 .disabled-btn {
     opacity: 0.70;
@@ -4134,9 +4192,10 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     font-weight: 600;
     margin: 0px 0px 0px 0px;
     text-transform: uppercase;
-    padding: 8px 39px 6px 39px;
+    padding: 12px 39px 9px 39px;
     float: left;
     position: relative;
+    line-height: 1;
 }
 .jobsearch-login-box form ul li input[type="submit"] {
     -webkit-transition: all 0.4s ease-in-out;
@@ -5768,8 +5827,11 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     margin: 7px 10px 0px 0px;
 }
 .terms-priv-chek-con p input {
-    margin: 7px 10px 0px 0px !important;
-    float: left;
+    margin: 0px 7px 0px 0px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 18px;
+    width: 18px;
 }
 .jobsearch-modal .terms-priv-chek-con p input { margin-top: 3px !important; }
 .terms-priv-chek-con p a {
@@ -5974,7 +6036,7 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     width: 100%;
 }
 /*----- location dropdown style -----*/
-.jobsearch_searchloc_div .jobsearch_location_autocomplete { background: #fff; box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.10); left: 5px !important; position: absolute; top: 100%!important; z-index: 9999; text-align: left; }
+.jobsearch_searchloc_div .jobsearch_location_autocomplete { background: #fff; box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.10); left: 0px !important; position: absolute; top: 100%!important; z-index: 9999; text-align: left; }
 .jobsearch_searchloc_div .address_headers h5 { font-weight: bold; }
 .jobsearch_searchloc_div .address_headers { font-weight: bold; margin: 10px 15px; }
 .jobsearch_searchloc_div .jobsearch_google_suggestions { cursor: pointer; font-size: 13px; padding: 5px 15px; -webkit-transition: all 0.4s ease-in-out;-moz-transition: all 0.4s ease-in-out;-ms-transition: all 0.4s ease-in-out;-o-transition: all 0.4s ease-in-out;transition: all 0.4s ease-in-out; }
@@ -6054,7 +6116,8 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
 .jobsearch-advance-search-holdr .search-cat-off > ul > li { width: 39%; }
 
 
-.jobsearch-banner-search.search-loc-off.search-cat-off > ul > li:first-child { width: 94%; }
+.jobsearch-banner-search.search-loc-off.search-cat-off > ul > li:first-child,
+.jobsearch-banner-search.search-keyword-off.search-cat-off > ul > li:first-child { width: 92%; }
 
 .jobsearch-banner-search.search-loc-off > ul > li { width: 47%; }
 .jobsearch-banner-search.search-loc-off > ul > li:last-child,.jobsearch-advance-search-holdr .jobsearch-banner-search > ul > li:last-child { width: 6%; }
@@ -6162,6 +6225,9 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     float: left;
     width: 100%;
     margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .short-li-icons li {
     display: inline-block;
@@ -6288,8 +6354,7 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     width: 100%;
 }
 .body-nowhite-bg .careerfy-candidate-view4-wrap {
-    padding-top: 20px;
-    padding-bottom: 10px;
+    padding: 20px 15px 10px 15px;
 }
 .jobsearch-subs-detail {
     float: right;
@@ -6299,10 +6364,13 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
 .pkgs-table-subscription-detail {
     float: right;
     width: 100%;
-    border: 1px solid #ececec;
     border-top: none;
     margin-bottom: 14px;
     padding: 10px 0px 20px 0px;
+}
+.jobsearch-recurings .jobsearch-packages-tbody .jobsearch-table-cell:nth-child(2),
+.jobsearch-recurings  .jobsearch-packages-thead .jobsearch-table-cell:nth-child(2) {
+    width: 26%;
 }
 .subs-det-item {
     float: left;
@@ -6374,7 +6442,7 @@ input.jobsearch_chk_passfield.jobsearch-mediumpass {
     font-weight: 500;
     padding: 9px 11px 8px 11px;
     line-height: 1;
-    border: 1px solid;
+    border: none;
     margin-right: 9px;
 }
 .jobsearch-send-email-popup-btn i {
@@ -6571,7 +6639,10 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
 .featured-jobs-grid-text ul.jobsearch-custom-field li:before {
     display: none; }
 .jobsearch-custom-field li small {
-    font-size: 12px; }
+    font-size: 12px;
+    margin: 0px 0px 6px 10px;
+    display: inline-block;
+}
 .careerfy-featured-jobs-list-text .jobsearch-custom-field li small {
     display: inline-block;
     color: #999 !important;
@@ -6608,13 +6679,15 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     color: #ffffff;
     padding: 5px 30px;
     line-height: 1;
-    text-transform: uppercase;
     z-index: 99;
     -webkit-transform: rotate(-40deg);
        -moz-transform: rotate(-40deg);
         -ms-transform: rotate(-40deg);
          -o-transform: rotate(-40deg);
             transform: rotate(-40deg);
+}
+.empdet_imgcon .promotepof-detv1 {
+    top: 18px;
 }
 .jobsearch-jobdetail-list .jobsearch-jobdetail-listthumb {
     overflow: hidden; }
@@ -6817,10 +6890,56 @@ a.addmor-shbtn-resumtyp {
 }
 .jobsearch_candidate_info .jobsearch-candidate-default-btn i {
     display: none; }
-.page .jobsearch-login-registration-form .jobsearch-login-box span {
+.jobsearch_candidate_info .jobsearch-candidate-cand-chat i {
+    display: inline-block;
+    margin-right: 5px;
+}
+.page .jobsearch-login-registration-form .jobsearch-login-box > span {
     width: 100%; }
-.urgntpkg-candv1 {
-    color: #ffb607;
+.urgntpkg-candv1,.urgntpkg-jobv1 {
+    position: absolute;
+    left: -21px;
+    top: 8px;
+    font-size: 13px !important;
+    background-color: #d72c2c;
+    color: #ffffff !important;
+    padding: 5px 26px;
+    line-height: 1;
+    z-index: 1;
+    -webkit-transform: rotate(-40deg);
+       -moz-transform: rotate(-40deg);
+        -ms-transform: rotate(-40deg);
+         -o-transform: rotate(-40deg);
+            transform: rotate(-40deg);
+}
+.urgntpkg-candv2 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: hidden;
+    width: 65px;
+    height: 53px;
+}
+.urgntpkg-candv2 span {
+    position: absolute;
+    left: -21px;
+    top: 8px;
+    font-size: 13px !important;
+    background-color: #d72c2c;
+    color: #ffffff !important;
+    padding: 5px 26px;
+    line-height: 1;
+    z-index: 1;
+    -webkit-transform: rotate(-40deg);
+       -moz-transform: rotate(-40deg);
+        -ms-transform: rotate(-40deg);
+         -o-transform: rotate(-40deg);
+            transform: rotate(-40deg);
+}
+.urgntpkg-candv2.cic_is_verified span {
+    background-color: #40d184;
+    left: -25px;
+    top: 7px;
 }
 .jobsearch-activcode-popupbtn,
 .jobsearch-resend-accactbtn {
@@ -6830,6 +6949,8 @@ a.addmor-shbtn-resumtyp {
     font-size: 18px;
     margin: 0px 5px;
 }
+#JobSearchModalAccountActivationForm a.jobsearch-resend-accactbtn {
+    color: #777; }
 .jobsearch-user-form i.jobsearch-icon.jobsearch-upload {
     position: static !important;
     display: inline-block;
@@ -7231,10 +7352,6 @@ a.addmor-shbtn-resumtyp {
     height: 42px;
     background-color: #efefef;
 }
-.dash-reviews-list .jobsearch-company-review-left small {
-    float: right;
-    margin-top: 7px;
-}
 #main:not(.sidebar-none) .wf-container-main {
     display: inline-block;
     width: 100%;
@@ -7268,8 +7385,10 @@ a.addmor-shbtn-resumtyp {
     background-color: #ffffff;
     width: 100%;
 }
+.phonefild-wout-valid.phon-num-fieldcon input[type="tel"] {
+    padding-left: 13px; }
 .intl-tel-input.allow-dropdown input[type="tel"] {
-    padding-left: 95px;
+    padding-left: 95px !important;
 }
 .phon-num-fieldcon .contry-info-con {
     position: absolute;
@@ -7285,7 +7404,8 @@ a.addmor-shbtn-resumtyp {
     width: auto;
     margin: 0px;
 }
-.page-template-user-login-template .intl-tel-input .country-list {
+.page-template-user-login-template .intl-tel-input .country-list,
+.jobsearch-login-box .intl-tel-input .country-list {
     min-width: 450px; }
 .jobsearch-whatsapp-msgcon {
     float: left;
@@ -7436,6 +7556,10 @@ a.addmor-shbtn-resumtyp {
 }
 .profpckg-popup-main .modal-box-area {
     padding: 0px; }
+.profpckg-popup-main .jobsearch-modal-title-box {
+    padding: 16px 0px 4px 30px;
+    margin-bottom: 11px;
+}
 .profpckg-popup-main .model-heading {
     padding: 10px 0px 5px 15px;
     background-color: #636363;
@@ -7836,7 +7960,7 @@ a.addmor-shbtn-resumtyp {
     margin-right: 15px;
 }
 .cusfield-checkbox-radioitm.jobsearch-checkbox label {
-    line-height: 2;}
+    line-height: 2.2;}
 .jobsearch-jobexpire-notifyerr,
 .jobexpire-notify-hdrlogo,
 .jobexpire-notify-msgcon,
@@ -8165,7 +8289,7 @@ a.addmor-shbtn-resumtyp {
     position: absolute;
     right: -6px;
     top: -10px;
-    width: 15px;
+    min-width: 15px;
     height: 15px;
     color: #ffffff;
     border-radius: 100%;
@@ -8255,6 +8379,7 @@ ul li.jobsearch-usernotifics-menubtn:hover .jobsearch-hdernotifics-listitms {
 }
 span.notific-item-datetime {
     float: right;
+    font-size: 12px;
 }
 .hdernotifics-after-con {
     float: left;
@@ -8266,9 +8391,10 @@ span.notific-item-datetime {
     text-transform: uppercase;
     font-weight: 600;
     padding: 6px 15px;
-    line-height: 1;
+    line-height: 1 !important;
     border-radius: 80px;
     border: 1px solid;
+    margin-bottom: 5px;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
     -ms-transition: all 0.4s ease-in-out;
@@ -8280,6 +8406,7 @@ span.notific-item-datetime {
 }
 .hdernotifics-after-con a:hover {
     color: #ffffff !important; }
+
 /* On Off Switch */
 .jobsearch-dashbord-onoffswitch {
     display: inline-block;
@@ -8292,7 +8419,7 @@ span.notific-item-datetime {
     -ms-user-select: none;
 }
 .opt_notific_setcheckbtn {
-    display: none; }
+    display: none !important; }
 .jobsearch-optnotific-label {
     display: block;
     overflow: hidden;
@@ -8301,17 +8428,8 @@ span.notific-item-datetime {
     width: auto !important;
     margin: 0px !important;
 }
-.onoffswitch-inner {
-    display: block;
-    width: 200%;
-    margin-left: -100%;
-    -webkit-transition: margin 0.3s ease-in 0s;
-       -moz-transition: margin 0.3s ease-in 0s;
-        -ms-transition: margin 0.3s ease-in 0s;
-         -o-transition: margin 0.3s ease-in 0s;
-            transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
+span.onoffswitch-inner:after,
+span.onoffswitch-inner:before {
     float: left;
     width: 50%;
     height: 30px;
@@ -8321,19 +8439,20 @@ span.notific-item-datetime {
     color: #ffffff;
     font-weight: 400;
 }
-.onoffswitch-inner:before {
-    content: "On";
-    padding-left: 24px;
-    background-color: #46b169;
-    color: #ffffff;
-}
-.onoffswitch-inner:after {
+span.onoffswitch-inner:after {
     content: "Off";
     padding-right: 18px;
     background-color: #e42a45;
     color: #ffffff;
     text-align: right;
 }
+span.onoffswitch-inner:before {
+    content: "On";
+    padding-left: 24px;
+    background-color: #46b169;
+    color: #ffffff;
+}
+
 .onoffswitch-switch {
     display: block;
     width: 24px;
@@ -8350,7 +8469,18 @@ span.notific-item-datetime {
          -o-transition: all 0.4s ease-in-out;
             transition: all 0.4s ease-in-out;
 }
-.opt_notific_setcheckbtn:checked + .jobsearch-optnotific-label .onoffswitch-inner {
+span.onoffswitch-inner {
+    display: inline-flex;
+    width: 200%;
+    margin-left: -100%;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+
+.opt_notific_setcheckbtn:checked + .jobsearch-optnotific-label span.onoffswitch-inner {
     margin-left: 0; }
 .opt_notific_setcheckbtn:checked + .jobsearch-optnotific-label .onoffswitch-switch {
     right: 9px;
@@ -8367,6 +8497,7 @@ span.notific-item-datetime {
 }
 .jobsearch-onoffswitch-title strong {
     margin-left: 4px; }
+
 .jobsearch-notifics-loistitms {
     width: 100%; }
 .jobsearch-notifics-listcon strong {
@@ -8381,7 +8512,7 @@ span.hder-notifics-nofound {
     width: 100%;
     border: 1px solid #dbdbdb;
     box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.12);
-    padding: 20px 25px 18px 25px;
+    padding: 20px 10px 18px 25px;
 }
 .notificate-item-inner strong {
     width: 70%;
@@ -8418,3 +8549,1063 @@ small.apply-bmsg.alert-msg.alert-danger {
     margin-right: 10px;
     display: inline-block;
 }
+.jobsearch-employer-dashboard-nav > h2 {
+    word-break: break-all;
+    padding: 0px 20px 20px 20px;
+    text-align: center;
+}
+.careerfy-packages-priceplane .careerfy-packages-priceplane-btn.jobsearch-subsemp-profile-pkg {
+    float: none; }
+.body-nowhite-bg .jobsearch_box_view_jobs ul,
+.body-nowhite-bg .jobsearch-whatsapp-msgcon {
+    background-color: #fff; }
+.app_tabs_count_4.tabs-list li {
+    width: 25%; }
+.app_tabs_count_4.tabs-list li a {
+    padding: 20px 5px; }
+.jobsearch-typo-wrap .jobsearch-employer-profile-form li p {
+    display: inline-block;
+    margin: 10px 0px 0px 0px;
+}
+.candskills-list li {
+    float: left;
+    margin: 6px 0px 0px 0px;
+}
+.candskills-list li span {
+    display: inline-block;
+    background-color: #aaaaaa;
+    padding: 5px 10px;
+    line-height: 1;
+    color: #ffffff;
+    margin: 0px 7px 0px 0px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+.instacands-btns-con {
+    float: right;
+}
+.instacands-btns-con .more-fields-act-btn a {
+    display: inline-block;
+    padding: 11px 17px 10px 17px;
+    line-height: 1;
+    border-radius: 2px;
+    border: 1px solid;
+    margin-left: 6px;
+    color: #ffffff;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.instacands-btns-con .more-fields-act-btn a.mail-instacands-btn {
+    border-color: #ffb14a;
+    background-color: #ffb14a;
+}
+.instacands-btns-con .more-fields-act-btn a.mail-instacands-btn:hover {
+    color: #ffb14a; }
+.instacands-btns-con .more-fields-act-btn a:hover {
+    background-color: #ffffff; }
+.instacands-btns-con .more-fields-act-btn a i {
+    margin-right: 4px;
+}
+.candskills-list li span.insta-halfmatch-skill {
+    background-color: #aaccee; }
+.candskills-list li span.insta-match-skill {
+    background-color: #aaccee; }
+span.jobcand-job-title.instamatch-job-title {
+    font-size: 16px;
+    background-color: #fef85c;
+    color: #333;
+}
+.jobsearch-applied-jobs-text h2.instamatch-job-maintitle {
+    margin-bottom: 8px; }
+a.jobsearch-pckg-mordetail,
+.jobsearch-typo-wrap a.jobsearch-pckg-mordetail {
+    display: inline-block;
+    color: #33baeb;
+    border-bottom: 1px solid #33baeb;
+    font-weight: 500;
+    line-height: 1;
+}
+a.jobsearch-pckg-mordetail i {
+    font-size: 15px;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0px 0px 0px 2px;
+}
+.packge-detail-sepbox {
+    width: 100%;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.08);
+    margin: 0;
+    position: absolute;
+    background: #fff;
+    left: 0;
+    top: 100%;
+    z-index: 50;
+}
+.jobsearch-packages-list-holder .jobsearch-packages-tbody {
+    position: relative; }
+.packge-detail-sepbox table > tbody > tr:nth-child(even) {
+    background-color: #fafcfc;
+}
+.packge-detail-sepbox table > tbody > tr > td {
+    border: none;
+    text-align: left;
+    padding: 8px 18px;
+    color: #2c3e50;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+}
+.packge-detail-sepbox table > tbody > tr > td.pakcge-one-hding {
+    color: #000;
+    font-weight: 500;
+}
+.packge-detail-sepbox table > tbody > tr.pakcge-itm-hedr td {
+    color: #999;
+}
+a.jobsearch-pckg-closdetail,
+.jobsearch-typo-wrap a.jobsearch-pckg-closdetail {
+    color: #ff002a;
+    text-decoration: underline;
+}
+.jobsearch-typo-wrap .jobsearch-pckg-mordetail.open-detbox,
+.jobsearch-pckg-mordetail.open-detbox {
+    color: #ff002a;
+    border-bottom-color: #ff002a;
+}
+a.jobsearch-pckg-closdetail i {
+    margin-left: 6px;
+    font-size: 16px;
+}
+.packge-detail-sepbox .packg-name-con {
+    color: #333333;
+    margin-left: 30px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+}
+.packge-detail-sepbox table > tbody > tr.pakcge-itm-hedr td i {
+    margin-right: 5px;
+}
+.packge-detail-sepbox table > tbody > tr.pakcge-itm-hedr td i.fa-circle {
+    color: #3dbf4f; }
+.pakcge-active-date {
+    background-color: #3dbf4f; }
+.packge-detail-sepbox table > tbody > tr.pakcge-itm-footr td {
+    width: 50%;
+    text-align: center;
+}
+.date-sec {
+    color: #ffffff;
+    font-weight: 500;
+}
+.date-sec i {
+    font-size: 14px;
+    vertical-align: baseline;
+    color: #ffffff;
+}
+.pakcge-expiry-date {
+    background-color: #ff8599; }
+.jobsearch-packages-tbody .jobsearch-table-cell:nth-child(2),
+.jobsearch-packages-thead .jobsearch-table-cell:nth-child(2) {
+    width: 35%;
+}
+.pkg-disabled {
+    opacity: 0.50;
+    cursor: not-allowed;
+}
+.jobsearch-managejobs-list .job-is-fetured i,
+.jobsearch-managejobs-list a[class*="jobsearch-jobfeture-btn-"] i {
+    color: #ffb607;
+    font-size: 20px;
+}
+.jobsearch-mangjobs-list-inner .jobsearch-recent-applicants-nav ul {
+    border-top: none; }
+.jobsearch-mangjobs-list-inner .jobsearch-recent-applicants-nav ul li {
+    line-height: 22px; }
+.site-header .jobsearch-usernotifics-menubtn a {
+    padding-top: 0px;
+    padding-right: 0;
+}
+.alert-frequency .jobsearch-checkbox input[type="radio"] + label {
+    width: auto; }
+.container-wrapper.container-wrapper-view1 {
+    display: inline-block;
+    width: 100%;
+    padding: 20px 20px 0px 20px;
+    position: relative;
+}
+.jobsearch_whatsap_view_4,
+.jobsearch_whatsap_view_3,
+.jobsearch_whatsap_view_2 {
+    margin-bottom: 20px !important;
+}
+.jobsearch_box_candidate_info .jobsearch_candidate_info {
+    margin-bottom: 0px;
+}
+.jobsearch-quick-apply-box {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    width: 66%;
+    z-index: 9995;
+    height: 100%;
+    overflow-y: scroll;
+    padding-left: 45px;
+}
+.jobsearch-quick-apply-box-inner {
+    background-color: #f5f5f5;
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.jobsearch-quick-apply-box-left {
+    display: table-cell;
+    width: 70%;
+    background-color: #ffffff;
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    vertical-align: top;
+}
+.jobsearch-quick-apply-box-right {
+    display: table-cell;
+    width: 30%;
+    padding: 46px 25px 40px 25px;
+}
+.jobsearch-quick-apply-image .jobsearch-jobdetail-list {
+    border: none;
+    padding: 40px 30px 0px 30px;
+}
+.jobsearch-jobdetail-content.jobsearch-quick-apply-content {
+    border: none;
+    padding-top: 0px;
+}
+a.jobsearch-quick-apply-close {
+    position: sticky;
+    left: -45px;
+    top: 0;
+    margin: 0px 0px 0px -45px;
+    float: left;
+    width: 45px;
+    text-align: center;
+    border: 1px solid #efefef;
+    border-right: none;
+    font-size: 10px;
+    color: #f44336;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1;
+    padding: 8px 0px 8px 0px;
+    background-color: #ffffff;
+    z-index: 9999;
+}
+.jobsearch-quick-apply-close i {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+.jobsearch-quick-apply-box .jobsearch-profile-select select {
+    height: 41px;
+}
+.jobsearch-quick-apply-box .phon-num-fieldcon input.required,
+.jobsearch-quick-apply-box .phon-num-fieldcon input[type="tel"] {
+    padding-left: 20px;
+}
+.jobsearch-quick-apply-box .jobsearch-modal-title-box h2 {
+    width: 100%; }
+.jobsearch-quick-apply-box .jobsearch-user-form-coltwo.jobsearch-user-form > ul > li {
+    width: 100%;
+}
+.jobsearch-quick-apply-box .jobsearch-user-form .range-in-user-form input[type="text"] {
+    height: 42px; }
+.jobsearch-quick-apply-box .jobsearch-drpzon-con .upload-inffo {
+    line-height: 1.5; }
+.jobsearch-quick-apply-box .jobsearch-user-form input[type="submit"] {
+    width: 100%;
+    border-radius: 4px;
+}
+.jobsearch-quick-apply-box .upload-or-con:before,
+.jobsearch-quick-apply-box .upload-or-con:after {
+    width: 90px; }
+.jobsearch-quick-apply-box .jobsearch-jobdetail-listthumb {
+    width: 130px;
+    height: 130px;
+}
+.jobsearch-quick-apply-box .jobsearch-jobdetail-listthumb ~ figcaption {
+    margin-left: 160px;
+    padding-top: 0px;
+}
+.jobsearch-quick-apply-box .spinner {
+    margin-top: 120px;
+}
+.jobsearch-quick-apply-box .careerfy-loading-section {
+    position: absolute; }
+.jobsearch-quick-apply-box .line-scale-pulse-out {
+    left: auto; }
+.jobsearch-quick-apply-box-right .jobsearch_apply_job ul li {
+    float: left;
+    width: 100%;
+    list-style: none;
+    margin-top: 10px;
+}
+.jobsearch-quick-apply-box-right .jobsearch-apply-btn {
+    float: left;
+    width: 100%;
+    background-color: #53b427;
+    font-size: 16px;
+    color: #ffffff;
+    text-transform: uppercase;
+    padding: 16px 10px 17px 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 500;
+    line-height: 1;
+    margin-top: 12px;
+    border: 1px solid #53b427;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.careerfy-employer-subheader-three figure h2 {
+    word-break: break-all; }
+.jobsearch-quick-apply-validate {
+    font-size: 16px;
+    line-height: 1.5;
+}
+.jobsearch_searchloc_div {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+i.mce-ico.mce-i-dashicon.dashicons-admin-generic {display:none;}
+
+.careerfy-radius-tooltip,
+.careerfy-typo-wrap .careerfy-radius-tooltip {
+    position: absolute;
+    right: -7px;
+    top: -34px;
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 0px;
+    width: 270px;
+    border-radius: 100px;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.20);
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+li:hover .careerfy-radius-tooltip,
+.careerfy-typo-wrap li:hover .careerfy-radius-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.careerfy-radius-tooltip:before {
+    content: '';
+    position: absolute;
+    right: 25px;
+    bottom: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ddd;
+}
+.careerfy-radius-tooltip label {
+    float: left;
+    width: 45% !important;
+    line-height: 1;
+    margin-top: 14px;
+    padding-left: 15px !important;
+}
+.careerfy-radius-tooltip input,
+.jobsearch-top-searchbar .jobsearch-banner-search ul li .careerfy-radius-tooltip input {
+    background-color: #eee;
+    width: 50%;
+    height: 40px !important;
+    float: right;
+    border: none;
+    color: #666;
+    border-radius: 100px;
+    padding: 4px 16px;
+    margin: 0px;
+}
+.careerfy-tooltip-radius-wrapper:hover .careerfy-radius-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.jobsearch_box_application_apply .jobsearch_apply_job li {
+    margin-bottom: 8px;
+    float: left;
+    width: 100%;
+}
+
+.jobsearch-chat-start-btn {
+    float: left;
+    width: 100%;
+    text-align: center;
+    margin: 20px 0px 0px 0px;
+}
+.jobsearch-chat-start-btn a {
+    display: inline-block;
+    position: relative;
+}
+.jobsearch-chat-start-btn i {
+    float: left;
+    font-size: 40px;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    position: absolute;
+    left: -1px;
+    top: -2px;
+    background: #fff;
+    color: #13b5ea;
+}
+.jobsearch-chat-start-btn a small {
+    display: inline-block;
+    background-color: #13b5ea;
+    color: #ffffff;
+    font-size: 18px;
+    border-radius: 80px;
+    margin: 0px;
+    padding: 12px 40px 12px 70px;
+}
+.jobsearch-applyin-withemail {
+    text-align: center;
+    font-size: 17px;
+    text-transform: capitalize;
+    padding: 12px 38px;
+    border-radius: 4px;
+    border: 1px solid;
+    color: #ffffff;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    float: left;
+    width: 100%;
+    background-color: #13b5ea;
+}
+.morris-hover {
+    z-index: 950;
+}
+/* Applyquests dashboard */
+.jobsearch-applyquests-dash,
+.dash-applyquests-apendcon,
+.applyquest-item-box,
+.applyquest-item-type,
+.applyquest-item-queststr,
+.applyquest-answers-outer,
+.applyquest-options-main,
+.applyquest-options-apendcon,
+.applyquest-option-itm,
+.quest-type-hding,
+.addnew-questtypes-btnscon,
+.select-questype-hding,
+.addnew-questtypes-btnsiner,
+.addnew-aplyquestbtn-con {
+    float: left;
+    width: 100%;
+}
+.applyquest-item-box {
+    border: 1px solid #eceeef;
+    margin-bottom: 30px;
+}
+.applyquest-item-type {
+    border-bottom: 1px solid #eceeef; }
+.quest-typecon-leftsec {
+    float: left;
+    background-color: #f2f2f2;
+}
+.quest-typecon-leftsec i {
+    float: left;
+    color: #ffffff;
+    padding: 10px 0px 0px 0px;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+.quest-typecon-leftsec span {
+    float: left;
+    padding: 9px 17px 0px 15px;
+}
+.quest-typecon-ritesec,
+.quest-sortremve-sec {
+    float: right; }
+.chekunchk-opt-box {
+    float: left;
+    margin: 6px 0px 0px 24px;
+}
+.chk-onoffswitch-title {
+    float: left;
+    padding: 4px 10px 0px 0px;
+}
+.chekunchk-opt-boxiner {
+    display: inline-block; }
+.quest-sortremve-sec a {
+    float: left;
+    width: 40px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 17px;
+    padding: 8px 0px;
+    background-color: #6e97ff;
+    margin-left: 1px;
+}
+.quest-sortremve-sec a.applyquest-item-remove {
+    background-color: #d75a4a; }
+.quest-sortremve-sec {
+    margin-left: 19px; }
+/* On Off Switch */
+.chekunchk-opt-boxiner {
+    display: inline-block;
+    position: relative;
+    width: 70px;
+    text-align: left;
+    vertical-align: middle;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+.corect-opt-chkunchk {
+    display: none !important; }
+.chekunchk-opt-boxiner label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 80px;
+    width: auto !important;
+    margin: 0px !important;
+}
+span.chkunchk-onoffswitch-inner:after,
+span.chkunchk-onoffswitch-inner:before {
+    float: left;
+    width: 50%;
+    height: 26px;
+    padding: 0px;
+    line-height: 27px;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 400;
+}
+span.chkunchk-onoffswitch-inner:after {
+    content: "Off";
+    padding-right: 18px;
+    background-color: #e42a45;
+    color: #ffffff;
+    text-align: right;
+}
+span.chkunchk-onoffswitch-inner:before {
+    content: "On";
+    padding-left: 24px;
+    background-color: #46b169;
+    color: #ffffff;
+}
+
+.chkunchk-onoffswitch-switch {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    position: absolute;
+    top: 3px;
+    bottom: 0;
+    right: 46px;
+    border-radius: 80px;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+span.chkunchk-onoffswitch-inner {
+    display: inline-flex;
+    width: 200%;
+    margin-left: -100%;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+
+.corect-opt-chkunchk:checked + label span.chkunchk-onoffswitch-inner {
+    margin-left: 0; }
+.corect-opt-chkunchk:checked + label .chkunchk-onoffswitch-switch {
+    right: 3px;
+    top: 3px;
+}
+.applyquest-answers-outer {
+    padding: 28px 30px 19px 30px; }
+.applyquest-item-queststr input[type="text"] {
+    float: left;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #eff0f1;
+    color: #777777;
+    padding: 5px 14px;
+    background-color: #ffffff;
+}
+.applyquest-item-queststr {
+    margin-bottom: 19px; }
+.applyquest-item-queststr .quest-type {
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.applyquest-option-itm {
+    margin-bottom: 19px; }
+.applyquest-option-itm .applyquest-optionstr {
+    float: left;
+    width: 60%;
+}
+.applyquest-opts-btnsec {
+    float: left;
+    width: 40%;
+}
+.applyquest-option-itm .applyquest-optionstr input[type="text"] {
+    float: left;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #eff0f1;
+    color: #777777;
+    padding: 5px 14px;
+    background-color: #ffffff;
+}
+.quest-type-hding {
+    margin-bottom: 5px; }
+.applyquest-opts-btnsec .chk-onoffswitch-title {
+    padding-top: 2px; }
+.opts-plusminus-sec {
+    float: right;
+}
+.opts-plusminus-sec a {
+    float: left;
+    width: 24px;
+    height: 24px;
+    background-color: #46b169;
+    border-radius: 100%;
+    color: #fff;
+    text-align: center;
+    margin: 8px 0px 0px 10px;
+    padding-top: 1px;
+    font-size: 10px;
+}
+.opts-plusminus-sec a.questopt-item-remove {
+    background-color: #e0325f; }
+.addnew-questtypes-btnscon {
+    text-align: center; }
+.select-questype-hding strong {
+    display: inline-block;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.addnew-questtypes-btnsiner a {
+    display: inline-block;
+    padding: 0px 22px 0px 0px;
+    margin: 0px 16px 15px 0px;
+    border: 1px solid #eceeef;
+    border-radius: 4px;
+    color: #777777;
+    line-height: 2.9;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.addnew-questtypes-btnsiner a i {
+    float: left;
+    font-size: 20px;
+    padding: 10px 10px;
+    margin-right: 22px;
+    border-right: 1px solid #eceeef;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.addnew-questtypes-btnsiner a:hover,
+.addnew-questtypes-btnsiner a.active-type-itm {
+    background-color: #f2f2f2; }
+.addnew-questtypes-btnsiner a:hover i,
+.addnew-questtypes-btnsiner a.active-type-itm i {
+    color: #ffffff; }
+.addnew-aplyquestbtn-con {
+    margin: 14px 0px 15px 0px;
+}
+.addnew-aplyquestbtn-con button {
+    display: inline-block;
+    padding: 14px 14px;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 1;
+    border: 1px solid;
+}
+.addnew-aplyquestbtn-con button:hover {
+    background-color: #ffffff !important; }
+.applyquest-item-box.ui-sortable-helper {
+    background-color: #f9f9f9;
+}
+/* ApplyJobAns */
+.jobsearch-applyjobans-con,
+.jobsearch-applyquesthtml-main,
+.applyjob-questsall-items,
+.applyjob-quests-item,
+.quests-item-title,
+.quests-item-answer {
+    float: left;
+    width: 100%;
+}
+.quests-item-title {
+    border-bottom: 1px solid #eeeeee;
+    padding: 13px 15px;
+    cursor: pointer;
+}
+.quests-item-title strong {
+    float: left;
+    font-size: 15px;
+}
+.title-icon-con {
+    float: right;
+    font-size: 20px;
+}
+.quests-item-answer {
+    display: none;
+    border: 1px solid #eeeeee;
+    border-top: none;
+    padding: 15px 20px 5px 20px;
+}
+.quest-item-isopen .quests-item-title {
+    background-color: #eeeeee; }
+.applyjob-quests-item {
+    margin-bottom: 10px; }
+.answer-posible-option {
+    float: left;
+    width: 100%;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+}
+.answer-posible-option.correct-opt-selected {
+    background: #e4f7d4;
+    color: #000;
+    font-weight: bold;
+}
+.answer-posible-option.wrong-opt-selected {
+    background: #ff7978;
+    color: #fff;
+}
+.jobsearch-applied-jobs-text .quest-answers-acts {
+    margin-top: -14px; }
+.quest-answers-acts li {
+    width: 100%; }
+.quest-answers-acts a {
+    float: left;
+    padding: 10px 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #f9f9f9;
+    width: 100%;
+    text-align: center;
+    border-radius: 3px;
+}
+.quests-item-answer p a {
+    display: inline-block;
+    padding: 8px 19px 6px 19px;
+    background-color: #13b5ea;
+    border-radius: 4px;
+    color: #fff;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.quests-item-answer p a:hover {
+    opacity: 0.80;
+}
+.user-nocvs-found {
+    float: left;
+    width: 100%;
+}
+.jobsearch-injobapplics-con {
+    float: left;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 6px;
+    min-height: 1000px;
+}
+body.page-template-user-dashboard-template {
+    overflow-x: hidden; }
+.jobsearch-applics-filterscon {
+    position: fixed;
+    right: -400px;
+    top: 0;
+    width: 320px;
+    background-color: #fff;
+    z-index: 9999;
+    padding: 25px;
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.15);
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.jobsearch-applics-filterscon.animate-filters-open {
+    right: 0px;
+}
+.jobsearch-applics-filterscon a.applicfilters-sideclose-btn {
+    position: absolute;
+    left: -31px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    background-color: #fb353f;
+    text-align: center;
+    color: #fff;
+    padding-top: 3px;
+}
+.jobsearch-applics-filterscon input.applics-filter-formbtn {
+    padding: 12px 30px 11px 30px;
+    line-height: 1;
+    font-size: 14px;
+    border: 1px solid;
+    border-radius: 0px;
+    font-weight: 500;
+    margin-top: 0px;
+    position: fixed;
+    right: -400px;
+    bottom: 0;
+    width: 320px;
+    color: #fff;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.jobsearch-applics-filterscon.animate-filters-open input.applics-filter-formbtn {
+    right: 0px;
+}
+.jobsearch-applics-filterscon form {
+    height: 940px;
+    overflow-y: scroll;
+    float: left;
+    width: 100%;
+}
+.jobsearch-applics-filterscon .jobsearch-search-filter-wrap {
+    box-shadow: none; }
+.jobsearch-applics-filterscon .jobsearch-sfiltrs-heding h2 {
+    font-size: 18px;
+    margin-top: 0px;
+}
+.sort-list-view a.jobsearch-applics-filterbtn {
+    color: #ffb14a;
+}
+.jobsearch-checkbox-toggle .jobseach-job-skills li {
+    float: left;
+    margin: 5px 5px 0px 0px;
+    list-style: none;
+}
+.jobsearch-checkbox-toggle .jobseach-job-skills li:last-child {
+    padding-top: 0px; }
+.jobsearch-checkbox-toggle .jobseach-job-skills .tagit-close {
+    font-size: 11px;
+    right: 8px !important;
+}
+.skills-result-con {
+    float: left;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #c5c5c5;
+    margin: 10px 0px 0px 0px;
+}
+.skills-result-con li {
+    list-style: none; }
+.skills-result-con li a {
+    float: left;
+    width: 100%;
+    padding: 1px 11px;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.skills-result-con li:hover a {
+    background-color: #efefef; }
+.jobsearch-sort-cv-fields {
+    padding-top: 10px;
+    display: inline-block;
+}
+.short-li-icons li a.jobsearch-pdf-grid-btn {
+    background-color: #ff2323;
+    color: #fff;
+    border-color: #ff2323;
+}
+.wpb_text_column .jobsearch-banner-search ul li:before {
+    display: none; }
+.jobalert-filter-item .selectize-input input[type="text"] {
+    height: auto;
+}
+.jobalert-criteria-con li {
+    float: left;
+    background-color: #888;
+    padding: 4px 7px;
+    border-radius: 4px;
+    margin: 0px 5px 4px 0px;
+    color: #fff;
+    line-height: 1;
+}
+.jobsearch-job-alerts-wrap td:nth-child(2) {
+    width: 60%; }
+.jobsearch-user-profiledel-pop {
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+a.jobsearch-alrtslectizecf-remove,
+.jobsearch-alrtslectize-remove {
+    position: absolute;
+    right: 42px;
+    top: 12px;
+    z-index: 2;
+    color: #d72c2c;
+}
+a.jobsearch-slectizelocco-remove,
+.jobsearch-alrtslectizeloc-remove,
+.jobsearch-slectizelocst-remove,
+.jobsearch-slectizelocci-remove {
+    position: absolute;
+    right: 42px;
+    top: 7px;
+    z-index: 2;
+    color: #d72c2c;
+}
+.jobalerts_modal_popup .selectize-control input[type="text"],
+.jobalerts_modal_popup select {
+    font-weight: bold;
+}
+.jobsearch-candidate-pdf-list {
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+
+.jobsearch-candidate-langs .jobsearch_progressbar .bar-container:before,
+.jobsearch-candidate-langs .jobsearch_progressbar .bar-container:after,
+.jobsearch-candidate-langs .jobsearch_progressbar .backgroundBar:before,
+.jobsearch-candidate-langs .jobsearch_progressbar .backgroundBar:after {
+    display: none;
+}
+.jobsearch-candidate-langs .jobsearch_progressbar .bar-container {
+    background-image: url("../images/lang-skills-bg.png");
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    height: 14px !important;
+    margin-top: -15px;
+    width: 80px;
+}
+.jobsearch-candidate-langs .jobsearch_progressbar .bar {
+    background-image: url("../images/lang-skills-top.png");
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+}
+header .menu li.jobsearch-usernotifics-menubtn a i {
+    position: relative !important;
+    top: auto !important;
+}
+.jobsearch-mobile-btn,
+.jobsearch-typo-wrap .jobsearch-mobile-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 19px 14px 19px;
+    border: 1px solid #e2e4e5;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.10);
+    background-color: #ffffff;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.jobsearch-mobile-btn i,
+.jobsearch-typo-wrap .jobsearch-mobile-btn i {
+    float: right;
+    margin: 4px 0px 0px 0px;
+    -webkit-transition: all 0.4s ease-in-out;
+       -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+         -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+}
+.jobsearch-mobile-btn.open i {
+    -webkit-transform: rotate(180deg);
+       -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+         -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+}
+.pt-reset-password p {
+    display: inline-block; }
+.jobsearch-quick-apply-image .jobsearch_side_box.jobsearch_apply_job {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30%;
+    padding: 45px 20px 0px 20px;
+}
+.jobsearch-quick-apply-image .jobsearch_apply_job_wrap {
+    border: none;
+    padding: 0px;
+}
+.jobsearch-quick-apply-box .jobsearch-jobdetail-listthumb ~ figcaption {
+    padding-right: 320px;
+}
+.jobsearch-quick-apply-box .jobsearch-sendmessage-btn {
+    border-radius: 5px;
+}
+.careerfy-simple-gallery.candidate_portfolio > ul > li:first-child .grid-item-thumb {
+    height: 206px; }
+.careerfy-simple-gallery.candidate_portfolio .grid-item-thumb {
+    height: 93px; }
+.careerfy-simple-gallery.candidate_portfolio ul li .img-icons a {
+    width: 40px;
+    float: none;
+}
+.jobsearch-applied-jobs ul li.create-meetin-li {
+    width: 100%;
+    margin: -6px 0px 16px 0px;
+    flex-basis: 100%;
+}
+.create-meetin-li a.jobsearch-creatmeetin-btn {
+    width: auto;
+    border-radius: 80px;
+    padding: 5px 30px 6px 30px;
+    height: auto;
+    display: inline-block;
+    float: none;
+}
+.jobsearch-quick-apply-box-left .jobsearch-applyjob-btn-wrapper {
+    text-align: center; }
+.jobsearch-quick-apply-box-left .jobsearch-applyjob-btn-wrapper p {
+    margin-bottom: 20px;
+}
+.jobsearch-quick-apply-image .jobsearch_side_box.jobsearch_apply_job .jobsearch-applyjob-btn-wrapper {
+    width: 100%; }

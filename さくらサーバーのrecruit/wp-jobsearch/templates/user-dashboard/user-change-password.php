@@ -88,8 +88,7 @@ if (jobsearch_user_isemp_member($user_id)) {
                     <span class="passlenth-chk-msg"></span>
                 </li>
             </ul>
-
-            <!-- <?php
+            <?php
             if ($security_switch == 'on' && !empty($security_questions) && sizeof($security_questions) >= 3) {
                 ?>
                 <div class="jobsearch-profile-title">
@@ -161,7 +160,7 @@ if (jobsearch_user_isemp_member($user_id)) {
                 </ul>
                 <?php
             }
-            ?> -->
+            ?>
 
         </div>
         <input type="hidden" name="user_password_change_form" value="1">

@@ -6,7 +6,6 @@
  */
 
 use WP_Jobsearch\Candidate_Profile_Restriction;
-
 add_shortcode('careerfy_candidate_slider', 'careerfy_candidate_slider_shortcode');
 
 function careerfy_candidate_slider_shortcode($atts, $content = '')
@@ -120,8 +119,22 @@ function careerfy_candidate_slider_shortcode($atts, $content = '')
             }
             //$do_shortlist = do_action('jobsearch_add_employer_resume_to_list_btn', array('id' => $post_id, 'style' => 'style1'));
             $candidate_rank = get_post_meta($post_id, 'jobsearch_field_candidate_jobtitle', true);
+            $candidate_rank = jobsearch_esc_html($candidate_rank);
+            $_job_salary_type = get_post_meta($post_id, 'jobsearch_field_candidate_salary_type', true);
+            $salary_type = '';
+            if ($_job_salary_type == 'type_1') {
+                $salary_type = 'Monthly';
+            } else if ($_job_salary_type == 'type_2') {
+                $salary_type = 'Weekly';
+            } else if ($_job_salary_type == 'type_3') {
+                $salary_type = 'Hr';
+            }
+            $currency_symbol = '$';
+            if(function_exists('jobsearch_get_currency_symbol')){
+                $currency_symbol = jobsearch_get_currency_symbol();
+            }
             $candidate_salary = get_post_meta($post_id, 'jobsearch_field_candidate_salary', true);
-            $candidate_salary = isset($candidate_salary) && $candidate_salary != "" ? '<span>' . esc_html__('$', 'careerfy-frame') . ' ' . $candidate_salary . ' ' . esc_html__('/ hr', 'careerfy-frame') . ' </span>' : esc_html__('No Salary exist', 'careerfy-frame');
+            $candidate_salary = isset($candidate_salary) && $candidate_salary != "" ? '<span>' . esc_html__($currency_symbol, 'careerfy-frame') . ' ' . $candidate_salary . ' ' . esc_html__('/'.$salary_type, 'careerfy-frame') . ' </span>' : esc_html__('No Salary exist', 'careerfy-frame');
             $no_rating_class = isset($candidates_reviews) && $candidates_reviews == 'off' ? 'no-candidate-rating' : '';
             $oveall_review_avg_rating = '';
             if ($candidates_reviews == 'on') {

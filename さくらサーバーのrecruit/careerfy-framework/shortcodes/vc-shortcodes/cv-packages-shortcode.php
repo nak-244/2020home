@@ -77,7 +77,9 @@ function careerfy_cv_package_item_shortcode($atts)
                                 <?php } ?>
                             </div>
                             <?php
-                            $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            if (function_exists('vc_param_group_parse_atts')) {
+                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                            }
                             if (!empty($pckg_features) || !empty($pkg_exfield_title)) {
                                 ?>
                                 <ul>
@@ -126,7 +128,9 @@ function careerfy_cv_package_item_shortcode($atts)
                             </div>
                             <div class="grab-classic-priceplane">
                                 <?php
-                                $pckg_features = vc_param_group_parse_atts($pckg_features);
+                    if (function_exists('vc_param_group_parse_atts')) {
+                        $pckg_features = vc_param_group_parse_atts($pckg_features);
+                    }
                                 if (!empty($pckg_features) || !empty($pkg_exfield_title)) { ?>
                                     <ul>
                                         <?php

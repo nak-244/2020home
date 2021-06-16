@@ -65,9 +65,15 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
     if (is_user_logged_in()) {
         $cur_user_id = get_current_user_id();
         $cur_user_obj = wp_get_current_user();
-        $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+        if (jobsearch_user_isemp_member($cur_user_id)) {
+            $employer_id = jobsearch_user_isemp_member($cur_user_id);
+            $cur_user_id = jobsearch_get_employer_user_id($employer_id);
+        } else {
+            $employer_id = jobsearch_get_user_employer_id($cur_user_id);
+        }
         $ucandidate_id = jobsearch_get_user_candidate_id($cur_user_id);
         $employer_dbstatus = get_post_meta($employer_id, 'jobsearch_field_employer_approved', true);
+        
         if ($employer_id > 0 && $employer_dbstatus == 'on') {
             $is_employer = true;
             $is_applicant = false;
@@ -98,7 +104,10 @@ if ($restrict_candidates == 'on' && $view_cand_type == 'fully') {
             }
             //
             if ($restrict_candidates_for_users == 'register_resume') {
-                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg();
+                $user_cv_pkg = jobsearch_employer_first_subscribed_cv_pkg($cur_user_id);
+                if (!$user_cv_pkg) {
+                    $user_cv_pkg = jobsearch_allin_first_pkg_subscribed($cur_user_id, 'cvs');
+                }
                 if ($user_cv_pkg) {
                     $view_candidate = true;
                 } else {
@@ -227,7 +236,7 @@ if ($view_candidate) { ?>
                                 }
                                 if ($candidate_join_date != '') {
                                     ?>
-                                    <li><i class="careerfy-icon careerfy-calendar"></i> <?php printf(esc_html__('Member Since, %s', 'careerfy'), date_i18n('M d, Y', strtotime($candidate_join_date))) ?></li>
+                                    <li><i class="careerfy-icon careerfy-calendar"></i> <?php printf(esc_html__('Member Since, %s', 'careerfy'), date_i18n(get_option('date_format'), strtotime($candidate_join_date))) ?></li>
                                     <?php
                                 }
                                 ?>
@@ -802,6 +811,22 @@ if ($view_candidate) { ?>
                     <aside class="careerfy-column-4">
                         <div class="careerfy-typo-wrap">
                             <?php
+                            
+                            //
+                            if (function_exists('jobsearch_candidate_detail_whatsapp_btn')) {
+                                jobsearch_candidate_detail_whatsapp_btn($candidate_id, 'view_4');
+                            }
+                            
+                            $map_switch_arr = isset($jobsearch_plugin_options['jobsearch-detail-map-switch']) ? $jobsearch_plugin_options['jobsearch-detail-map-switch'] : '';
+                            $detail_map = is_array($map_switch_arr) && in_array('candidate', $map_switch_arr) ? 'on' : '';
+                            if (!$cand_profile_restrict::cand_field_is_locked('address_defields', 'detail_page') && $detail_map == 'on') {
+                                ?>
+                                <div class="jobsearch_side_box jobsearch_box_map">
+                                    <?php jobsearch_google_map_with_directions($candidate_id); ?>
+                                </div>
+                                <?php
+                            }
+                            
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view4',
@@ -890,12 +915,7 @@ if ($view_candidate) { ?>
                                     echo apply_filters('jobsearch_candidate_detail_cntct_frm_html', $cand_cntct_form, $candidate_id);
                                 }
                             }
-                            //
-                            if (function_exists('jobsearch_candidate_detail_whatsapp_btn')) {
-                                jobsearch_candidate_detail_whatsapp_btn($candidate_id, 'view_4');
-                            }
-                            ?>
-                            <?php
+
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view4',

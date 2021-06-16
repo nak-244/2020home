@@ -35,15 +35,19 @@ class Careerfy_framework {
     public function __construct() {
 
         $this->plugin_name = 'careerfy-frame';
-        self::$version = '3.3.0';
+        self::$version = '5.0.0';
         
-        $this->set_locale();
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();
         $this->load_shortcodes();
         $this->load_widgets();
         $this->load_mega_menu();
+        add_action('init', array($this, 'set_plugin_locale'), 0);
+    }
+    
+    public function set_plugin_locale() {
+        $this->set_locale();
     }
 
     /**
@@ -70,6 +74,8 @@ class Careerfy_framework {
         // common functions file
         include plugin_dir_path(dirname(__FILE__)) . 'includes/common-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/careerfy-detail-pages.php';
+        
+        include plugin_dir_path(dirname(__FILE__)) . 'includes/careerfyframe-end-jsfile.php';
 
 
         // redux frameworks extension loader files
@@ -102,7 +108,7 @@ class Careerfy_framework {
         include plugin_dir_path(dirname(__FILE__)) . 'includes/maintenance-mode/maintenance-mode.php';
 
         // redux frameworks files
-        include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/ReduxCore/framework.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/class-redux-framework-plugin.php';
         include plugin_dir_path(dirname(__FILE__)) . 'admin/ReduxFramework/careerfy-options/options-config.php';
 
         include plugin_dir_path(dirname(__FILE__)) . 'admin/user/user-custom-fields.php';
@@ -132,7 +138,6 @@ class Careerfy_framework {
          * The function responsible for mega menu
          * of the plugin.
          */
-        include plugin_dir_path(dirname(__FILE__)) . 'includes/mega-menu/edit-custom-walker.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/mega-menu/menu-functions.php';
         include plugin_dir_path(dirname(__FILE__)) . 'includes/mega-menu/custom-walker.php';
     }
@@ -157,6 +162,7 @@ class Careerfy_framework {
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/button-shortcode.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/advance-search.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/job-categories.php';
+        include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/job-types.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/jobs-simple-listing.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/call-to-action.php';
         include plugin_dir_path(dirname(__FILE__)) . 'shortcodes/vc-shortcodes/about-company.php';
@@ -238,8 +244,15 @@ class Careerfy_framework {
      */
     private function set_locale() {
 
-        $locale = apply_filters('plugin_locale', get_locale(), 'careerfy-frame');
-
+        if (function_exists('determine_locale')) {
+            $locale = determine_locale();
+        } else {
+            // @todo Remove when start supporting WP 5.0 or later.
+            $locale = is_admin() ? get_user_locale() : get_locale();
+        }
+        $locale = apply_filters('plugin_locale', $locale, 'careerfy-frame');
+        
+        unload_textdomain('careerfy-frame');
         load_textdomain('careerfy-frame', WP_LANG_DIR . '/plugins/careerfy-frame-' . $locale . '.mo');
         load_plugin_textdomain('careerfy-frame', false, dirname(dirname(plugin_basename(__FILE__))) . '/languages');
     }
@@ -257,7 +270,7 @@ class Careerfy_framework {
         add_action('admin_init', array($this, 'get_to_demo_data'), 10);
 
         add_action('admin_enqueue_scripts', array($this, 'admin_style_scripts'));
-        add_action('wp_enqueue_scripts', array($this, 'front_style_scripts'));
+        add_action('wp_enqueue_scripts', array($this, 'front_style_scripts'), 95);
 
         add_action('add_meta_boxes', 'careerfy_page_header_meta_boxes');
         add_action('add_meta_boxes', 'careerfy_page_subheader_meta_boxes');
@@ -279,41 +292,56 @@ class Careerfy_framework {
      * @since    1.0.0
      * @access   public
      */
-        public function front_style_scripts() {
-            global $careerfy_framework_options;
-            $google_api_key = isset($careerfy_framework_options['careerfy-google-api-key']) ? $careerfy_framework_options['careerfy-google-api-key'] : '';
-            $sticky_header = isset($careerfy_framework_options['careerfy-sticky-header']) ? $careerfy_framework_options['careerfy-sticky-header'] : '';
-            
-            $is_front_page = 'false';
-            if (is_front_page()) {
-                $is_front_page = 'true';
-            }
+    public function front_style_scripts() {
+        global $careerfy_framework_options;
 
-            wp_enqueue_style('careerfy-slick-slider', careerfy_framework_get_url('css/slick-slider.css'), array(), Careerfy_framework::get_version());
-            wp_enqueue_style('careerfy-mediaelementplayer', careerfy_framework_get_url('build/mediaelementplayer.css'), array(), Careerfy_framework::get_version());
-            wp_enqueue_style('careerfy-styles', careerfy_framework_get_url('css/careerfy-styles.css'), array(), Careerfy_framework::get_version());
-
-            wp_enqueue_script('careerfy-frame-common', careerfy_framework_get_url('js/careerfy-common.js'), array('jquery'), Careerfy_framework::get_version(), true);
-            $careerfy_framework_arr = array(
-                'plugin_url' => careerfy_framework_get_url(),
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'error_msg' => esc_html__('There is some problem.', 'careerfy-frame'),
-                'blank_field_msg' => esc_html__('This field should not be blank.', 'careerfy-frame'),
-                'is_sticky' => $sticky_header,
-                'is_front_page' => $is_front_page,
-            );
-            wp_localize_script('careerfy-frame-common', 'careerfy_framework_vars', $careerfy_framework_arr);
-
-            wp_register_script('careerfy-counters', careerfy_framework_get_url('js/counter.js'), array('jquery'), Careerfy_framework::get_version(), true);
-            wp_register_script('careerfy-slick', careerfy_framework_get_url('js/slick-slider.js'), array('jquery'), Careerfy_framework::get_version(), true);
-            wp_register_script('careerfy-mediaelement', careerfy_framework_get_url('build/mediaelement-and-player.js'), array(), Careerfy_framework::get_version(), true);
-            wp_enqueue_script('careerfy-slick');
-            wp_register_script('careerfy-countdown', careerfy_framework_get_url('js/jquery.countdown.js'), array('jquery'), Careerfy_framework::get_version(), true);
-
-            wp_register_script('careerfy-google-map', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&libraries=places', array(), Careerfy_framework::get_version(), true);
-            wp_register_script('careerfy-addthis', 'https://s7.addthis.com/js/250/addthis_widget.js', array(), Careerfy_framework::get_version(), true);
-
+        $is_page = is_page();
+        $page_content = '';
+        if ($is_page) {
+            $page_id = get_the_ID();
+            $page_post = get_post($page_id);
+            $page_content = isset($page_post->post_content) ? $page_post->post_content : '';
         }
+
+        $google_api_key = isset($careerfy_framework_options['careerfy-google-api-key']) ? $careerfy_framework_options['careerfy-google-api-key'] : '';
+        $sticky_header = isset($careerfy_framework_options['careerfy-sticky-header']) ? $careerfy_framework_options['careerfy-sticky-header'] : '';
+
+        $is_front_page = 'false';
+        if (is_front_page()) {
+            $is_front_page = 'true';
+        }
+
+        if (class_exists('JobSearch_plugin') && $is_page && (has_shortcode($page_content, 'jobsearch_job_shortcode') || has_shortcode($page_content, 'careerfy_google_map') || has_shortcode($page_content, 'careerfy_advance_search'))) {
+            JobSearch_plugin::map_styles_for_header();
+        }
+
+        wp_enqueue_style('fancybox', careerfy_framework_get_url('css/fancybox.css'), array(), Careerfy_framework::get_version());
+        wp_enqueue_style('careerfy-slick-slider', careerfy_framework_get_url('css/slick-slider.css'), array(), Careerfy_framework::get_version());
+        wp_enqueue_style('careerfy-mediaelementplayer', careerfy_framework_get_url('build/mediaelementplayer.css'), array(), Careerfy_framework::get_version());
+        wp_register_style('careerfy-mapbox-style', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css', array(), JobSearch_plugin::get_version());
+        wp_enqueue_style('careerfy-styles', careerfy_framework_get_url('css/careerfy-styles.css'), array(), Careerfy_framework::get_version());
+        wp_register_script('careerfy-counters', careerfy_framework_get_url('js/counter.js'), array('jquery'), Careerfy_framework::get_version(), true);
+        wp_register_script('careerfy-slick', careerfy_framework_get_url('js/slick-slider.js'), array('jquery'), Careerfy_framework::get_version(), true);
+        wp_register_script('careerfy-mediaelement', careerfy_framework_get_url('build/mediaelement-and-player.js'), array(), Careerfy_framework::get_version(), true);
+        wp_enqueue_script('careerfy-slick');
+        wp_register_script('careerfy-countdown', careerfy_framework_get_url('js/jquery.countdown.js'), array('jquery'), Careerfy_framework::get_version(), true);
+
+
+        wp_enqueue_script('careerfy-frame-common', careerfy_framework_get_url('js/careerfy-common.js'), array('jquery'), Careerfy_framework::get_version(), true);
+        $careerfy_framework_arr = array(
+            'plugin_url' => careerfy_framework_get_url(),
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'error_msg' => esc_html__('There is some problem.', 'careerfy-frame'),
+            'blank_field_msg' => esc_html__('This field should not be blank.', 'careerfy-frame'),
+            'is_sticky' => $sticky_header,
+            'is_front_page' => $is_front_page,
+        );
+        wp_localize_script('careerfy-frame-common', 'careerfy_framework_vars', $careerfy_framework_arr);
+
+        wp_register_script('careerfy-google-map', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&libraries=places', array(), Careerfy_framework::get_version(), true);
+        wp_register_script('careerfy-addthis', 'https://s7.addthis.com/js/250/addthis_widget.js', array(), Careerfy_framework::get_version(), true);
+
+    }
 
     /**
      * Register all of the admin styles and scripts
@@ -325,6 +353,22 @@ class Careerfy_framework {
     public function admin_style_scripts() {
         global $careerfy_framework_options, $pagenow;
         wp_enqueue_style('wp-color-picker');
+        
+        $jobsearch_post_pages = false;
+        if ($pagenow == 'post.php') {
+            $the_post_type = get_post_type();
+            if ($the_post_type == 'job' || $the_post_type == 'employer' || $the_post_type == 'candidate') {
+                $jobsearch_post_pages = true;
+            }
+        }
+        $is_options_page = false;
+        if (isset($_GET['page']) && $_GET['page'] == 'jobsearch_plugin_options') {
+            $is_options_page = true;
+        }
+        $theme_options_page = false;
+        if (isset($_GET['page']) && $_GET['page'] == 'careerfy_framework_options') {
+            $theme_options_page = true;
+        }
 
         $jobsearch_plugin_options = get_option('jobsearch_plugin_options');
 
@@ -364,7 +408,9 @@ class Careerfy_framework {
         wp_register_script('careerfy-google-map', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&libraries=places', array(), Careerfy_framework::get_version(), true);
         // enqueue style 
         // enqueue scripts
-        wp_enqueue_script('wp-color-picker-alpha', careerfy_framework_get_url('admin/js/wp-color-picker-alpha.min.js'), array('wp-color-picker'), Careerfy_framework::get_version(), true);
+        if (!$jobsearch_post_pages && !$is_options_page && !$theme_options_page) {
+            wp_enqueue_script('wp-color-picker-alpha', careerfy_framework_get_url('admin/js/wp-color-picker-alpha.min.js'), array('wp-color-picker'), Careerfy_framework::get_version(), true);
+        }
     }
 
     /**

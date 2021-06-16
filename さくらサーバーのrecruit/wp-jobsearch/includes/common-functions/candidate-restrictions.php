@@ -31,7 +31,6 @@ if (!class_exists('Candidate_Profile_Restriction')) {
                 $user_isemp_member = true;
             }
             //
-            
             $jobsearch__options = get_option('jobsearch_plugin_options');
             if ($page_view == 'detail_page') {
                 $emp_cvpbase_restrictions = isset($jobsearch__options['emp_cv_pkgbase_restrictions']) ? $jobsearch__options['emp_cv_pkgbase_restrictions'] : '';
@@ -48,34 +47,48 @@ if (!class_exists('Candidate_Profile_Restriction')) {
             $restrict_cand_type = isset($jobsearch__options['restrict_candidates_for_users']) ? $jobsearch__options['restrict_candidates_for_users'] : '';
             
             $user_is_employer = jobsearch_user_is_employer($user_id);
+            $user_is_candidate = jobsearch_user_is_candidate($user_id);
             
             if ($restrict_cand_type == 'register' && $user_is_employer) {
+                return false;
+            }
+            if ($restrict_cand_type == 'register_empcand' && ($user_is_employer || $user_is_candidate)) {
                 return false;
             }
             
             if ($restrict_cand_type == 'only_applicants') {
                 return false;
             }
-            
-            if ($restrict_cand_type == 'register_resume' && $user_is_employer) {
-                $employer_id = jobsearch_get_user_employer_id($user_id);
-                
-                $emp_frstcv_pkg = jobsearch_employer_first_subscribed_cv_pkg($user_id);
-                if ($emp_frstcv_pkg) {
-                    $emp_ordercands_list = get_post_meta($emp_frstcv_pkg, 'jobsearch_order_cvs_list', true);
-                    $emp_ordercands_list = $emp_ordercands_list != '' ? explode(',', $emp_ordercands_list) : array();
-                    if (!empty($emp_ordercands_list) && in_array($_post_id, $emp_ordercands_list)) {
-                        return false;
-                    }
-                }
-                $employer_resumes_list = get_post_meta($employer_id, 'jobsearch_candidates_list', true);
-                $employer_resumes_list = $employer_resumes_list != '' ? explode(',', $employer_resumes_list) : array();
-                if (!empty($employer_resumes_list) && in_array($_post_id, $employer_resumes_list)) {
-                    return false;
-                }
-            }
 
             $subs_pkg_orderid =  jobsearch_employer_first_subscribed_cv_pkg($user_id);
+            if (!$subs_pkg_orderid) {
+                $subs_pkg_orderid = jobsearch_allin_first_pkg_subscribed($user_id, 'cvs');
+            }
+            if (!$subs_pkg_orderid) {
+                $subs_pkg_orderid = jobsearch_emprof_first_pkg_subscribed($user_id, 'cvs');
+            }
+            
+            if ($restrict_cand_type == 'register_resume') {
+                $to_return_val = true;
+                if ($user_is_employer) {
+                    $employer_id = jobsearch_get_user_employer_id($user_id);
+
+                    $emp_frstcv_pkg = $subs_pkg_orderid;
+                    if ($emp_frstcv_pkg) {
+                        $emp_ordercands_list = get_post_meta($emp_frstcv_pkg, 'jobsearch_order_cvs_list', true);
+                        $emp_ordercands_list = $emp_ordercands_list != '' ? explode(',', $emp_ordercands_list) : array();
+                        if (!empty($emp_ordercands_list) && in_array($_post_id, $emp_ordercands_list) && $field_locked === false) {
+                            $to_return_val = false;
+                        }
+                    }
+                    $employer_resumes_list = get_post_meta($employer_id, 'jobsearch_candidates_list', true);
+                    $employer_resumes_list = $employer_resumes_list != '' ? explode(',', $employer_resumes_list) : array();
+                    if (!empty($employer_resumes_list) && in_array($_post_id, $employer_resumes_list) && $field_locked === false) {
+                        $to_return_val = false;
+                    }
+                }
+                //$field_locked = $to_return_val;
+            }
             
             $bprofile_field_names = array(
                 'profile_fields|display_name',
@@ -151,7 +164,6 @@ if (!class_exists('Candidate_Profile_Restriction')) {
         public function cand_field_locked_html($cus_html = '') {
 
             $html = self::cand_gen_locked_html();
-                
             if ($cus_html != '') {
                 $html = $cus_html;
             }

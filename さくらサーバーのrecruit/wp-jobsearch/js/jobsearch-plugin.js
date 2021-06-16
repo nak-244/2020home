@@ -1,138 +1,4 @@
 var $ = jQuery;
-$(document).ready(function () {
-
-    if (jQuery('.fancybox-galimg').length > 0) {
-        //*** Function FancyBox
-        jQuery(".fancybox-galimg").fancybox({
-            openEffect: 'elastic',
-            closeEffect: 'elastic',
-            beforeLoad: function() {
-                var caption = this.element.attr('data-caption');
-                this.tpl.wrap = '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div><div class="fancybox-title fancybox-title-float-wrap"><span class="gal-img-desc child">'+caption+'</span></div></div></div></div>'
-
-            },
-            helpers:  {
-                title : {
-                    type : 'outside',
-                    position: 'top'
-                }
-            }
-        });
-    }
-    
-//    var all_doc_a = jQuery('body').find('a');
-//    all_doc_a.each(function (index, element) {
-//        var _this_a = jQuery(this);
-//        if (typeof _this_a.attr('download') !== 'undefined') {
-//            _this_a.attr('oncontextmenu', 'return false');
-//            element.onclick = function(event) {
-//                if ((event.button == 0 && event.ctrlKey)) {
-//                    event.preventDefault();
-//                    event.stopPropagation();
-//                    return false;
-//                }
-//            };
-//        }
-//    });
-
-    if (jQuery('.fancybox-video').length > 0) {
-        //*** Function FancyBox
-        jQuery('.fancybox-video').fancybox({
-            maxWidth: 800,
-            maxHeight: 600,
-            fitToView: false,
-            width: '70%',
-            height: '70%',
-            autoSize: false,
-            closeClick: false,
-            openEffect: 'none',
-            closeEffect: 'none',
-            beforeLoad: function() {
-                var caption = this.element.attr('data-caption');
-                this.tpl.wrap = '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div><div class="fancybox-title fancybox-title-float-wrap"><span class="gal-img-desc child">'+caption+'</span></div></div></div></div>'
-
-            },
-            helpers:  {
-                title : {
-                    type : 'outside',
-                    position: 'top'
-                }
-            }
-        });
-
-    }
-
-    if (jQuery('.jobsearch_progressbar1').length > 0) {
-        jQuery('.jobsearch_progressbar1').progressBar({
-            percentage: false,
-            backgroundColor: "#dbdbdb",
-            barColor: jobsearch_plugin_vars.careerfy_theme_color,
-            animation: true,
-            height: "6",
-        });
-    }
-
-    // selectize
-    jQuery('.selectize-select').selectize({
-        //allowEmptyOption: true,
-        plugins: ['remove_button'],
-    });
-
-    jQuery('.sort-records-per-page').selectize({
-        allowEmptyOption: true,
-    });
-    
-    //
-    var loc_con_main = jQuery('#jobsearch-findby-sectors').find('.jobsearch-sects-allcon');
-    if (loc_con_main.length > 0) {
-        var loc_contain_li = loc_con_main.find('>li');
-        if (loc_contain_li.length > 0) {
-            var sect_view_str = jQuery('#jobsearch-findby-sectors').data('view');
-            var location_ids = [];
-            jQuery.each(loc_contain_li, function() {
-                var _this_li = jQuery(this);
-                var _counter_con = _this_li.find('.jobsearchh-sect-childcount');
-                _counter_con.html('<em class="fa fa-refresh fa-spin"></em>');
-                var locat_id = _counter_con.attr('data-id');
-                location_ids.push(locat_id);
-            });
-            if (location_ids.length > 0) {
-                var locate_ids_str = location_ids.join();
-                var loc_counts_request = jQuery.ajax({
-                    url: jobsearch_plugin_vars.ajax_url,
-                    method: "POST",
-                    data: {
-                        sect_view: sect_view_str,
-                        locat_ids: locate_ids_str,
-                        action: 'jobsearch_sectscount_add_to_spancons_action',
-                    },
-                    dataType: "json"
-                });
-
-                loc_counts_request.done(function (response) {
-                    var resp_ids_arr;
-                    if (typeof response.counts !== 'undefined' && response.counts != '') {
-                        var resp_ids_str = response.counts;
-                        resp_ids_arr = resp_ids_str.split(',');
-                    }
-                    jQuery.each(location_ids, function(index, id) {
-                        var count_val = resp_ids_arr[index];
-                        var _this_countr_con = jQuery('#jobsearchh-sect-item-' + id);
-                        _this_countr_con.html(count_val);
-                    });
-                });
-
-                loc_counts_request.fail(function (jqXHR, textStatus) {
-                    jQuery.each(location_ids, function(index, id) {
-                        var _this_countr_con = jQuery('#jobsearchh-sect-item-' + id);
-                        _this_countr_con.html('0');
-                    });
-                });
-            }
-        }
-    }
-
-});
 
 (function ($) {
     $.fn.jobsearch_seliz_req_field_loop = function (callback, thisArg) {
@@ -145,8 +11,8 @@ $(document).ready(function () {
 
 function jobsearch_validate_seliz_req_form(that) {
     var req_class = 'selectize-req-field',
-            _this_form = jQuery(that),
-            form_validity = 'valid';
+        _this_form = jQuery(that),
+        form_validity = 'valid';
     var errors_counter = 1;
     _this_form.find('select.' + req_class).jobsearch_seliz_req_field_loop(function (element, index, set) {
         var ret_err = '0';
@@ -177,12 +43,12 @@ function jobsearch_validate_seliz_req_form(that) {
 
 function jobsearch_validate_cprofile_req_form(that) {
     var req_class = 'jobsearch-cpreq-field',
-            _this_form = jQuery(that),
-            form_validity = 'valid';
+        _this_form = jQuery(that),
+        form_validity = 'valid';
     var errors_counter = 1;
     _this_form.find('.' + req_class).jobsearch_seliz_req_field_loop(function (element, index, set) {
         var ret_err = '0';
-        if (jQuery(element).val() == '') {
+        if (jQuery(element).val() == '' || jQuery(element).val() == null) {
             form_validity = 'invalid';
             ret_err = '1';
         } else {
@@ -190,6 +56,9 @@ function jobsearch_validate_cprofile_req_form(that) {
         }
 
         if (ret_err == '1') {
+            if ($(element).hasClass('multiselect-req')) {
+                element = $(element).parents('.jobsearch-profile-select');
+            }
             jQuery(element).css({"border": "1px solid #ff0000"});
             var animate_to = jQuery(element);
 
@@ -198,6 +67,11 @@ function jobsearch_validate_cprofile_req_form(that) {
             }
 
             errors_counter++;
+        } else {
+            if ($(element).hasClass('multiselect-req')) {
+                element = $(element).parents('.jobsearch-profile-select');
+                $(element).removeAttr('style');
+            }
         }
     });
     if (form_validity == 'valid') {
@@ -221,6 +95,16 @@ var jobsearch_custm_getJSON = function (url, callback) {
     };
     xhr.send();
 };
+
+jQuery(document).on('click', '.jobsearch-top-searchbar input[type="submit"]', function() {
+    var select_sector = jQuery('.jobsearch-top-searchbar select[name="sector_cat"]');
+    var filter_selectd_sec = jQuery('input[name="sector_cat"]:checked');
+    if (select_sector.length > 0 && filter_selectd_sec.length > 0) {
+        if (select_sector.val() != '') {
+            filter_selectd_sec.prop('checked', false);
+        }
+    }
+});
 
 function jobsearch_cusfield_validate_attach_field(con_form) {
     var att_error = 0;
@@ -247,8 +131,8 @@ function jobsearch_cusfield_validate_attach_field(con_form) {
 }
 
 jQuery(document).on('submit', 'form#employer-profilesetings-form', function () {
-
-    var phone_field = jQuery(this).find('input[name="user_phone"]');
+    var this_form = jQuery(this);
+    var phone_field = this_form.find('input[name="user_phone"]');
     if (phone_field.hasClass('phone-input-error')) {
         jQuery('html, body').animate({scrollTop: phone_field.offset().top - 130}, 1000);
         return false;
@@ -296,6 +180,43 @@ jQuery(document).on('submit', 'form#employer-profilesetings-form', function () {
         }
     }
     //
+    
+    var editor_text_field = jQuery('.jobsearch-reqtext-editor');
+    if (editor_text_field.length > 0) {
+        var text_editr_err = false;
+        editor_text_field.each(function() {
+            var _this_field = jQuery(this);
+            var element_to_err = jQuery(_this_field).parents('.wp-editor-container');
+            if (_this_field.val() == '') {
+                text_editr_err = element_to_err;
+                jQuery(element_to_err).css({"border": "1px solid #ff0000"});
+            } else {
+                jQuery(element_to_err).removeAttr('style');
+            }
+        });
+        if (text_editr_err !== false) {
+            jQuery('html, body').animate({scrollTop: text_editr_err.offset().top - 70}, 1000);
+            return false;
+        }
+    }
+    
+    if (this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]').length > 0) {
+        var element_to_go = this_form.find('.cusfield-checkbox-required');
+        var req_checkboxs = this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]');
+        var req_checkbox_err = 1;
+        req_checkboxs.each(function() {
+            if (jQuery(this).is(':checked')) {
+                req_checkbox_err = 0;
+            }
+        });
+        if (req_checkbox_err == 1) {
+            jQuery(element_to_go).css({"border": "1px solid #ff0000"});
+            jQuery('html, body').animate({scrollTop: element_to_go.offset().top - 100}, 1000);
+            return false;
+        } else {
+            jQuery(element_to_go).removeAttr('style');
+        }
+    }
 
     // For custom upload field
     var $uplod_file_ret = jobsearch_cusfield_validate_attach_field(jQuery(this));
@@ -314,7 +235,8 @@ jQuery(document).on('submit', 'form#employer-profilesetings-form', function () {
 });
 
 jQuery(document).on('submit', 'form#candidate-profilesetings-form', function () {
-    var phone_field = jQuery(this).find('input[name="user_phone"]');
+    var this_form = jQuery(this);
+    var phone_field = this_form.find('input[name="user_phone"]');
     if (phone_field.hasClass('phone-input-error')) {
         jQuery('html, body').animate({scrollTop: phone_field.offset().top - 130}, 1000);
         return false;
@@ -362,6 +284,43 @@ jQuery(document).on('submit', 'form#candidate-profilesetings-form', function () 
         }
     }
     //
+    
+    var editor_text_field = jQuery('.jobsearch-reqtext-editor');
+    if (editor_text_field.length > 0) {
+        var text_editr_err = false;
+        editor_text_field.each(function() {
+            var _this_field = jQuery(this);
+            var element_to_err = jQuery(_this_field).parents('.wp-editor-container');
+            if (_this_field.val() == '') {
+                text_editr_err = element_to_err;
+                jQuery(element_to_err).css({"border": "1px solid #ff0000"});
+            } else {
+                jQuery(element_to_err).removeAttr('style');
+            }
+        });
+        if (text_editr_err !== false) {
+            jQuery('html, body').animate({scrollTop: text_editr_err.offset().top - 70}, 1000);
+            return false;
+        }
+    }
+    
+    if (this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]').length > 0) {
+        var element_to_go = this_form.find('.cusfield-checkbox-required');
+        var req_checkboxs = this_form.find('.cusfield-checkbox-required').find('input[type=checkbox]');
+        var req_checkbox_err = 1;
+        req_checkboxs.each(function() {
+            if (jQuery(this).is(':checked')) {
+                req_checkbox_err = 0;
+            }
+        });
+        if (req_checkbox_err == 1) {
+            jQuery(element_to_go).css({"border": "1px solid #ff0000"});
+            jQuery('html, body').animate({scrollTop: element_to_go.offset().top - 100}, 1000);
+            return false;
+        } else {
+            jQuery(element_to_go).removeAttr('style');
+        }
+    }
 
     // For custom upload field
     var $uplod_file_ret = jobsearch_cusfield_validate_attach_field(jQuery(this));
@@ -464,6 +423,7 @@ jQuery(document).on('click', '.jobsearch-candidatesh-opopupbtn', function () {
 });
 
 jQuery(document).on('click', '.div-to-scroll', function () {
+
     var trag_todiv = jQuery(this).attr('data-target');
     jQuery('html, body').animate({
         scrollTop: jQuery('#' + trag_todiv).offset().top - 200
@@ -471,6 +431,7 @@ jQuery(document).on('click', '.div-to-scroll', function () {
 });
 
 var location_box = jQuery('input.srch_autogeo_location');
+
 function JobsearchGetClientLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(JobsearchShowClientPosition);
@@ -478,16 +439,19 @@ function JobsearchGetClientLocation() {
         console.log("Geolocation is not supported by this browser.");
     }
 }
+
 function JobsearchShowClientPosition(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
 
     if (lat != '' && lng != '') {
         var location_ajax_box = jQuery('.jobsearch_searchloc_div .jobsearch_search_location_field');
+		var icon_classs = jQuery('.geolction-btn').find('i').attr('class');
         var pos = {
             lat: lat,
             lng: lng
         };
+		jQuery('.geolction-btn').find('i').attr('class', 'fa fa-refresh fa-spin');
         var dataString = "lat=" + pos.lat + "&lng=" + pos.lng + "&action=jobsearch_get_location_with_latlng";
         jQuery.ajax({
             type: "POST",
@@ -501,15 +465,29 @@ function JobsearchShowClientPosition(position) {
                 if (location_ajax_box.length > 0) {
                     location_ajax_box.val(response.address);
                 }
+				jQuery('.geolction-btn').find('i').attr('class', icon_classs);
+				if (typeof jobsearch_listing_dataobj !== 'undefined') {
+					var locMapType = jobsearch_plugin_vars.locmap_type;
+					if (locMapType == 'mapbox') {
+						var mapCordsToFly = [lng, lat];
+						jobsearch_listing_map.flyTo({
+                            center: mapCordsToFly,
+                        });
+					} else {
+						jobsearch_listing_map.setCenter(pos);
+					}
+				}
             }
         });
     }
 }
+
 jQuery(document).ready(function () {
 
     if (location_box.length > 0) {
-        JobsearchGetClientLocation();
+        //JobsearchGetClientLocation();
     }
+    jQuery("body").fitVids();
 });
 
 jQuery(document).on('submit', 'form', function (er) {
@@ -519,6 +497,11 @@ jQuery(document).on('submit', 'form', function (er) {
         if (!checkbox.is(":checked")) {
             er.preventDefault();
             alert(jobsearch_plugin_vars.accpt_terms_cond);
+            var form_allow_subtn = setInterval(function() {
+                this_form.find('input[type=submit]').removeAttr('disabled');
+                this_form.find('input[type=submit]').removeClass('disabled-btn');
+                clearInterval(form_allow_subtn);
+            }, 500);
             return false;
         }
     }
@@ -614,6 +597,11 @@ jQuery(document).on('click', '.show-toggle-filter-list', function () {
     }
 });
 
+function jobsearch_animate_slidein_open(target) {
+    jQuery('#' + target).removeClass('fade').addClass('fade-in');
+    jQuery('body').addClass('jobsearch-modal-active');
+}
+
 function jobsearch_modal_popup_open(target) {
     jQuery('#' + target).removeClass('fade').addClass('fade-in');
     jQuery('body').addClass('jobsearch-modal-active');
@@ -636,6 +624,10 @@ jQuery('.jobsearch-modal').on('click', function (e) {
             is_close = false;
         }
     }
+    // for calendar fix
+    if (thisdom_obj.hasClass('picker-day')) {
+        is_close = false;
+    }
     // for selectize multi select remove button compatibility
     if (thisdom_obj.parent('.item').length > 0 && thisdom_obj.hasClass('remove')) {
         is_close = false;
@@ -651,7 +643,6 @@ jQuery(document).on('click', '.jobsearch-open-signin-tab', function () {
     var _this = jQuery(this);
     jobsearch_modal_popup_open('JobSearchModalLogin');
     jQuery('.reg-tologin-btn').trigger('click');
-
     // for redirect url
     var login_form = jQuery('#JobSearchModalLogin').find('form[id^="login-form-"]');
     if (_this.hasClass('jobsearch-wredirct-url')) {
@@ -695,11 +686,17 @@ jQuery(document).on('click', '.jobsearch-open-signin-tab', function () {
 
 //for register popup
 jQuery(document).on('click', '.jobsearch-open-register-tab', function () {
+
     var _this = jQuery(this);
     jobsearch_modal_popup_open('JobSearchModalLogin');
     jQuery('.register-form').trigger('click');
 
     var login_form = jQuery('#JobSearchModalLogin').find('form[id^="login-form-"]');
+    var register_form = jQuery('#JobSearchModalLogin').find('form[id^="registration-form-"]');
+    
+    if (_this.hasClass('company-register-tab')) {
+        register_form.find('.user-type-chose-btn[data-type="jobsearch_employer"]').trigger('click');
+    }
 
     // for redirect url
     var redrct_hiden_field = login_form.find('input[name="jobsearch_wredirct_url"]');
@@ -724,7 +721,7 @@ jQuery(document).on('click', '.employer-followin-btnaction', function () {
     var this_id = _this.attr('data-id');
     var label_bfr = _this.attr('data-beforelbl');
     var label_aftr = _this.attr('data-afterlbl');
-    
+
     if (!_this.hasClass('ajax-loading')) {
         _this.addClass('ajax-loading');
         _this.html('<i class="fa fa-refresh fa-spin"></i>');
@@ -759,7 +756,7 @@ jQuery(document).on('click', '.jobsearch-add-resume-to-list', function () {
     var this_loader = data_style != undefined && data_style == "true" ? jQuery(this).parent("figure").parent(".careerfy-candidate-style8-wrapper").find(".resume-loding-msg") : jQuery(this).next('.resume-loding-msg');
 
     this_loader.show();
-    if(data_style != undefined && data_style == "true"){
+    if (data_style != undefined && data_style == "true") {
         _this.html('<i class="fa fa-refresh fa-spin"></i>');
     } else {
         this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
@@ -781,7 +778,7 @@ jQuery(document).on('click', '.jobsearch-add-resume-to-list', function () {
             this_loader.html(response.msg);
             setTimeout(function () {
                 this_loader.slideUp(800);
-            },3000)
+            }, 3000)
             return false;
         }
         if (typeof response.dbn !== 'undefined' && response.dbn != '') {
@@ -795,6 +792,7 @@ jQuery(document).on('click', '.jobsearch-add-resume-to-list', function () {
             _this.html('<i class="jobsearch-icon jobsearch-add-list"></i> ' + jobsearch_plugin_vars.shortlisted_str);
             _this.removeClass('jobsearch-add-resume-to-list');
         }
+        window.location.reload();
     });
 
     request.fail(function (jqXHR, textStatus) {
@@ -840,18 +838,56 @@ jQuery(document).on('click', '.jobsearch-svcand-withtyp-tolist', function () {
     });
 });
 
+jQuery(document).on('click', '.jobsearch-updcand-withtyp-tolist', function () {
+    var _this = jQuery(this);
+    var this_id = _this.attr('data-id');
+    var this_loader = jQuery(this).next('.resume-loding-msg');
+
+    var type_selected = _this.parents('#usercand-shrtlistsecs-' + this_id).find('select[name^="shrtlist_type"]').val();
+
+    this_loader.html('<i class="fa fa-refresh fa-spin"></i>');
+    var request = jQuery.ajax({
+        url: jobsearch_plugin_vars.ajax_url,
+        method: "POST",
+        data: {
+            candidate_id: this_id,
+            type_selected: type_selected,
+            action: 'jobsearch_upd_employer_resume_to_list',
+        },
+        dataType: "json"
+    });
+
+    request.done(function (response) {
+        if (typeof response.error !== 'undefined' && response.error == '1') {
+            //
+            this_loader.html(response.msg);
+            return false;
+        }
+        if (typeof response.msg !== 'undefined' && response.msg != '') {
+            this_loader.html(response.msg);
+            _this.html('<i class="jobsearch-icon jobsearch-add-list"></i> ' + jobsearch_plugin_vars.shortlisted_str);
+            _this.removeClass('jobsearch-svcand-withtyp-tolist');
+            window.location.reload(true);
+        }
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        this_loader.html(jobsearch_plugin_vars.error_msg);
+    });
+});
+
 $(document).on('click', '.jobsearch-candidate-ct-form', function (e) {
     e.preventDefault();
     var this_id = $(this).data('id'),
-            msg_form = $('#ct-form-' + this_id),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            msg_con = msg_form.find('.jobsearch-ct-msg'),
-            msg_name = msg_form.find('input[name="u_name"]'),
-            msg_email = msg_form.find('input[name="u_email"]'),
-            msg_phone = msg_form.find('input[name="u_number"]'),
-            msg_txt = msg_form.find('textarea[name="u_msg"]'),
-            user_id = msg_form.attr('data-uid'),
-            error = 0;
+        msg_form = $('#ct-form-' + this_id),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        msg_con = msg_form.find('.jobsearch-ct-msg'),
+        msg_name = msg_form.find('input[name="u_name"]'),
+        msg_email = msg_form.find('input[name="u_email"]'),
+        msg_phone = msg_form.find('input[name="u_number"]'),
+        msg_txt = msg_form.find('textarea[name="u_msg"]'),
+        user_id = msg_form.attr('data-uid'),
+        error = 0;
 
     var cand_ser_form = $('#ct-form-' + this_id)[0];
 
@@ -934,15 +970,15 @@ $(document).on('click', '.jobsearch-candidate-ct-form', function (e) {
 $(document).on('click', '.jobsearch-employer-ct-form', function (e) {
     e.preventDefault();
     var this_id = $(this).data('id'),
-            msg_form = $('#ct-form-' + this_id),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            msg_con = msg_form.find('.jobsearch-ct-msg'),
-            msg_name = msg_form.find('input[name="u_name"]'),
-            msg_email = msg_form.find('input[name="u_email"]'),
-            msg_phone = msg_form.find('input[name="u_number"]'),
-            msg_txt = msg_form.find('textarea[name="u_msg"]'),
-            user_id = msg_form.attr('data-uid'),
-            error = 0;
+        msg_form = $('#ct-form-' + this_id),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        msg_con = msg_form.find('.jobsearch-ct-msg'),
+        msg_name = msg_form.find('input[name="u_name"]'),
+        msg_email = msg_form.find('input[name="u_email"]'),
+        msg_phone = msg_form.find('input[name="u_number"]'),
+        msg_txt = msg_form.find('textarea[name="u_msg"]'),
+        user_id = msg_form.attr('data-uid'),
+        error = 0;
 
     var emp_ser_form = $('#ct-form-' + this_id)[0];
 
@@ -1234,29 +1270,16 @@ jQuery(document).on('click', '.jobsearch-open-dloadres-popup', function () {
     jobsearch_modal_popup_open('JobSearchDLoadResModal' + _this_id);
 });
 
-jQuery(window).on('load', function () {
-    if (jQuery('.grid').length > 0 && jQuery('.grid-item').length > 0) {
-        //*** Function Masonery
-        jQuery('.grid').isotope({
-            itemSelector: '.grid-item',
-            percentPosition: true,
-            masonry: {
-                fitWidth: false
-            }
-        });
-    }
-});
-
 //
 //
 jQuery('.location_location1').on('change', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location1 = jQuery('#location_location1_' + this_id),
-            location_location2 = jQuery('#location_location2_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location1 = jQuery('#location_location1_' + this_id),
+        location_location2 = jQuery('#location_location2_' + this_id);
     jQuery('.location_location2_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
     var request = jQuery.ajax({
         url: ajax_url,
@@ -1289,11 +1312,11 @@ jQuery('.location_location1').on('change', function (e) {
 jQuery('.location_location2').on('change', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location2 = jQuery('#location_location2_' + this_id),
-            location_location3 = jQuery('#location_location3_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location2 = jQuery('#location_location2_' + this_id),
+        location_location3 = jQuery('#location_location3_' + this_id);
     jQuery('.location_location3_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
     var request = jQuery.ajax({
         url: ajax_url,
@@ -1326,11 +1349,11 @@ jQuery('.location_location2').on('change', function (e) {
 jQuery('.location_location3').on('change', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location3 = jQuery('#location_location3_' + this_id),
-            location_location4 = jQuery('#location_location4_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location3 = jQuery('#location_location3_' + this_id),
+        location_location4 = jQuery('#location_location4_' + this_id);
     jQuery('.location_location4_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
     var request = jQuery.ajax({
         url: ajax_url,
@@ -1361,11 +1384,11 @@ jQuery('.location_location3').on('change', function (e) {
 jQuery('.location_location1_ccus').on('change', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).attr('data-randid'),
-            nextfieldelement = jQuery(this).attr('data-nextfieldelement'),
-            nextfieldval = jQuery(this).attr('data-nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location1 = jQuery('#location_location1_' + this_id),
-            location_location2 = jQuery('#location_location2_cus_' + this_id);
+        nextfieldelement = jQuery(this).attr('data-nextfieldelement'),
+        nextfieldval = jQuery(this).attr('data-nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location1 = jQuery('#location_location1_' + this_id),
+        location_location2 = jQuery('#location_location2_cus_' + this_id);
     jQuery('.location_location2_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
     var request = jQuery.ajax({
         url: ajax_url,
@@ -1394,7 +1417,6 @@ jQuery('.location_location1_ccus').on('change', function (e) {
     request.fail(function (jqXHR, textStatus) {
     });
     return false;
-
 });
 
 if (jQuery('.jobsearch-employer-list .jobsearch-table-layer').length > 0) {
@@ -1423,13 +1445,16 @@ if (jQuery('.careerfy-employer-grid .careerfy-employer-grid-wrap').length > 0) {
     });
 }
 
-$(document).ready(function () {
-    if (window.location.hash !== 'undefined' && window.location.hash == '#_=_') {
-        window.location.hash = ''; // for older browsers, leaves a # behind
-        history.pushState('', document.title, window.location.pathname); // nice and clean
-        e.preventDefault(); // no page reload
+function jobsearch_js_find_in_array(ar, val) {
+    if (ar.length > 0) {
+        for (var i = 0,len = ar.length; i < len; i++) {
+            if ( ar[i] == val ) {
+                return i;
+            }
+        }
     }
-});
+    return -1;
+}
 
 $(document).on('keyup', '.jobsearch_chk_passfield', function () {
     var _this = jQuery(this);
@@ -1445,7 +1470,7 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
     if (acptable_pass_strnths.length < 1) {
         parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
         parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
-        return false;
+        return -1;
     }
 
     var short_pass_msg = jobsearch_plugin_vars.pass_length_short;
@@ -1466,14 +1491,14 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
     }
 
     var pass_strength = wp.passwordStrength.meter(pass_val, wp.passwordStrength.userInputBlacklist());
-
+    
     switch (pass_strength) {
         case 0 :
             chk_msg_con.css({display: 'inline-block'});
             chk_msg_con.attr('class', chkmsg_con_classes + ' jobsearch-vweakpass');
             _this.attr('class', _this_classes + ' jobsearch-vweakpass');
             chk_msg_con.html(short_pass_msg);
-            if (acptable_pass_strnths.includes('very_weak')) {
+            if (jobsearch_js_find_in_array(acptable_pass_strnths, 'very_weak') !== -1) {
                 parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
                 parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
             } else {
@@ -1488,7 +1513,7 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
             chk_msg_con.attr('class', chkmsg_con_classes + ' jobsearch-weakpass');
             _this.attr('class', _this_classes + ' jobsearch-weakpass');
             chk_msg_con.html(bad_pass_msg);
-            if (acptable_pass_strnths.includes('weak')) {
+            if (jobsearch_js_find_in_array(acptable_pass_strnths, 'weak') !== -1) {
                 parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
                 parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
             } else {
@@ -1503,7 +1528,7 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
             chk_msg_con.attr('class', chkmsg_con_classes + ' jobsearch-weakpass');
             _this.attr('class', _this_classes + ' jobsearch-weakpass');
             chk_msg_con.html(bad_pass_msg);
-            if (acptable_pass_strnths.includes('weak')) {
+            if (jobsearch_js_find_in_array(acptable_pass_strnths, 'weak') !== -1) {
                 parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
                 parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
             } else {
@@ -1518,7 +1543,7 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
             chk_msg_con.attr('class', chkmsg_con_classes + ' jobsearch-mediumpass');
             _this.attr('class', _this_classes + ' jobsearch-mediumpass');
             chk_msg_con.html(good_pass_msg);
-            if (acptable_pass_strnths.includes('medium')) {
+            if (jobsearch_js_find_in_array(acptable_pass_strnths, 'medium') !== -1) {
                 parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
                 parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
             } else {
@@ -1533,7 +1558,7 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
             chk_msg_con.attr('class', chkmsg_con_classes + ' jobsearch-strongpass');
             _this.attr('class', _this_classes + ' jobsearch-strongpass');
             chk_msg_con.html(strong_pass_msg);
-            if (acptable_pass_strnths.includes('strong')) {
+            if (jobsearch_js_find_in_array(acptable_pass_strnths, 'strong') !== -1) {
                 parent_form.find('.jobsearch-regpass-frmbtn').removeClass('jobsearch-disable-btn');
                 parent_form.find('.jobsearch-regpass-frmbtn').removeAttr('disabled');
             } else {
@@ -1559,11 +1584,11 @@ $(document).on('keyup', '.jobsearch_chk_passfield', function () {
 jQuery(document).on('change', '.filter_location_location1', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location1 = jQuery('#location_location1_' + this_id),
-            location_location2 = jQuery('#location_location2_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location1 = jQuery('#location_location1_' + this_id),
+        location_location2 = jQuery('#location_location2_' + this_id);
     jQuery('.location_location2_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
 
     var request = jQuery.ajax({
@@ -1626,11 +1651,11 @@ jQuery(document).on('change', '.filter_location_location1', function (e) {
 jQuery(document).on('change', '.filter_location_location2', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location2 = jQuery('#location_location2_' + this_id),
-            location_location3 = jQuery('#location_location3_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location2 = jQuery('#location_location2_' + this_id),
+        location_location3 = jQuery('#location_location3_' + this_id);
     jQuery('.location_location3_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
 
     var request = jQuery.ajax({
@@ -1693,11 +1718,11 @@ jQuery(document).on('change', '.filter_location_location2', function (e) {
 jQuery(document).on('change', '.filter_location_location3', function (e) {
     e.preventDefault();
     var this_id = jQuery(this).data('randid'),
-            nextfieldelement = jQuery(this).data('nextfieldelement'),
-            nextfieldval = jQuery(this).data('nextfieldval'),
-            ajax_url = jobsearch_plugin_vars.ajax_url,
-            location_location3 = jQuery('#location_location3_' + this_id),
-            location_location4 = jQuery('#location_location4_' + this_id);
+        nextfieldelement = jQuery(this).data('nextfieldelement'),
+        nextfieldval = jQuery(this).data('nextfieldval'),
+        ajax_url = jobsearch_plugin_vars.ajax_url,
+        location_location3 = jQuery('#location_location3_' + this_id),
+        location_location4 = jQuery('#location_location4_' + this_id);
     jQuery('.location_location4_' + this_id).html('<i class="fa fa-refresh fa-spin"></i>');
 
     var request = jQuery.ajax({
@@ -1750,11 +1775,11 @@ jQuery(document).on('change', '.filter_location_location3', function (e) {
 jQuery('.lodmore-empactjobs-btn').on('click', function (e) {
     e.preventDefault();
     var _this = jQuery(this),
-            this_id = _this.attr('data-id'),
-            total_pages = _this.attr('data-tpages'),
-            page_num = _this.attr('data-gtopage'),
-            this_html = _this.html(),
-            appender_con = jQuery('.jobsearch-empdetail-activejobs > ul');
+        this_id = _this.attr('data-id'),
+        total_pages = _this.attr('data-tpages'),
+        page_num = _this.attr('data-gtopage'),
+        this_html = _this.html(),
+        appender_con = jQuery('.jobsearch-empdetail-activejobs > ul');
     if (!_this.hasClass('ajax-loadin')) {
         _this.addClass('ajax-loadin');
         _this.html(this_html + ' <i class="fa fa-refresh fa-spin"></i>');
@@ -1792,4 +1817,20 @@ jQuery('.lodmore-empactjobs-btn').on('click', function (e) {
     }
     return false;
 
+});
+
+jQuery('.jobsearch-toggle-dashmenu').click(function () {
+    if (!jQuery('.careerfy-mobile-hdr-sidebar').hasClass('animate-menu-open')) {
+        jQuery('.careerfy-inmobile-itemsgen').hide();
+        jQuery('.jobsearch-mobile-dashmenu').removeAttr('style');
+    }
+    jQuery('.careerfy-mobile-hdr-sidebar').toggleClass('animate-menu-open');
+});
+
+jQuery('.mobile-usernotifics-btn').click(function () {
+    if (!jQuery('.careerfy-mobile-hdr-sidebar').hasClass('animate-menu-open')) {
+        jQuery('.careerfy-inmobile-itemsgen').hide();
+        jQuery('.jobsearch-mobile-notificsdet').removeAttr('style');
+    }
+    jQuery('.careerfy-mobile-hdr-sidebar').toggleClass('animate-menu-open');
 });

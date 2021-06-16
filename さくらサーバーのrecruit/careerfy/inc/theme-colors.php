@@ -34,7 +34,7 @@ function careerfy_dynamic_colors()
     .careerfy-footernine-newslatter-inner input[type="submit"]:hover, .careerfy-backto-top:hover, .careerfy-loadmore-listingsbtn a, .careerfy-loadmore-ninebtn a,.careerfy-thirteen-banner-caption h2 small,
     .careerfy-explore-jobs-links ul li:hover a,.careerfy-jobslatest-list li:hover figcaption h2 a,.careerfy-headerfifteen-user > li > a:hover,.careerfy-headersixteen-btn:hover,.careerfy-sixteen-jobs-links ul li:hover a,.careerfy-sixteen-jobs-links ul li.active a,.careerfy-sixteen-candidate-grid-bottom .careerfy-featured-candidates-loc i,.careerfy-sixteen-priceplan.active span,.careerfy-footer-sixteen .widget_nav_menu ul li:hover a,.copyright-sixteen p a,
     #JobSearchNonuserApplyModal i.jobsearch-icon.jobsearch-upload,.jobsearch-drpzon-con .upload-icon-con i,.jobsearch-drpzon-con .jobsearch-drpzon-btn,.jobsearch-drag-dropcustom .jobsearch-drpzon-btn i,/*Update*/
-.jobsearch-sort-section .selectize-input,.careerfy-jobdetail-btn,a.careerfy-jobdetail-btn:hover,.jobsearch-send-email-popup-btn,.jobsearch-send-email-popup-btn:hover,.jobsearch-drpzon-con .jobsearch-drpzon-btn,
+.jobsearch-sort-section .selectize-input,.careerfy-jobdetail-btn,a.careerfy-jobdetail-btn:hover,.jobsearch-send-email-popup-btn,.jobsearch-drpzon-con .jobsearch-drpzon-btn,
 .jobsearch-drag-dropcustom .jobsearch-drpzon-btn i,.jobsearch-user-form i.jobsearch-icon,.jobsearch-candidate-timeline-text span,.jobsearch-candidate-timeline small,.jobsearch-candidate-title i,
 .jobsearch_candidate_info small,.jobsearch-employerdetail-btn,.jobsearch-profile-title h2,.jobsearch-typo-wrap .jobsearch-findmap-btn, .jobsearch-employer-profile-form .jobsearch-findmap-btn,
 .jobsearch-employer-dashboard-nav ul li:hover i, .jobsearch-employer-dashboard-nav ul li.active i, .jobsearch-employer-dashboard-nav ul li:hover a, .jobsearch-employer-dashboard-nav ul li.active a,
@@ -49,7 +49,11 @@ function careerfy_dynamic_colors()
 .jobsearch-candidate-grid figure figcaption p a a,.aplicants-grid-inner-con p a,.short-li-icons li a,.register-form:hover,.careerfy-candidatedetail-text3-btn:hover,
 .careerfy-candidate-timeline-two-text span,.candidate-detail4-timeline-thumb small,.careerfy-candidate-title i,li:hover .careerfy-services-twentytwo-btn,.lodmore-notifics-btnsec a:hover,.lodmore-jobs-btnsec a:hover,
 .careerfy-candidate-style8-title,.careerfy-candidate-style8-loc i,li:hover .careerfy-candidate-style8-detail,.hder-notifics-count,.hdernotifics-after-con a:hover,.hdernotifics-after-con a,.careerfy-jobs-style9-title,
-.careerfy-jobs-style9-options,.careerfy-jobs-box2 .shortlist_job_btn:hover,.careerfy-jobdetail-style5-content-list h2,.careerfy-jobdetail-btn-style5,.jobsearch-employer-followin-btn {
+.careerfy-jobs-style9-options,.careerfy-jobs-box2 .shortlist_job_btn:hover,.careerfy-jobdetail-style5-content-list h2,.careerfy-jobdetail-btn-style5,.jobsearch-employer-followin-btn,.careerfy-content-title-style5 h2,
+.careerfy-candidate-cta-btn a,.careerfy-candidate-info-inner-style5 h2,.careerfy-candidate-detail5-tablink ul li.active a,.careerfy-candidate-title-style5 h2,.careerfy-candiate-services-style5 i,
+.careerfy-candidate-style5-contact-form input[type="submit"]:hover,.careerfy-twentyone-search-tabs .careerfy-search-twentyone-tabs-nav li a,.careerfy-services-twentyone li:hover i,.jobsearch-style9-custom-fields li,
+#jobsearch-chat-container .jobsearch-chat-nav li.active a,#jobsearch-chat-container .jobsearch-chat-nav li a:hover,.careerfy-header-twenty-user>li:hover>a,.addnew-aplyquestbtn-con button:hover,.jobsearch-showpass-btn,
+.jobsearch-add-job-to-favourite.jobsearch-job-like i,.jobsearch-add-job-to-favourite.careerfy-job-like i,.jobsearch-add-job-to-favourite.featured-jobs-grid-like i {
     color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
     .jobsearch-bgcolor,.jobsearch-bgcolorhover:hover,.jobsearch-banner-search ul li.jobsearch-banner-submit i,.jobsearch-plain-btn a,.jobsearch-testimonial-slider .slick-arrow:hover,
@@ -86,7 +90,12 @@ function careerfy_dynamic_colors()
 .demo-login-pbtns .active .jobsearch-demo-login-btn,.demo-login-pbtns .jobsearch-demo-login-btn:hover,.jobsearch-file-attach-sec li:hover .file-download-btn,.careerfy-candidatedetail-text3-btn,
 .candidate-detail-two-subheader-btn:hover,.careerfy-candidate-detail4-subheader-btn,.careerfy-services-twentytwo-inner i,.careerfy-services-twentytwo-btn,.careerfy-services-twentytwo-style2-btn,
 .careerfy-services-twentytwo-style2-content h2:before,.lodmore-notifics-btnsec a,.slick-current.slick-active .careerfy-testimonial-twentytwo-inner p,.lodmore-jobs-btnsec a,.careerfy-style8-candidate-like,.careerfy-candidate-style8-detail,.hdernotifics-after-con a:hover,.careerfy-jobs-box2 .shortlist_job_btn,.careerfy-jobdetail-style5-btns a:hover,.careerfy-jobdetail-style5-content-list ul li a.job-view-map,
-.careerfy-jobdetail-btn-style5:hover,.careerfy-jobdetail-style5-email:hover,.careerfy-header-two li.jobsearch-usernotifics-menubtn > a,.jobsearch-employer-followin-btn:hover {
+.careerfy-jobdetail-btn-style5:hover,.careerfy-jobdetail-style5-email:hover,.careerfy-header-two li.jobsearch-usernotifics-menubtn > a,.jobsearch-employer-followin-btn:hover,
+.careerfy-content-title-style5 h2:before,.careerfy-jobdetail-services-style5 i,.careerfy-candidate-cta-btn a:hover,.careerfy-candidate-detail5-tablink ul li.active a:before,
+.careerfy-candidate-title-style5 h2:before,.careerfy-candidate-education-info:before,.careerfy-candidate-style5-contact-form input[type="submit"],
+.careerfy-twentyone-search-tabs .careerfy-search-twentyone-tabs-nav li a:before,#jobsearch-chat-container .jobsearch-chat-nav li a:before,.jobsearch-chat-users-list li:before,
+.jobsearch-chat-typing-wrapper input[type="submit"],.quest-typecon-leftsec i,.addnew-questtypes-btnsiner a:hover i,.addnew-aplyquestbtn-con button,.addnew-questtypes-btnsiner a.active-type-itm i,
+.quests-item-answer p a,.jobsearch-applics-filterscon input.applics-filter-formbtn,.jobsearch-job-like,.careerfy-job-like,.featured-jobs-grid-like {
     background-color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
 
@@ -101,13 +110,15 @@ function careerfy_dynamic_colors()
 .jobsearch-checkbox input[type="checkbox"]:checked + label span,
 .jobsearch-checkbox input[type="checkbox"] + label:hover span,
 .jobsearch-checkbox input[type="radio"]:checked + label span,
-.jobsearch-checkbox input[type="radio"] + label:hover span,.careerfy-jobdetail-btn,.jobsearch-send-email-popup-btn,
+.jobsearch-checkbox input[type="radio"] + label:hover span,.careerfy-jobdetail-btn,
 .jobsearch-typo-wrap .ui-state-default, .jobsearch-typo-wrap .ui-widget-content .ui-state-default,.jobsearch-drpzon-con .jobsearch-drpzon-btn,.jobsearch-employerdetail-btn,
 .jobsearch-typo-wrap .jobsearch-employer-profile-submit,.other-lang-translate-post,.jobsearch-typo-wrap .jobsearch-findmap-btn, .jobsearch-employer-profile-form .jobsearch-findmap-btn,
 .jobsearch-employer-profile-form .upload-port-img-btn,.jobsearch-empmember-add-popup,.dash-hdtabchng-btn,.addcand-databy-emp,.jobsearch-jobdetail-btn.active,.jobsearch-employer-list-btn,
 .jobsearch-company-photo .jobsearch-fileUpload span,.short-li-icons li a,.careerfy-candidatedetail-text3-btn,.candidate-detail-two-subheader-btn:hover,.careerfy-candidate-detail4-subheader-btn,
 .careerfy-services-twentytwo-btn,.careerfy-services-twentytwo,.careerfy-services-twentytwo-style2-btn,.lodmore-notifics-btnsec a,.lodmore-jobs-btnsec a,.careerfy-candidate-style8-detail,.hder-notifics-count,
-.hdernotifics-after-con a,.careerfy-jobs-box2 .shortlist_job_btn,.careerfy-jobdetail-btn-style5,.jobsearch-employer-followin-btn {
+.hdernotifics-after-con a,.careerfy-jobs-box2 .shortlist_job_btn,.careerfy-jobdetail-btn-style5,.jobsearch-employer-followin-btn,.careerfy-candidate-cta-btn a,
+.careerfy-candidate-style5-contact-form input[type="submit"],.careerfy-twentyone-search-tabs .careerfy-twentyone-loc-search input[type="text"],.careerfy-services-nineteen small,.addnew-aplyquestbtn-con button,
+.jobsearch-job-like,.careerfy-job-like,.featured-jobs-grid-like {
     border-color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
     .jobsearch-read-more {
@@ -136,7 +147,7 @@ function careerfy_dynamic_colors()
     .careerfy-next-post .careerfy-prenxt-arrow ~ a,.comment-reply-link,.careerfy-banner-two-btn:hover,.careerfy-banner-search-two input[type="submit"],.careerfy-fancy-title.careerfy-fancy-title-two h2 span,.careerfy-modren-btn a,.careerfy-joblisting-plain-left ul li span,.careerfy-news-grid-text ul li a,.careerfy-partnertwo-slider .slick-arrow:hover,.careerfy-testimonial-styletwo span,.careerfy-fancy-title-three i,.careerfy-testimonial-nav li:hover i,.careerfy-fancy-title-four span i,.careerfy-featured-jobs-list-text small,.careerfy-parallax-text-btn,.careerfy-footer-four .widget_section_nav ul li a:hover,.widget_footer_contact_email,.careerfy-header-option ul li:hover a,.careerfy-range-slider form input[type="submit"],.careerfy-grid-info span,.careerfy-cart-button a,.careerfy-cart-button i,.woocommerce div.product ins span,.woocommerce-review-link,.product_meta span a,.woocommerce #reviews #comments ol.commentlist li .meta time,.careerfy-shop-list .careerfy-cart-button > span,.careerfy-archive-options li a:hover,.careerfy-continue-read,.careerfy-blog-other > li i,.detail-title h2,.careerfy-author-detail .post-by a,.careerfy-continue-reading,
     .careerfy-showing-result .careerfy-post-item:hover h5 a,.careerfy-showing-result .post-author:hover a,.careerfy-classic-services i,.careerfy-accordion .panel-heading a,
     .recent-post-text .read-more-btn,.careerfy-footer-four .widget_footer_contact .widget_footer_contact_email,.jobsearch-headeight-option > li.active a:hover,.contact-service a:hover,
-    .jobsearch-user-form input[type="submit"]:hover,.woocommerce .place-order button.button:hover,.jobsearch-applyjob-btn:hover,.woocommerce button.button:hover,.send-contract-to-applicnt,
+    .jobsearch-user-form input[type="submit"]:hover,.woocommerce .place-order button.button:hover,.woocommerce button.button:hover,.send-contract-to-applicnt,
     .careerfy-header-six .careerfy-headfive-option li a,.careerfy-banner-six .slick-arrow:hover,.careerfy-team-parallex span,.careerfy-blog-medium-btn,.careerfy-banner-search-seven ul li:last-child:hover i,
     .careerfy-employer-slider-btn,.careerfy-employer-slider .slick-arrow,.careerfy-candidate-view4 p,.footer-register-btn:hover,.careerfy-headseven-option > li:hover > a,.careerfy-candidate-view4 li:hover h2 a,
     .careerfy-banner-search ul li.careerfy-banner-submit:hover i,.careerfy-banner-search-three li:hover input[type="submit"],
@@ -165,7 +176,8 @@ function careerfy_dynamic_colors()
 .careerfy-services-nineteen-style3 strong,.careerfy-nineteen-loc-search-style2 input[type="submit"]:hover,.careerfy-twenty-search h1 strong,.careerfy-twenty-loc-search i,.careerfy-services-twenty .top-icon,
 .careerfy-twenty-testimonial h2,.careerfy-twenty-testimonial-wrapper:before,.widget_text_ten li span,.careerfy-footer-twenty .widget_nav_menu ul li a:before,.careerfy-search-twentyone-tabs-nav li i,
 .careerfy-twentyone-loc-search input[type="submit"]:hover,.careerfy-services-twentyone-style3 li:hover i,.careerfy-header-twentytwo-wrapper .top-strip-social-links p i,.careerfy-header-twentytwo-user li a i,
-.careerfy-twentytwo-loc-search .careerfy-pin {
+.careerfy-twentytwo-loc-search .careerfy-pin,.instacands-btns-con .more-fields-act-btn a:hover,.careerfy-footer-twentyone .widget_nav_menu ul li a:before,.careerfy-services-nineteen li:hover small,
+.careerfy-jobdetail-style5-save,.imag-resoultion-msg {
     color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
 
@@ -211,7 +223,8 @@ function careerfy_dynamic_colors()
 .careerfy-search-twenty-tabs-nav li.active a,.careerfy-services-twenty strong,.careerfy-services-twenty-style2-counter,.careerfy-accordion-style2 .panel-heading a,
 .careerfy-services-twenty-img:before,.careerfy-services-twenty-img:after,.careerfy-footer-title-style18 h2:before,.careerfy-header-twentyone-wrapper .navbar-nav > li > a:after,
 .careerfy-header-twentyone-social li:hover a,.careerfy-twentyone-loc-search input[type="submit"],.careerfy-search-twentyone-tabs-nav li.active a:before,.careerfy-search-twentyone-tabs-nav li.active a i,
-.careerfy-services-twentyone-style3 i,.careerfy-header-twentytwo-strip,.careerfy-search-twentytwo-tabs-nav li i,.careerfy-twentytwo-loc-search i.careerfy-search {
+.careerfy-services-twentyone-style3 i,.careerfy-header-twentytwo-strip,.careerfy-search-twentytwo-tabs-nav li i,.careerfy-twentytwo-loc-search i.careerfy-search-o,.instacands-btns-con .more-fields-act-btn a,
+.candskills-list li span.insta-match-skill,.careerfy-footer-twentyone .careerfy-footer-widget a.social-icon-footer-twenty:hover {
     background-color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
 
@@ -220,17 +233,24 @@ function careerfy_dynamic_colors()
     .careerfy-cart-button a,.careerfy-classic-services i,.jobsearch-headeight-option > li.active > a,.contact-service a,.jobsearch-user-form input[type="submit"],.woocommerce .place-order button.button,.woocommerce button.button,
     .careerfy-header-six,.careerfy-banner-six .slick-arrow:hover,.careerfy-banner-search-seven ul li:last-child i,.careerfy-headsix-option li a,.footer-register-btn,.careerfy-headseven-option > li > a,
     .careerfy-banner-search-four input[type="submit"],.careerfy-banner-search-six li input[type="submit"],.careerfy-banner-search ul li.careerfy-banner-submit i,.careerfy-banner-search-three input[type="submit"],
-    .careerfy-bannernine-caption a,.careerfy-loadmore-ninebtn a,.careerfy-loadmore-listingsbtn a,.careerfy-blog-masonry-btn,.careerfy-search-ten form label,.show-morejobs-btn a,.careerfy-top-recruiters-btn,.careerfy-blog-grid-style10-btn,.top-companies-list-text-btn,.careerfy-headereleven-btn,.careerfy-banner-eleven-search input[type="submit"],.careerfy-services-style11-btn,.jobsearch-send-email-popup-btn,.careerfy-jobdetail-btn.active,
+    .careerfy-bannernine-caption a,.careerfy-loadmore-ninebtn a,.careerfy-loadmore-listingsbtn a,.careerfy-blog-masonry-btn,.careerfy-search-ten form label,.show-morejobs-btn a,.careerfy-top-recruiters-btn,.careerfy-blog-grid-style10-btn,.top-companies-list-text-btn,.careerfy-headereleven-btn,.careerfy-banner-eleven-search input[type="submit"],.careerfy-services-style11-btn,.careerfy-jobdetail-btn.active,
     .careerfy-recentjobs-list-btn,.careerfy-recruiters-top-list-bottom a,.careerfy-blog-grid-style11-btn,.careerfy-action-style11 a,.careerfy-footernine-newslatter-inner input[type="submit"],
     .careerfy-headerfifteen-btn,.careerfy-banner-eleven-tabs-nav li a,.careerfy-fifteen-banner-search input[type="submit"],.careerfy-fifteen-browse-btn a,.jobsearch-empmember-add-popup,
     .careerfy-section-title-btn,.careerfy-top-employers-slider .slick-arrow:hover,.careerfy-twelve-blog-grid-btn,.careerfy-headerthirteen-btn,.careerfy-thirteen-banner-search input[type="submit"],.careerfy-thirteen-banner-btn a:hover,
     .careerfy-thirteen-browse-alljobs-btn a,.careerfy-headerseventeen-user > li > a,.careerfy-headerseventeen-btn:hover,.careerfy-seventeen-search input[type="submit"],
     .careerfy-refejobs-loadmore-btn a,.careerfy-headereighteen-btn,.careerfy-services-eighteen a,.careerfy-refejobs-list-two .careerfy-refejobs-list-btn span,.careerfy-eighteen-newslatter input[type="submit"],
-    .careerfy-headerfourteen-btn,.careerfy-refejobs-list-btn span,.jobsearch-open-signup-tab.active a,.careerfy-nineteen-category-list li:hover i,.careerfy-twentyone-loc-search input[type="submit"] {
+    .careerfy-headerfourteen-btn,.careerfy-refejobs-list-btn span,.jobsearch-open-signup-tab.active a,.careerfy-nineteen-category-list li:hover i,.careerfy-twentyone-loc-search input[type="submit"],
+    .instacands-btns-con .more-fields-act-btn a,.careerfy-twentyone-search .selectize-control,.careerfy-jobdetail-style5-save {
     border-color: <?php echo esc_html($careerfy_theme_color) ?>;
     }
     .careerfy-read-more {
     box-shadow: 0px 0px 0px 2px <?php echo esc_html($careerfy_theme_color) ?> inset;
+    }
+    .careerfy-partner-slider a:hover {
+        box-shadow: 0px 0px 0px 3px <?php echo esc_html($careerfy_theme_color) ?> inset;
+    }
+    .careerfy-seventeen-services i {
+        box-shadow: inset 0px 0px 0px 2px <?php echo esc_html($careerfy_theme_color) ?>, 0 0px 15px rgba(0,0,0,0.15);
     }
 
     .careerfy-services-twenty-style3 i,.careerfy-services-twenty-style3 a:before,.careerfy-services-twentyone-style3 i {
@@ -552,29 +572,25 @@ function careerfy_dynamic_colors()
             .careerfy-footer-two .widget_archive ul li:before {color: <?php echo esc_html($footer_text_color) ?>;}
             <?php
         }
-        if (isset($footer_link_color['regular']) && $footer_link_color['regular'] != '') {
-            ?>
+        if (isset($footer_link_color['regular']) && $footer_link_color['regular'] != '') { ?>
             .careerfy-footer-one .links,.careerfy-footer-widget a,.careerfy-footer-widget .widget_product_categories li span,.careerfy-footer-widget .widget.widget_categories ul li,
-            .careerfy-footer-widget .widget.widget_archive ul li,.careerfy-footer-widget .careerfy-futurecourse li a,.careerfy-footer-three .widget_nav_menu ul li a,.careerfy-footer-one .widget_nav_menu ul li a,
-            .careerfy-footer-two .widget_nav_menu ul li a,.careerfy-footer-four .widget_nav_menu ul li a,.careerfy-footer-ten .widget_nav_menu ul li a {
+            .careerfy-footer-widget .widget.widget_archive ul li,.careerfy-footer-widget .careerfy-futurecourse li a,#careerfy-footer .widget_nav_menu ul li a {
             color: <?php echo esc_html($footer_link_color['regular']) ?>;}
             <?php
         }
         if (isset($footer_link_color['hover']) && $footer_link_color['hover'] != '') {
             ?>
-            .careerfy-footer-one .links,.careerfy-footer-widget a:hover,.careerfy-footer-one .widget_nav_menu ul li a:hover,.careerfy-footer-three .widget_nav_menu ul li a:hover,
-            .careerfy-footer-four .widget_nav_menu ul li a:hover,.widget_nav_menu ul li:hover a {color: <?php echo esc_html($footer_link_color['hover']) ?>;}
+            .careerfy-footer-one .links,.careerfy-footer-widget a:hover,#careerfy-footer .widget_nav_menu ul li a:hover {color: <?php echo esc_html($footer_link_color['hover']) ?>;}
             <?php
         }
         if (isset($footer_link_color['visited']) && $footer_link_color['visited'] != '') {
             ?>
-            .careerfy-footer-one .links,.careerfy-footer-widget a:visited {color: <?php echo esc_html($footer_link_color['visited']) ?>;}
+            .careerfy-footer-one .links,.careerfy-footer-widget a:visited, #careerfy-footer .widget_nav_menu ul li a:visited {color: <?php echo esc_html($footer_link_color['visited']) ?>;}
             <?php
         }
         if (isset($footer_link_color['active']) && $footer_link_color['active'] != '') {
             ?>
-            .careerfy-footer-one .links,.careerfy-footer-one .widget_nav_menu ul li a:hover,.careerfy-footer-three .widget_nav_menu ul li a:hover,
-            .careerfy-footer-four .widget_nav_menu ul li a:hover,.widget_nav_menu ul li.current-menu-item a {color: <?php echo esc_html($footer_link_color['active']) ?>;}
+            .careerfy-footer-one .links,#careerfy-footer .widget_nav_menu ul li.current-menu-item a {color: <?php echo esc_html($footer_link_color['active']) ?>;}
             <?php
         }
         if ($footer_border_color != '') {
@@ -595,6 +611,138 @@ function careerfy_dynamic_colors()
             .jobsearch-copyright, .jobsearch-copyright p, .careerfy-copyright, .careerfy-copyright p, .careerfy-copyright span,.careerfy-copyright-two p,.copyright-three p,.careerfy-copyright-two p a,
             .copyright-ten p,.copyright-nineteen p,.copyright-nineteen-social li a,.copyright-twenty p,.copyright-twentyone p {
             color: <?php echo esc_html($footer_copyright_color) ?>;}
+            <?php
+        }
+        
+        $responsive_hder_bg = isset($careerfy__options['mobile_header_bg_color']['color']) ? $careerfy__options['mobile_header_bg_color']['color'] : '';
+        $responsive_hder_menubg = isset($careerfy__options['mobile_header_menubg_color']['color']) ? $careerfy__options['mobile_header_menubg_color']['color'] : '';
+        $resphder_hder_close_iconclr = isset($careerfy__options['mobile_hder_close_iconcolor']['color']) ? $careerfy__options['mobile_hder_close_iconcolor']['color'] : '';
+        
+        $resphder_menu_itmclr = isset($careerfy__options['mobile_hder_menuitm_color']['color']) ? $careerfy__options['mobile_hder_menuitm_color']['color'] : '';
+        $resphder_menu_itm_bgclr = isset($careerfy__options['mobile_hder_menuitm_bgclr']['color']) ? $careerfy__options['mobile_hder_menuitm_bgclr']['color'] : '';
+        $resphder_menu_itm_brderclr = isset($careerfy__options['mobile_hder_menuitm_borderclr']['color']) ? $careerfy__options['mobile_hder_menuitm_borderclr']['color'] : '';
+        $resphder_activmenu_itmclr = isset($careerfy__options['mobile_hder_activ_menuitm_color']['color']) ? $careerfy__options['mobile_hder_activ_menuitm_color']['color'] : '';
+        $resphder_activmenu_itm_bgclr = isset($careerfy__options['mobile_hder_activ_menuitm_bgclr']['color']) ? $careerfy__options['mobile_hder_activ_menuitm_bgclr']['color'] : '';
+        $resphder_submenu_itmclr = isset($careerfy__options['mobile_hder_submenuitm_color']['color']) ? $careerfy__options['mobile_hder_submenuitm_color']['color'] : '';
+        $resphder_submenu_itmbgclr = isset($careerfy__options['mobile_hder_submenuitm_bgclr']['color']) ? $careerfy__options['mobile_hder_submenuitm_bgclr']['color'] : '';
+        $resphder_submenu_itmbordrclr = isset($careerfy__options['mobile_hder_submenuitm_borderclr']['color']) ? $careerfy__options['mobile_hder_submenuitm_borderclr']['color'] : '';
+        
+        $responsive_hder_menu_btnclr = isset($careerfy__options['mobile_hder_menubtn_color']['color']) ? $careerfy__options['mobile_hder_menubtn_color']['color'] : '';
+        $responsive_hder_notify_clr = isset($careerfy__options['mobile_hder_notify_color']['color']) ? $careerfy__options['mobile_hder_notify_color']['color'] : '';
+        $responsive_hder_notify_bgclr = isset($careerfy__options['mobile_hder_notify_bgcolor']['color']) ? $careerfy__options['mobile_hder_notify_bgcolor']['color'] : '';
+        $responsive_hder_userbtn_clr = isset($careerfy__options['mobile_hder_userlogin_color']['color']) ? $careerfy__options['mobile_hder_userlogin_color']['color'] : '';
+        $responsive_hder_userbtn_bgclr = isset($careerfy__options['mobile_hder_userlogin_bgcolor']['color']) ? $careerfy__options['mobile_hder_userlogin_bgcolor']['color'] : '';
+        
+        $responsive_hder_cusbtn_clr = isset($careerfy__options['mobile_hder_cusbtn_color']['color']) ? $careerfy__options['mobile_hder_cusbtn_color']['color'] : '';
+        $responsive_hder_cusbtn_bgclr = isset($careerfy__options['mobile_hder_cusbtn_bgcolor']['color']) ? $careerfy__options['mobile_hder_cusbtn_bgcolor']['color'] : '';
+        if ($responsive_hder_bg != '') {
+            ?>
+            .careerfy-mobilehder-strip {
+            background-color: <?php echo esc_html($responsive_hder_bg) ?>;}
+            <?php
+        }
+        if ($responsive_hder_menubg != '') {
+            ?>
+            .careerfy-mobile-hdr-sidebar, .careerfy-mobile-hdr-sidebar a.mobile-navclose-btn {
+            background-color: <?php echo esc_html($responsive_hder_menubg) ?>;}
+            <?php
+        }
+        if ($resphder_hder_close_iconclr != '') {
+            ?>
+            .careerfy-mobile-hdr-sidebar a.mobile-navclose-btn {
+            color: <?php echo esc_html($resphder_hder_close_iconclr) ?>;}
+            <?php
+        }
+        
+        if ($resphder_menu_itmclr != '') {
+            ?>
+            .careerfy-mobile-navbar > li > a, .careerfy-mobile-navbar > li > .child-navitms-opner {
+            color: <?php echo esc_html($resphder_menu_itmclr) ?>;}
+            <?php
+        }
+        if ($resphder_menu_itm_bgclr != '') {
+            ?>
+            .careerfy-mobile-navbar > li > a {
+            background-color: <?php echo esc_html($resphder_menu_itm_bgclr) ?>;}
+            <?php
+        }
+        if ($resphder_menu_itm_brderclr != '') {
+            ?>
+            .careerfy-mobile-navbar > li > a {
+            border-color: <?php echo esc_html($resphder_menu_itm_brderclr) ?>;}
+            <?php
+        }
+        if ($resphder_activmenu_itmclr != '') {
+            ?>
+            .careerfy-mobile-navbar > li.active > a, .careerfy-mobile-navbar > li.active > .child-navitms-opner {
+            color: <?php echo esc_html($resphder_activmenu_itmclr) ?>;}
+            <?php
+        }
+        if ($resphder_activmenu_itm_bgclr != '') {
+            ?>
+            .careerfy-mobile-navbar > li.active > a {
+            background-color: <?php echo esc_html($resphder_activmenu_itm_bgclr) ?>;}
+            <?php
+        }
+        if ($resphder_submenu_itmclr != '') {
+            ?>
+            .careerfy-mobile-navbar .sidebar-submenu > li > a, .careerfy-mobile-navbar .sidebar-submenu > li > .child-navitms-opner {
+            color: <?php echo esc_html($resphder_submenu_itmclr) ?>;}
+            <?php
+        }
+        if ($resphder_submenu_itmbgclr != '') {
+            ?>
+            .careerfy-mobile-navbar .sidebar-submenu {
+            background-color: <?php echo esc_html($resphder_submenu_itmbgclr) ?>;}
+            <?php
+        }
+        if ($resphder_submenu_itmbordrclr != '') {
+            ?>
+            .careerfy-mobile-navbar .sidebar-submenu > li > a {
+            border-color: <?php echo esc_html($resphder_submenu_itmbordrclr) ?>;}
+            <?php
+        }
+        
+        if ($responsive_hder_menu_btnclr != '') {
+            ?>
+            .mobile-right-btnscon a.mobile-navigation-togglebtn {
+            color: <?php echo esc_html($responsive_hder_menu_btnclr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_notify_clr != '') {
+            ?>
+            .mobile-right-btnscon a.mobile-usernotifics-btn {
+            color: <?php echo esc_html($responsive_hder_notify_clr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_notify_bgclr != '') {
+            ?>
+            .mobile-right-btnscon a.mobile-usernotifics-btn {
+            background-color: <?php echo esc_html($responsive_hder_notify_bgclr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_userbtn_clr != '') {
+            ?>
+            .mobile-right-btnscon a.jobsearch-useracount-hdrbtn {
+            color: <?php echo esc_html($responsive_hder_userbtn_clr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_userbtn_bgclr != '') {
+            ?>
+            .mobile-right-btnscon a.jobsearch-useracount-hdrbtn {
+            background-color: <?php echo esc_html($responsive_hder_userbtn_bgclr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_cusbtn_clr != '') {
+            ?>
+            a.mobile-hdr-custombtn, a.mobile-hdr-custombtn i {
+            color: <?php echo esc_html($responsive_hder_cusbtn_clr) ?>;}
+            <?php
+        }
+        if ($responsive_hder_cusbtn_bgclr != '') {
+            ?>
+            a.mobile-hdr-custombtn {
+            background-color: <?php echo esc_html($responsive_hder_cusbtn_bgclr) ?>;}
             <?php
         }
     }

@@ -2,12 +2,13 @@
 /*
  * Import the Google SDK and load all the classes
  */
-include (plugin_dir_path(__FILE__) . 'google-sdk/autoload.php');
+include(plugin_dir_path(__FILE__) . 'google-sdk/autoload.php');
 
 /**
  * Class JobsearchGoogle
  */
-class JobsearchGoogle {
+class JobsearchGoogle
+{
 
     /**
      * Google APP ID
@@ -24,7 +25,8 @@ class JobsearchGoogle {
     /**
      * JobsearchGoogle constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         global $jobsearch_plugin_options;
 
@@ -63,17 +65,8 @@ class JobsearchGoogle {
         }
     }
 
-    private function set_access_tokes() {
-        $client = new Google_Client();
-        $client->setApplicationName('Login Check');
-        if ('' != $this->client_id && '' != $this->client_secret) {
-            $client->setClientId($this->client_id);
-            $client->setClientSecret($this->client_secret);
-            $client->setRedirectUri($this->redirect_url);
-            $client->addScope("email");
-            $client->addScope("profile");
-        }
-
+    private function set_access_tokes()
+    {
         /*         * ************************************************
           If we have a code back from the OAuth 2.0 flow,
           we need to exchange that with the authenticate()
@@ -81,17 +74,31 @@ class JobsearchGoogle {
           bundle in the session, and redirect to ourself.
          */
 
-        if (isset($_GET['code']) && !isset($_GET['state']) && !isset($_GET['redirect_from']) && !isset($_GET['jobsearch_instagram_login'])) {
+        if ((isset($_GET['code']) && isset($_GET['scope'])) && !isset($_GET['state']) && !isset($_GET['redirect_from']) && !isset($_GET['jobsearch_instagram_login'])) {
+            
+            $client = new Google_Client();
+            $client->setApplicationName('Login Check');
+            if ('' != $this->client_id && '' != $this->client_secret) {
+                $client->setClientId($this->client_id);
+                $client->setClientSecret($this->client_secret);
+                $client->setRedirectUri($this->redirect_url);
+                $client->addScope("email");
+                $client->addScope("profile");
+            }
 
-            $client->authenticate($_GET['code']);
-            set_transient('access_token', $client->getAccessToken(), 60 * 60 * 24 * 30);
-            setcookie('jobearch_gdetct_acc_token', $client->getAccessToken(), time() + (86400 * 7), "/");
-            header("Location: " . admin_url('admin-ajax.php?action=jobsearch_google_login'), true);
-            exit();
+            $get_scope = urldecode($_GET['scope']);
+            if (strpos($get_scope, 'googleapis') !== false) {
+                $client->authenticate($_GET['code']);
+                set_transient('access_token', $client->getAccessToken(), 60 * 60 * 24 * 30);
+                setcookie('jobearch_gdetct_acc_token', $client->getAccessToken(), time() + (86400 * 7), "/");
+                header("Location: " . admin_url('admin-ajax.php?action=jobsearch_google_login'), true);
+                exit();
+            }
         }
     }
 
-    public function login_with_redirect_url() {
+    public function login_with_redirect_url()
+    {
 
         $user_data = isset($_POST['user_data']) ? $_POST['user_data'] : '';
 
@@ -188,7 +195,8 @@ class JobsearchGoogle {
         die;
     }
 
-    public function google_callback() {
+    public function google_callback()
+    {
 
         global $jobsearch_plugin_options;
 
@@ -215,7 +223,7 @@ class JobsearchGoogle {
         if (get_transient('access_token')) {
             $client->setAccessToken(get_transient('access_token'));
             $this->google_details = $service->userinfo->get();
-            
+
             //var_dump($this->google_details); die;
 
             // We first try to login the user
@@ -242,7 +250,8 @@ class JobsearchGoogle {
         die();
     }
 
-    public static function getLoginURL() {
+    public static function getLoginURL()
+    {
 
         $client = new Google_Client();
         $client->setApplicationName('Login Check');
@@ -270,7 +279,8 @@ class JobsearchGoogle {
      *
      * It displays our Login / Register button
      */
-    public function renderShortcode() {
+    public function renderShortcode()
+    {
 
         if (isset($_GET['logout'])) {
             delete_transient('access_token');
@@ -282,7 +292,7 @@ class JobsearchGoogle {
         $client->setClientSecret($this->client_secret);
         $client->setRedirectUri($this->redirect_url);
         $client->addScope("email");
-        //$client->addScope("profile");
+        $client->addScope("profile");
         //$client->setApprovalPrompt("force");
 
         $service = new Google_Service_Oauth2($client);
@@ -296,11 +306,12 @@ class JobsearchGoogle {
 
 
         if (isset($authUrl)) {
-            echo '<li><a class="jobsearch-google-plus-bg" data-original-title="google" href="' . $authUrl . '"><i class="fa fa-google-plus"></i>' . __('Login with Google', 'wp-jobsearch') . '</a></li>';
+            echo '<li><a class="jobsearch-google-plus-bg" data-original-title="google" href="' . $authUrl . '"><i class="fa fa-google"></i>' . __('Login with Google', 'wp-jobsearch') . '</a></li>';
         }
     }
 
-    private function loginUser() {
+    private function loginUser()
+    {
 
         // We look for the `eo_google_id` to see if there is any match
         $wp_users = get_users(array(
@@ -346,9 +357,10 @@ class JobsearchGoogle {
     /**
      * Create a new WordPress account using Google Details
      */
-    private function createUser() {
-
-
+    private function createUser()
+    {
+        global $jobsearch_plugin_options;
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
         $google_user = $this->google_details;
 
         $user_id = isset($google_user->id) ? $google_user->id : '';
@@ -366,7 +378,7 @@ class JobsearchGoogle {
             update_user_meta($_social_user_obj->ID, 'jobsearch_google_id', $user_id);
             $this->loginUser();
         }
-        
+
         $username = '';
 
         // Create a username
@@ -384,7 +396,8 @@ class JobsearchGoogle {
         }
 
         // Creating our user
-        $new_user = wp_create_user($username, wp_generate_password(), $email);
+        $user_pass = wp_generate_password();
+        $new_user = wp_create_user($username, $user_pass, $email);
 
         if (is_wp_error($new_user)) {
             // Report our errors
@@ -408,20 +421,43 @@ class JobsearchGoogle {
             update_user_meta($new_user, 'first_name', $first_name);
             update_user_meta($new_user, 'last_name', $last_name);
             update_user_meta($new_user, 'jobsearch_google_id', $user_id);
+            
+            if ($candidate_auto_approve == 'on' || $candidate_auto_approve == 'email') {
+                update_post_meta($user_candidate_id, 'jobsearch_field_candidate_approved', 'on');
+            }
 
+            $c_user = get_user_by('ID', $new_user);
+            do_action('jobsearch_new_user_register', $c_user, $user_pass);
             // Log the user ?
             wp_set_auth_cookie($new_user);
         }
     }
 
-    public function do_apply_job_with_google($user_id) {
+    public function do_apply_job_with_google($user_id)
+    {
+
+        global $jobsearch_plugin_options;
+
+        $candidate_auto_approve = isset($jobsearch_plugin_options['candidate_auto_approve']) ? $jobsearch_plugin_options['candidate_auto_approve'] : '';
+
+        $user_is_candidate = jobsearch_user_is_candidate($user_id);
+
+        $apply_job_cond = true;
+        if ($candidate_auto_approve != 'on') {
+            $apply_job_cond = false;
+            if ($user_is_candidate) {
+                $candidate_id = jobsearch_get_user_candidate_id($user_id);
+                $candidate_status = get_post_meta($candidate_id, 'jobsearch_field_candidate_approved', true);
+                if ($candidate_status == 'on') {
+                    $apply_job_cond = true;
+                }
+            }
+        }
 
         if (isset($_COOKIE['jobsearch_apply_google_jobid']) && $_COOKIE['jobsearch_apply_google_jobid'] > 0) {
             $job_id = $_COOKIE['jobsearch_apply_google_jobid'];
 
             //
-            $user_is_candidate = jobsearch_user_is_candidate($user_id);
-
             if ($user_is_candidate) {
                 $candidate_id = jobsearch_get_user_candidate_id($user_id);
 
@@ -444,7 +480,8 @@ class JobsearchGoogle {
         }
     }
 
-    public function applying_job_with_google() {
+    public function applying_job_with_google()
+    {
         $job_id = isset($_POST['job_id']) ? $_POST['job_id'] : '';
         if ($job_id > 0 && get_post_type($job_id) == 'job') {
 
@@ -479,7 +516,8 @@ class JobsearchGoogle {
         }
     }
 
-    public function apply_job_with_google($args = array()) {
+    public function apply_job_with_google($args = array())
+    {
         global $jobsearch_plugin_options;
         $google_login = isset($jobsearch_plugin_options['google-social-login']) ? $jobsearch_plugin_options['google-social-login'] : '';
         if ($google_login == 'on') {
@@ -488,23 +526,21 @@ class JobsearchGoogle {
             $classes = isset($args['classes']) && !empty($args['classes']) ? $args['classes'] : 'jobsearch-applyjob-google-btn';
             $label = isset($args['label']) ? $args['label'] : '';
             $view = isset($args['view']) ? $args['view'] : '';
-
-
-            if ($view == 'job2') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"> <?php echo ($label); ?></a>
-                <?php
-            } elseif ($view == 'job3') {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"></a></li>
-                <?php
-            } elseif ($view == 'job4') {
-                ?>
-                <a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="fa fa-google-plus"></i> <?php esc_html_e('Apply with Google', 'wp-jobsearch') ?></a>
-                <?php
-            } else {
-                ?>
-                <li><a href="javascript:void(0);" class="<?php echo ($classes); ?>" data-id="<?php echo ($job_id) ?>"><i class="fa fa-google-plus"></i> <?php esc_html_e('Google', 'wp-jobsearch') ?></a></li>
+            if ($view == 'job2') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>"
+                   data-id="<?php echo($job_id) ?>"> <?php echo($label); ?></a>
+            <?php } elseif ($view == 'job3') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"></a>
+                </li>
+            <?php } elseif ($view == 'job4') { ?>
+                <a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                            class="fa fa-google"></i> <?php esc_html_e('Apply with Google', 'wp-jobsearch') ?></a>
+            <?php } elseif ($view == 'job5') { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                            class="fa fa-google"></i> <?php esc_html_e('Apply with Google', 'wp-jobsearch') ?></a></li>
+            <?php } else { ?>
+                <li><a href="javascript:void(0);" class="<?php echo($classes); ?>" data-id="<?php echo($job_id) ?>"><i
+                                class="fa fa-google"></i> <?php esc_html_e('Google', 'wp-jobsearch') ?></a></li>
                 <?php
             }
         }

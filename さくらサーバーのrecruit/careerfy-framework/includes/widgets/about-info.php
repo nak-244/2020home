@@ -146,6 +146,7 @@ if (!class_exists('Careerfy_about_Infos')) {
             $instance['work_time'] = $new_instance['work_time'];
             return $instance;
         }
+
         /**
          * Outputs the content for the current careerfy  flicker widget instance.
          *
@@ -187,8 +188,14 @@ if (!class_exists('Careerfy_about_Infos')) {
                     <?php
                 }
                 ?>
-                <li><i class="fa fa-phone"></i><?php echo esc_html__('Customer Support Hotline:', 'careerfy-frame'); ?>
-                    <a href="tel:<?php echo($suport_num); ?>"> <?php echo($suport_num); ?></a> <?php echo $work_time; ?>
+                <li>
+                    <i class="fa fa-phone"></i>
+                    <?php echo esc_html__('Customer Support Hotline:', 'careerfy-frame'); ?>
+                    <a href="tel:<?php echo($suport_num); ?>"> <?php echo($suport_num); ?></a>
+                </li>
+                <li>
+                    <i class="fa fa-clock-o"></i>
+                    <?php echo esc_html__('Office Hours:', 'careerfy-frame'); ?> <?php echo($work_time); ?>
                 </li>
                 </ul>
                 <?php
@@ -199,11 +206,11 @@ if (!class_exists('Careerfy_about_Infos')) {
                 ?>
                 <p><?php echo($desc) ?></p>
                 <ul class="careerfy-about-address">
-                    <li><i class="fa fa-map-marker"></i> <?php echo($suport_num); ?></li>
+                    <li><i class="fa fa-phone"></i> <a
+                                href="tel:<?php echo $suport_num; ?>"><?php echo($suport_num); ?></a></li>
                     <li><i class="fa fa-envelope"></i> <a
                                 href="mailto:<?php echo($market_contact) ?>"><?php echo($market_contact) ?></a></li>
-                    <li><i class="fa fa-phone"></i><a href="tel:<?php echo $work_time; ?>"><?php echo $work_time; ?></a>
-                    </li>
+                    <li><i class="fa fa-clock-o"></i><?php echo $work_time; ?></li>
                 </ul>
             <?php }
             echo($after_widget);

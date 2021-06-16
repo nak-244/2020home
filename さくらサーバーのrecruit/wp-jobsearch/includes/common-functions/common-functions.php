@@ -1,4 +1,6 @@
 <?php
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
 /**
  * common functions files
  * html fields
@@ -13,13 +15,9 @@ if (!function_exists('jobsearch_pagination')) {
 
     function jobsearch_pagination($jobsearch_query = '', $return = false)
     {
-
         global $wp_query;
-
         $jobsearch_big = 999999999; // need an unlikely integer
-
         $jobsearch_cus_query = $wp_query;
-
         if (!empty($jobsearch_query)) {
             $jobsearch_cus_query = $jobsearch_query;
         }
@@ -67,7 +65,8 @@ function jobsearch_wp_head_common_js()
 
 add_filter('pre_get_avatar_data', 'jobsearch_user_avatar_data_args', 10, 2);
 
-function jobsearch_user_avatar_data_args($args, $id_or_email) {
+function jobsearch_user_avatar_data_args($args, $id_or_email)
+{
     if (filter_var($id_or_email, FILTER_VALIDATE_EMAIL)) {
         $user_obj = get_user_by('email', $id_or_email);
     } else {
@@ -75,8 +74,13 @@ function jobsearch_user_avatar_data_args($args, $id_or_email) {
     }
     $user_id = isset($user_obj->ID) ? $user_obj->ID : '';
     $user_is_candiadte = jobsearch_user_is_candidate($user_id);
+    $user_is_employer = jobsearch_user_is_employer($user_id);
     if ($user_is_candiadte) {
         $default = jobsearch_candidate_image_placeholder();
+        $args['default'] = $default;
+    }
+    if ($user_is_employer) {
+        $default = jobsearch_employer_image_placeholder();
         $args['default'] = $default;
     }
     return $args;
@@ -84,7 +88,8 @@ function jobsearch_user_avatar_data_args($args, $id_or_email) {
 
 add_filter('get_avatar', 'jobsearch_get_user_def_avatar', 10, 5);
 
-function jobsearch_get_user_def_avatar($avatar, $id_or_email, $size, $default, $alt) {
+function jobsearch_get_user_def_avatar($avatar, $id_or_email, $size, $default, $alt)
+{
     if (filter_var($id_or_email, FILTER_VALIDATE_EMAIL)) {
         $user_obj = get_user_by('email', $id_or_email);
     } else {
@@ -92,6 +97,7 @@ function jobsearch_get_user_def_avatar($avatar, $id_or_email, $size, $default, $
     }
     $user_id = isset($user_obj->ID) ? $user_obj->ID : '';
     $user_is_candiadte = jobsearch_user_is_candidate($user_id);
+    $user_is_employer = jobsearch_user_is_employer($user_id);
     if ($user_is_candiadte) {
         $candidate_id = jobsearch_get_user_candidate_id($user_id);
         $user_avatar_dburl = get_post_meta($candidate_id, 'jobsearch_user_avatar_url', true);
@@ -104,6 +110,15 @@ function jobsearch_get_user_def_avatar($avatar, $id_or_email, $size, $default, $
                 $avatar_url = apply_filters('wp_jobsearch_cand_profile_img_url', $avatar_url, $candidate_id, '150');
                 $avatar = '<img alt="" src="' . $avatar_url . '" width="32" height="32">';
             }
+        }
+    }
+    if ($user_is_employer) {
+        $employer_id = jobsearch_get_user_employer_id($user_id);
+        $user_avatar_id = get_post_thumbnail_id($employer_id);
+        if ($user_avatar_id > 0) {
+            $user_thumbnail_image = wp_get_attachment_image_src($user_avatar_id, 'thumbnail');
+            $user_img_url = isset($user_thumbnail_image[0]) && esc_url($user_thumbnail_image[0]) != '' ? $user_thumbnail_image[0] : '';
+            $avatar = '<img alt="" src="' . $user_img_url . '" width="32" height="32">';
         }
     }
     return $avatar;
@@ -189,7 +204,6 @@ function jobsearch_wp_handle_upload_wuunlink(&$file, $overides, $action = 'wp_ha
 
 function jobsearch_user_upload_files_path($dir = '')
 {
-
     $cus_dir = 'jobsearch-user-files';
     $dir_path = array(
         'path' => $dir['basedir'] . '/' . $cus_dir,
@@ -199,8 +213,8 @@ function jobsearch_user_upload_files_path($dir = '')
     return $dir_path + $dir;
 }
 
-function jobsearch_usercand_upload_files_path($dir = '') {
-
+function jobsearch_usercand_upload_files_path($dir = '')
+{
     $cus_dir = 'jobsearch-candidates';
     $dir_path = array(
         'path' => $dir['basedir'] . '/' . $cus_dir,
@@ -212,17 +226,18 @@ function jobsearch_usercand_upload_files_path($dir = '') {
 
 add_filter('upload_dir', 'jobsearch_candimg_upload_dir');
 
-function jobsearch_upload_candimg_path($path) {
+function jobsearch_upload_candimg_path($path)
+{
     global $jobsearch_uploding_resume, $jobsearch_download_locations;
     $jobsearch_uploding_resume = false;
     $jobsearch_download_locations = false;
     return 'jobsearch-candidates/' . JobSearch_plugin::get_uniquid();
+    //return 'jobsearch-candidates/' . uniqid();
 }
 
-function jobsearch_candimg_upload_dir($pathdata) {
-
+function jobsearch_candimg_upload_dir($pathdata)
+{
     global $jobsearch_uploding_candimg;
-
     if ($jobsearch_uploding_candimg === true) {
         $img_folder = 'jobsearch-candidates/';
 
@@ -239,7 +254,6 @@ function jobsearch_candimg_upload_dir($pathdata) {
             $pathdata['subdir'] = $new_subdir;
         }
     }
-
     return $pathdata;
 }
 
@@ -255,9 +269,7 @@ function jobsearch_upload_cvmod_path($path)
 
 function jobsearch_resume_upload_dir($pathdata)
 {
-
     global $jobsearch_uploding_resume;
-
     if ($jobsearch_uploding_resume === true) {
         $resume_folder = 'jobsearch-resumes/';
 
@@ -274,72 +286,19 @@ function jobsearch_resume_upload_dir($pathdata)
             $pathdata['subdir'] = $new_subdir;
         }
     }
-
     return $pathdata;
 }
 
 add_filter('upload_dir', 'jobsearch_resume_upload_dir');
+//
 
-function jobsearch_locations_path($path)
-{
-    global $jobsearch_uploding_resume, $jobsearch_uploding_candimg;
-    $jobsearch_uploding_resume = false;
-    $jobsearch_uploding_candimg = false;
-    return 'jobsearch-locations/';
-}
-
-function jobsearch_locations_upload_dir($pathdata) {
-    global $jobsearch_download_locations;
-    
-    if ($jobsearch_download_locations === true) {
-        $locations_folder = 'jobsearch-locations/';
-        $dir = untrailingslashit(apply_filters('jobsearch_locations_upload_dir', $locations_folder));
-
-        if (empty($pathdata['subdir'])) {
-            $dir_path = $pathdata['path'] . '/' . $dir;
-            $dir_url = $pathdata['url'] . '/' . $dir;
-            $dir_subdir = '/' . $dir;
-
-            $dir_path = preg_replace('(/[0-9]+)', '', $dir_path);
-            $dir_url = preg_replace('(/[0-9]+)', '', $dir_url);
-            $dir_subdir = preg_replace('(/[0-9]+)', '', $dir_subdir);
-
-            $pathdata['path'] = $dir_path;
-            $pathdata['url'] = $dir_url;
-            $pathdata['subdir'] = $dir_subdir;
-        } else {
-            $new_subdir = '/' . $dir . $pathdata['subdir'];
-
-            $dir_path = str_replace($pathdata['subdir'], $new_subdir, $pathdata['path']);
-            $dir_url = str_replace($pathdata['subdir'], $new_subdir, $pathdata['url']);
-            $dir_subdir = $new_subdir;
-
-            $dir_path = preg_replace('(/[0-9]+)', '', $dir_path);
-            $dir_url = preg_replace('(/[0-9]+)', '', $dir_url);
-            $dir_subdir = preg_replace('(/[0-9]+)', '', $dir_subdir);
-
-            $pathdata['path'] = $dir_path;
-            $pathdata['url'] = $dir_url;
-            $pathdata['subdir'] = $dir_subdir;
-
-            //var_dump($pathdata);
-        }
-    }
-    return $pathdata;
-}
-
-add_filter('upload_dir', 'jobsearch_locations_upload_dir');
-
+//
 add_action('wp', 'wp_jobsearch_set_user_files_foldr_access');
-
 function wp_jobsearch_set_user_files_foldr_access()
 {
     global $wp_filesystem, $jobsearch_download_locations;
-    
     $jobsearch_download_locations = false;
-    
     require_once ABSPATH . '/wp-admin/includes/file.php';
-
     if (false === ($creds = request_filesystem_credentials(wp_nonce_url('post.php'), '', false, false, array()))) {
         return true;
     }
@@ -349,9 +308,7 @@ function wp_jobsearch_set_user_files_foldr_access()
     }
 
     add_filter('upload_dir', 'jobsearch_user_upload_files_path');
-
     $wp_upload_dir = wp_upload_dir();
-
     $files_dir = $wp_upload_dir['path'] . '/';
     if (!is_dir($files_dir)) {
         mkdir($files_dir);
@@ -366,9 +323,7 @@ function wp_jobsearch_set_user_files_foldr_access()
     <Files ~ "\.(jpg|jpeg|png|gif)$">
        allow from all
     </Files>';
-
     $wp_filesystem->put_contents($htaccs_file, $file_contnt, FS_CHMOD_FILE);
-    
     //
     add_filter('upload_dir', 'jobsearch_usercand_upload_files_path');
 
@@ -451,6 +406,30 @@ function jobsearch_sector_terms_hierarchical($id, $terms, $output = '', $parent_
     return $output;
 }
 
+function jobsearch_input_post_vals_validate($post_data)
+{
+    if (!empty($post_data)) {
+        foreach ($post_data as $post_input_key => $post_input_val) {
+            if (is_array($post_input_val)) {
+                $post_data[$post_input_key] = $post_input_val;
+            } else if (strpos($post_input_val, 'alert(') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'alert)') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'focus=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'onerror=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else if (strpos($post_input_val, 'window.location=') > 0) {
+                $post_data[$post_input_key] = '';
+            } else {
+                $post_data[$post_input_key] = $post_input_val;
+            }
+        }
+    }
+    return $post_data;
+}
+
 if (!function_exists('jobsearch_excerpt')) {
 
     /*
@@ -486,12 +465,9 @@ if (!function_exists('jobsearch_excerpt_contnt')) {
 
     function jobsearch_excerpt_contnt($length = '', $id = '', $read_more = false, $cont = false)
     {
-
         $excerpt = '';
-
         if ($id > 0) {
             $post_obj = get_post($id);
-
             $excerpt = isset($post_obj->post_excerpt) ? $post_obj->post_excerpt : '';
             if ($excerpt == '') {
                 $excerpt = isset($post_obj->post_content) ? $post_obj->post_content : '';
@@ -515,7 +491,6 @@ if (!function_exists('jobsearch_icon_picker')) {
 
     function jobsearch_icon_picker($value = '', $id = '', $name = '', $class = 'jobsearch-icon-pickerr')
     {
-
         $html = "
         <script>
         jQuery(document).ready(function ($) {
@@ -549,16 +524,13 @@ if (!function_exists('jobsearch_icon_picker')) {
             });
         });
         </script>";
-
         $html .= '
         <input type="text" id="e9_element_' . $id . '" class="' . $class . '" name="' . $name . '" value="' . $value . '">
         <span id="e9_buttons_' . $id . '" style="display:none">\
             <button autocomplete="off" type="button" class="btn btn-primary">Load from IcoMoon selection.json</button>
         </span>';
-
         return $html;
     }
-
 }
 
 if (!function_exists('jobsearch_wpml_lang_page_id')) {
@@ -584,16 +556,12 @@ if (!function_exists('jobsearch_wpml_lang_url')) {
 
     function jobsearch_wpml_lang_url()
     {
-
         if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
 
             global $sitepress;
-
             $server_uri = $_SERVER['REQUEST_URI'];
             $server_uri = explode('/', $server_uri);
-
             $active_langs = $sitepress->get_active_languages();
-
             if (is_array($active_langs) && sizeof($active_langs) > 0) {
                 foreach ($server_uri as $uri) {
 
@@ -821,8 +789,7 @@ function jobsearch_translate_profile_with_wpml_btn($member_id = 0, $post_type = 
                 $icl_post_id = icl_object_id($member_id, 'candidate', false, $lang_code);
                 $sitepress->switch_lang($current_lang);
 
-                if ($icl_post_id <= 0) {
-                    ?>
+                if ($icl_post_id <= 0) { ?>
                     <a class="other-lang-translate-post"
                        href="<?php echo add_query_arg(array('tab' => $tab, 'lang' => $lang_code), $page_url) ?>"><?php printf(esc_html__('Translate in %s', 'wp-jobsearch'), (isset($language['translated_name']) ? $language['translated_name'] : '')) ?></a>
                     <?php
@@ -836,7 +803,7 @@ add_action('jobsearch_translate_profile_with_wpml_source', 'jobsearch_translate_
 
 function jobsearch_translate_profile_with_wpml_source($user_id = 0)
 {
-    global $jobsearch_plugin_options, $sitepress;
+    global $jobsearch_plugin_options, $sitepress, $wpdb;
 
     $tr_lang_allow = true;
     $tr_lang_allow = apply_filters('jobsearch_allowflag_translate_profile_with_wpml', $tr_lang_allow);
@@ -881,6 +848,20 @@ function jobsearch_translate_profile_with_wpml_source($user_id = 0)
 
                 //
                 do_action('jobsearch_dashboard_pass_values_to_duplicate_post', $employer_id, $ru_post_id, 'employer');
+
+                // Duplicate all the custom fields
+                $custom_fields = get_post_custom($employer_id);
+                foreach ($custom_fields as $key => $value) {
+                    if (is_array($value) && count($value) > 0) {
+                        foreach ($value as $i => $v) {
+                            $result = $wpdb->insert($wpdb->prefix . 'postmeta', array(
+                                'post_id' => $ru_post_id,
+                                'meta_key' => $key,
+                                'meta_value' => $v
+                            ));
+                        }
+                    }
+                }
 
                 // location
                 $loc1_val = get_post_meta($employer_id, 'jobsearch_field_location_location1', true);
@@ -1070,6 +1051,20 @@ function jobsearch_translate_profile_with_wpml_source($user_id = 0)
                 //
                 do_action('jobsearch_dashboard_pass_values_to_duplicate_post', $candidate_id, $ru_post_id, 'candidate');
 
+                // Duplicate all the custom fields
+                $custom_fields = get_post_custom($candidate_id);
+                foreach ($custom_fields as $key => $value) {
+                    if (is_array($value) && count($value) > 0) {
+                        foreach ($value as $i => $v) {
+                            $result = $wpdb->insert($wpdb->prefix . 'postmeta', array(
+                                'post_id' => $ru_post_id,
+                                'meta_key' => $key,
+                                'meta_value' => $v
+                            ));
+                        }
+                    }
+                }
+
                 // location
                 $loc1_val = get_post_meta($candidate_id, 'jobsearch_field_location_location1', true);
                 if ($loc1_val != '') {
@@ -1121,6 +1116,16 @@ function jobsearch_translate_profile_with_wpml_source($user_id = 0)
                         $set_to_terms[] = $sector_term->term_id;
                     }
                     wp_set_post_terms($ru_post_id, $set_to_terms, 'sector', false);
+                }
+                // skill
+                $skill_terms = wp_get_post_terms($candidate_id, 'skill');
+                if (!empty($skill_terms)) {
+                    $set_to_terms = array();
+                    foreach ($skill_terms as $sector_term) {
+                        $tr_tax_id = icl_object_id($sector_term->term_id, 'skill', true, $current_lang);
+                        $set_to_terms[] = $sector_term->term_id;
+                    }
+                    wp_set_post_terms($ru_post_id, $set_to_terms, 'skill', false);
                 }
 
                 //
@@ -1267,13 +1272,10 @@ add_action('init', 'jobsearch_wpml_table_install');
 function jobsearch_wpml_table_install()
 {
     global $wpdb;
-
     if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
 
         $table_name = $wpdb->prefix . 'icl_string_packages';
-
         $charset_collate = $wpdb->get_charset_collate();
-
         $sql = "SET NAMES utf8;
         SET time_zone = '+00:00';
         SET foreign_key_checks = 0;
@@ -1322,6 +1324,13 @@ function jobsearch_plugin_options_translation_strings()
             do_action('wpml_register_single_string', 'JobSearch Options', 'Security Question - ' . $security_question, $security_question);
         }
     }
+
+    //
+    $candidate_unapproved_text = isset($jobsearch_plugin_options['unapproverd_candidate_txt']) ? $jobsearch_plugin_options['unapproverd_candidate_txt'] : '';
+    do_action('wpml_register_single_string', 'JobSearch Options', 'Unapproverd Candidate Message - ' . $candidate_unapproved_text, $candidate_unapproved_text);
+
+    $employer_unapproved_text = isset($jobsearch_plugin_options['unapproverd_employer_txt']) ? $jobsearch_plugin_options['unapproverd_employer_txt'] : '';
+    do_action('wpml_register_single_string', 'JobSearch Options', 'Unapproverd Employer Message - ' . $employer_unapproved_text, $employer_unapproved_text);
 }
 
 if (!function_exists('jobsearch_contact_form_submit')) {
@@ -1571,97 +1580,213 @@ add_action('wp_ajax_nopriv_jobsearch_get_location_with_latlng', 'jobsearch_get_l
 
 function jobsearch_get_location_with_latlng()
 {
-
     global $jobsearch_plugin_options;
 
-    $google_api_key = isset($jobsearch_plugin_options['jobsearch-google-api-key']) ? $jobsearch_plugin_options['jobsearch-google-api-key'] : '';
+    $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
 
     $response_array = array();
-    if ($google_api_key != '') {
+    $response_array['address'] = '';
+
+    if ($location_map_type == 'mapbox') {
+        $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
+
         $lat = (isset($_POST['lat'])) ? $_POST['lat'] : '';
         $lng = (isset($_POST['lng'])) ? $_POST['lng'] : '';
 
-        $wp_remote_get_args = array(
-            'timeout' => 50,
-            'compress' => false,
-            'decompress' => true,
-        );
-        $response = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?key=' . $google_api_key . '&latlng=' . $lat . ',' . $lng . '&sensor=true', $wp_remote_get_args);
-        if (is_array($response)) {
-            $data = json_decode($response['body']);
-
-            $location_data = $data->results[0];
-            $response_array['address'] = $location_data->formatted_address;
-        }
-    } else {
-        $response_array['address'] = '';
-    }
-    echo json_encode($response_array);
-    wp_die();
-}
-
-function jobsearch_address_to_cords($address = '')
-{
-
-    global $jobsearch_plugin_options;
-    $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-
-    if (empty($address)) {
-        return false;
-    }
-
-    $cords_array = array();
-    
-    if ($location_map_type == 'mapbox') {
-        $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
-        $geo_loc_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_access_token;
+        $geo_loc_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $lng . ',' . $lat . '.json?access_token=' . $mapbox_access_token;
         $location_geo = wp_remote_get($geo_loc_url);
         if (!is_wp_error($location_geo)) {
             if (isset($location_geo['body'])) {
                 $cords_info = json_decode($location_geo['body'], true);
                 $format_address = isset($cords_info['features'][0]['place_name']) ? $cords_info['features'][0]['place_name'] : '';
-                $cords = isset($cords_info['features'][1]['geometry']['coordinates']) ? $cords_info['features'][1]['geometry']['coordinates'] : '';
+                $cords = isset($cords_info['features'][0]['geometry']['coordinates']) ? $cords_info['features'][0]['geometry']['coordinates'] : '';
                 $latitude = isset($cords[1]) ? $cords[1] : '';
                 $longitude = isset($cords[0]) ? $cords[0] : '';
-                if (!empty($latitude) && !empty($longitude)) {
-                    $cords_array['lat'] = $latitude;
-                    $cords_array['lng'] = $longitude;
-                    $cords_array['formatted_address'] = $format_address;
-                }
+
+                $response_array['address'] = $format_address;
             }
         }
     } else {
         $google_api_key = isset($jobsearch_plugin_options['jobsearch-google-api-key']) ? $jobsearch_plugin_options['jobsearch-google-api-key'] : '';
-        $geo_loc_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=false' . ($google_api_key != '' ? '&key=' . $google_api_key : '');
-        $location_geo = wp_remote_get($geo_loc_url);
-        if (!is_wp_error($location_geo)) {
-            if (isset($location_geo['body'])) {
-                $cords_info = json_decode($location_geo['body'], true);
-                if (isset($cords_info['results']) && empty($cords_info['results'])) {
-                    $location_geo = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address));
-                }
+
+        if ($google_api_key != '') {
+            $lat = (isset($_POST['lat'])) ? $_POST['lat'] : '';
+            $lng = (isset($_POST['lng'])) ? $_POST['lng'] : '';
+
+            $wp_remote_get_args = array(
+                'timeout' => 50,
+                'compress' => false,
+                'decompress' => true,
+            );
+            $response = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?key=' . $google_api_key . '&latlng=' . $lat . ',' . $lng . '&sensor=true', $wp_remote_get_args);
+            if (is_array($response)) {
+                $data = json_decode($response['body']);
+
+                $location_data = $data->results[0];
+                $response_array['address'] = $location_data->formatted_address;
             }
+        }
+    }
+    echo json_encode($response_array);
+    wp_die();
+}
 
-            if (isset($location_geo['body'])) {
-                $cords_info = json_decode($location_geo['body'], true);
+if (!function_exists('jobsearch_address_to_cords')) {
 
-                if (isset($cords_info['status']) && $cords_info['status'] == 'OK') {
-                    $latitude = isset($cords_info['results'][0]['geometry']['location']['lat']) ? $cords_info['results'][0]['geometry']['location']['lat'] : '';
-                    $longitude = isset($cords_info['results'][0]['geometry']['location']['lng']) ? $cords_info['results'][0]['geometry']['location']['lng'] : '';
+    function jobsearch_address_to_cords($address = '')
+    {
 
-                    $formatted_address = isset($cords_info['results'][0]['formatted_address']) ? $cords_info['results'][0]['formatted_address'] : '';
+        global $jobsearch_plugin_options;
+        $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
 
+        if (empty($address)) {
+            return false;
+        }
+
+        $cords_array = array();
+        if ($location_map_type == 'mapbox') {
+            $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
+            $geo_loc_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_access_token;
+            $location_geo = wp_remote_get($geo_loc_url);
+            if (!is_wp_error($location_geo)) {
+                if (isset($location_geo['body'])) {
+                    $cords_info = json_decode($location_geo['body'], true);
+                    $format_address = isset($cords_info['features'][0]['place_name']) ? $cords_info['features'][0]['place_name'] : '';
+                    $cords = isset($cords_info['features'][0]['geometry']['coordinates']) ? $cords_info['features'][0]['geometry']['coordinates'] : '';
+                    $latitude = isset($cords[1]) ? $cords[1] : '';
+                    $longitude = isset($cords[0]) ? $cords[0] : '';
                     if (!empty($latitude) && !empty($longitude)) {
                         $cords_array['lat'] = $latitude;
                         $cords_array['lng'] = $longitude;
-                        $cords_array['formatted_address'] = $formatted_address;
+                        $cords_array['formatted_address'] = $format_address;
+                    }
+                }
+            }
+        } else {
+            $google_api_key = isset($jobsearch_plugin_options['jobsearch-google-api-key']) ? $jobsearch_plugin_options['jobsearch-google-api-key'] : '';
+            $geo_loc_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=false' . ($google_api_key != '' ? '&key=' . $google_api_key : '');
+            $location_geo = wp_remote_get($geo_loc_url);
+            if (!is_wp_error($location_geo)) {
+                if (isset($location_geo['body'])) {
+                    $cords_info = json_decode($location_geo['body'], true);
+                    if (isset($cords_info['results']) && empty($cords_info['results'])) {
+                        $location_geo = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address));
+                    }
+                }
+
+                if (isset($location_geo['body'])) {
+                    $cords_info = json_decode($location_geo['body'], true);
+                    if (isset($cords_info['status']) && $cords_info['status'] == 'OK') {
+                        $latitude = isset($cords_info['results'][0]['geometry']['location']['lat']) ? $cords_info['results'][0]['geometry']['location']['lat'] : '';
+                        $longitude = isset($cords_info['results'][0]['geometry']['location']['lng']) ? $cords_info['results'][0]['geometry']['location']['lng'] : '';
+                        $formatted_address = isset($cords_info['results'][0]['formatted_address']) ? $cords_info['results'][0]['formatted_address'] : '';
+                        if (!empty($latitude) && !empty($longitude)) {
+                            $cords_array['lat'] = $latitude;
+                            $cords_array['lng'] = $longitude;
+                            $cords_array['formatted_address'] = $formatted_address;
+                        }
+                    }
+                }
+            }
+            if (empty($cords_array)) {
+                $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
+                if ($mapbox_access_token != '') {
+                    $geo_loc_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_access_token;
+                    $location_geo = wp_remote_get($geo_loc_url);
+                    if (!is_wp_error($location_geo)) {
+                        if (isset($location_geo['body'])) {
+                            $cords_info = json_decode($location_geo['body'], true);
+                            $format_address = isset($cords_info['features'][0]['place_name']) ? $cords_info['features'][0]['place_name'] : '';
+                            $cords = isset($cords_info['features'][0]['geometry']['coordinates']) ? $cords_info['features'][0]['geometry']['coordinates'] : '';
+                            $latitude = isset($cords[1]) ? $cords[1] : '';
+                            $longitude = isset($cords[0]) ? $cords[0] : '';
+                            if (!empty($latitude) && !empty($longitude)) {
+                                $cords_array['lat'] = $latitude;
+                                $cords_array['lng'] = $longitude;
+                                $cords_array['formatted_address'] = $format_address;
+                            }
+                        }
                     }
                 }
             }
         }
+        return $cords_array;
     }
+}
 
-    return $cords_array;
+function jobsearch_esc_html($input)
+{
+    if (is_array($input)) {
+        return $input;
+    } else {
+        if ($input != '') {
+            $input = wp_kses($input, array());
+            $input = str_replace(array('"', "='", '="', 'alert('), array('', '', '', ''), $input);
+        }
+    }
+    return $input;
+}
+
+function jobsearch_esc_wp_editor($input)
+{
+    $allowed_tags = array();
+    /*
+     * Allowed Tags for wp editor
+     * */
+
+    $allowed_atts = array(
+        'align' => array(),
+        'class' => array(),
+        'type' => array(),
+        'id' => array(),
+        'style' => array(),
+        'src' => array(),
+        'alt' => array(),
+        'href' => array(),
+        'rel' => array(),
+        'target' => array(),
+        'width' => array(),
+        'height' => array(),
+        'title' => array(),
+        'data' => array(),
+    );
+    $allowed_tags['form'] = $allowed_atts;
+    $allowed_tags['label'] = $allowed_atts;
+    $allowed_tags['input'] = $allowed_atts;
+    $allowed_tags['textarea'] = $allowed_atts;
+    $allowed_tags['iframe'] = $allowed_atts;
+    $allowed_tags['style'] = $allowed_atts;
+    $allowed_tags['strong'] = $allowed_atts;
+    $allowed_tags['small'] = $allowed_atts;
+    $allowed_tags['table'] = $allowed_atts;
+    $allowed_tags['span'] = $allowed_atts;
+    $allowed_tags['abbr'] = $allowed_atts;
+    $allowed_tags['code'] = $allowed_atts;
+    $allowed_tags['pre'] = $allowed_atts;
+    $allowed_tags['div'] = $allowed_atts;
+    $allowed_tags['img'] = $allowed_atts;
+    $allowed_tags['h1'] = $allowed_atts;
+    $allowed_tags['h2'] = $allowed_atts;
+    $allowed_tags['h3'] = $allowed_atts;
+    $allowed_tags['h4'] = $allowed_atts;
+    $allowed_tags['h5'] = $allowed_atts;
+    $allowed_tags['h6'] = $allowed_atts;
+    $allowed_tags['ol'] = $allowed_atts;
+    $allowed_tags['ul'] = $allowed_atts;
+    $allowed_tags['li'] = $allowed_atts;
+    $allowed_tags['em'] = $allowed_atts;
+    $allowed_tags['hr'] = $allowed_atts;
+    $allowed_tags['br'] = $allowed_atts;
+    $allowed_tags['tr'] = $allowed_atts;
+    $allowed_tags['td'] = $allowed_atts;
+    $allowed_tags['p'] = $allowed_atts;
+    $allowed_tags['a'] = $allowed_atts;
+    $allowed_tags['b'] = $allowed_atts;
+    $allowed_tags['i'] = $allowed_atts;
+
+    $input = wp_kses($input, $allowed_tags);
+    $input = str_replace(array('alert('), array(''), $input);
+    return $input;
 }
 
 if (!function_exists('jobsearch_social_share')) {
@@ -1849,10 +1974,15 @@ if (!function_exists('jobsearch_all_users')) {
 
 add_filter('cron_schedules', 'jobsearch_comon_cron_recurrence_interval');
 
-function jobsearch_comon_cron_recurrence_interval($schedules) {
+function jobsearch_comon_cron_recurrence_interval($schedules)
+{
     $schedules['every_five_sec'] = array(
         'interval' => 5,
         'display' => __('Every 5 sec', 'wp-jobsearch')
+    );
+    $schedules['every_five_mins'] = array(
+        'interval' => 300,
+        'display' => __('Every Five Minutes', 'wp-jobsearch')
     );
     $schedules['every_half_hourly'] = array(
         'interval' => 1800,
@@ -1870,9 +2000,7 @@ if (!function_exists('jobsearch_get_times_array')) {
 
     function jobsearch_get_times_array($interval = '+30 minutes', $same_value = false)
     {
-
         $output = array();
-
         $current = strtotime('00:00');
         $end = strtotime('23:59');
 
@@ -1949,15 +2077,13 @@ if (!function_exists('jobsearch_count_custom_post_with_filter')) {
 
     function jobsearch_count_custom_post_with_filter($posttype, $arg = '')
     {
-
         $args = array(
             'posts_per_page' => "1",
             'post_type' => $posttype,
-            'post_status' => 'publish',
             'fields' => 'ids',
             'meta_query' => $arg,
         );
-        //echo '<pre>';print_r($args);echo '</pre>';
+
         $custom_query = new WP_Query($args);
         $all_post_count = $custom_query->found_posts;
         return $all_post_count;
@@ -2002,7 +2128,6 @@ if (!function_exists('jobsearch_countin_candidates_dash_stats')) {
 
     function jobsearch_countin_candidates_dash_stats()
     {
-
         $current_timestamp = current_time('timestamp');
         $total_candidates = jobsearch_count_custom_post_with_filter('candidate');
 
@@ -2013,8 +2138,8 @@ if (!function_exists('jobsearch_countin_candidates_dash_stats')) {
                 'compare' => '=',
             ),
         );
-        $total_active_candidates = jobsearch_count_custom_post_with_filter('candidate', $arg);
 
+        $total_active_candidates = jobsearch_count_custom_post_with_filter('candidate', $arg);
         $arg = array(
             array(
                 'key' => 'jobsearch_field_candidate_approved',
@@ -2022,8 +2147,8 @@ if (!function_exists('jobsearch_countin_candidates_dash_stats')) {
                 'compare' => '!=',
             ),
         );
-        $total_pending_candidates = jobsearch_count_custom_post_with_filter('candidate', $arg);
 
+        $total_pending_candidates = jobsearch_count_custom_post_with_filter('candidate', $arg);
         echo json_encode(array('tot_counts' => absint($total_candidates), 'active_counts' => absint($total_active_candidates), 'pending_counts' => absint($total_pending_candidates)));
         die;
     }
@@ -2035,9 +2160,7 @@ if (!function_exists('jobsearch_countin_jobs_dash_stats')) {
 
     function jobsearch_countin_jobs_dash_stats()
     {
-
         $current_timestamp = current_time('timestamp');
-
         $total_jobs = jobsearch_count_custom_post_with_filter('job');
         $arg = array(
             array(
@@ -2060,8 +2183,8 @@ if (!function_exists('jobsearch_countin_jobs_dash_stats')) {
         $arg = array(
             array(
                 'key' => 'jobsearch_field_job_status',
-                'value' => 'approved',
-                'compare' => '!=',
+                'value' => 'pending',
+                'compare' => '=',
             ),
         );
         $total_pending_jobs = jobsearch_count_custom_post_with_filter('job', $arg);
@@ -2070,6 +2193,11 @@ if (!function_exists('jobsearch_countin_jobs_dash_stats')) {
                 'key' => 'jobsearch_field_job_expiry_date',
                 'value' => $current_timestamp,
                 'compare' => '<=',
+            ),
+            array(
+                'key' => 'jobsearch_field_job_expiry_date',
+                'value' => '',
+                'compare' => '!=',
             ),
         );
         $total_expired_jobs = jobsearch_count_custom_post_with_filter('job', $arg);
@@ -2087,6 +2215,7 @@ if (!function_exists('jobsearch_load_all_custom_post_data')) {
     {
         $force_std = $_POST['force_std'];
         $posttype = $_POST['posttype'];
+        $placelabel = $_POST['placelabel'];
         $args = array(
             'posts_per_page' => "-1",
             'post_type' => $posttype,
@@ -2098,7 +2227,10 @@ if (!function_exists('jobsearch_load_all_custom_post_data')) {
         $custom_query = new WP_Query($args);
         $all_records = $custom_query->posts;
 
-        $html .= "";
+        $html = "";
+        if ($placelabel != '') {
+            $html .= "<option value=''>{$placelabel}</option>" . "\n";
+        }
         if (isset($all_records) && !empty($all_records)) {
             foreach ($all_records as $user_var) {
                 $selected = $user_var == $force_std ? ' selected="selected"' : '';
@@ -2107,7 +2239,6 @@ if (!function_exists('jobsearch_load_all_custom_post_data')) {
             }
         }
         echo json_encode(array('html' => $html));
-
         wp_die();
     }
 
@@ -2120,9 +2251,8 @@ if (!function_exists('jobsearch_get_custom_post_field')) {
     function jobsearch_get_custom_post_field($selected_id, $custom_post_slug, $field_label, $field_name, $custom_name = '')
     {
         global $jobsearch_form_fields;
-        $custom_post_first_element = esc_html__('Please select ', 'wp-jobsearch');
         $custom_posts = array(
-            '' => $custom_post_first_element . $field_label,
+            '' => $field_label,
         );
         if ($selected_id) {
             $this_custom_posts = get_the_title($selected_id);
@@ -2136,7 +2266,7 @@ if (!function_exists('jobsearch_get_custom_post_field')) {
             'name' => $field_name,
             'options' => $custom_posts,
             'force_std' => $selected_id,
-            'ext_attr' => ' data-randid="' . $rand_num . '" data-forcestd="' . $selected_id . '" data-loaded="false" data-posttype="' . $custom_post_slug . '"',
+            'ext_attr' => ' data-randid="' . $rand_num . '" data-forcestd="' . $selected_id . '" data-loaded="false" data-placelabel="' . $field_label . '" data-posttype="' . $custom_post_slug . '"',
         );
         if (isset($custom_name) && $custom_name != '') {
             $field_params['cus_name'] = $custom_name;
@@ -2149,19 +2279,68 @@ if (!function_exists('jobsearch_get_custom_post_field')) {
 
 }
 
+function jobsearch_get_post_id_bytitle($title, $type = 'post')
+{
+    global $wpdb;
+    if ($title != '') {
+        $post_query = "SELECT posts.ID FROM $wpdb->posts AS posts";
+        $post_query .= " WHERE posts.post_title='{$title}' AND posts.post_type='{$type}'";
+        $post_query .= " LIMIT 1";
+        $get_db_res = $wpdb->get_col($post_query);
+        if (isset($get_db_res[0])) {
+            return $get_db_res[0];
+        }
+    }
+    return 0;
+}
+
+function jobsearch_get_postmeta_id_byval($meta_key, $meta_value)
+{
+    global $wpdb;
+    if ($meta_key != '' && $meta_value != '') {
+        $post_query = "SELECT postmeta.meta_id FROM $wpdb->postmeta AS postmeta";
+        $post_query .= " WHERE meta_key='{$meta_key}' AND meta_value='{$meta_value}'";
+        $post_query .= " LIMIT 1";
+        $get_db_res = $wpdb->get_col($post_query);
+        if (isset($get_db_res[0])) {
+            return $get_db_res[0];
+        }
+    }
+    return 0;
+}
+
 if (!function_exists('jobsearch_updated_job_featured_meta')) {
 
     function jobsearch_updated_job_featured_meta($selected_user)
     {
         $job_id = $_POST['job_id'];
         $option = $_POST['option'];
+
+        $job_expiry_date = get_post_meta($job_id, 'jobsearch_field_job_expiry_date', true);
+
         $featured_val = 'on';
         $return_html = esc_html__('Yes', 'wp-jobsearch');
         if ($option == 'un-feature') {
             $featured_val = 'off';
             $return_html = esc_html__('No', 'wp-jobsearch');
         }
+        if (isset($_POST['from_f'])) {
+            $return_html = esc_html__('Make Featured Job', 'wp-jobsearch');
+            if ($option == 'featured') {
+                $return_html = esc_html__('Featured', 'wp-jobsearch');
+            }
+        }
         update_post_meta($job_id, 'jobsearch_field_job_featured', $featured_val);
+        if ($job_expiry_date > 0) {
+            $job_feature_till = date('d-m-Y H:i:s', $job_expiry_date);
+            update_post_meta($job_id, 'jobsearch_field_job_feature_till', $job_feature_till);
+            if (isset($_POST['from_f'])) {
+                if ($option == 'featured') {
+                    $job_feature_until = date_i18n(get_option('date_format'), strtotime($job_feature_till));
+                    $return_html = sprintf(esc_html__('Featured Till: %s', 'wp-jobsearch'), $job_feature_until);
+                }
+            }
+        }
         echo json_encode(array('html' => $return_html));
 
         wp_die();
@@ -2285,6 +2464,17 @@ function jobsearch_get_employer_user_id($employer_id = 0)
     return false;
 }
 
+//
+function getCountryNamebyCode($code, $array)
+{
+    foreach ($array as $key => $val) {
+        if (isset($code[0]) && $val['sortname'] === $code[0]) {
+            return $val['name'];
+        }
+    }
+    return null;
+}
+
 // Check if user is employer
 function jobsearch_user_is_employer($user_id = 0)
 {
@@ -2366,6 +2556,7 @@ if (!function_exists('jobsearch_get_template_part')) {
         if (!$template) {
             $template = locate_template(array("{$slug}.php", jobsearch_template_path() . "{$ext_template}/{$slug}.php"));
         }
+
         if ($template) {
             load_template($template, false);
         }
@@ -2481,7 +2672,9 @@ if (!function_exists('jobsearch_time_elapsed_string')) {
                 $b_time = explode(' ', $b_time);
                 $b_time = implode('<br>', $b_time);
             }
-            return sprintf(esc_html__('%1$s %2$s ago', 'wp-jobsearch'), $before, $b_time) . $after;
+            $date_string = $before . " " . $b_time . " " . esc_html__('ago', 'wp-jobsearch') . $after;
+            return $date_string;
+            //return sprintf(esc_html__('%1$s %2$s ago', 'wp-jobsearch'), $before, $b_time) ;
         } else {
             return '';
         }
@@ -2505,7 +2698,7 @@ if (!function_exists('jobsearch_get_query_whereclase_by_array')) {
 
                 if (isset($val['key']) || isset($val['value'])) {
                     $string .= get_meta_condition($val);
-                } else {  // if inner array 
+                } else {  // if inner array
                     if (isset($val) && is_array($val)) {
                         foreach ($val as $inner_var => $inner_val) {
                             $inner_relation = isset($inner_val['relation']) ? $inner_val['relation'] : 'and';
@@ -2661,10 +2854,8 @@ if (!function_exists('jobsearch_visibility_query_args')) {
 
     function jobsearch_visibility_query_args($element_filter_arr = array())
     {
-
         return $element_filter_arr;
     }
-
 }
 
 if (!function_exists('jobsearch_remove_qrystr_extra_var')) {
@@ -2761,16 +2952,130 @@ if (!function_exists('getMultipleParameters')) {
                 $query[$k][] = $v;
             }
         }
-
         return $query;
+    }
+}
+
+if (!function_exists('jobsearch_get_taxanomy_location_item_count')) {
+
+    function jobsearch_get_taxanomy_location_item_count($left_filter_count_switch, $location_slug, $tax_type, $count_posts_in, $count_post_type = 'job')
+    {
+        global $sitepress;
+        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+            $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
+        }
+
+        if ($left_filter_count_switch == 'yes') {
+            if (!empty($count_posts_in) && is_array($count_posts_in)) {
+                $location_condition_arr = array(
+                    'relation' => 'OR',
+                    array(
+                        'key' => 'jobsearch_field_location_location1',
+                        'value' => $location_slug,
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key' => 'jobsearch_field_location_location2',
+                        'value' => $location_slug,
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key' => 'jobsearch_field_location_location3',
+                        'value' => $location_slug,
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key' => 'jobsearch_field_location_location4',
+                        'value' => $location_slug,
+                        'compare' => '=',
+                    ),
+                    array(
+                        'key' => 'jobsearch_field_location_address',
+                        'value' => $location_slug,
+                        'compare' => 'Like',
+                    ),
+                );
+                $args_count = array(
+                    'posts_per_page' => "1",
+                    'post_type' => $count_post_type,
+                    'post_status' => 'publish',
+                    'suppress_filters' => false,
+                    'fields' => 'ids', // only load ids
+                    'meta_query' => $location_condition_arr,
+                    'post__in' => $count_posts_in
+                );
+
+                $job_qry = new WP_Query($args_count);
+                $wpml_job_totnum = $job_totnum = $job_qry->found_posts;
+                if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') && $wpml_job_totnum == 0 && isset($trans_able_options['job']) && $trans_able_options['job'] == '2') {
+                    $sitepress_def_lang = $sitepress->get_default_language();
+                    $sitepress_curr_lang = $sitepress->get_current_language();
+                    $sitepress->switch_lang($sitepress_def_lang, true);
+
+                    $job_qry = new WP_Query($args_count);
+
+                    $job_totnum = $job_qry->found_posts;
+
+                    //
+                    $sitepress->switch_lang($sitepress_curr_lang, true);
+                }
+                return $job_totnum;
+                wp_reset_postdata();
+            }
+        }
     }
 
 }
 
-
 if (!function_exists('jobsearch_get_taxanomy_type_item_count')) {
 
-    function jobsearch_get_taxanomy_type_item_count($left_filter_count_switch, $field_meta_key, $tax_type, $args_filters)
+    function jobsearch_get_taxanomy_type_item_count($left_filter_count_switch, $field_meta_key, $tax_type, $count_posts_in, $count_post_type = 'job')
+    {
+        global $sitepress;
+        $total_num = 0;
+        if ($left_filter_count_switch == 'yes') {
+            if (!empty($count_posts_in) && is_array($count_posts_in)) {
+                if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+                    $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
+                }
+
+                $args_count = array(
+                    'posts_per_page' => "1",
+                    'post_type' => $count_post_type,
+                    'post_status' => 'publish',
+                    'suppress_filters' => false,
+                    'fields' => 'ids', // only load ids
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => $tax_type,
+                            'field' => 'slug',
+                            'terms' => $field_meta_key
+                        ),
+                    ),
+                    'post__in' => $count_posts_in
+                );
+
+                $jobs_loop_obj = new WP_Query($args_count);
+                $wpml_job_totnum = $total_num = $jobs_loop_obj->found_posts;
+                if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') && $wpml_job_totnum == 0 && isset($trans_able_options[$count_post_type]) && $trans_able_options[$count_post_type] == '2') {
+                    $sitepress_def_lang = $sitepress->get_default_language();
+                    $sitepress_curr_lang = $sitepress->get_current_language();
+                    $sitepress->switch_lang($sitepress_def_lang, true);
+
+                    $job_qry = new WP_Query($args_count);
+
+                    $total_num = $job_qry->found_posts;
+
+                    //
+                    $sitepress->switch_lang($sitepress_curr_lang, true);
+                }
+                wp_reset_postdata();
+            }
+        }
+        return $total_num;
+    }
+
+    function jobsearch_get_taxanomy_type_item_count_depricate($left_filter_count_switch, $field_meta_key, $tax_type, $args_filters)
     {
 
         global $sitepress;
@@ -2803,9 +3108,6 @@ if (!function_exists('jobsearch_get_taxanomy_type_item_count')) {
 
             if (isset($args_filters['post_type']) && $args_filters['post_type'] == 'job') {
                 $args_filters = apply_filters('jobsearch_jobs_listing_filter_args', $args_filters);
-                //echo '<pre>';
-                //var_dump($args_filters);
-                //echo '</pre>';
             }
 
             $job_qry = new WP_Query($args_filters);
@@ -2814,85 +3116,6 @@ if (!function_exists('jobsearch_get_taxanomy_type_item_count')) {
                 $sitepress_def_lang = $sitepress->get_default_language();
                 $sitepress_curr_lang = $sitepress->get_current_language();
                 $sitepress->switch_lang($sitepress_def_lang, true);
-
-                $job_qry = new WP_Query($args_filters);
-
-                $job_totnum = $job_qry->found_posts;
-
-                //
-                $sitepress->switch_lang($sitepress_curr_lang, true);
-            }
-            return $job_totnum;
-            wp_reset_postdata();
-        }
-    }
-
-}
-
-if (!function_exists('jobsearch_get_taxanomy_location_item_count')) {
-
-    function jobsearch_get_taxanomy_location_item_count($left_filter_count_switch, $location_slug, $tax_type, $args_filters)
-    {
-
-        global $sitepress;
-        if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
-            $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
-        }
-
-        if ($left_filter_count_switch == 'yes') {
-
-            $location_condition_arr = array(
-                'relation' => 'OR',
-                array(
-                    'key' => 'jobsearch_field_location_location1',
-                    'value' => $location_slug,
-                    'compare' => '=',
-                ),
-                array(
-                    'key' => 'jobsearch_field_location_location2',
-                    'value' => $location_slug,
-                    'compare' => '=',
-                ),
-                array(
-                    'key' => 'jobsearch_field_location_location3',
-                    'value' => $location_slug,
-                    'compare' => '=',
-                ),
-                array(
-                    'key' => 'jobsearch_field_location_location4',
-                    'value' => $location_slug,
-                    'compare' => '=',
-                ),
-                array(
-                    'key' => 'jobsearch_field_location_address',
-                    'value' => $location_slug,
-                    'compare' => 'Like',
-                ),
-            );
-            $args_filters['meta_query'][] = $location_condition_arr;
-
-            if (isset($args_filters['post_type']) && $args_filters['post_type'] == 'job') {
-                $args_filters = apply_filters('jobsearch_jobs_listing_filter_args', $args_filters);
-            }
-            //echo '<pre>';
-            //var_dump($args_filters);
-            //echo '</pre>';
-
-            $job_qry = new WP_Query($args_filters);
-            $wpml_job_totnum = $job_totnum = $job_qry->found_posts;
-            if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher') && $wpml_job_totnum == 0 && isset($trans_able_options['job']) && $trans_able_options['job'] == '2') {
-                $sitepress_def_lang = $sitepress->get_default_language();
-                $sitepress_curr_lang = $sitepress->get_current_language();
-                $sitepress->switch_lang($sitepress_def_lang, true);
-
-                $loc_taxnomy = get_term_by('slug', $location_slug, 'job-location');
-                if (is_object($loc_taxnomy) && isset($loc_taxnomy->slug)) {
-                    $args_filters['meta_query'][1][0]['value'] = $loc_taxnomy->slug;
-                    $args_filters['meta_query'][1][1]['value'] = $loc_taxnomy->slug;
-                    $args_filters['meta_query'][1][2]['value'] = $loc_taxnomy->slug;
-                    $args_filters['meta_query'][1][3]['value'] = $loc_taxnomy->slug;
-                    $args_filters['meta_query'][1][4]['value'] = $loc_taxnomy->slug;
-                }
 
                 $job_qry = new WP_Query($args_filters);
 
@@ -2910,9 +3133,48 @@ if (!function_exists('jobsearch_get_taxanomy_location_item_count')) {
 
 if (!function_exists('jobsearch_get_item_count')) {
 
-    function jobsearch_get_item_count($left_filter_count_switch, $args, $count_arr, $job_short_counter, $field_meta_key, $post_type = 'job')
+    function jobsearch_get_item_count($left_filter_count_switch, $count_posts_in, $count_arr, $job_short_counter, $field_meta_key, $post_type = 'job')
+    {
+        global $sitepress, $wpdb;
+
+        $total_num = 0;
+        if ($left_filter_count_switch == 'yes') {
+            if (!empty($count_posts_in) && is_array($count_posts_in)) {
+                if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+                    $trans_able_options = $sitepress->get_setting('custom_posts_sync_option', array());
+                }
+
+                if (isset($count_arr[0]['key']) && $count_arr[0]['key'] != '' && !isset($count_arr[1]['key'])) {
+                    $count_arr_o = $count_arr[0];
+                    $get_meta_cond = get_meta_condition($count_arr_o);
+                    $meta_post_ids = $wpdb->get_col("SELECT post_id FROM $wpdb->postmeta WHERE {$get_meta_cond}");
+                    if (!empty($meta_post_ids)) {
+                        $to_countmeta_arr = array_intersect($count_posts_in, $meta_post_ids);
+                        $total_num = !empty($to_countmeta_arr) ? count($to_countmeta_arr) : 0;
+                    }
+                } else if (isset($count_arr[0]['type']) && $count_arr[0]['type'] == 'numeric' && isset($count_arr[1]['key'])) {
+                    $count_arr_o = $count_arr[0];
+                    $count_arr_1 = $count_arr[1];
+                    $the_meta_key = $count_arr_o['key'];
+                    $from_meta_val = $count_arr_o['value'];
+                    $to_meta_val = $count_arr_1['value'];
+                    $meta_post_ids = $wpdb->get_col("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='{$the_meta_key}' AND meta_value BETWEEN {$from_meta_val} AND {$to_meta_val}");
+                    if (!empty($meta_post_ids)) {
+                        $to_countmeta_arr = array_intersect($count_posts_in, $meta_post_ids);
+                        $total_num = !empty($to_countmeta_arr) ? count($to_countmeta_arr) : 0;
+                    }
+                } else {
+                    $total_num = !empty($count_posts_in) ? count($count_posts_in) : 0;
+                }
+            }
+        }
+        return $total_num;
+    }
+
+    function jobsearch_get_item_count_depricate($left_filter_count_switch, $args, $count_arr, $job_short_counter, $field_meta_key, $post_type = 'job')
     {
         if ($left_filter_count_switch == 'yes') {
+
             global $jobsearch_shortcode_jobs_frontend, $sitepress, $jobsearch_shortcode_candidates_frontend, $jobsearch_shortcode_employers_frontend;
 
             if (get_query_var('location') != '' && !isset($_REQUEST['location'])) {
@@ -3037,14 +3299,12 @@ if (!function_exists('jobsearch_get_cached_obj')) {
                 }
             }
         }
-
-
         return $job_loop_obj;
     }
-
 }
 
-function jobsearch_get_unique_folder_byurl($url) {
+function jobsearch_get_unique_folder_byurl($url)
+{
     if ($url != '') {
         $get_subpath = substr($url, strpos($url, 'jobsearch-candidates/'), strlen($url));
         $exp_arr = explode('/', $get_subpath);
@@ -3053,21 +3313,24 @@ function jobsearch_get_unique_folder_byurl($url) {
     }
 }
 
-function jobsearch_remove_cand_photo_foldr($post_id, $type = 'profile_img') {
-    
+function jobsearch_remove_cand_photo_foldr($post_id, $type = 'profile_img')
+{
+
     if ($type == 'cover_img') {
         $user_avatar_dburl = get_post_meta($post_id, 'jobsearch_user_cover_imge', true);
     } else {
         $user_avatar_dburl = get_post_meta($post_id, 'jobsearch_user_avatar_url', true);
     }
+
     if (isset($user_avatar_dburl['file_path']) && $user_avatar_dburl['file_path'] != '') {
-        
+
         $root_folder = $user_avatar_dburl['file_path'];
+
         if (is_dir($root_folder)) {
-            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
             WP_Filesystem();
             global $wp_filesystem;
-            $wp_filesystem->rmdir($root_folder, true);
+            //$wp_filesystem->rmdir($root_folder, true);
         }
         if ($type == 'profile_img') {
             update_post_meta($post_id, 'jobsearch_user_avatar_url', '');
@@ -3077,11 +3340,12 @@ function jobsearch_remove_cand_photo_foldr($post_id, $type = 'profile_img') {
     }
 }
 
-function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $img_type = 'profile_img') {
-
+function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $img_type = 'profile_img')
+{
     global $jobsearch_uploding_candimg, $jobsearch_download_locations;
     $jobsearch_download_locations = false;
     $jobsearch_uploding_candimg = true;
+    //
     if (isset($_FILES[$Fieldname]) && $_FILES[$Fieldname] != '') {
 
         add_filter('jobsearch_candimg_upload_dir', 'jobsearch_upload_candimg_path', 10, 1);
@@ -3113,14 +3377,14 @@ function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $
 
             $file_url = isset($status_upload['url']) ? $status_upload['url'] : '';
             $upload_file_path = $wp_upload_dir['path'] . '/' . basename($file_url);
-            
+
             $folder_path = $wp_upload_dir['path'];
-            
+
             $image = wp_get_image_editor($upload_file_path);
-            
+
             if (!is_wp_error($image)) {
                 $file_name = basename($file_url);
-                
+
                 if ($img_type == 'cover_img') {
                     $file_urls = array(
                         'path' => $folder_path,
@@ -3133,7 +3397,7 @@ function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $
 
                     $crop_file_name = $wp_upload_dir['path'] . '/user-img-150.' . $file_ext;
                     $image->save($crop_file_name);
-                    
+
                     //
                     $image_350 = wp_get_image_editor($upload_file_path);
                     $image_350->resize(350, 450, true);
@@ -3151,7 +3415,7 @@ function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $
                 }
 
                 do_action('jobsearch_user_upload_avatar_after', $post_id, $file_urls, $wp_upload_dir);
-                
+
                 return $file_urls;
             }
         }
@@ -3164,13 +3428,10 @@ function jobsearch_insert_candupload_attach($Fieldname = 'file', $post_id = 0, $
 
 function jobsearch_insert_upload_attach($Fieldname = 'file', $post_id = 0, $user_dir_filter = true)
 {
-
     if (isset($_FILES[$Fieldname]) && $_FILES[$Fieldname] != '') {
-
         if ($user_dir_filter === true) {
             add_filter('upload_dir', 'jobsearch_user_upload_files_path');
         }
-
         // Get the path to the upload directory.
         $wp_upload_dir = wp_upload_dir();
 
@@ -3242,11 +3503,19 @@ function jobsearch_insert_upload_attach($Fieldname = 'file', $post_id = 0, $user
     return false;
 }
 
-function jobsearch_upload_attach_with_external_url($image_url, $post_ID = 0) {
-    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+function jobsearch_upload_attach_with_external_url($image_url, $post_ID = 0)
+{
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
     WP_Filesystem();
     global $wp_filesystem;
     $image_data = $wp_filesystem->get_contents($image_url);
+    if (!$image_data && function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $image_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $image_data = curl_exec($ch);
+        curl_close($ch);
+    }
 
     if ($image_data) {
         global $jobsearch_uploding_candimg, $jobsearch_download_locations;
@@ -3255,18 +3524,18 @@ function jobsearch_upload_attach_with_external_url($image_url, $post_ID = 0) {
         $filename = basename($image_url);
         $wp_filetype = wp_check_filetype($filename, null);
         $file_ext = isset($wp_filetype['ext']) ? $wp_filetype['ext'] : '';
-        
+
         add_filter('jobsearch_candimg_upload_dir', 'jobsearch_upload_candimg_path', 10, 1);
-        
+
         $wp_upload_dir = wp_upload_dir();
-        
+
         $uplod_direc_path = $wp_upload_dir['path'];
         $uplod_direc_url = $wp_upload_dir['url'];
         $img_new_path = $uplod_direc_path . '/' . $filename;
         $wp_filesystem->put_contents($img_new_path, $image_data);
         $new_img_url = $uplod_direc_url . '/' . $filename;
         $file_uniqid = jobsearch_get_unique_folder_byurl($new_img_url);
-        
+
         // image crop
         $crop_file_url = '';
         $image_editor = wp_get_image_editor($img_new_path);
@@ -3300,7 +3569,7 @@ function jobsearch_upload_attach_with_external_url($image_url, $post_ID = 0) {
             'file_id' => $file_uniqid,
         );
         update_post_meta($post_ID, 'jobsearch_user_avatar_url', $arg_arr);
-        
+
         remove_filter('jobsearch_candimg_upload_dir', 'jobsearch_upload_candimg_path', 10, 1);
     }
 }
@@ -3659,7 +3928,7 @@ function jobsearch_cv_attachment_upload_path($Fieldname = 'file')
                     $allowed_file_types['xlsx'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                 }
             }
-            
+
             $user_given_filename = '';
             if (isset($_POST['user_fullname']) && $_POST['user_fullname'] != '') {
                 $user_firstname = $_POST['user_fullname'];
@@ -4001,36 +4270,57 @@ function jobsearch_get_duration_unit_str($dur = '')
     return $str;
 }
 
-function jobsearch_google_map_with_directions($post_id = '', $map_height = '407')
+function jobsearch_google_map_with_directions($post_id = '', $map_height = '407', $ajax_flag = false, $cus_data = array())
 {
     global $jobsearch_plugin_options;
     $cnt_counter = $rand_num = rand(1000000, 99999999);
-    $map_address = get_post_meta($post_id, 'jobsearch_field_location_address', true);
-    $map_latitude = get_post_meta($post_id, 'jobsearch_field_location_lat', true);
-    $map_longitude = get_post_meta($post_id, 'jobsearch_field_location_lng', true);
-    $map_zoom = get_post_meta($post_id, 'jobsearch_field_location_zoom', true);
+    if (isset($cus_data['address']) && $cus_data['address'] != '') {
+        $map_address = $cus_data['address'];
+        $map_latitude = isset($cus_data['lat']) ? $cus_data['lat'] : '';
+        $map_longitude = isset($cus_data['lng']) ? $cus_data['lng'] : '';
+        $map_zoom = isset($cus_data['zoom']) ? $cus_data['zoom'] : '';
+    } else {
+        $map_address = get_post_meta($post_id, 'jobsearch_field_location_address', true);
+        $map_latitude = get_post_meta($post_id, 'jobsearch_field_location_lat', true);
+        $map_longitude = get_post_meta($post_id, 'jobsearch_field_location_lng', true);
+        $map_zoom = get_post_meta($post_id, 'jobsearch_field_location_zoom', true);
+    }
+
+    $map_address = jobsearch_esc_html($map_address);
+    $map_latitude = jobsearch_esc_html($map_latitude);
+    $map_longitude = jobsearch_esc_html($map_longitude);
+    $map_zoom = jobsearch_esc_html($map_zoom);
 
     $location_map_type = isset($jobsearch_plugin_options['location_map_type']) ? $jobsearch_plugin_options['location_map_type'] : '';
-    
+
     $_post_type = get_post_type($post_id);
     if ($_post_type == 'employer') {
         $marker_key_name = 'elistin_map_marker_img';
+    } else if ($_post_type == 'candidate') {
+        $marker_key_name = 'clistin_map_marker_img';
     } else {
         $marker_key_name = 'listin_map_marker_img';
     }
-    
+
     $map_marker_icon = get_post_meta($post_id, 'jobsearch_field_marker_image', true);
     if ($map_marker_icon == '') {
         $map_marker_icon = isset($jobsearch_plugin_options[$marker_key_name]['url']) ? $jobsearch_plugin_options[$marker_key_name]['url'] : '';
     }
     if ($map_marker_icon == '') {
-        $map_marker_icon = jobsearch_plugin_get_url('images/job_map_marker.png');
+        if ($_post_type == 'candidate') {
+            $map_marker_icon = jobsearch_plugin_get_url('images/candidate_map_marker.png');
+        } else {
+            $map_marker_icon = jobsearch_plugin_get_url('images/job_map_marker.png');
+        }
     }
-    
+
     $map_style = isset($jobsearch_plugin_options['jobsearch-location-map-style']) ? $jobsearch_plugin_options['jobsearch-location-map-style'] : '';
+
+
     if ($map_latitude != '' && $map_longitude != '' && $map_zoom > 0) {
 
         if ($location_map_type == 'mapbox') {
+
             wp_enqueue_script('jobsearch-mapbox');
             wp_enqueue_script('jobsearch-mapbox-geocoder');
             wp_enqueue_script('mapbox-geocoder-polyfill');
@@ -4042,8 +4332,7 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
         ?>
         <div class="jobsearch-map">
             <?php
-            if ($location_map_type == 'mapbox') {
-                ?>
+            if ($location_map_type == 'mapbox') { ?>
                 <div class="directions-main-con mapbox-directions">
                     <div class="directions-input-con">
                         <div id="go-to-<?php echo absint($cnt_counter) ?>" class="directon-goto-inpbox"></div>
@@ -4053,20 +4342,25 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                                 <span><i class="fa fa-search"></i></span>
                             </li>
                             <li>
-                                <a id="get-direction-<?php echo absint($cnt_counter) ?>" href="javascript:void(0);"><i class="fa fa-mail-forward"></i></a>
+                                <a id="get-direction-<?php echo absint($cnt_counter) ?>" href="javascript:void(0);"><i
+                                            class="fa fa-mail-forward"></i></a>
                             </li>
                         </ul>
                     </div>
                     <div class="directions-modes-con" style="display: none;">
-                        <a id="dir-close-<?php echo absint($cnt_counter) ?>" class="close-direc-panel" href="javascript:void(0);"><i class="fa fa-times"></i></a>
+                        <a id="dir-close-<?php echo absint($cnt_counter) ?>" class="close-direc-panel"
+                           href="javascript:void(0);"><i class="fa fa-times"></i></a>
                         <ul>
                             <li><input id="driving-mode-<?php echo absint($cnt_counter) ?>" type="radio"
-                                       class="mode-radio-select" name="mode_radio_select" value="mapbox/driving" checked="checked"><label
+                                       class="mode-radio-select" name="mode_radio_select" value="mapbox/driving"
+                                       checked="checked"><label
                                         for="driving-mode-<?php echo absint($cnt_counter) ?>"><i
                                             class="fa fa-automobile"></i></label></li>
                             <li><input id="drivetraffic-mode-<?php echo absint($cnt_counter) ?>" type="radio"
-                                       class="mode-radio-select" name="mode_radio_select" value="mapbox/driving-traffic"><label
-                                        for="drivetraffic-mode-<?php echo absint($cnt_counter) ?>"><i class="fa fa-bus"></i></label>
+                                       class="mode-radio-select" name="mode_radio_select"
+                                       value="mapbox/driving-traffic"><label
+                                        for="drivetraffic-mode-<?php echo absint($cnt_counter) ?>"><i
+                                            class="fa fa-bus"></i></label>
                             </li>
                             <li><input id="walking-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="mapbox/walking"><label
@@ -4074,7 +4368,8 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                                             class="fa fa-blind"></i></label></li>
                             <li><input id="bycycle-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="mapbox/cycling"><label
-                                        for="bycycle-mode-<?php echo absint($cnt_counter) ?>"><i class="fa fa-bicycle"></i></label>
+                                        for="bycycle-mode-<?php echo absint($cnt_counter) ?>"><i
+                                            class="fa fa-bicycle"></i></label>
                             </li>
                         </ul>
                         <input id="direction-type-<?php echo absint($cnt_counter) ?>" type="hidden" value="DRIVING">
@@ -4083,7 +4378,8 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                         </div>
                     </div>
                 </div>
-                <div id="map-<?php echo absint($cnt_counter) ?>" style="width:100%; height:<?php echo absint($map_height) ?>px;"></div>
+                <div id="map-<?php echo absint($cnt_counter) ?>"
+                     style="width:100%; height:<?php echo absint($map_height) ?>px;"></div>
                 <div id="direc-in-map<?php echo($rand_num) ?>"></div>
                 <?php
             } else {
@@ -4096,20 +4392,24 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                                 <span><i class="fa fa-search"></i></span>
                             </li>
                             <li>
-                                <a id="get-direction-<?php echo absint($cnt_counter) ?>" href="javascript:void(0);"><i class="fa fa-mail-forward"></i></a>
+                                <a id="get-direction-<?php echo absint($cnt_counter) ?>" href="javascript:void(0);"><i
+                                            class="fa fa-mail-forward"></i></a>
                             </li>
                         </ul>
                     </div>
                     <div class="directions-modes-con" style="display: none;">
-                        <a id="dir-close-<?php echo absint($cnt_counter) ?>" class="close-direc-panel" href="javascript:void(0);"><i class="fa fa-times"></i></a>
+                        <a id="dir-close-<?php echo absint($cnt_counter) ?>" class="close-direc-panel"
+                           href="javascript:void(0);"><i class="fa fa-times"></i></a>
                         <ul>
                             <li><input id="driving-mode-<?php echo absint($cnt_counter) ?>" type="radio"
-                                       class="mode-radio-select" name="mode_radio_select" value="DRIVING" checked="checked"><label
+                                       class="mode-radio-select" name="mode_radio_select" value="DRIVING"
+                                       checked="checked"><label
                                         for="driving-mode-<?php echo absint($cnt_counter) ?>"><i
                                             class="fa fa-automobile"></i></label></li>
                             <li><input id="bus-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="TRANSIT"><label
-                                        for="bus-mode-<?php echo absint($cnt_counter) ?>"><i class="fa fa-bus"></i></label>
+                                        for="bus-mode-<?php echo absint($cnt_counter) ?>"><i
+                                            class="fa fa-bus"></i></label>
                             </li>
                             <li><input id="walking-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="WALKING"><label
@@ -4117,7 +4417,8 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                                             class="fa fa-blind"></i></label></li>
                             <li><input id="bycycle-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="BICYCLING"><label
-                                        for="bycycle-mode-<?php echo absint($cnt_counter) ?>"><i class="fa fa-bicycle"></i></label>
+                                        for="bycycle-mode-<?php echo absint($cnt_counter) ?>"><i
+                                            class="fa fa-bicycle"></i></label>
                             </li>
                             <li><input id="plane-mode-<?php echo absint($cnt_counter) ?>" type="radio"
                                        class="mode-radio-select" name="mode_radio_select" value="TRANSIT"><label
@@ -4132,7 +4433,8 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
                         </div>
                     </div>
                 </div>
-                <div id="map-<?php echo absint($cnt_counter) ?>" style="height:<?php echo absint($map_height) ?>px;"></div>
+                <div id="map-<?php echo absint($cnt_counter) ?>"
+                     style="height:<?php echo absint($map_height) ?>px;"></div>
                 <div id="panel-<?php echo absint($cnt_counter) ?>" class="map-directions-container"></div>
                 <div id="panel-no-<?php echo absint($cnt_counter) ?>"></div>
                 <?php
@@ -4142,205 +4444,209 @@ function jobsearch_google_map_with_directions($post_id = '', $map_height = '407'
         <script>
             <?php
             if ($location_map_type == 'mapbox') {
-                $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
-                $mapbox_style_url = isset($jobsearch_plugin_options['mapbox_style_url']) ? $jobsearch_plugin_options['mapbox_style_url'] : '';
-                if ($mapbox_access_token != '' && $mapbox_style_url != '') {
-                    ?>
-                    jQuery(document).ready(function () {
-                        document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusin', function () {
-                            jQuery('.directions-modes-con').slideDown('fast');
-                        });
-                        jQuery('#dir-close-<?php echo absint($cnt_counter) ?>').on('click', function () {
-                            jQuery('.directions-modes-con').slideUp('fast');
-                        });
-
-                        mapboxgl.accessToken = '<?php echo ($mapbox_access_token) ?>';
-                        var map = new mapboxgl.Map({
-                            container: 'map-<?php echo absint($rand_num); ?>',
-                            style: '<?php echo ($mapbox_style_url) ?>',
-                            center: [<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>],
-                            scrollZoom: false,
-                            zoom: <?php echo esc_js($map_zoom) ?>
-                        });
-                        map.addControl(new mapboxgl.NavigationControl({
-                            showCompass: false    
-                        }), 'bottom-right');
-                        var el = new Image();
-                        el.src = '<?php echo ($map_marker_icon) ?>';
-                        el.classList.add('mapMarker');
-                        el.dataset.type = 'point';
-                        var marker = new mapboxgl.Marker({
-                            element: el,
-                            draggable: false
-                        }).setLngLat([<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>]).addTo(map);
-                        var mapboxDir = new MapboxDirections({
-                            accessToken: mapboxgl.accessToken,
-                            controls: {
-                                inputs: false,
-                                //instructions: false,
-                            }
-                        });
-                        document.getElementById('direc-in-map<?php echo($rand_num) ?>').appendChild(mapboxDir.onAdd(map));
-                        var geocodParams = {
-                            accessToken: mapboxgl.accessToken,
-                            marker: false,
-                            flyTo: false,
-                            mapboxgl: mapboxgl
-                        };
-                        var selected_contries = jobsearch_plugin_vars.sel_countries_json;
-                        if (selected_contries != '') {
-                            var selected_contries_tojs = jQuery.parseJSON(selected_contries);
-                            var sel_countries_str = selected_contries_tojs.join();
-                            geocodParams['countries'] = sel_countries_str;
-                        }
-                        var geocoder<?php echo($rand_num) ?> = new MapboxGeocoder(geocodParams);
-                        document.getElementById('go-to-<?php echo($rand_num) ?>').appendChild(geocoder<?php echo($rand_num) ?>.onAdd(map));
-                        geocoder<?php echo($rand_num) ?>.on('result', function(obj) {
-                            var place_name = obj.result.place_name;
-                            document.getElementById("go-to-hidden-<?php echo absint($rand_num); ?>").value = place_name;
-                        });
-                        jQuery('#get-direction-<?php echo absint($cnt_counter) ?>').on('click', function () {
-                            var origPlace = jQuery('#go-desti-<?php echo absint($cnt_counter) ?>').val();
-                            var destiPlace = jQuery('#go-to-hidden-<?php echo absint($cnt_counter) ?>').val();
-                            if (origPlace != '') {
-                                mapboxDir.setOrigin(origPlace);
-                            } else {
-                                mapboxDir.setOrigin([<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>]);
-                            }
-                            mapboxDir.setDestination(destiPlace);
-                            mapboxDir.getWaypoints();
-                        });
-                    });
-                    <?php
-                }
-            } else {
-                ?>
-                var det_map;
-
-                jQuery(document).on('click', 'input[type="radio"][class="mode-radio-select"]', function () {
-                    var sel_mode_val = jQuery('input[type="radio"][class="mode-radio-select"]:checked').val();
-                    jQuery('#direction-type-<?php echo absint($cnt_counter) ?>').val(sel_mode_val);
+            $mapbox_access_token = isset($jobsearch_plugin_options['mapbox_access_token']) ? $jobsearch_plugin_options['mapbox_access_token'] : '';
+            $mapbox_style_url = isset($jobsearch_plugin_options['mapbox_style_url']) ? $jobsearch_plugin_options['mapbox_style_url'] : '';
+            if ($mapbox_access_token != '' && $mapbox_style_url != '') {
+            if($ajax_flag != true){
+            ?>
+            jQuery(document).ready(function () {
+                <?php } ?>
+                document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusin', function () {
+                    jQuery('.directions-modes-con').slideDown('fast');
+                });
+                jQuery('#dir-close-<?php echo absint($cnt_counter) ?>').on('click', function () {
+                    jQuery('.directions-modes-con').slideUp('fast');
                 });
 
-                jQuery(document).ready(function () {
-                    document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusin', function () {
-                        jQuery('.directions-modes-con').slideDown('fast');
-                    });
-                    document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusout', function () {
-                        //jQuery('.directions-modes-con').slideUp('fast');
-                    });
-                    jQuery('#dir-close-<?php echo absint($cnt_counter) ?>').on('click', function () {
-                        jQuery('.directions-modes-con').slideUp('fast');
-                    });
-
-                    function initMap() {
-                        var directionsService = new google.maps.DirectionsService();
-                        var directionsDisplay = new google.maps.DirectionsRenderer();
-
-                        var myLatLng = {
-                            lat: <?php echo esc_js($map_latitude) ?>,
-                            lng: <?php echo esc_js($map_longitude) ?>
-                        };
-                        det_map = new google.maps.Map(document.getElementById('map-<?php echo absint($cnt_counter) ?>'), {
-                            zoom: <?php echo esc_js($map_zoom) ?>,
-                            center: myLatLng,
-                            streetViewControl: false,
-                            scrollwheel: false,
-                            mapTypeControl: false,
-                        });
-
-                        <?php
-                        if ($map_style != '') {
-                        $map_style = stripslashes($map_style);
-                        $map_style = preg_replace('/\s+/', ' ', trim($map_style));
-                        ?>
-                        var styles = '<?php echo($map_style) ?>';
-                        if (styles != '') {
-                            styles = jQuery.parseJSON(styles);
-                            var styledMap = new google.maps.StyledMapType(
-                                styles,
-                                {name: 'Styled Map'}
-                            );
-                            det_map.mapTypes.set('map_style', styledMap);
-                            det_map.setMapTypeId('map_style');
-                        }
-                        <?php
-                        }
-                        ?>
-
-                        var marker = new google.maps.Marker({
-                            position: myLatLng,
-                            map: det_map,
-                            title: '',
-                            icon: '<?php echo ($map_marker_icon) ?>',
-                        });
-
-                        directionsDisplay.setMap(det_map);
-                        directionsDisplay.setPanel(document.getElementById('panel-<?php echo absint($cnt_counter) ?>'));
-
-                        google.maps.event.addDomListener(document.getElementById('get-direction-<?php echo absint($cnt_counter) ?>'), 'click', function () {
-
-                            var desti = jQuery('#go-desti-<?php echo absint($cnt_counter) ?>').val();
-                            var orig = jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val();
-                            var selectedMode = jQuery('#direction-type-<?php echo absint($cnt_counter) ?>').val();
-
-                            //if (jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val() != '') {
-                            //    orig = jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val();
-                            //}
-
-                            if (desti != '' && orig != '') {
-
-                                var request = {
-                                    origin: orig,
-                                    destination: desti,
-                                    travelMode: google.maps.TravelMode[selectedMode]
-                                };
-
-                                directionsService.route(request, function (response, status) {
-                                    if (status == google.maps.DirectionsStatus.OK) {
-                                        directionsDisplay.setDirections(response);
-                                        jQuery('#panel-<?php echo absint($cnt_counter) ?>').show();
-                                        //
-                                        jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').html('');
-                                        jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').hide();
-                                    } else {
-                                        jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').html('<?php esc_html_e("No direction found.", "wp-jobsearch") ?>');
-                                        jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').show();
-                                    }
-                                });
-                                jQuery('.directions-modes-con').slideUp('fast');
-                            }
-                        });
-
-                        var ac_goto_input = document.getElementById('go-to-<?php echo absint($cnt_counter) ?>');
-                        var autocomplete_goto = new google.maps.places.Autocomplete(ac_goto_input);
-
-                        var ac_orig_input = document.getElementById('go-orig-<?php echo absint($cnt_counter) ?>');
-                        var autocomplete_orig = new google.maps.places.Autocomplete(ac_orig_input);
-
-                        var ac_desti_input = document.getElementById('go-desti-<?php echo absint($cnt_counter) ?>');
-                        var autocomplete_desti = new google.maps.places.Autocomplete(ac_desti_input);
-
-                        //
-                        google.maps.event.addListener(autocomplete_goto, 'place_changed', function () {
-                            var gplace_val = jQuery('#go-to-<?php echo absint($cnt_counter) ?>').val();
-                            jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val(gplace_val);
-                            jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val(gplace_val);
-                            return false;
-                        });
-                        //
-                        google.maps.event.addListener(autocomplete_orig, 'place_changed', function () {
-                            var gplace_val = jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val();
-                            jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val(gplace_val);
-                            jQuery('#go-to-<?php echo absint($cnt_counter) ?>').val(gplace_val);
-                            return false;
-                        });
-
+                mapboxgl.accessToken = '<?php echo($mapbox_access_token) ?>';
+                var map = new mapboxgl.Map({
+                    container: 'map-<?php echo absint($rand_num); ?>',
+                    style: '<?php echo($mapbox_style_url) ?>',
+                    center: [<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>],
+                    scrollZoom: false,
+                    zoom: <?php echo esc_js($map_zoom) ?>
+                });
+                map.addControl(new mapboxgl.NavigationControl({
+                    showCompass: false
+                }), 'bottom-right');
+                var el = new Image();
+                el.src = '<?php echo($map_marker_icon) ?>';
+                el.classList.add('mapMarker');
+                el.dataset.type = 'point';
+                var marker = new mapboxgl.Marker({
+                    element: el,
+                    draggable: false
+                }).setLngLat([<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>]).addTo(map);
+                var mapboxDir = new MapboxDirections({
+                    accessToken: mapboxgl.accessToken,
+                    controls: {
+                        inputs: false,
+                        //instructions: false,
                     }
-
-                    google.maps.event.addDomListener(window, 'load', initMap);
                 });
-                <?php
+                document.getElementById('direc-in-map<?php echo($rand_num) ?>').appendChild(mapboxDir.onAdd(map));
+                var geocodParams = {
+                    accessToken: mapboxgl.accessToken,
+                    marker: false,
+                    flyTo: false,
+                    mapboxgl: mapboxgl
+                };
+                var selected_contries = jobsearch_plugin_vars.sel_countries_json;
+                if (selected_contries != '') {
+                    var selected_contries_tojs = jQuery.parseJSON(selected_contries);
+                    var sel_countries_str = selected_contries_tojs.join();
+                    geocodParams['countries'] = sel_countries_str;
+                }
+                var geocoder<?php echo($rand_num) ?> = new MapboxGeocoder(geocodParams);
+                document.getElementById('go-to-<?php echo($rand_num) ?>').appendChild(geocoder<?php echo($rand_num) ?>.onAdd(map));
+                geocoder<?php echo($rand_num) ?>.on('result', function (obj) {
+                    var place_name = obj.result.place_name;
+                    document.getElementById("go-to-hidden-<?php echo absint($rand_num); ?>").value = place_name;
+                });
+                jQuery('#get-direction-<?php echo absint($cnt_counter) ?>').on('click', function () {
+                    var origPlace = jQuery('#go-desti-<?php echo absint($cnt_counter) ?>').val();
+                    var destiPlace = jQuery('#go-to-hidden-<?php echo absint($cnt_counter) ?>').val();
+                    if (origPlace != '') {
+                        mapboxDir.setOrigin(origPlace);
+                    } else {
+                        mapboxDir.setOrigin([<?php echo esc_js($map_longitude) ?>, <?php echo esc_js($map_latitude) ?>]);
+                    }
+                    mapboxDir.setDestination(destiPlace);
+                    mapboxDir.getWaypoints();
+                });
+                <?php if($ajax_flag != true){ ?>
+            });
+            <?php } ?>
+            <?php
+            }
+            } else {
+            ?>
+            var det_map;
+
+            jQuery(document).on('click', 'input[type="radio"][class="mode-radio-select"]', function () {
+                var sel_mode_val = jQuery('input[type="radio"][class="mode-radio-select"]:checked').val();
+                jQuery('#direction-type-<?php echo absint($cnt_counter) ?>').val(sel_mode_val);
+            });
+
+            jQuery(document).ready(function () {
+                document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusin', function () {
+                    jQuery('.directions-modes-con').slideDown('fast');
+                });
+                document.getElementById('go-to-<?php echo absint($cnt_counter) ?>').addEventListener('focusout', function () {
+                    //jQuery('.directions-modes-con').slideUp('fast');
+                });
+                jQuery('#dir-close-<?php echo absint($cnt_counter) ?>').on('click', function () {
+                    jQuery('.directions-modes-con').slideUp('fast');
+                });
+
+                function initMap() {
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+                    var myLatLng = {
+                        lat: <?php echo esc_js($map_latitude) ?>,
+                        lng: <?php echo esc_js($map_longitude) ?>
+                    };
+                    det_map = new google.maps.Map(document.getElementById('map-<?php echo absint($cnt_counter) ?>'), {
+                        zoom: <?php echo esc_js($map_zoom) ?>,
+                        center: myLatLng,
+                        streetViewControl: false,
+                        scrollwheel: false,
+                        mapTypeControl: false,
+                    });
+
+                    <?php
+                    if ($map_style != '') {
+                    $map_style = stripslashes($map_style);
+                    $map_style = preg_replace('/\s+/', ' ', trim($map_style));
+                    ?>
+                    var styles = '<?php echo($map_style) ?>';
+                    if (styles != '') {
+                        styles = jQuery.parseJSON(styles);
+                        var styledMap = new google.maps.StyledMapType(
+                            styles,
+                            {name: 'Styled Map'}
+                        );
+                        det_map.mapTypes.set('map_style', styledMap);
+                        det_map.setMapTypeId('map_style');
+                    }
+                    <?php
+                    }
+                    ?>
+
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        map: det_map,
+                        title: '',
+                        icon: '<?php echo($map_marker_icon) ?>',
+                    });
+
+                    directionsDisplay.setMap(det_map);
+                    directionsDisplay.setPanel(document.getElementById('panel-<?php echo absint($cnt_counter) ?>'));
+
+                    google.maps.event.addDomListener(document.getElementById('get-direction-<?php echo absint($cnt_counter) ?>'), 'click', function () {
+
+                        var desti = jQuery('#go-desti-<?php echo absint($cnt_counter) ?>').val();
+                        var orig = jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val();
+                        var selectedMode = jQuery('#direction-type-<?php echo absint($cnt_counter) ?>').val();
+
+                        //if (jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val() != '') {
+                        //    orig = jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val();
+                        //}
+
+                        if (desti != '' && orig != '') {
+
+                            var request = {
+                                origin: orig,
+                                destination: desti,
+                                travelMode: google.maps.TravelMode[selectedMode]
+                            };
+
+                            directionsService.route(request, function (response, status) {
+                                if (status == google.maps.DirectionsStatus.OK) {
+                                    directionsDisplay.setDirections(response);
+                                    jQuery('#panel-<?php echo absint($cnt_counter) ?>').show();
+                                    //
+                                    jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').html('');
+                                    jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').hide();
+                                } else {
+                                    jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').html('<?php esc_html_e("No direction found.", "wp-jobsearch") ?>');
+                                    jQuery('#panel-no-<?php echo absint($cnt_counter) ?>').show();
+                                }
+                            });
+                            jQuery('.directions-modes-con').slideUp('fast');
+                        }
+                    });
+
+                    var ac_goto_input = document.getElementById('go-to-<?php echo absint($cnt_counter) ?>');
+                    var autocomplete_goto = new google.maps.places.Autocomplete(ac_goto_input);
+
+                    var ac_orig_input = document.getElementById('go-orig-<?php echo absint($cnt_counter) ?>');
+                    var autocomplete_orig = new google.maps.places.Autocomplete(ac_orig_input);
+
+                    var ac_desti_input = document.getElementById('go-desti-<?php echo absint($cnt_counter) ?>');
+                    var autocomplete_desti = new google.maps.places.Autocomplete(ac_desti_input);
+
+                    //
+                    google.maps.event.addListener(autocomplete_goto, 'place_changed', function () {
+                        var gplace_val = jQuery('#go-to-<?php echo absint($cnt_counter) ?>').val();
+                        jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val(gplace_val);
+                        jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val(gplace_val);
+                        return false;
+                    });
+                    //
+                    google.maps.event.addListener(autocomplete_orig, 'place_changed', function () {
+                        var gplace_val = jQuery('#go-orig-<?php echo absint($cnt_counter) ?>').val();
+                        jQuery('#go-to-hiden-<?php echo absint($cnt_counter) ?>').val(gplace_val);
+                        jQuery('#go-to-<?php echo absint($cnt_counter) ?>').val(gplace_val);
+                        return false;
+                    });
+
+                }
+
+                google.maps.event.addDomListener(window, 'load', initMap);
+            });
+            <?php
             }
             ?>
         </script>
@@ -4435,14 +4741,11 @@ if (!function_exists('jobsearch_user_profile_before')) {
             }
         }
     }
-
 }
-
 if (!function_exists('jobsearch_get_user_id')) {
 
     function jobsearch_get_user_id()
     {
-
         global $current_user;
         wp_get_current_user();
         return $current_user->ID;
@@ -4736,12 +5039,29 @@ if (!function_exists('jobsearch__get_post_id')) {
 
 }
 
-add_filter('term_link', 'jobsearch_modify_sector_tax_link', 1, 2);
+if (!function_exists('jobsearch_get_post_id_by_guid')) {
 
+    function jobsearch_get_post_id_by_guid($guid)
+    {
+        global $wpdb;
+        if ($guid != '') {
+            $post_query = "SELECT posts.ID FROM $wpdb->posts AS posts";
+            $post_query .= " WHERE posts.guid='{$guid}'";
+            $post_query .= " LIMIT 1";
+            $get_db_res = $wpdb->get_col($post_query);
+            if (!empty($get_db_res) && isset($get_db_res[0])) {
+                return $get_db_res[0];
+            }
+        }
+        return 0;
+    }
+
+}
+
+add_filter('term_link', 'jobsearch_modify_sector_tax_link', 1, 2);
 function jobsearch_modify_sector_tax_link($content, $term_obj)
 {
     global $jobsearch_plugin_options;
-
     $search_list_page = isset($jobsearch_plugin_options['jobsearch_search_list_page']) ? $jobsearch_plugin_options['jobsearch_search_list_page'] : '';
     if (is_object($term_obj) && isset($term_obj->taxonomy) && $term_obj->taxonomy == 'sector' && $search_list_page != '') {
         $page_obj = get_page_by_path($search_list_page, 'OBJECT', 'page');
@@ -4908,23 +5228,17 @@ function jobsearch_get_user_roles_by_user_id($user_id)
 }
 
 if (!function_exists('jobsearch_get_ajax_users_list')) {
-
     add_action('wp_ajax_jobsearch_get_ajax_users_list', 'jobsearch_get_ajax_users_list');
-
     function jobsearch_get_ajax_users_list()
     {
         $sel_user = isset($_POST['sel_value']) ? $_POST['sel_value'] : '';
         $users_role = isset($_POST['users_role']) ? $_POST['users_role'] : '';
-
         $user_role_array = array('jobsearch_candidate', 'jobsearch_employer');
         if (!in_array($users_role, $user_role_array)) {
             $users_role = 'jobsearch_candidate';
         }
-
         $users_list = '';
-
         $users = get_users('orderby=nicename&role=' . $users_role);
-
         if (!empty($users)) {
             foreach ($users as $_user) {
                 $user_name = $_user->display_name;
@@ -4938,16 +5252,13 @@ if (!function_exists('jobsearch_get_ajax_users_list')) {
         echo json_encode(array('list' => $users_list));
         die;
     }
-
 }
 
 if (!function_exists('jobsearch_get_all_db_locations')) {
 
     function jobsearch_get_all_db_locations()
     {
-
         global $jobsearch_plugin_options;
-
         $location_name = isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : '';
         $country_args = array(
             'orderby' => 'name',
@@ -4987,11 +5298,8 @@ function jobsearch_get_wp_date_simple_format()
 {
     $date_format = get_option('date_format');
     $date_format = str_replace(array('/', ', ', ' ', ','), array('-', '-', '-', '-'), $date_format);
-
     $dformt_arr = explode('-', $date_format);
-
     $ret_format = 'd-m-y';
-
     if (!empty($dformt_arr) && sizeof($dformt_arr) == 3) {
         $fory_formt = array();
 
@@ -5035,7 +5343,6 @@ function jobsearch_get_wp_date_simple_format()
 function jobsearch_get_delte_all_locs()
 {
     global $wpdb;
-
     $wpdb->query("DELETE $wpdb->terms FROM $wpdb->terms LEFT JOIN $wpdb->term_taxonomy ON($wpdb->terms.term_id = $wpdb->term_taxonomy.term_id) WHERE $wpdb->term_taxonomy.taxonomy ='job-location'");
     $wpdb->query("DELETE FROM $wpdb->term_taxonomy WHERE $wpdb->term_taxonomy.taxonomy = 'job-location'");
 }
@@ -5044,11 +5351,8 @@ if (!function_exists('jobsearch_get_search_box_posts_results')) {
 
     function jobsearch_get_search_box_posts_results()
     {
-
         global $jobsearch_plugin_options;
-
         $emporler_approval = isset($jobsearch_plugin_options['job_listwith_emp_aprov']) ? $jobsearch_plugin_options['job_listwith_emp_aprov'] : '';
-
         $keyword = isset($_POST['keyword']) ? $_POST['keyword'] : '';
         $post_type = isset($_POST['post_type']) ? $_POST['post_type'] : '';
 
@@ -5339,7 +5643,7 @@ function jobsearch_get_serchable_keywrd_candidate_ids($serch_keyword)
     $post_ids_query .= " INNER JOIN {$wpdb->postmeta} AS postmeta";
     $post_ids_query .= " ON postmeta.post_id = posts.ID";
     $post_ids_query .= " WHERE post_type='candidate' AND post_status='publish'";
-    $post_ids_query .= " AND ((postmeta.meta_key='jobsearch_field_candidate_jobtitle' AND postmeta.meta_value LIKE '%{$serch_keyword}%') OR (posts.post_title LIKE '%{$serch_keyword}%') OR (posts.post_content LIKE '%{$serch_keyword}%'));";
+    $post_ids_query .= " AND ((posts.ID='{$serch_keyword}') OR (postmeta.meta_key='jobsearch_field_candidate_jobtitle' AND postmeta.meta_value LIKE '%{$serch_keyword}%') OR (posts.post_title LIKE '%{$serch_keyword}%') OR (posts.post_content LIKE '%{$serch_keyword}%'));";
     $post_ids_query = apply_filters('jobsearch_ajaxsrchbox_cand_titlesrch_query', $post_ids_query, $serch_keyword);
 
     $post_ids = $wpdb->get_col($post_ids_query);
@@ -5508,10 +5812,20 @@ if (!function_exists('jobsearch_job_item_address')) {
 
 }
 
-function jobsearch_dependent_dropdown_showval_html($dropdown_field_options, $custom_field_saved_data, $dropdown_field_name_db_val, $parent_id = '0', $prefix = 'jobsearch')
+function jobsearch_dependent_dropdown_showval_html($dropdown_field_options, $custom_field_saved_data, $dropdown_field_name_db_val, $parent_id = '0', $prefix = 'jobsearch', $dependent_drop_col)
 {
+
+    global $sitepress;
+
+    $lang_code = '';
+    if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+        $lang_code = $sitepress->get_current_language();
+    }
+
     $field_main_label = isset($custom_field_saved_data['label']) ? $custom_field_saved_data['label'] : '';
     $field__icon = isset($custom_field_saved_data['icon']) ? $custom_field_saved_data['icon'] : '';
+
+    $field_main_label = apply_filters('wpml_translate_single_string', $field_main_label, 'Custom Fields', 'Dropdown Field Label - ' . $field_main_label, $lang_code);
 
     $icon_con_html = '';
     $no_icon_class = ' has-no-icon';
@@ -5533,13 +5847,17 @@ function jobsearch_dependent_dropdown_showval_html($dropdown_field_options, $cus
             $field_labels = isset($opt_field_list['label']) ? $opt_field_list['label'] : '';
             $field_vals = isset($opt_field_list['value']) ? $opt_field_list['value'] : '';
 
+            $field_group_label = apply_filters('wpml_translate_single_string', $field_group_label, 'Custom Fields', 'Dependent Dropdown Field Group Label - ' . $field_group_label, $lang_code);
+
             if (!empty($field_labels) && is_array($field_labels)) {
                 $sin_field_count = 0;
                 foreach ($field_labels as $sin_field_label) {
                     $sin_field_val = isset($field_vals[$sin_field_count]) ? $field_vals[$sin_field_count] : '';
 
+                    $sin_field_label = apply_filters('wpml_translate_single_string', $sin_field_label, 'Custom Fields', 'Dependent Dropdown Field Label - ' . $sin_field_label, $lang_code);
+
                     if (!empty($drpdwns_dbval_arr) && in_array($sin_field_val, $drpdwns_dbval_arr)) {
-                        $val_arr .= '<li class="jobsearch-column-4">';
+                        $val_arr .= '<li class="' . $dependent_drop_col . '">';
                         $val_arr .= $icon_con_html;
                         $val_arr .= '<div class="' . $prefix . '-services-text' . $no_icon_class . '">';
                         if ($field_group_label != '') {
@@ -5568,6 +5886,13 @@ function jobsearch_dependent_dropdown_showval_html($dropdown_field_options, $cus
 
 function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_counter, $custom_field_saved_data, $dropdown_field_name_db_val, $parent_id = '0', $field_place = '', $field_main_label = '')
 {
+    global $sitepress;
+
+    $lang_code = '';
+    if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
+        $lang_code = $sitepress->get_current_language();
+    }
+
     $field_rand_num = rand(10000000, 99999999);
     $dropdown_field_name = isset($custom_field_saved_data['name']) ? $custom_field_saved_data['name'] : '';
     $dropdown_field_classes = isset($custom_field_saved_data['classes']) ? $custom_field_saved_data['classes'] : '';
@@ -5582,10 +5907,6 @@ function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_
         $drpdwns_dbval_arr = explode('|', $dropdown_field_name_db_val);
     }
 
-    //var_dump($dropdown_field_options[$parent_id]['label']);
-    //echo '<pre>';
-    //var_dump($dropdown_field_options);
-    //echo '</pre>';
     if (isset($dropdown_field_options[$parent_id]['label']) && !empty($dropdown_field_options[$parent_id]['label']) && is_array($dropdown_field_options[$parent_id]['label']) && sizeof($dropdown_field_options[$parent_id]['label']) > 0) {
         ob_start();
         $to_parnt_ids = $opt_field_keyids = array();
@@ -5597,11 +5918,14 @@ function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_
             $field_ids = isset($opt_field_list['id']) ? $opt_field_list['id'] : '';
             $field_par_ids = isset($opt_field_list['par_id']) ? $opt_field_list['par_id'] : '';
 
+            $field_group_label = apply_filters('wpml_translate_single_string', $field_group_label, 'Custom Fields', 'Dependent Dropdown Field Group Label - ' . $field_group_label, $lang_code);
+
             $display_str = 'none';
 
             if (!empty($field_vals)) {
                 $chfi_countr = 0;
                 foreach ($field_vals as $chfield_val) {
+                    $chfield_val = urldecode(sanitize_title($chfield_val));
                     if (!empty($drpdwns_dbval_arr) && in_array($chfield_val, $drpdwns_dbval_arr)) {
                         $chfi_parent_child = isset($field_ids[$chfi_countr]) ? $field_ids[$chfi_countr] : '';
                         $to_parnt_ids[] = $chfi_parent_child;
@@ -5629,7 +5953,7 @@ function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_
                 <div ' . ($opt_field_key > 0 ? 'id="drp-field-' . $opt_field_key . '"' : '') . ' class="jobsearch-profile-select" style="display: ' . ($opt_field_key > 0 ? $display_str : 'inline-block') . ';">';
             }
             ?>
-            <select class="selectize-select111 jobsearch-mdep-drpdwn">
+            <select class="selectize-select111 jobsearch-mdep-drpdwn jobsearch-mdep-drpdwn-<?php echo($field_rand_num) ?>">
                 <?php
                 if (!empty($field_labels) && is_array($field_labels)) {
                     $sin_field_count = 0;
@@ -5639,13 +5963,15 @@ function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_
                         <?php
                     }
                     foreach ($field_labels as $sin_field_label) {
-                        $sin_field_val = isset($field_vals[$sin_field_count]) ? $field_vals[$sin_field_count] : '';
+                        $sin_field_val = isset($field_vals[$sin_field_count]) ? urldecode(sanitize_title($field_vals[$sin_field_count])) : '';
                         $sin_field_id = isset($field_ids[$sin_field_count]) ? $field_ids[$sin_field_count] : '';
                         $sin_field_par_id = isset($field_par_ids[$sin_field_count]) ? $field_par_ids[$sin_field_count] : '';
+
+                        $sin_field_label = apply_filters('wpml_translate_single_string', $sin_field_label, 'Custom Fields', 'Dependent Dropdown Field Label - ' . $sin_field_label, $lang_code);
                         ?>
                         <option data-id="<?php echo($sin_field_id) ?>"
                                 data-parid="<?php echo($sin_field_par_id) ?>" <?php echo(!empty($drpdwns_dbval_arr) && in_array($sin_field_val, $drpdwns_dbval_arr) ? 'selected="selected"' : '') ?>
-                                value="<?php echo urldecode(sanitize_title($sin_field_val)) ?>"><?php echo($sin_field_label) ?></option>
+                                value="<?php echo($sin_field_val) ?>"><?php echo($sin_field_label); ?></option>
                         <?php
                         $sin_field_count++;
                     }
@@ -5706,7 +6032,7 @@ function jobsearch_dependent_dropdown_list_html($dropdown_field_options, $field_
                 return to_actuel_val;
             }
 
-            jQuery(document).on('change', '.jobsearch-mdep-drpdwn', function () {
+            jQuery(document).on('change', '.jobsearch-mdep-drpdwn-<?php echo($field_rand_num) ?>', function () {
                 var this_drpdwn = jQuery(this);
                 var this_drpdwn_val = this_drpdwn.val();
                 var allover_val = jQuery('#depdrpdwn_fields_val_<?php echo($field_rand_num) ?>');
@@ -5781,8 +6107,13 @@ if (!function_exists('jobsearch_terms_and_con_link_txt')) {
             if ($privcy_page_id != '') {
                 ?>
                 <div class="terms-priv-chek-con">
-                    <p><input type="checkbox"
-                              name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('You accept our <a href="%s">Terms and Conditions</a> and <a href="%s">Privacy Policy</a>', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+                    <p>
+<!--
+                    <input type="checkbox" name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('By clicking checkbox, you agree to our <a href="%s">Terms and Conditions</a> and <a href="%s">Privacy Policy</a>', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+-->
+
+                    <input type="checkbox" name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('チェックボックスをクリックすると、 <a href="%s">利用規約</a> と <a href="%s">プライバシーポリシー</a>に同意したことになります。', 'wp-jobsearch'), $terms_page_url, get_permalink($privcy_page_id)), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+
                     </p>
                 </div>
                 <?php
@@ -5790,7 +6121,7 @@ if (!function_exists('jobsearch_terms_and_con_link_txt')) {
                 ?>
                 <div class="terms-priv-chek-con">
                     <p><input type="checkbox"
-                              name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('You accept our <a href="%s">Terms and Conditions</a>', 'wp-jobsearch'), $terms_page_url), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
+                              name="terms_cond_check" <?php echo($saved_val ? 'checked' : '') ?>> <?php echo wp_kses(sprintf(__('By clicking checkbox, you agree to our <a href="%s">Terms and Conditions</a>', 'wp-jobsearch'), $terms_page_url), array('a' => array('href' => array(), 'target' => array(), 'title' => array()))) ?>
                     </p>
                 </div>
                 <?php
@@ -5821,7 +6152,6 @@ function jobsearch_userlogin_beforemsg_hook_callback($json, $args)
     $user_id = $user_obj->ID;
     $extra_params = isset($args['extra_params']) ? $args['extra_params'] : '';
     $wredirct_url = isset($args['wredirct_url']) ? $args['wredirct_url'] : '';
-
     //
     $user_is_candidate = jobsearch_user_is_candidate($user_id);
     $user_is_employer = jobsearch_user_is_employer($user_id);
@@ -5866,15 +6196,12 @@ function jobsearch_userlogin_beforemsg_hook_callback($json, $args)
             //
         }
     }
-
     return $json;
 }
 
 function jobsearch_remove_url_extattr_list($remove_item_list = array())
 {
-
     $qrystr = http_build_query($_REQUEST);
-
     if (!empty($remove_item_list)) {
         $remove_def_list = array(
             'job_arg',
@@ -6093,7 +6420,6 @@ function jobsearch_walker_nav_menu_start_el($item_output, $item, $depth = 0, $ar
 
 function jobsearch_filter_keyword_str_replcewith($str)
 {
-
     $output_str = '';
     if ($str == 'sort-by') {
 
@@ -6102,20 +6428,24 @@ function jobsearch_filter_keyword_str_replcewith($str)
 }
 
 if (!function_exists('jobsearch_job_listing_custom_fields_callback')) {
-
-    function jobsearch_job_listing_custom_fields_callback($atts = array(), $job_id = '', $job_cus_field_arr = array())
+    function jobsearch_job_listing_custom_fields_callback($atts = array(), $job_id = '', $job_cus_field_arr = array(), $view = 'view-1')
     {
         $job_custom_fields_switch = isset($atts['job_custom_fields_switch']) ? $atts['job_custom_fields_switch'] : 'no';
         if ($job_custom_fields_switch == 'yes' && !empty($job_cus_field_arr)) {
             $cus_fields = array('content' => '');
             $cus_fields = apply_filters('jobsearch_custom_fields_list', 'job', $job_id, $cus_fields, '<li>', '</li>', '', true, true, true, 'jobsearch', $job_cus_field_arr);
             if (isset($cus_fields['content']) && $cus_fields['content'] != '') {
-                echo ' <ul class="jobsearch-custom-field"> ' . force_balance_tags($cus_fields['content']) . ' </ul> ';
+                if ($view == 'style9') {
+                    echo ' <ul class="jobsearch-style9-custom-fields"> ' . force_balance_tags($cus_fields['content']) . ' </ul> ';
+                } else {
+                    echo ' <ul class="jobsearch-custom-field"> ' . force_balance_tags($cus_fields['content']) . ' </ul> ';
+
+                }
             }
         }
     }
 
-    add_action('jobsearch_job_listing_custom_fields', 'jobsearch_job_listing_custom_fields_callback', 10, 3);
+    add_action('jobsearch_job_listing_custom_fields', 'jobsearch_job_listing_custom_fields_callback', 10, 4);
 }
 
 if (!function_exists('jobsearch_job_listing_deadline_callback')) {
@@ -6136,20 +6466,21 @@ if (!function_exists('jobsearch_job_listing_deadline_callback')) {
 
         if ($job_deadline_switch == 'Yes') {
             $jobsearch_last_date_formated = '';
+
             if (!empty($job_deadline_date)) {
                 $jobsearch_last_date_formated = date_i18n(get_option('date_format'), ($job_deadline_date));
 
                 if ($job_view == 'view-medium') {
                     if ($dead_line_flag) {
-                        echo '<time class="deadline-closed" datetime="' . date_i18n('Y-m-d H:i:s', $current_date) . '">' . esc_html__('Application closed.', 'wp-jobsearch') . '</time>';
+                        echo '<time class="deadline-closed" datetime="' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $current_date) . '">' . esc_html__('Application closed.', 'wp-jobsearch') . '</time>';
                     } else {
-                        echo '<time datetime="' . date_i18n('Y-m-d H:i:s', $job_deadline_date) . '">' . esc_html__("Deadline ", "wp-jobsearch") . $jobsearch_last_date_formated . '</time>';
+                        echo '<time datetime="' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $job_deadline_date) . '">' . esc_html__("Deadline ", "wp-jobsearch") . $jobsearch_last_date_formated . '</time>';
                     }
                 } elseif ($job_view == 'view-medium2') {
                     if ($dead_line_flag) {
-                        echo '<time class="deadline-closed" datetime="' . date_i18n('Y-m-d H:i:s', $current_date) . '">' . esc_html__('Application closed.', 'wp-jobsearch') . '</time>';
+                        echo '<time class="deadline-closed" datetime="' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $current_date) . '">' . esc_html__('Application closed.', 'wp-jobsearch') . '</time>';
                     } else {
-                        echo '<time datetime="' . date_i18n('Y-m-d H:i:s', $job_deadline_date) . '">' . esc_html__("Deadline ", "wp-jobsearch") . $jobsearch_last_date_formated . '</time>';
+                        echo '<time datetime="' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $job_deadline_date) . '">' . esc_html__("Deadline ", "wp-jobsearch") . $jobsearch_last_date_formated . '</time>';
                     }
                 } elseif ($job_view == 'view-grid2') {
                     if ($dead_line_flag) {
@@ -6170,6 +6501,7 @@ if (!function_exists('jobsearch_job_listing_deadline_callback')) {
                         echo ' <small><i class="jobsearch-icon jobsearch-calendar"></i> ' . esc_html__("Deadline ", "wp-jobsearch") . '' . $jobsearch_last_date_formated . '</small>';
                     }
                 } else {
+
                     if ($job_deadline_date != '' && ($job_deadline_date) <= $current_date) {
                         echo '<li class="deadline-closed"><i class="jobsearch-icon jobsearch-calendar"></i> ' . esc_html__('Application closed.', 'wp-jobsearch') . '</li>';
                     } else {
@@ -6211,7 +6543,7 @@ function jobsearch_notification_count_in_admin_menu()
 {
     global $menu;
     /*
-     * pending jobs query 
+     * pending jobs query
      */
 
     $jobs_pending_count = 0;
@@ -6317,11 +6649,27 @@ function jobsearch_notification_count_in_admin_menu()
     }
 }
 
+function jobsearch_locations_upload_dir($dir = '')
+{
+    global $jobsearch_download_locations;
+
+    if ($jobsearch_download_locations == true) {
+        $cus_dir = 'jobsearch-locations';
+        $dir_path = array(
+            'path' => $dir['basedir'] . '/' . $cus_dir,
+            'url' => $dir['baseurl'] . '/' . $cus_dir,
+            'subdir' => $cus_dir,
+        );
+        return $dir_path + $dir;
+    }
+    return $dir;
+}
+
 function read_cities_file($filename)
 {
     global $wp_filesystem, $jobsearch_download_locations;
     $jobsearch_download_locations = true;
-    add_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
+    add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
     $wp_upload_dir = wp_upload_dir();
 
     $upload_file_path = $wp_upload_dir['path'];
@@ -6329,7 +6677,7 @@ function read_cities_file($filename)
         $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
     }
     $url = wp_nonce_url("options-general.php?page=demo", "filesystem-nonce");
-    remove_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
+    remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
     $jobsearch_download_locations = false;
 
     if (connect_fs($url, "", $upload_file_path)) {
@@ -6350,29 +6698,88 @@ function read_cities_file($filename)
     }
 }
 
-function read_location_file($filename)
+function read_state_cities($filename)
 {
-
     global $wp_filesystem, $jobsearch_download_locations;
-
-
     $jobsearch_download_locations = true;
-    add_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
-
+    add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
     $wp_upload_dir = wp_upload_dir();
-
     $upload_file_path = $wp_upload_dir['path'];
     if (!file_exists($upload_file_path . "/countries")) {
         $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
     }
     $url = wp_nonce_url("options-general.php?page=demo", "filesystem-nonce");
-    remove_filter('jobsearch_locations_upload_dir', 'jobsearch_locations_path', 10, 1);
+    remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
     $jobsearch_download_locations = false;
 
     if (connect_fs($url, "", $upload_file_path)) {
         $dir = $wp_filesystem->find_folder($upload_file_path);
+        $file = trailingslashit($dir) . $filename;
 
+        if ($wp_filesystem->exists($file)) {
+            $text = $wp_filesystem->get_contents($file);
+            if (!$text) {
+                return "";
+            } else {
+                return $text;
+            }
+        } else {
+            return new WP_Error("filesystem_error", "File doesn't exist");
+        }
+    } else {
+        return new WP_Error("filesystem_error", "Cannot initialize filesystem");
+    }
+}
 
+function read_state_file($filename)
+{
+    global $wp_filesystem, $jobsearch_download_locations;
+    $jobsearch_download_locations = true;
+    add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+    $wp_upload_dir = wp_upload_dir();
+    $upload_file_path = $wp_upload_dir['path'];
+    if (!file_exists($upload_file_path . "/countries")) {
+        $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
+    }
+    $url = wp_nonce_url("options-general.php?page=demo", "filesystem-nonce");
+    remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+    $jobsearch_download_locations = false;
+
+    if (connect_fs($url, "", $upload_file_path)) {
+        $dir = $wp_filesystem->find_folder($upload_file_path);
+        $file = trailingslashit($dir) . $filename;
+
+        if ($wp_filesystem->exists($file)) {
+            $text = $wp_filesystem->get_contents($file);
+            if (!$text) {
+                return "";
+            } else {
+                return $text;
+            }
+        } else {
+            return new WP_Error("filesystem_error", "File doesn't exist");
+        }
+    } else {
+        return new WP_Error("filesystem_error", "Cannot initialize filesystem");
+    }
+}
+
+function read_location_file($filename)
+{
+    global $wp_filesystem, $jobsearch_download_locations;
+    $jobsearch_download_locations = true;
+    add_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+    $wp_upload_dir = wp_upload_dir();
+    $upload_file_path = $wp_upload_dir['path'];
+    if (!file_exists($upload_file_path . "/countries")) {
+        $upload_file_path = $wp_upload_dir['basedir'] . '/jobsearch-locations';
+    }
+    $url = wp_nonce_url("options-general.php?page=demo", "filesystem-nonce");
+    remove_filter('upload_dir', 'jobsearch_locations_upload_dir', 10, 1);
+    $jobsearch_download_locations = false;
+
+    if (connect_fs($url, "", $upload_file_path)) {
+        $dir = $wp_filesystem->find_folder($upload_file_path);
         $file = trailingslashit($dir) . $filename;
 
         if ($wp_filesystem->exists($file)) {
@@ -6407,4 +6814,52 @@ function connect_fs($url, $method, $context, $fields = null)
     }
 
     return true;
+}
+
+//Remove JQuery migrate
+
+function jobsearch_remove_jquery_migrate($scripts)
+{
+    if (!is_admin() && isset($scripts->registered['jquery'])) {
+        $script = $scripts->registered['jquery'];
+        if ($script->deps) {
+            $script->deps = array_diff($script->deps, array('jquery-migrate'));
+        }
+    }
+}
+
+add_action('wp_default_scripts', 'jobsearch_remove_jquery_migrate');
+
+function cand_calculate_experience($candidate_id) {
+    $exfield_list = get_post_meta($candidate_id, 'jobsearch_field_experience_title', true);
+    $exfield_list_val = get_post_meta($candidate_id, 'jobsearch_field_experience_description', true);
+    $experience_start_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_experience_start_date', true);
+    $experience_end_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_experience_end_date', true);
+    $experience_prsnt_datefield_list = get_post_meta($candidate_id, 'jobsearch_field_experience_date_prsnt', true);
+    $experience_company_field_list = get_post_meta($candidate_id, 'jobsearch_field_experience_company', true);
+    //
+    if (is_array($exfield_list) && sizeof($exfield_list) > 0) { ?>
+        <?php
+        $start_date_exp = '';
+        $end_date_exp = '';
+        $numItems = count($exfield_list);
+        $counter = 1;
+        foreach ($exfield_list as $exfield_counter => $exfield) {
+            $experience_start_datefield_val = isset($experience_start_datefield_list[$exfield_counter]) ? $experience_start_datefield_list[$exfield_counter] : '';
+            $experience_end_datefield_val = isset($experience_end_datefield_list[$exfield_counter]) ? $experience_end_datefield_list[$exfield_counter] : '';
+
+            if ($exfield_counter == 0) {
+                $start_date_exp = $experience_start_datefield_val;
+            }
+            if ($counter === $numItems) {
+                $end_date_exp = $experience_end_datefield_val;
+            }
+            $counter++;
+        }
+        $datetime1 = new DateTime($start_date_exp);
+        $datetime2 = new DateTime($end_date_exp);
+        $interval = $datetime1->diff($datetime2);
+        $year_text = $interval->y == 1 ? 'year' : 'years';
+        return $interval->format('%y '.$year_text.'');
+    }
 }
