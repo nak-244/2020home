@@ -4453,7 +4453,7 @@ class Jobsearch_CustomFieldLoad
                                                 <?php } ?>
                                                 </li>
 
-<!-- ここまで -->   
+<!-- ここまで -->
                                                 <?php
                                                 $salary_min = $salary_min + $salary_interval;
                                                 $loop_flag++;
