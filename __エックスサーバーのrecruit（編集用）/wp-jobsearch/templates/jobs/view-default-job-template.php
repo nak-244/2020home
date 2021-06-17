@@ -272,11 +272,24 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                         ob_start();
                         if ($post_thumbnail_src != '') { ?>
                             <figure>
-                                <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
+<!-- 編集 -->
+                                <!-- <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>"
                                    data-job-id="<?php echo esc_html($job_id); ?>"
                                    class="<?php echo($quick_apply_job_btn) ?>">
                                     <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
+                                </a> -->
+
+                                <?php if(get_post_meta($job_id, 'cfimg',true)):?>
+                                <div class="cfimg pc">
+                                  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
+                                <img src="<?php the_field('cfimg'); ?>" />
                                 </a>
+
+                                <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?> detail_btn">詳しくみる</a>
+
+                                </div>
+                                <?php endif; ?>
+<!-- //編集 -->
                             </figure>
                             <?php
                         }
@@ -300,7 +313,61 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                     <span><i class="fa fa-star"></i> <?php echo esc_html__('Featured', 'wp-jobsearch'); ?></span>
                                                 <?php } ?>
                                             </h2>
+
+<!-- 編集 -->
+<?php if(get_post_meta($job_id, 'cf01_1',true)):?>
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
+<h6 class="joblist__subtitle"><?php the_field('cf01_1'); ?></h6>
+</a>
+<?php endif; ?>
+
+<?php if(get_post_meta($job_id, 'cf01',true)):?>
+  <a href="<?php echo $quick_apply_job == 'on' && !wp_is_mobile() ? 'javascript:void(0)' : esc_url(get_permalink($job_id)); ?>" data-job-id="<?php echo esc_html($job_id); ?>" class="<?php echo($quick_apply_job_btn) ?>">
+<p><?php the_field('cf01'); ?></p>
+</a>
+<?php endif; ?>
+
+<ul class="job_list_meta">
+
+  <li>
+    職種：<?php $terms = get_the_terms($job_id,'sector'); foreach( $terms as $term ) { echo $term->name; } ?>
+  </li>
+
+
+  <?php if(get_post_meta($job_id, 'cf03',true)):?>
+  <li>
+    勤務地：<?php the_field('cf03'); ?>
+  </li>
+  <?php endif; ?>
+
+  <?php if(get_post_meta($job_id, 'cf07',true)):?>
+  <li>
+    年収
+    <?php if(get_post_meta($job_id, 'cf07',true)):?>
+      <?php $cf07 = get_field('cf07');if($cf07){ ?>
+        <?php echo number_format($cf07); ?>
+      <?php } ?>円〜
+    <?php endif; ?>
+  </li>
+  <?php endif; ?>
+</ul>
+
+<?php
+$job_feas = get_field('job_fea');
+if ($job_feas):
+?>
+<ul>
+    <?php
+    foreach ($job_feas as $job_fea) : ?>
+        <li class="job_fea_detail"><span class="job_detail_label"><?php echo $job_fea; ?></span></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
+<!-- //編集 -->
+
                                             <?php do_action('jobsearch_jobs_listing_after_title', $job_id, 'jobs_list_default'); ?>
+<!--
                                             <ul>
                                                 <?php
                                                 if ($company_name != '') {
@@ -342,6 +409,7 @@ if (isset($featjobs_posts) && !empty($featjobs_posts)) {
                                                 }
                                                 ?>
                                             </ul>
+-->
                                             <?php
 
                                             do_action('jobsearch_job_listing_custom_fields', $atts, $job_id, $job_arg['custom_fields']);

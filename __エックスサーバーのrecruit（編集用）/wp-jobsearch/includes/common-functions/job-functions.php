@@ -123,7 +123,7 @@ function jobsearch_single_jobseo_ogimage_set() {
 add_action('jobsearch_job_update_bkend_all_fileds', 'jobsearch_job_update_bkend_status_update');
 
 function jobsearch_job_update_bkend_status_update($job_id) {
-    
+
     // WPML compatible
     if (function_exists('icl_object_id') && function_exists('wpml_init_language_switcher')) {
         global $sitepress, $wpdb;
@@ -134,11 +134,11 @@ function jobsearch_job_update_bkend_status_update($job_id) {
         if (!empty($wpml_all_langs)) {
             $job_status = get_post_meta($job_id, 'jobsearch_field_job_status', true);
             $job_expiry = get_post_meta($job_id, 'jobsearch_field_job_expiry_date', true);
-            
+
             foreach ($wpml_all_langs as $lang_code => $wpml_lang) {
                 if ($lang_code != $current_lang) {
                     $trans_job_id = icl_object_id($job_id, 'job', false, $lang_code);
-                    
+
                     update_post_meta($trans_job_id, 'jobsearch_field_job_status', $job_status);
                     update_post_meta($trans_job_id, 'jobsearch_field_job_expiry_date', $job_expiry);
                 }
@@ -453,7 +453,7 @@ if (!function_exists('jobsearch_job_related_post')) {
         $job_detail_rel_jobs = isset($jobsearch_plugin_options['job_detail_rel_jobs']) ? $jobsearch_plugin_options['job_detail_rel_jobs'] : '';
 
         if ($job_detail_rel_jobs == 'on') {
-            
+
             $locations_view_type = isset($jobsearch_plugin_options['job_det_loc_listing']) ? $jobsearch_plugin_options['job_det_loc_listing'] : '';
             $loc_view_country = $loc_view_state = $loc_view_city = false;
 
@@ -880,7 +880,7 @@ if (!function_exists('jobsearch_job_related_company_post')) {
                     $loc_view_city = true;
                 }
             }
-            
+
             $jobsearch_title_limit = isset($jobsearch_plugin_options['related_jobs_title_length']) && $jobsearch_plugin_options['related_jobs_title_length'] > 0 ? $jobsearch_plugin_options['related_jobs_title_length'] : '';
 
             $filter_arr2 = array();
@@ -1216,7 +1216,7 @@ if (!function_exists('jobsearch_job_send_message_employer_callback')) {
             }
         } else {
             $user_data = wp_get_current_user();
-            // send to employer email 
+            // send to employer email
             $cur_user_id = isset($user_data->ID) ? $user_data->ID : '';
             $user_candidate_id = jobsearch_get_user_candidate_id($cur_user_id);
             if ($user_candidate_id > 0) {
@@ -3721,7 +3721,7 @@ function jobsearch_make_job_expier_after_deadline_meet() {
     if ($curuser_is_employer) {
         $emp__id = jobsearch_get_user_employer_id($job_employer_id);
         $_job_emp_id = get_post_meta($job_id, 'jobsearch_field_job_posted_by', true);
-        
+
         if ($emp__id == $_job_emp_id) {
             update_post_meta($job_id, 'jobsearch_field_job_expiry_date', current_time('timestamp'));
             $up_post = array(
@@ -3731,7 +3731,7 @@ function jobsearch_make_job_expier_after_deadline_meet() {
             wp_update_post($up_post);
         }
     }
-    
+
     die;
 }
 
