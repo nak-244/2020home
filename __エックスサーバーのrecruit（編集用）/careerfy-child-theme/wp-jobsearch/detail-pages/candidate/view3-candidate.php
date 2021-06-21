@@ -238,7 +238,7 @@ if ($view_candidate) {
                 <ul>
                     <li><a href="<?php echo home_url($candidate_id); ?>">Home</a></li>
                     <li><a href="<?php echo esc_url($result_page); ?>"><?php echo get_the_title($page_id); ?></a></li>
-                    <?php 
+                    <?php
                     if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|sector', 'detail_page')) {
                         echo($sector_str);
                     }
@@ -418,7 +418,7 @@ if ($view_candidate) {
                                     ?>
                                     <?php
                                     $show_disp_name = apply_filters('jobsearch_candidate_detail_content_top_displayname', $user_displayname, $candidate_id);
-                                    
+
                                     if (!$cand_profile_restrict::cand_field_is_locked('profile_fields|profile_img', 'detail_page')) {
                                         ?>
                                         <img src="<?php echo($user_def_avatar_url) ?>" alt="">
@@ -561,7 +561,7 @@ if ($view_candidate) {
                                     </div>
                                     <?php
                                 }
-                            }                            
+                            }
                             $ad_args = array(
                                 'post_type' => 'candidate',
                                 'view' => 'view3',
@@ -580,9 +580,9 @@ if ($view_candidate) {
                                     <?php
                                 }
                             }
-                            
+
                             //
-                            
+
                             if (!$cand_profile_restrict::cand_field_is_locked('edu_defields', 'detail_page')) {
                                 $exfield_list = get_post_meta($candidate_id, 'jobsearch_field_education_title', true);
                                 $exfield_list_val = get_post_meta($candidate_id, 'jobsearch_field_education_description', true);
@@ -862,7 +862,7 @@ if ($view_candidate) {
                                 'position' => 'aftr_awards',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            
+
                             if ($candidates_reviews == 'on') {
                                 ?>
                                 <div class="careerfy-candidatedetail-content3">
@@ -917,7 +917,7 @@ if ($view_candidate) {
                                 'position' => 'b4_cntct',
                             );
                             jobsearch_detail_common_ad_code($ad_args);
-                            
+
                             if (!$cand_profile_restrict::cand_field_is_locked('contactfrm_defields', 'detail_page')) {
                                 $cand_det_contact_form = isset($jobsearch_plugin_options['cand_det_contact_form']) ? $jobsearch_plugin_options['cand_det_contact_form'] : '';
                                 if ($cand_det_contact_form == 'on') {
@@ -1035,6 +1035,3 @@ if ($view_candidate) {
 
 </div>
 <!--Main Content -->
-
-
-
