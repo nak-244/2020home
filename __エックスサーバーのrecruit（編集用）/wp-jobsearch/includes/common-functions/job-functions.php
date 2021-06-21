@@ -577,6 +577,8 @@ if (!function_exists('jobsearch_job_related_post')) {
                                 ?>
                                 <li class="jobsearch-column-12">
                                     <div class="jobsearch-joblisting-classic-wrap">
+
+                                      あ
                                         <?php
                                         ob_start();
                                         if ($post_thumbnail_src != '') {
