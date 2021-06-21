@@ -578,21 +578,14 @@ if (!function_exists('jobsearch_job_related_post')) {
                                 <li class="jobsearch-column-12">
                                     <div class="jobsearch-joblisting-classic-wrap">
 
-                                      あ
-                                        <?php
-                                        ob_start();
-                                        if ($post_thumbnail_src != '') {
-                                            ?>
-                                            <figure>
-                                                <a href="<?php echo esc_url(get_permalink($job_id)); ?>">
-                                                    <img src="<?php echo esc_url($post_thumbnail_src) ?>" alt="">
-                                                </a>
-                                            </figure>
-                                            <?php
-                                        }
-                                        $list_emp_img = ob_get_clean();
-                                        echo apply_filters('jobsearch_jobs_listing_emp_img_html', $list_emp_img, $job_id, 'view1');
-                                        ?>
+<?php if(get_post_meta($job_id, 'cfimg',true)):?>
+<div class="cfimg">
+<a href="<?php echo esc_url(get_permalink($job_id)); ?>" title="<?php echo esc_html(get_the_title($job_id)); ?>">
+<img src="<?php the_field('cfimg'); ?>" />
+</a>
+</div>
+<?php endif; ?>
+
                                         <div class="jobsearch-joblisting-text">
                                             <div class="jobsearch-list-option">
                                                 <h2 class="jobsearch-pst-title">
@@ -608,27 +601,16 @@ if (!function_exists('jobsearch_job_related_post')) {
                                                     }
                                                     ?>
                                                 </h2>
-                                                <ul>
-                                                    <?php if ($company_name != '') {
-                                                        ob_start();
-                                                        ?>
-                                                        <li><?php echo($company_name); ?></li>
-                                                        <?php
-                                                        $comp_name_html = ob_get_clean();
-                                                        echo apply_filters('jobsearch_empname_in_jobdetail_related', $comp_name_html, $job_id, 'view1');
-                                                    }
-                                                    if (!empty($job_city_title) && $all_location_allow == 'on') {
-                                                        ?>
-                                                        <li>
-                                                            <i class="jobsearch-icon jobsearch-maps-and-flags"></i><?php echo esc_html($job_city_title); ?>
-                                                        </li>
-                                                        <?php
-                                                    }
-                                                    if (!empty($sector_str) && $sectors_enable_switch == 'on') {
-                                                        echo apply_filters('jobsearch_joblisting_sector_str_html', $sector_str, $job_id, '<li><i class="jobsearch-icon jobsearch-calendar"></i>', '</li>');
-                                                    }
-                                                    ?>
-                                                </ul>
+
+<p class="related_txt"><?php the_field('cf01'); ?></p>
+
+<?php if(get_post_meta($job_id, 'cf03',true)):?>
+<p class="related_txt">
+勤務地：<?php the_field('cf03'); ?>
+</p>
+<?php endif; ?>
+
+
                                             </div>
                                             <div class="jobsearch-job-userlist">
                                                 <?php
