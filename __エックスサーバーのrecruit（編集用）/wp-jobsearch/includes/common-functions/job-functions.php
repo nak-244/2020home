@@ -533,7 +533,8 @@ if (!function_exists('jobsearch_job_related_post')) {
 
                 if ($view == 'view1') {
                     if ($title != '') { ?>
-                        <div class="jobsearch-section-title"><h2><?php echo esc_html($title); ?></h2></div>
+                        <!-- <div class="jobsearch-section-title"><h2><?php echo esc_html($title); ?></h2></div> -->
+<div class="careerfy-content-title-style5 margin_top_related"><h2>関連求人</h2></div>
                         <?php
                     }
                     ob_start();
