@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-21 15:28+0900\n"
+"PO-Revision-Date: 2021-06-21 16:00+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -4930,7 +4930,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-stats.php:256
 #: templates/user-dashboard/candidate/user-stats.php:487
 msgid "Date of Birth"
-msgstr ""
+msgstr "誕生日"
 
 #: includes/meta-boxes/candidate-metabox.php:441
 #: includes/meta-boxes/employer-metabox.php:429
@@ -15047,7 +15047,7 @@ msgstr ""
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:246
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:259
 msgid "Date of Birth:"
-msgstr ""
+msgstr "誕生日:"
 
 #: templates/user-dashboard/candidate/user-dashboard-settings.php:701
 #: templates/user-dashboard/employer/user-memb-dashboard.php:83
