@@ -616,6 +616,7 @@ if ($user_avatar_id > 0) {
 
                 ob_start();
                 ?>
+<!--
                 <li class="jobsearch-column-12">
                     <?php
                     ob_start();
@@ -644,6 +645,7 @@ if ($user_avatar_id > 0) {
                     }
                     ?>
                 </li>
+-->
                 <?php
                 $desc_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_desc_contnt_html', $desc_html, $candidate_id);
