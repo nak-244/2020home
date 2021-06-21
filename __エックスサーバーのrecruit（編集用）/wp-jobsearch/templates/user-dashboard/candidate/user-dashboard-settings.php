@@ -299,7 +299,7 @@ if ($user_avatar_id > 0) {
                         $user_dob_whole = $user_dob_whole != '' ? date_i18n('d-m-Y', strtotime($user_dob_whole)) : '';
                         ?>
                         <li class="jobsearch-column-6">
-                            <label><?php esc_html_e('Date of Birth:', 'wp-jobsearch') ?><?php echo($cand_dob_switch == 'on_req' ? ' *' : '') ?></label>
+                            <label><?php esc_html_e('Date of Birth', 'wp-jobsearch') ?><?php echo($cand_dob_switch == 'on_req' ? ' *' : '') ?></label>
                             <input id="jobsearch-cand-dob-calnder"
                                    class="user-date-birth"<?php echo($cand_dob_switch == 'on_req' ? ' required' : '') ?>
                                    type="text" name="jobsearch_field_user_dob_whole"
@@ -379,7 +379,10 @@ if ($user_avatar_id > 0) {
                     }
                     ?>
                     <li class="jobsearch-column-6<?php echo apply_filters('jobsearch_cand_dash_sector_li_classes', '') ?>">
+<!--
                         <label><?php echo($selct_sector_title) ?></label>
+-->
+<label>希望職種</label>
                         <?php
                         if ($user_pkg_limits::cand_field_is_locked('profile_fields|sector')) {
                             echo($user_pkg_limits::cand_gen_locked_html());
