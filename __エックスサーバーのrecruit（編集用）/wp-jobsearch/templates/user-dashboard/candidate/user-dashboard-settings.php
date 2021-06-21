@@ -296,7 +296,7 @@ if ($user_avatar_id > 0) {
                         echo($lock_field_html);
                     } else {
                         ob_start();
-                        $user_dob_whole = $user_dob_whole != '' ? date_i18n('d-m-Y', strtotime($user_dob_whole)) : '';
+                        $user_dob_whole = $user_dob_whole != '' ? date_i18n('Y/m/d', strtotime($user_dob_whole)) : '';
                         ?>
                         <li class="jobsearch-column-6">
                             <label><?php esc_html_e('Date of Birth', 'wp-jobsearch') ?><?php echo($cand_dob_switch == 'on_req' ? ' *' : '') ?></label>
@@ -308,8 +308,8 @@ if ($user_avatar_id > 0) {
                                 jQuery(document).ready(function () {
                                     jQuery('#jobsearch-cand-dob-calnder').datetimepicker({
                                         timepicker: false,
-                                        maxDate: '<?php echo date_i18n('d-m-Y', current_time('timestamp')) ?>',
-                                        format: 'd-m-Y'
+                                        maxDate: '<?php echo date_i18n('Y/m/d', current_time('timestamp')) ?>',
+                                        format: 'Y/m/d'
                                     });
                                 });
                             </script>
