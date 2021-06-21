@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-21 15:27+0900\n"
+"PO-Revision-Date: 2021-06-21 15:28+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -1564,7 +1564,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-stats.php:211
 #: templates/user-dashboard/employer/user-stats.php:410
 msgid "Change Password"
-msgstr "パスワードを変更する"
+msgstr "パスワード変更"
 
 #: includes/user-account-links.php:195 includes/user-account-links.php:200
 #: includes/user-account-links.php:404
