@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-16 16:16+0900\n"
+"PO-Revision-Date: 2021-06-21 15:27+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -5473,7 +5473,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:641
 #: templates/user-dashboard/employer/user-dashboard-settings.php:799
 msgid "First Name"
-msgstr ""
+msgstr "姓"
 
 #: includes/meta-boxes/employer-metabox.php:1283
 #: includes/meta-boxes/employer-metabox.php:1440
@@ -5510,7 +5510,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-dashboard-settings.php:645
 #: templates/user-dashboard/employer/user-dashboard-settings.php:803
 msgid "Last Name"
-msgstr ""
+msgstr "名"
 
 #: includes/meta-boxes/employer-metabox.php:1288
 #: includes/meta-boxes/employer-metabox.php:1446
@@ -8519,7 +8519,7 @@ msgstr ""
 
 #: admin/ReduxFramework/jobsearch-options/options-config.php:664
 msgid "First/Last Name"
-msgstr ""
+msgstr "姓 / 名"
 
 #: admin/ReduxFramework/jobsearch-options/options-config.php:666
 msgid "Allow users to put first and last name in register form."
@@ -13534,12 +13534,12 @@ msgstr ""
 #: modules/job-application/include/job-application-load.php:351
 #: modules/job-application/include/job-application-load.php:1021
 msgid "First Name:"
-msgstr ""
+msgstr "姓:"
 
 #: modules/job-application/include/job-application-load.php:355
 #: modules/job-application/include/job-application-load.php:1025
 msgid "Last Name:"
-msgstr ""
+msgstr "名:"
 
 #: modules/job-application/include/job-application-load.php:367
 #: modules/job-application/include/job-application-load.php:1032
@@ -14204,13 +14204,13 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:405
 #: modules/login-registration/templates/login-registration-template.php:1100
 msgid "First Name *"
-msgstr ""
+msgstr "姓 *"
 
 #: modules/login-registration/templates/login-registration-template.php:409
 #: modules/login-registration/templates/login-registration-template.php:411
 #: modules/login-registration/templates/login-registration-template.php:1104
 msgid "Last Name *"
-msgstr ""
+msgstr "名 *"
 
 #: modules/login-registration/templates/login-registration-template.php:457
 #: modules/login-registration/templates/login-registration-template.php:1185
