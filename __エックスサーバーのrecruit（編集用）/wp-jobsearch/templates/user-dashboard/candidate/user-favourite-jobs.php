@@ -79,10 +79,12 @@ if ($candidate_id > 0) {
                                 $job_sector = isset($sectors[0]->name) ? $sectors[0]->name : '';
                                 ?>
                                 <tr>
+
                                     <td>
                                         <a class="jobsearch-savedjobs-thumb"><img src="<?php echo ($user_def_avatar_url) ?>" alt=""></a>
                                         <h2 class="jobsearch-pst-title"><a href="<?php echo get_permalink($job_id) ?>"><?php echo get_the_title($job_id) ?></a></h2>
                                     </td>
+
                                     <td><span>@ <?php echo get_the_title($job_post_employer) ?></span></td>
                                     <?php
                                     if ($job_post_date != '') {
