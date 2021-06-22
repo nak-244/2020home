@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP JobSearch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 13:39+0000\n"
-"PO-Revision-Date: 2021-06-21 16:00+0900\n"
+"PO-Revision-Date: 2021-06-22 09:57+0900\n"
 "Language-Team: 日本語\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
@@ -5542,7 +5542,7 @@ msgstr ""
 #: templates/user-dashboard/employer/user-memb-dashboard.php:55
 #: templates/user-dashboard/employer/user-dashboard-settings.php:649
 msgid "Username"
-msgstr ""
+msgstr "ユーザーID"
 
 #: includes/meta-boxes/employer-metabox.php:1293
 #: includes/meta-boxes/employer-metabox.php:1451
@@ -7967,7 +7967,7 @@ msgstr "メールアドレス *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1212
 msgid "Username *"
-msgstr ""
+msgstr "ユーザーID *"
 
 #: shortcodes/vc-shortcodes/user-job-shortcode.php:1244
 msgid "Application Deadline"
@@ -14033,7 +14033,7 @@ msgstr ""
 #: modules/login-registration/include/login-registration-submit.php:309
 #, php-format
 msgid "Username: %s"
-msgstr ""
+msgstr "ユーザーID: %s"
 
 #: modules/login-registration/include/login-registration-submit.php:310
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -14056,7 +14056,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:296
 #: modules/login-registration/templates/login-registration-template.php:922
 msgid "Reset Password"
-msgstr ""
+msgstr "パスワードをリセットする"
 
 #: modules/login-registration/include/login-registration-submit.php:465
 msgid "You cannot change the password."
@@ -14081,10 +14081,11 @@ msgstr "パスワードが一致しません。"
 #: modules/login-registration/include/login-registration-submit.php:640
 msgid "Username already exists. Please try another username."
 msgstr ""
+"このユーザーIDはすでに利用されています。別のユーザーIDを試してください。"
 
 #: modules/login-registration/include/login-registration-submit.php:647
 msgid "Username is incorrect."
-msgstr ""
+msgstr "ユーザーIDが正しくありません。"
 
 #: modules/login-registration/include/login-registration-submit.php:702
 msgid ""
@@ -14133,7 +14134,7 @@ msgstr ""
 #: modules/login-registration/templates/login-registration-template.php:811
 #: modules/login-registration/templates/login-registration-template.php:996
 msgid "Username/Email Address"
-msgstr ""
+msgstr "ユーザーID / メールアドレス"
 
 #: modules/login-registration/templates/login-registration-template.php:181
 msgid "Login to your account"
@@ -14173,7 +14174,7 @@ msgstr "パスワードを保存"
 #: modules/login-registration/templates/login-registration-template.php:315
 #: modules/login-registration/templates/login-registration-template.php:938
 msgid "Get a new password"
-msgstr ""
+msgstr "新しいパスワードを入手する"
 
 #: modules/login-registration/templates/login-registration-template.php:320
 #: modules/login-registration/templates/login-registration-template.php:767
@@ -14187,6 +14188,8 @@ msgid ""
 "Enter the username or e-mail you used in your profile. A password reset link "
 "will be sent to you by email."
 msgstr ""
+"ユーザーIDか登録したメールアドレスを入力してください。パスワードをリセットす"
+"るリンクをメールで送信します。"
 
 #: modules/login-registration/templates/login-registration-template.php:350
 msgid "Signup to your Account"
@@ -14253,7 +14256,7 @@ msgstr "アカウントをお持ちの方"
 
 #: modules/login-registration/templates/login-registration-template.php:871
 msgid "Enter the username and password to login:"
-msgstr "ユーザー名orメールアドレスとパスワードを入力してください："
+msgstr "ユーザーIDorメールアドレスとパスワードを入力してください："
 
 #: modules/login-registration/templates/login-registration-template.php:885
 msgid "Forgot your password?"
