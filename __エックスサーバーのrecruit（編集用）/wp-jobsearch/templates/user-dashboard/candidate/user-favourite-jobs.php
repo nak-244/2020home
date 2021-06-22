@@ -106,7 +106,7 @@ if ($candidate_id > 0) {
                 <?php
                 $favjobs_html = ob_get_clean();
                 echo apply_filters('jobsearch_cand_dash_favjobs_list_html', $favjobs_html, $candidate_fav_jobs_list, $candidate_id);
-                
+
                 $total_pages = 1;
                 if ($total_jobs > 0 && $reults_per_page > 0 && $total_jobs > $reults_per_page) {
                     $total_pages = ceil($total_jobs / $reults_per_page);
@@ -123,4 +123,4 @@ if ($candidate_id > 0) {
         ?>
     </div>
     <?php
-}    
+}
